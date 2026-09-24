@@ -8,6 +8,8 @@ import CarouselController from "ui/carousel/carousel_controller"
 import CollapsibleController from "ui/collapsible/collapsible_controller"
 import DrawerController from "ui/drawer/drawer_controller"
 import MenubarController from "ui/menubar/menubar_controller"
+import ToasterController from "ui/toast/toaster_controller"
+import "ui/toast/toast"
 import SparklineController from "ui/sparkline/sparkline_controller"
 
 application.register("ui--autocomplete", AutocompleteController)
@@ -16,4 +18,5 @@ application.register("ui--carousel", CarouselController)
 application.register("ui--collapsible", CollapsibleController)
 application.register("ui--drawer", DrawerController)
 application.register("ui--menubar", MenubarController)
+application.register("ui--toaster", ToasterController)
 application.register("ui--sparkline", SparklineController)

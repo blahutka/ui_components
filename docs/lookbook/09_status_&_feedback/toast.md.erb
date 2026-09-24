@@ -1,0 +1,178 @@
+---
+id: toast
+title: Toast
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A brief, dismissible notification that stacks in a corner of the screen.
+[Appica docs](https://appica.dev/ui/components/react/toast)
+
+<%= embed UI::ToastPreview, :default %>
+
+## Usage
+
+Render one `Toaster` near the end of your layout's `<body>` - the viewport every toast appears in:
+
+```ruby
+# app/views/layouts/application.rb (a Phlex layout) - or `<%%= render UI::Toaster.new %>` in ERB
+body do
+  yield
+  Toaster(toasts: flash_toasts)
+end
+```
+
+Then fire toasts from wherever it's convenient:
+
+```ruby
+# From the server: flash messages rendered with the page…
+def flash_toasts
+  flash.map { |type, message| { title: message, icon: type == "alert" ? :error : :success } }
+end
+
+# …or appended from a controller action / broadcast with Turbo Streams
+turbo_stream.append "toaster", UI::Toast.new(title: "Changes saved", icon: :success)
+
+# From a button, without writing JavaScript
+ToastTrigger(toast: { title: "Changes saved" }) { |trigger| Button(**trigger) { "Save" } }
+```
+
+```js
+// From JavaScript - Appica's useToastManager()
+import { toast } from "ui/toast/toast"   // also available as window.UI.toast
+
+toast.add({ title: "Changes saved", description: "Your preferences have been updated." })
+```
+
+A toast is data - a title, description, an optional icon, an action button - and the Toaster renders,
+stacks, and animates it. Each one auto-dismisses after its timeout (5s by default, paused while you hover
+the stack), can be swiped away toward its edge, and has a close button. Hover or focus the stack to expand it.
+
+## Examples
+
+### With an icon
+
+`icon:` adds a filled, color-matched glyph - `:success`, `:error`, `:warning`, `:info`, `:bell` or `:loading`
+(a spinner) - while the surface stays neutral.
+
+<%= embed UI::ToastPreview, :icons %>
+
+### With a thumbnail
+
+`thumbnail: true` wraps the icon in a tinted badge for more prominence.
+
+<%= embed UI::ToastPreview, :thumbnails %>
+
+### With an action
+
+`action:` renders an inline button - an "Undo", "Retry", or "View". On the server give it an `href:`, an
+`event:` name (dispatched on `window` with `{ toast: id }`) or a follow-up `toast:`; from JavaScript an
+`onClick` function.
+
+<%= embed UI::ToastPreview, :action %>
+
+```ruby
+Toast(title: "Message archived", action: { label: "Undo", href: unarchive_message_path(message) })
+```
+
+```js
+toast.add({ title: "Message archived", action: { label: "Undo", onClick: () => restore(id) } })
+```
+
+### Promise
+
+`toast.promise(promise, { loading, success, error })` swaps the content as the promise settles - ideal for
+saves and uploads. States can be objects or functions of the value / error.
+
+<%= embed UI::ToastPreview, :promise %>
+
+```js
+toast.promise(fetch("/documents", { method: "POST" }), {
+  loading: { title: "Saving…", icon: "loading", thumbnail: true },
+  success: { title: "Saved", icon: "success", thumbnail: true },
+  error: { title: "Could not save", icon: "error", thumbnail: true }
+})
+```
+
+### Positions
+
+`Toaster(position:)` anchors the stack - any of the six corners and edges. A single toast can target another
+one with `position:`. Toasts swipe toward their nearest edge to dismiss.
+
+<%= embed UI::ToastPreview, :positions %>
+
+### Timeout & progress
+
+`timeout:` controls how long a toast lingers; `timeout: 0` keeps it until dismissed. `Toaster(progress: true)`
+draws a thin countdown bar on auto-dismissing toasts (paused while the stack is expanded).
+
+<%= embed UI::ToastPreview, :timeout %>
+
+### Server-rendered (flash)
+
+Toasts rendered with the page animate in and time out like any other - this is how flash messages and Turbo
+Stream appends arrive.
+
+<%= embed UI::ToastPreview, :server_rendered %>
+
+### RTL
+
+The layout mirrors: the icon leads from the right, the close button moves to the left, and the progress bar
+drains in the reading direction.
+
+<%= embed UI::ToastPreview, :rtl %>
+
+## API reference
+
+### Toaster
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `position:` | `:top_left`, `:top_center`, `:top_right`, `:bottom_left`, `:bottom_center`, `:bottom_right` | `:bottom_right` | Where the stack is anchored; also sets the swipe-to-dismiss directions. |
+| `timeout:` | `Integer` (ms) | `5000` | Default auto-dismiss delay for toasts that don't set their own. |
+| `limit:` | `Integer` | `3` | Maximum toasts shown at once; the rest wait until there's room. |
+| `progress:` | `Boolean` | `false` | Countdown bar on auto-dismissing toasts. |
+| `toasts:` | `Array<Hash>` | `[]` | Toasts rendered with the page (the options of `UI::Toast`). |
+| `id:` | `String` | `"toaster"` | Id of the default viewport - the Turbo Stream target. |
+
+### Toast
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title:` | `String` | - | The toast heading. |
+| `description:` | `String` | - | Supporting body text. |
+| `icon:` | `:success`, `:error`, `:warning`, `:info`, `:bell`, `:loading` | - | Leading glyph (or pass a block for your own). |
+| `thumbnail:` | `Boolean` | `false` | Wrap the icon in a tinted badge. |
+| `action:` | `{ label:, href: / event: / toast:, variant: }` | - | Inline action button. |
+| `timeout:` | `Integer` (ms) | Toaster's | Auto-dismiss delay; `0` keeps it until dismissed. |
+| `priority:` | `:low`, `:high` | `:low` | `:high` interrupts screen readers (`role="alert"`) - use for errors. |
+| `type:` | `String` | - | Free-form category, exposed as `data-type` for styling. |
+| `dismissible:` | `Boolean` | `true` | Render the close button. |
+| `close_label:` | `String` | `"Dismiss"` | Accessible label for the close button. |
+
+### JavaScript: `toast` (`import { toast } from "ui/toast/toast"` / `window.UI.toast`)
+
+| Method | Description |
+|--------|-------------|
+| `add(options) → id` | Show a toast. Options mirror `UI::Toast` in camelCase, plus `position`, `onClose` and `action.onClick`. |
+| `update(id, options)` | Patch a toast in place. |
+| `close(id)` | Dismiss a toast. |
+| `promise(promise, { loading, success, error })` | Drive a toast through loading / success / error. |
+
+The Toaster also dispatches `ui--toaster:close` with `{ id }` when a toast is removed.
+
+### ToastTrigger
+
+`ToastTrigger(toast: { … })` fires a toast on click. A block taking an argument puts the attributes on your
+own element: `ToastTrigger(toast: { title: "Saved" }) { |trigger| Button(**trigger) { "Save" } }`.
+
+## Accessibility
+
+- Each viewport is a labelled `aria-live="polite"` region, so new toasts are announced politely. Set
+  `priority: :high` on important ones (errors, warnings) to announce them immediately.
+- The close button carries an accessible label (`close_label:`); it's hidden from the accessibility tree until
+  the stack is hovered or focused, then revealed.
+- Timers pause while the stack is hovered or focused, and while the window is in the background.
+- Keep toast text short and self-contained - toasts disappear, so don't put the only copy of critical
+  information in one.
+- Enter/exit, stacking and swipe animations honor `prefers-reduced-motion`, and the progress bar is hidden.

@@ -1,0 +1,5 @@
+/* Toast: the countdown bar (`animate-[toast-progress_linear_forwards]`) */
+@keyframes toast-progress {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
