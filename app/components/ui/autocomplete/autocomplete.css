@@ -1,0 +1,6 @@
+/* Autocomplete: styles that are not plain utilities live next to the component. */
+
+/* Scroll highlighted options into view without hugging the popup edge */
+[data-slot="autocomplete-list"] {
+  scroll-padding-block: calc(var(--spacing) * 2);
+}

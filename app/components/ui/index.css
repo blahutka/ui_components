@@ -1,0 +1,4 @@
+/* Appica design tokens + every component's sidecar stylesheet.
+   Imported by the host app's Tailwind entrypoint (see README). */
+@import "./theme.css";
+@import "./autocomplete/autocomplete.css";

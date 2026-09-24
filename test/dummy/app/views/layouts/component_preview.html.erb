@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html class="<%= params.dig(:lookbook, :display, :theme) == "dark" ? "dark" : "" %>">
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= stylesheet_link_tag "tailwind" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="min-h-screen p-10 font-sans antialiased">
+    <div class="mx-auto flex w-full max-w-70 flex-col gap-4">
+      <%= yield %>
+    </div>
+  </body>
+</html>

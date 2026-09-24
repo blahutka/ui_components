@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "lookbook",
+      "runtimeExecutable": "test/dummy/bin/dev",
+      "runtimeArgs": ["-p", "3047"],
+      "port": 3047
+    }
+  ]
+}

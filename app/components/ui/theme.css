@@ -1,0 +1,78 @@
+/* Appica UI design tokens (light + .dark), exposed to Tailwind v4 as utilities:
+   bg-background, text-foreground-muted, border-border-strong, ring-ring-input, opacity-disabled… */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root, .light {
+  --foreground: #4a5565; --foreground-subtle: #99a1af; --foreground-muted: #6a7282;
+  --foreground-strong: #364153; --foreground-emphasis: #1e2939; --foreground-intense: #101828;
+  --foreground-inverse: #fff;
+  --background: #fff; --background-subtle: #f9fafb; --background-muted: #f3f4f6;
+  --background-strong: #e5e7eb; --background-inverse: #030712;
+  --border: #e5e7eb; --border-muted: #f3f4f6; --border-strong: #d1d5dc; --border-emphasis: #99a1af;
+  --border-intense: #6a7282; --border-inverse: #1e2939; --border-overlay: #f3f4f6;
+  --primary: #101828; --primary-foreground: #fff;
+  --error: #ffa3a3; --error-subtle: #fb2c361a; --error-emphasis: #fb2c36;
+  --focus-ring: #d1d5dc; --focus-ring-input: #e5e7eb; --focus-ring-error: #fb2c364d;
+  --radius: .875rem;
+  --shadow-color: #6a72822e; --selection-color: #0307121a;
+  --opacity-disabled: .65;
+}
+
+.dark {
+  --foreground: #d1d5dc; --foreground-subtle: #6a7282; --foreground-muted: #99a1af;
+  --foreground-strong: #e5e7eb; --foreground-emphasis: #f3f4f6; --foreground-intense: #fff;
+  --foreground-inverse: #101828;
+  --background: #030712; --background-subtle: #6a728214; --background-muted: #101828;
+  --background-strong: #1e2939; --background-inverse: #fff;
+  --border: #1e2939; --border-muted: #101828; --border-strong: #364153; --border-emphasis: #4a5565;
+  --border-intense: #6a7282; --border-inverse: #e5e7eb; --border-overlay: #1e2939;
+  --primary: #fff; --primary-foreground: #101828;
+  --error: #ff6568; --error-subtle: #fb2c361a; --error-emphasis: #fb2c36;
+  --focus-ring: #364153; --focus-ring-input: #1e2939; --focus-ring-error: #fb2c3680;
+  --shadow-color: #0000004d; --selection-color: #ffffff26;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-subtle: var(--background-subtle);
+  --color-background-muted: var(--background-muted);
+  --color-background-strong: var(--background-strong);
+  --color-background-inverse: var(--background-inverse);
+  --color-foreground: var(--foreground);
+  --color-foreground-subtle: var(--foreground-subtle);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-strong: var(--foreground-strong);
+  --color-foreground-emphasis: var(--foreground-emphasis);
+  --color-foreground-intense: var(--foreground-intense);
+  --color-foreground-inverse: var(--foreground-inverse);
+  --color-border: var(--border);
+  --color-border-muted: var(--border-muted);
+  --color-border-strong: var(--border-strong);
+  --color-border-emphasis: var(--border-emphasis);
+  --color-border-intense: var(--border-intense);
+  --color-border-inverse: var(--border-inverse);
+  --color-border-overlay: var(--border-overlay);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-error: var(--error);
+  --color-error-subtle: var(--error-subtle);
+  --color-error-emphasis: var(--error-emphasis);
+  --color-ring: var(--focus-ring);
+  --color-ring-input: var(--focus-ring-input);
+  --color-ring-error: var(--focus-ring-error);
+
+  --radius-xs: calc(var(--radius) * 5 / 7);
+  --radius-sm: calc(var(--radius) * 6 / 7);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) * 8 / 7);
+  --radius-xl: calc(var(--radius) * 9 / 7);
+
+  --shadow-2xl: 0 24px 32px -12px var(--shadow-color);
+  --opacity-disabled: var(--opacity-disabled);
+}
+
+@layer base {
+  body { @apply bg-background text-foreground; }
+  ::selection { background-color: var(--selection-color); }
+}
