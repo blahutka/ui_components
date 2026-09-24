@@ -1,0 +1,167 @@
+---
+id: drawer
+title: Drawer
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A panel that slides in from a screen edge, with swipe-to-dismiss and snap points.
+[Appica docs](https://appica.dev/ui/components/react/drawer)
+
+<%= embed UI::DrawerPreview, :default %>
+
+## Usage
+
+```ruby
+Drawer(side: :right) do
+  DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { "Open drawer" } }
+  DrawerContent do
+    DrawerHeader do
+      DrawerTitle { "Notifications" }
+      DrawerDescription { "Choose what you want to be notified about." }
+    end
+    DrawerBody { ... }
+    DrawerFooter do
+      DrawerClose { |close| Button(**close) { "Save" } }
+      DrawerClose { |close| Button(**close, variant: :outline) { "Cancel" } }
+    end
+  end
+end
+```
+
+Drawer is a compound component built on a native `<dialog>`. Pick the edge with `side:`; the
+swipe direction follows it automatically. By default it's modal and dismissible, with a drag
+handle and a corner close button:
+
+- **DrawerTrigger** - the button that opens the drawer. A block with an argument receives the
+  trigger attributes, so you can render your own Button.
+- **DrawerContent** - the panel. It draws the card, backdrop, handle and corner close button.
+  Opened with `showModal()`, it sits in the top layer, so it needs no portal.
+- **DrawerHeader** - groups the title and description with consistent spacing.
+- **DrawerTitle** - an `<h2>` that labels the panel (`aria-labelledby`).
+- **DrawerDescription** - a `<p>` that describes it (`aria-describedby`).
+- **DrawerBody** - the main content region; it owns the scroll.
+- **DrawerFooter** - the actions, stacked at the bottom of the panel.
+- **DrawerClose** - a button that dismisses the drawer; same block convention as the trigger.
+
+Reach for a Drawer when the surface should feel anchored to an edge or be swipeable on touch -
+navigation, filters, a detail panel, a mobile sheet.
+
+## Examples
+
+### Sides
+
+Set `side:` to `:top`, `:right`, `:bottom`, or `:left`. Left and right read as side panels; top
+and bottom as sheets - cap the sheet's width (`class: "mx-auto max-w-2xl"` on `DrawerContent`)
+so it doesn't stretch edge-to-edge on a wide screen.
+
+<%= embed UI::DrawerPreview, :sides %>
+
+```ruby
+Drawer(side: :bottom) do
+  DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { "Bottom" } }
+  DrawerContent(class: "mx-auto max-w-2xl") { ... }
+end
+```
+
+### Snap points & scrollable content
+
+`snap_points:` lets a top or bottom drawer rest at intermediate heights. Each value is a fraction
+of the viewport (0-1), a pixel number (> 1), or a CSS length string (`"24rem"`). The drawer opens
+at the first point; drag or flick between them, and it dismisses past the smallest.
+
+For content taller than the panel, let `DrawerBody` own the overflow between a pinned header and
+footer. A left/right drawer is the natural fit: its swipe is horizontal, so it never fights the
+vertical scroll.
+
+<%= embed UI::DrawerPreview, :long_content %>
+
+```ruby
+Drawer(snap_points: [ 0.4, 1 ]) do
+  DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { "Open player" } }
+  DrawerContent(class: "mx-auto max-w-2xl") { ... }
+end
+```
+
+### Nested drawers
+
+A drawer can open another drawer: nest the markup inside `DrawerBody`. The parent tucks back as
+the child slides in, and the child renders without a backdrop, as a solid card.
+
+<%= embed UI::DrawerPreview, :nested %>
+
+```ruby
+Drawer(side: :right) do
+  DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { "Workspace" } }
+  DrawerContent do
+    DrawerBody do
+      Drawer(side: :right) do
+        DrawerTrigger { |trigger| Button(**trigger) { "Rename workspace" } }
+        DrawerContent(close_button: false) { ... }
+      end
+    end
+  end
+end
+```
+
+### Listening for changes
+
+The controller dispatches `ui--drawer:open-change` with `{ open }` and, for sheets with snap
+points, `ui--drawer:snap-point-change` with `{ snapPoint }`.
+
+```ruby
+Drawer(data: { action: "ui--drawer:open-change->player#toggle" }) { ... }
+```
+
+### RTL
+
+The header, body and footer read right-to-left and the handle and close button mirror. When RTL
+is scoped to part of an LTR page, set `dir: "rtl"` on `DrawerContent` too.
+
+<%= embed UI::DrawerPreview, :rtl %>
+
+## API reference
+
+### Drawer
+
+The root. Holds the edge and options and renders the Stimulus wrapper (`display: contents`).
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `side:` | `:top`, `:right`, `:bottom`, `:left` | `:bottom` | The edge the drawer slides in from. |
+| `default_open:` | `Boolean` | `false` | Open on page load. |
+| `modal:` | `Boolean` | `true` | Make the page inert and lock scroll while open. |
+| `disable_pointer_dismissal:` | `Boolean` | `false` | Keep the drawer open when the backdrop is clicked. |
+| `snap_points:` | `Array` | - | Resting heights for a top/bottom drawer (fraction, px, or CSS length). |
+| `id:`, `data:`, … | | | Any other HTML attributes go on the root element. |
+
+### DrawerTrigger / DrawerClose
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| block | `{ \|attributes\| … }` or `{ … }` | - | With an argument, yields the attributes to put on your own element; without one renders a plain `<button>`. |
+| `class:`, … | | | Extra attributes merged into the yielded ones. |
+
+### DrawerContent
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `close_button:` | `Boolean` | `true` | Render the × button in the corner. |
+| `close_label:` | `String` | `"Close"` | Accessible label for the close button. |
+| `backdrop:` | `Boolean` | top level: `true`, nested: `false` | Render the dimmed backdrop. |
+| `frame:` | `Boolean` | `true` | Translucent glass frame around the panel. Needs the backdrop; without one the panel is a solid card. |
+| `class:` | `String` | - | Extra classes on the panel (e.g. `mx-auto max-w-2xl`). |
+
+### DrawerHeader, DrawerTitle, DrawerDescription, DrawerBody, DrawerFooter
+
+Layout parts. All accept `class:` (merged via tailwind_merge) and other HTML attributes.
+
+## Accessibility
+
+- The panel is a `<dialog>` opened with `showModal()`, with `aria-labelledby` / `aria-describedby`
+  wired to `DrawerTitle` and `DrawerDescription` - always render a title.
+- Opening moves focus into the panel and makes the rest of the page inert. Escape, a backdrop
+  click, or a swipe toward the edge close it, and focus returns to the trigger.
+- With `modal: true` (the default) page scroll is locked while the drawer is open.
+- The corner close button carries an accessible label (`close_label:`).
+- Enter/exit animations are skipped when the user prefers reduced motion.

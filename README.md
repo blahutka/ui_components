@@ -74,6 +74,28 @@ The folders are collapsed for Zeitwerk (no extra namespace), served by Propshaft
 by the engine's importmap (`ui/...`). `app/components/ui/index.js` registers the controllers,
 `app/components/ui/index.css` imports the Appica tokens (`theme.css`) and each component's CSS.
 
+## Docs pages
+
+Next to the previews, Lookbook shows a docs page per component under **Pages**, laid out like
+Appica's docs (Usage, Examples, API reference, Accessibility) with live embeds and an
+"On this page" navigation. They live in `docs/lookbook/`, in folders that mirror Appica's
+categories:
+
+```
+docs/lookbook/
+  01_overview.md.erb            # landing page
+  02_actions_&_inputs/
+    autocomplete.md.erb
+    button.md.erb
+  03_overlays/
+    drawer.md.erb
+```
+
+Start a page with `<%= UiComponents::Lookbook::TableOfContents.call(page) %>` to get the
+"On this page" box; it lists the `##` and `###` headings. Embed scenarios with
+`<%= embed UI::DrawerPreview, :nested %>`. Components whose popups or panels need room in an
+embed set `@display min_height …` on their preview class.
+
 ## Host app setup
 
 ```ruby
@@ -132,10 +154,14 @@ To run the pieces separately, e.g. when using foreman with `test/dummy/Procfile.
 cd test/dummy && bin/rails tailwindcss:build && bin/rails server
 ```
 
+Live reload: open Lookbook pages refresh by themselves when you change a preview, a docs page, a
+component (`.rb`, `.js`, `.css`) or when Tailwind rebuilds. This uses the `listen` gem and
+Lookbook's websocket (`config.lookbook.live_updates` in `test/dummy/config/application.rb`).
+New component folders are picked up on the next reload too, so a restart is only needed after
+changing the engine, initializers, the Gemfile or anything else loaded once at boot.
+
 Notes:
-- Previews live next to each component (`app/components/ui/<component>/*_preview.rb`) and reload on change.
-- After adding a **new component folder**, restart the server: the folders are collapsed for
-  Zeitwerk at boot, so until then you get `uninitialized constant UI::<Component>`.
+- Previews live next to each component (`app/components/ui/<component>/*_preview.rb`).
 - Use the **Theme** switcher in Lookbook's toolbar to preview dark mode; the preview layout is
   `test/dummy/app/views/layouts/component_preview.html.erb`.
 - If styles look missing after adding new classes, check that the Tailwind watcher is running,

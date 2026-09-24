@@ -1,8 +1,15 @@
 # Appica's Button: the trigger and action element used by Drawer, Dialog, …
+# Renders an <a> when given `href:`.
+#
+# @label Button
+# @logical_path Actions & Inputs
+# @component UI::Button
+# @display width wide
 class UI::ButtonPreview < UI::BasePreview
-  # @param variant select { choices: [primary, primary_outline, secondary, soft, outline, ghost, destructive] }
-  # @param size select { choices: [sm, md, lg] }
-  # @param label text
+  # @label Usage
+  # @param variant [Symbol] select "Visual style" { choices: [primary, primary_outline, secondary, soft, outline, ghost, destructive] }
+  # @param size [Symbol] select "Height, padding and text size" { choices: [sm, md, lg] }
+  # @param label text "Button text"
   def default(variant: :primary, size: :md, label: "Button")
     phlex do
       Button(variant:, size:) { label }
@@ -19,6 +26,9 @@ class UI::ButtonPreview < UI::BasePreview
     end
   end
 
+  # @!group Sizes
+  #
+  # `size:` scales height, padding, radius and icon size.
   def sizes
     phlex do
       div(class: "flex flex-wrap items-center gap-3") do
@@ -27,6 +37,8 @@ class UI::ButtonPreview < UI::BasePreview
     end
   end
 
+  # `icon: true` makes a square button; give it an `aria_label:`.
+  #
   # @label Icon buttons
   def icon
     phlex do
@@ -41,4 +53,5 @@ class UI::ButtonPreview < UI::BasePreview
       end
     end
   end
+  # @!endgroup
 end

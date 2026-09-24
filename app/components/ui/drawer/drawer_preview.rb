@@ -3,6 +3,12 @@
 # Compound component on a native <dialog>: Drawer holds the edge and options,
 # DrawerTrigger / DrawerClose accept a block with an argument to project their
 # attributes onto your own Button (Appica's `render` prop).
+#
+# @label Drawer
+# @logical_path Overlays
+# @component UI::Drawer
+# @display width wide
+# @display min_height 32rem
 class UI::DrawerPreview < UI::BasePreview
   TRACKS = [
     [ "Nightcall", "Neon Drift" ], [ "Midnight City", "Violet Skies" ], [ "Resonance", "Echo Theory" ],
@@ -26,10 +32,10 @@ class UI::DrawerPreview < UI::BasePreview
   ].freeze
 
   # @label Usage
-  # @param side select { choices: [top, right, bottom, left] }
-  # @param close_button toggle
-  # @param frame toggle
-  # @param disable_pointer_dismissal toggle
+  # @param side [Symbol] select "Edge the drawer slides in from; the swipe direction follows" { choices: [top, right, bottom, left] }
+  # @param close_button [Boolean] toggle "Corner × button"
+  # @param frame [Boolean] toggle "Translucent glass frame around the panel (needs the backdrop)"
+  # @param disable_pointer_dismissal [Boolean] toggle "Keep the drawer open when the backdrop is clicked"
   def default(side: :right, close_button: true, frame: true, disable_pointer_dismissal: false)
     phlex do
       Drawer(side:, disable_pointer_dismissal:) do
@@ -78,6 +84,8 @@ class UI::DrawerPreview < UI::BasePreview
     end
   end
 
+  # @!group Long content
+  #
   # @label Snap points
   # `snap_points:` lets a top or bottom drawer rest at intermediate heights: a fraction of the
   # viewport (0-1), pixels (> 1) or a CSS length ("24rem"). It opens at the first point and
@@ -145,6 +153,8 @@ class UI::DrawerPreview < UI::BasePreview
       end
     end
   end
+
+  # @!endgroup
 
   # @label Nested drawers
   # A drawer can open another drawer: the parent tucks back as the child slides in,

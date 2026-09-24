@@ -1,0 +1,234 @@
+---
+id: autocomplete
+title: Autocomplete
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A text input that suggests matching options as you type.
+[Appica docs](https://appica.dev/ui/components/react/autocomplete)
+
+<%= embed UI::AutocompletePreview, :default %>
+
+## Usage
+
+```ruby
+Autocomplete(items: frameworks) do
+  AutocompleteInput(placeholder: "Search a framework")
+  AutocompleteContent do
+    AutocompleteEmpty { "No frameworks found." }
+    AutocompleteList do |item|
+      AutocompleteItem(value: item) { item }
+    end
+  end
+end
+```
+
+Autocomplete is a compound component. The root holds the data (`items:`) and shared options
+(`size:`, `variant:`, `clearable:`, `icon:`); the parts compose the input and the filtered popup:
+
+- **AutocompleteInput** - the text field, styled like Input. Add a clear button with `clearable:`
+  and a dropdown chevron with `icon:` (both on the root, both off by default).
+- **AutocompleteContent** - the popup. It opens below the input and flips above it when there
+  isn't room.
+- **AutocompleteList** - the scrollable list. Pass a block with an argument to map over the
+  filtered items, or static `AutocompleteItem`s.
+- **AutocompleteItem** - one option; its `value:` is what selection writes into the input.
+- **AutocompleteEmpty** - shown only when the filter matches nothing.
+
+Filtering, keyboard navigation and the ARIA combobox state come from the `ui--autocomplete`
+Stimulus controller.
+
+## Examples
+
+### Variants
+
+`variant:` switches the input between a bordered outline (default) and a filled soft field.
+
+<%= embed UI::AutocompletePreview, :variants %>
+
+```ruby
+Autocomplete(items: frameworks, variant: :soft) do
+  AutocompleteInput(placeholder: "Search a framework")
+  # ...
+end
+```
+
+### Sizes
+
+`size:` on the root scales the input, popup radius, and items together.
+
+<%= embed UI::AutocompletePreview, :sizes %>
+
+```ruby
+Autocomplete(items: frameworks, size: :lg) { ... }
+```
+
+### Clearable & chevron
+
+`clearable:` adds a clear (✕) button once there's a value, `icon:` a chevron that toggles the
+popup. Both render inside the input.
+
+<%= embed UI::AutocompletePreview, :clearable %>
+
+```ruby
+Autocomplete(items: frameworks, default_value: "Next.js", clearable: true, icon: true) { ... }
+```
+
+### Items with icons
+
+Items can render any content. Mark a leading icon with `data: { icon: "start" }` so it gets the
+same inner spacing as in Button. When items are objects rather than strings, give the root an
+`item_to_string_value:` (a key, method name or proc) so the filter and input know how to read
+each one. `start_slot: :selected_icon` mirrors the selected item's icon into the input.
+
+<%= embed UI::AutocompletePreview, :object_items %>
+
+```ruby
+Autocomplete(items: commands, item_to_string_value: :label, clearable: true, icon: true) do
+  AutocompleteInput(placeholder: "Search commands", start_slot: :selected_icon)
+  AutocompleteContent do
+    AutocompleteEmpty { "No commands found." }
+    AutocompleteList do |command|
+      AutocompleteItem(value: command) do
+        svg(data: { icon: "start" }, ...) { |s| s.path(d: command[:icon]) }
+        plain command[:label]
+      end
+    end
+  end
+end
+```
+
+### Grouped options
+
+Pass grouped items (`{ value:, items: }`) and render each group with `AutocompleteGroup` +
+`AutocompleteLabel` + `AutocompleteCollection`. The outer block iterates groups;
+`AutocompleteCollection` renders the items inside each.
+
+<%= embed UI::AutocompletePreview, :grouped %>
+
+```ruby
+Autocomplete(items: produce) do
+  AutocompleteInput(placeholder: "Search produce")
+  AutocompleteContent do
+    AutocompleteEmpty { "No produce found." }
+    AutocompleteList do |group|
+      AutocompleteGroup(items: group[:items]) do
+        AutocompleteLabel { group[:value] }
+        AutocompleteCollection { |item| AutocompleteItem(value: item) { item } }
+      end
+    end
+  end
+end
+```
+
+### Grid layout
+
+`grid: true` lays options out in a grid (arrow keys move in two dimensions).
+`AutocompleteList(cols:)` controls how many items per row.
+
+<%= embed UI::AutocompletePreview, :grid %>
+
+```ruby
+Autocomplete(items: libraries, grid: true, icon: true) do
+  AutocompleteInput(placeholder: "Search a library")
+  AutocompleteContent do
+    AutocompleteList(cols: 2) { |item| AutocompleteItem(value: item, class: "flex-1") { item } }
+  end
+end
+```
+
+### Static items & forms
+
+Static `AutocompleteItem` children work too. `name:` submits the typed or selected value with
+the surrounding form; `disabled: true` on an item skips it in navigation.
+
+<%= embed UI::AutocompletePreview, :static_items %>
+
+### Listening for changes
+
+The controller dispatches `ui--autocomplete:change` with `{ value }` whenever the value changes
+(typing, selection, clear) - the counterpart of React's `onValueChange`. The input also fires a
+native `change` event on selection.
+
+```ruby
+Autocomplete(items: frameworks, data: { action: "ui--autocomplete:change->search#update" }) { ... }
+```
+
+### RTL
+
+The component uses logical properties, so it mirrors under `dir="rtl"`; arrow keys follow the
+direction in grid mode.
+
+<%= embed UI::AutocompletePreview, :rtl %>
+
+## API reference
+
+### Autocomplete
+
+The root. Holds the data and the shared options and renders the Stimulus wrapper.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items:` | `Array` | `[]` | The data to filter. A flat array, or `{ value:, items: }` hashes for grouped options. |
+| `size:` | `:sm`, `:md`, `:lg` | `:md` | Input height, popup radius, and item sizing. |
+| `variant:` | `:outline`, `:soft` | `:outline` | Input appearance - bordered or filled. |
+| `clearable:` | `Boolean` | `false` | Render a clear button inside the input when a value is present. |
+| `icon:` | `Boolean` | `false` | Render a chevron button that toggles the popup. |
+| `grid:` | `Boolean` | `false` | Lay options out as a navigable grid instead of a list. |
+| `value:` / `default_value:` | `String` | - | Initial input value. |
+| `name:` | `String` | - | Input name for form submission. |
+| `disabled:` | `Boolean` | `false` | Disable the input and its buttons. |
+| `item_to_string_value:` | `Symbol`, `String`, `Proc` | `to_s` | How the filter and input read object items. |
+| `id:`, `class:`, `data:`, … | | | Any other HTML attributes go on the root element. |
+
+### AutocompleteInput
+
+The text field, rendered inside an input group.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `placeholder:` | `String` | `" "` | Placeholder text. |
+| `start_slot:` | `String`, `Proc`, `:selected_icon` | - | Adornment before the field. `:selected_icon` mirrors the selected item's `data-icon="start"` element. |
+| `end_slot:` | `String`, `Proc` | - | Adornment after the field. |
+| `class:` | `String` | - | Extra classes on the input group, merged via tailwind_merge. |
+
+Any other attributes (`aria_label:`, `required:`, `data:`, …) go on the `<input>`.
+
+### AutocompleteContent
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `side:` | `:bottom`, `:top` | `:bottom` | Preferred side; flips when there isn't room. |
+| `side_offset:` | `Integer` | `6` | Gap between the input and the popup, in px. |
+| `class:` | `String` | - | Extra classes on the popup. |
+
+### AutocompleteList
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `cols:` | `Integer` | - | Items per row in grid mode. |
+| block | `{ \|item\| … }` or `{ … }` | - | With an argument it's called for each item; without one it renders static children. |
+
+### AutocompleteItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value:` | `String` or item | - | The value written to the input; objects are read with `item_to_string_value`. |
+| `disabled:` | `Boolean` | `false` | Skip the item in navigation and selection. |
+
+### AutocompleteEmpty, AutocompleteGroup, AutocompleteLabel, AutocompleteCollection
+
+`AutocompleteEmpty` is a live region shown only when nothing matches. `AutocompleteGroup(items:)`
+wraps a labelled group, `AutocompleteLabel` is its heading (wired to `aria-labelledby`) and
+`AutocompleteCollection { |item| … }` maps over the group's items. All accept `class:` and other
+HTML attributes.
+
+## Accessibility
+
+- The input has `role="combobox"` with `aria-expanded`, `aria-controls` and `aria-activedescendant`
+  pointing at the highlighted `role="option"`.
+- Arrow keys move the highlight (both axes in grid mode), Home/End jump to the ends, Enter
+  selects, Escape closes, and focus wraps back to the input past the last option.
+- `AutocompleteEmpty` is a polite live region, so "no results" is announced.
+- Give the input a label: `aria_label:` or a `<label for>` pointing at the input.

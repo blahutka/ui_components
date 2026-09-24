@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html class="<%= params.dig(:lookbook, :display, :theme) == "dark" ? "dark" : "" %>">
+<% display = params.dig(:lookbook, :display) || {} %>
+<% widths = { "narrow" => "max-w-70", "wide" => "max-w-2xl", "full" => "max-w-none" } %>
+<html class="<%= display[:theme] == "dark" ? "dark" : "" %>">
   <head>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= stylesheet_link_tag "tailwind" %>
@@ -7,7 +9,9 @@
   </head>
 
   <body class="min-h-screen p-10 font-sans antialiased">
-    <div class="mx-auto flex w-full max-w-70 flex-col gap-4">
+    <%# min_height leaves room for popups and drawers, which don't add to the content height (e.g. in docs embeds) %>
+    <div class="mx-auto flex w-full <%= widths.fetch(display[:width].to_s, widths["narrow"]) %> flex-col gap-4"
+         style="<%= "min-height: #{display[:min_height]}" if display[:min_height].to_s.match?(/\A[\d.]+(rem|px|vh)\z/) %>">
       <%= yield %>
     </div>
   </body>

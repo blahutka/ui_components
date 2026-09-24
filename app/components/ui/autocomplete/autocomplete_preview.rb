@@ -3,6 +3,12 @@
 # Compound component: the root holds the data (`items:`) and shared options
 # (`size:`, `variant:`, `clearable:`, `icon:`, `grid:`); the parts compose the input
 # and the filtered popup. Behaviour lives in the sidecar `autocomplete_controller.js`.
+#
+# @label Autocomplete
+# @logical_path Actions & Inputs
+# @component UI::Autocomplete
+# @display width narrow
+# @display min_height 22rem
 class UI::AutocompletePreview < UI::BasePreview
   FRAMEWORKS = [ "Next.js", "Remix", "Astro", "Nuxt.js", "SvelteKit", "SolidStart", "Gatsby", "Vite" ].freeze
 
@@ -31,11 +37,11 @@ class UI::AutocompletePreview < UI::BasePreview
   LIBRARIES = [ "React", "Vue", "Svelte", "Angular", "Solid", "Qwik", "Preact", "Lit" ].freeze
 
   # @label Usage
-  # @param size select { choices: [sm, md, lg] }
-  # @param variant select { choices: [outline, soft] }
-  # @param clearable toggle
-  # @param icon toggle
-  # @param placeholder text
+  # @param size [Symbol] select "Scales the input, popup radius and items together" { choices: [sm, md, lg] }
+  # @param variant [Symbol] select "Bordered outline or filled soft field" { choices: [outline, soft] }
+  # @param clearable [Boolean] toggle "Clear (✕) button once there's a value"
+  # @param icon [Boolean] toggle "Chevron that toggles the popup"
+  # @param placeholder text "Input placeholder, also used as the aria-label"
   def default(size: :md, variant: :outline, clearable: false, icon: false, placeholder: "Search a framework")
     phlex do
       Autocomplete(items: FRAMEWORKS, size:, variant:, clearable:, icon:) do
@@ -94,6 +100,8 @@ class UI::AutocompletePreview < UI::BasePreview
     end
   end
 
+  # @!group Object items
+  #
   # @label Items with icons
   # Object items need `item_to_string_value:`. Mark a leading icon with `data-icon="start"`;
   # `start_slot: :selected_icon` mirrors the selected item's icon into the input.
@@ -135,6 +143,8 @@ class UI::AutocompletePreview < UI::BasePreview
       end
     end
   end
+
+  # @!endgroup
 
   # @label Grouped options
   # Grouped items (`{ value:, items: }`) render with AutocompleteGroup + AutocompleteLabel + AutocompleteCollection.

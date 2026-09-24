@@ -16,7 +16,10 @@ class UI::BasePreview < Lookbook::Preview
   end
 
   private
+    # Resolved from the top level on every call: Lookbook can hold on to a preview
+    # instance from before a code reload, and a lexical `Example` would then point at
+    # the unloaded UI kit, whose component methods (`Button(...)`) no longer exist.
     def phlex(&template)
-      render Example.new(template:)
+      render ::UI::BasePreview::Example.new(template:)
     end
 end

@@ -1,0 +1,58 @@
+---
+title: UI Components
+label: Overview
+landing: true
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+[Appica UI](https://appica.dev/ui) components for Rails: rendered with **Phlex 2**, styled with
+Appica's **Tailwind v4** classes and made interactive with **Stimulus**. Each component keeps
+the compound structure of the React original, so the Appica docs map one to one.
+
+## Components
+
+The pages follow Appica's sidebar categories.
+
+### Actions & Inputs
+
+- [Autocomplete](<%= page_path(:autocomplete) %>): a text input that suggests matching options as you type.
+- [Button](<%= page_path(:button) %>): the trigger and action element used across components.
+
+### Overlays
+
+- [Drawer](<%= page_path(:drawer) %>): a panel that slides in from a screen edge, with swipe-to-dismiss and snap points.
+
+## Usage
+
+Include the `UI` kit in any Phlex view and call components like JSX tags:
+
+```ruby
+class FrameworkPicker < Phlex::HTML
+  include UI
+
+  def view_template
+    Autocomplete(items: [ "Next.js", "Remix", "Astro" ]) do
+      AutocompleteInput(placeholder: "Search a framework")
+      AutocompleteContent do
+        AutocompleteEmpty { "No frameworks found." }
+        AutocompleteList { |item| AutocompleteItem(value: item) { item } }
+      end
+    end
+  end
+end
+```
+
+From ERB: `<%%= render FrameworkPicker.new %>`.
+
+## Conventions
+
+- **Render props become blocks.** Appica's `{(item) => …}` render functions are blocks with an
+  argument (`AutocompleteList { |item| … }`). Where Appica takes `render={<Button />}`, the part
+  yields its attributes: `DrawerTrigger { |trigger| Button(**trigger) { "Open" } }`.
+- **`className` is `class:`.** Your classes are merged with the defaults through tailwind_merge,
+  so conflicting utilities (`h-14` vs `h-10`) replace them.
+- **Events instead of callbacks.** `onValueChange`, `onOpenChange`, … are Stimulus events such as
+  `ui--autocomplete:change` and `ui--drawer:open-change`, with the value in `event.detail`.
+- **One folder per component.** Ruby parts, the Stimulus controller, CSS and the Lookbook preview
+  live together in `app/components/ui/<component>/`.

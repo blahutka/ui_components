@@ -1,0 +1,78 @@
+---
+id: button
+title: Button
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+The trigger and action element used across components. Renders a `<button>`, or an `<a>` when
+given `href:`.
+[Appica docs](https://appica.dev/ui/components/react/button)
+
+<%= embed UI::ButtonPreview, :default %>
+
+## Usage
+
+```ruby
+Button { "Save" }
+Button(variant: :outline, size: :sm) { "Cancel" }
+Button(href: "/docs", variant: :ghost) { "Read the docs" }
+```
+
+## Examples
+
+### Variants
+
+`variant:` picks the visual style: `primary` (default), `primary_outline`, `secondary`, `soft`,
+`outline`, `ghost` and `destructive`.
+
+<%= embed UI::ButtonPreview, :variants %>
+
+### Sizes & icon buttons
+
+`size:` scales height, padding, radius and icon size. `icon: true` makes a square button - give
+it an `aria_label:`. Mark a leading or trailing icon with `data: { icon: "start" }` /
+`data: { icon: "end" }` to tighten the padding on that side.
+
+<%= embed UI::ButtonPreview, :sizes %>
+
+```ruby
+Button(variant: :soft, icon: true, aria_label: "Bookmark") { bookmark_icon }
+
+Button do
+  svg(data: { icon: "start" }, ...) { |s| s.path(d: "...") }
+  plain "Rename workspace"
+end
+```
+
+### As another component's trigger
+
+Parts like `DrawerTrigger` and `DrawerClose` yield their attributes to a block, so a Button can
+be the element they render (Appica's `render={<Button />}`):
+
+```ruby
+DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { "Open drawer" } }
+```
+
+The part's `data-slot` wins over Button's, so styling hooks like `[data-slot=drawer-close]` keep working.
+
+## API reference
+
+### Button
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` | `:primary`, `:primary_outline`, `:secondary`, `:soft`, `:outline`, `:ghost`, `:destructive` | `:primary` | Visual style. |
+| `size:` | `:sm`, `:md`, `:lg` | `:md` | Height, padding, radius and icon size. |
+| `icon:` | `Boolean` | `false` | Square icon-only button. |
+| `href:` | `String` | - | Render an `<a>` instead of a `<button>`. |
+| `type:` | `String` | `"button"` | Button type; pass `"submit"` inside forms. |
+| `class:` | `String` | - | Extra classes, merged via tailwind_merge. |
+
+Any other attributes (`disabled:`, `aria_label:`, `data:`, …) go on the element.
+
+## Accessibility
+
+- Icon-only buttons need an accessible name: `aria_label:`.
+- Disabled buttons use the native `disabled` attribute, so they're skipped by keyboard focus.
+- Use `href:` for navigation and a button for actions, so assistive tech announces the right role.

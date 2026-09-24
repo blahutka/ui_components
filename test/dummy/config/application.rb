@@ -40,6 +40,11 @@ module Dummy
 
     config.lookbook.project_name = "UI Components"
     config.lookbook.preview_layout = "component_preview"
-    config.lookbook.preview_display_options = { theme: [ "light", "dark" ] }
+    # Refresh open Lookbook pages when previews, pages, components or their JS/CSS change
+    config.lookbook.live_updates = true
+    config.lookbook.listen_paths << UiComponents::Engine.root.join("app/components").to_s
+    config.lookbook.listen_paths << Rails.root.join("app/assets/builds").to_s
+    config.lookbook.listen_extensions += %w[ js css ]
+    config.lookbook.preview_display_options = { theme: [ "light", "dark" ], width: [ "narrow", "wide", "full" ] }
   end
 end

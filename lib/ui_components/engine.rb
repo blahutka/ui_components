@@ -9,8 +9,10 @@ module UiComponents
       Rails.autoloaders.main.inflector.inflect("ui" => "UI")
       Rails.autoloaders.main.collapse(COMPONENTS_PATH.join("ui/*"))
 
+      # Lookbook-only code: previews next to each component and docs helpers in app/lookbook
       unless defined?(Lookbook)
         Rails.autoloaders.main.ignore(COMPONENTS_PATH.join("ui/**/*_preview.rb"))
+        Rails.autoloaders.main.ignore(root.join("app/lookbook"))
       end
     end
 
@@ -24,9 +26,12 @@ module UiComponents
       app.config.importmap.cache_sweepers << COMPONENTS_PATH.join("ui")
     end
 
+    # Previews live next to each component; docs pages (with an "On this page" nav)
+    # live in docs/lookbook, in folders that mirror Appica's component categories
     initializer "ui_components.lookbook" do |app|
       if defined?(Lookbook)
         app.config.lookbook.preview_paths << COMPONENTS_PATH.to_s
+        app.config.lookbook.page_paths << root.join("docs/lookbook").to_s
       end
     end
   end
