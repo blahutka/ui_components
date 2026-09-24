@@ -16,14 +16,19 @@ module UiComponents
       end
     end
 
-    # Serve the component .js/.css files straight from the component folders
+    # Serve the component .js/.css files straight from the component folders,
+    # plus vendored third-party modules (Embla Carousel)
     initializer "ui_components.assets" do |app|
-      app.config.assets.paths << COMPONENTS_PATH if app.config.respond_to?(:assets)
+      if app.config.respond_to?(:assets)
+        app.config.assets.paths << COMPONENTS_PATH
+        app.config.assets.paths << root.join("vendor/javascript")
+      end
     end
 
     initializer "ui_components.importmap", before: "importmap" do |app|
       app.config.importmap.paths << root.join("config/importmap.rb")
       app.config.importmap.cache_sweepers << COMPONENTS_PATH.join("ui")
+      app.config.importmap.cache_sweepers << root.join("vendor/javascript")
     end
 
     # Previews live next to each component; docs pages (with an "On this page" nav)

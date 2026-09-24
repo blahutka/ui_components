@@ -7,7 +7,7 @@
 # @display width wide
 class UI::ButtonPreview < UI::BasePreview
   # @label Usage
-  # @param variant [Symbol] select "Visual style" { choices: [primary, primary_outline, secondary, soft, outline, ghost, destructive] }
+  # @param variant [Symbol] select "Visual style" { choices: [primary, primary_outline, secondary, soft, outline, ghost, destructive, light] }
   # @param size [Symbol] select "Height, padding and text size" { choices: [sm, md, lg] }
   # @param label text "Button text"
   def default(variant: :primary, size: :md, label: "Button")
@@ -19,7 +19,7 @@ class UI::ButtonPreview < UI::BasePreview
   def variants
     phlex do
       div(class: "flex flex-wrap gap-3") do
-        UI::Button::VARIANTS.each_key do |variant|
+        (UI::Button::VARIANTS.keys - [ :light ]).each do |variant|
           Button(variant:) { variant.to_s.humanize }
         end
       end
