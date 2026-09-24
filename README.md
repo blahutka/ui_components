@@ -31,6 +31,7 @@ From ERB: `<%= render FrameworkPicker.new %>`.
 | Autocomplete | `Autocomplete`, `AutocompleteInput`, `AutocompleteContent`, `AutocompleteEmpty`, `AutocompleteList`, `AutocompleteItem`, `AutocompleteGroup`, `AutocompleteLabel`, `AutocompleteCollection` | [autocomplete](https://appica.dev/ui/components/react/autocomplete) |
 | Button | `Button` (variants `primary`, `primary_outline`, `secondary`, `soft`, `outline`, `ghost`, `destructive`; sizes `sm`/`md`/`lg`; `icon: true`) | [button](https://appica.dev/ui/components/react/button) |
 | Drawer | `Drawer`, `DrawerTrigger`, `DrawerContent`, `DrawerHeader`, `DrawerTitle`, `DrawerDescription`, `DrawerBody`, `DrawerFooter`, `DrawerClose` | [drawer](https://appica.dev/ui/components/react/drawer) |
+| Icon | `Icon(:name, size:, stroke_width:)` - the ~5,000 [Appica icons](https://appica.dev/ui/icons) by name | [icons](https://appica.dev/ui/icons) |
 | Loader | `Loader` (`:bar`, `:dots`; SVG SMIL, no JS) | [loader](https://appica.dev/ui/components/react/loader) |
 | Meter | `Meter`, `MeterLabel`, `MeterValue`, `MeterProgress` (`low:`/`high:`/`optimum:` status colors) | [meter](https://appica.dev/ui/components/react/meter) |
 | Progress | `Progress`, `ProgressLabel`, `ProgressValue` (`:bar`, `:circular`) | [progress](https://appica.dev/ui/components/react/progress) |
@@ -119,6 +120,7 @@ import "ui"
 @import "tailwindcss";
 @import "<gem path>/app/components/ui/index.css";
 @source "<gem path>/app/components";
+@source not "<gem path>/app/components/ui/icon/icons";
 ```
 
 ## Development
