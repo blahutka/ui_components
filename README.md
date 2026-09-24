@@ -38,6 +38,15 @@ From ERB: `<%= render FrameworkPicker.new %>`.
 | Sparkline | `Sparkline`, `SparklineChart`, `SparklineValue`, `SparklineLabel` | [sparkline](https://appica.dev/ui/components/react/sparkline) |
 | Spinner | `Spinner` (`:circular`, `:dots`, `:sparkle`; SVG SMIL, no JS) | [spinner](https://appica.dev/ui/components/react/spinner) |
 
+### Blocks
+
+Higher-level compositions of the primitives live in `app/components/blocks/` (the `Blocks` kit; add
+`import "blocks"` next to `import "ui"`):
+
+| Block | Parts |
+|-------|-------|
+| Chat assistant | `ChatAssistant`, `ChatHeader`, `ChatMessages`, `ChatMessage`, `ChatStatus`, `ChatSuggestions`, `ChatSuggestion`, `ChatComposer` |
+
 ### Render props
 
 Where Appica takes `render={<Button />}`, the Phlex part yields its attributes to a block that
@@ -113,6 +122,7 @@ gem "ui_components", path: "../ui_components"
 ```js
 // app/javascript/application.js (after controllers/application exists)
 import "ui"
+import "blocks"
 ```
 
 ```css

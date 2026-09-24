@@ -8,10 +8,12 @@ module UiComponents
     initializer "ui_components.autoloader", before: :setup_main_autoloader do
       Rails.autoloaders.main.inflector.inflect("ui" => "UI")
       Rails.autoloaders.main.collapse(COMPONENTS_PATH.join("ui/*"))
+      Rails.autoloaders.main.collapse(COMPONENTS_PATH.join("blocks/*"))
 
       # Lookbook-only code: previews next to each component and docs helpers in app/lookbook
       unless defined?(Lookbook)
         Rails.autoloaders.main.ignore(COMPONENTS_PATH.join("ui/**/*_preview.rb"))
+        Rails.autoloaders.main.ignore(COMPONENTS_PATH.join("blocks/**/*_preview.rb"))
         Rails.autoloaders.main.ignore(root.join("app/lookbook"))
       end
     end
@@ -28,6 +30,7 @@ module UiComponents
     initializer "ui_components.importmap", before: "importmap" do |app|
       app.config.importmap.paths << root.join("config/importmap.rb")
       app.config.importmap.cache_sweepers << COMPONENTS_PATH.join("ui")
+      app.config.importmap.cache_sweepers << COMPONENTS_PATH.join("blocks")
       app.config.importmap.cache_sweepers << root.join("vendor/javascript")
     end
 

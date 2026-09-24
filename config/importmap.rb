@@ -1,5 +1,7 @@
 # Pins every component's sidecar JavaScript: app/components/ui/**/*.js → "ui/..."
 pin_all_from UiComponents::Engine.root.join("app/components/ui"), under: "ui", to: "ui"
+# …and the Blocks built from them: app/components/blocks/**/*.js → "blocks/..."
+pin_all_from UiComponents::Engine.root.join("app/components/blocks"), under: "blocks", to: "blocks"
 
 # Vendored third-party modules (vendor/javascript, see LICENSES.md there)
 pin "embla-carousel", to: "embla-carousel.js"

@@ -1,0 +1,127 @@
+---
+id: chat_assistant
+title: Chat assistant
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+An assistant chat card - header, conversation, a "thinking" status, suggestion chips and a composer. A **block**:
+a ready-made composition of the UI primitives (Avatar, Spinner, Button, Icon), like the cards on the
+[Appica homepage](https://appica.dev/ui).
+
+<%= embed Blocks::ChatAssistantPreview, :default %>
+
+## Blocks
+
+Primitives (`UI::`) are the building bricks; blocks (`Blocks::`) compose them into product-level pieces. Each block
+lives in its own folder with its parts, Stimulus controller and preview - the same sidecar layout as the
+primitives - and is a `Phlex::Kit`, so a view that does `include Blocks` calls it like a tag:
+
+```
+app/components/blocks/chat_assistant/
+  chat_assistant.rb  chat_header.rb  chat_messages.rb  chat_message.rb
+  chat_status.rb  chat_suggestions.rb  chat_suggestion.rb  chat_composer.rb
+  chat_assistant_controller.js  chat_assistant_preview.rb
+```
+
+A block owns layout and data wiring. When it needs something reusable, that becomes a primitive.
+
+## Usage
+
+```ruby
+class ChatPanel < Phlex::HTML
+  include Blocks
+
+  def view_template
+    ChatAssistant(title: "Appica Assistant", action: chat_messages_path, messages_id: "chat-messages") do
+      ChatHeader()
+      ChatMessages do
+        @messages.each { |message| ChatMessage(from: message.role) { message.body } }
+        ChatStatus(hidden: true)
+      end
+      ChatSuggestions([ "Add a FAQ section", "Use dark theme" ])
+      ChatComposer(placeholder: "Ask anything…")
+    end
+  end
+end
+```
+
+Host app: `import "blocks"` in `application.js` after `import "ui"`.
+
+## Replying from the server
+
+The composer is a real `<form>` posting `message` to `action:`. When it's sent, the controller shows the user's bubble
+straight away, clears the field and shows the status row. Answer with a Turbo Stream that appends the assistant's
+bubble to the messages list. The controller notices the new message, hides the status and scrolls to it.
+
+```ruby
+# app/controllers/chat_messages_controller.rb
+def create
+  reply = Assistant.reply_to(params[:message])   # or enqueue a job and broadcast later
+  render turbo_stream: turbo_stream.append("chat-messages", Blocks::ChatMessage.new(from: :assistant) { reply })
+end
+```
+
+For streamed answers, broadcast the same append from a job (`Turbo::StreamsChannel.broadcast_append_to`).
+
+## Examples
+
+### Empty state
+
+<%= embed Blocks::ChatAssistantPreview, :empty %>
+
+### Long conversation
+
+The messages scroll inside a fixed-height card (set the height with `class:`) and stay pinned to the latest.
+
+<%= embed Blocks::ChatAssistantPreview, :long %>
+
+### Offline
+
+`status: :offline` greys the avatar badge, stops its pulse and disables the composer.
+
+<%= embed Blocks::ChatAssistantPreview, :offline %>
+
+### RTL
+
+Bubbles swap sides and their corner "tails" follow the reading direction (logical radii).
+
+<%= embed Blocks::ChatAssistantPreview, :rtl %>
+
+## API reference
+
+### ChatAssistant
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title:` | `String` | `"Assistant"` | Name shown in the header. |
+| `action:` | `String` | - | Where the composer posts. Without it the block runs a demo. |
+| `method:` | `Symbol` | `:post` | Form method. |
+| `status:` | `:online`, `:offline` | `:online` | Badge state; offline disables the composer. |
+| `messages_id:` | `String` | generated | Id of the messages list - the Turbo Stream target. |
+| `demo_replies:` | `Array<String>` | `[]` | Canned answers for demo mode. |
+
+Other attributes go to the card; `class:` is merged (set width and height here).
+
+### Parts
+
+| Part | Description |
+|------|-------------|
+| `ChatHeader(title:, icon: :sparkles)` | Avatar with an online badge, and the name. |
+| `ChatMessages` | The scrolling `role="log"` list. |
+| `ChatMessage(from: :user / :assistant)` | One bubble - the user's on the end side, the assistant's on the start. |
+| `ChatStatus(hidden:)` | The "Generating preview" row with the sparkle spinner. |
+| `ChatSuggestions([…])` / `ChatSuggestion(text)` | Chips; clicking one sends its text. |
+| `ChatComposer(placeholder:, name: "message", label:, attach:, dictate:)` | The form: field, attach, dictate and send buttons. |
+
+### Controller (`blocks--chat-assistant`)
+
+Emits `blocks--chat-assistant:send` with `{ text }` before sending - call `preventDefault()` to handle it
+yourself (e.g. over Action Cable).
+
+## Accessibility
+
+- The conversation is a `role="log"` polite live region, so new replies are announced.
+- The composer is labelled (`label:`), and each icon button has an `aria-label`.
+- The status spinner is decorative; the status text carries the meaning.
+- Send stays disabled while the field is empty; Enter sends.
