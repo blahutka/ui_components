@@ -1,0 +1,81 @@
+---
+id: revenue_summary
+title: Revenue summary
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A revenue overview card: the period's total with a trend badge against the previous period, top markets, a trend
+chart and key stats. A **block** composed from Badge, Icon and Sparkline, as on the
+[Appica homepage](https://appica.dev/ui).
+
+<%= embed Blocks::RevenueSummaryPreview, :default %>
+
+## Usage
+
+```ruby
+RevenueSummary(title: "Monthly revenue", value: 48_210, previous: 42_900, comparison: "last month") do
+  RevenueMarkets do
+    @top_markets.each do |market|
+      RevenueMarket(country: market.country_code, name: market.name, value: market.revenue, share: market.share)
+    end
+  end
+  RevenueChart(data: @monthly_totals, labels: @month_names, aria_label: "Revenue over the last 12 months")
+  RevenueStats do
+    RevenueStat(label: "Orders") { number_with_delimiter(@orders_count) }
+    RevenueStat(label: "Avg. order value") { number_to_currency(@average_order) }
+  end
+end
+```
+
+- The badge is computed from `value:` and `previous:` - green and rising, or red and falling.
+- Every amount (the total, markets and chart tooltips) is formatted with the root's `currency:`.
+- The parts are optional and stack in order. The chart pins itself to the bottom of the card when the card is taller
+  than its content.
+- Stats are equal columns, as many as you pass.
+
+## Examples
+
+### Down on last period
+
+<%= embed Blocks::RevenueSummaryPreview, :decline %>
+
+### Compact
+
+A total and markets only. Countries without a bundled flag show their code on a tile.
+
+<%= embed Blocks::RevenueSummaryPreview, :compact %>
+
+### RTL
+
+<%= embed Blocks::RevenueSummaryPreview, :rtl %>
+
+## API reference
+
+### RevenueSummary
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value:` | `Numeric` | - | Required. The period's total. |
+| `title:` | `String` | `"Revenue"` | Label above the total. |
+| `previous:` | `Numeric` | - | The previous period's total; adds the comparison and the trend badge. |
+| `comparison:` | `String` | `"last period"` | Words after "vs $42,900". |
+| `currency:` | `String` | `"USD"` | Currency for every amount in the card. |
+
+Other attributes go to the card; `class:` is merged (set the width here). The badge carries `data-trend="up|down"`.
+
+### Parts
+
+| Part | Description |
+|------|-------------|
+| `RevenueMarkets(title: "Top markets")` | The market list. |
+| `RevenueMarket(name:, value:, share:, country:)` | A row: flag (ISO code, e.g. `:us`), name, amount, share %. |
+| `RevenueChart(data:, labels:, height: 76, aria_label:)` | A `Sparkline` line with gradient fill and hover tooltips. |
+| `RevenueStats` / `RevenueStat(label:) { value }` | Key figures under a divider. |
+| `CountryFlag(code, class:)` | Rounded flag; `us`, `de` and `jp` ship with the block, other codes show their letters. |
+
+## Accessibility
+
+- The chart is a labelled image (`aria_label:`), and its hover values are also readable as text in the tooltip.
+- The trend is conveyed by the sign and the number, not only by the badge color.
+- Flags are decorative (`aria-hidden`); the country name is always shown next to them.
