@@ -23,6 +23,41 @@ end
 
 From ERB: `<%= render FrameworkPicker.new %>`.
 
+## Components
+
+| Component | Parts | Appica docs |
+|-----------|-------|-------------|
+| Autocomplete | `Autocomplete`, `AutocompleteInput`, `AutocompleteContent`, `AutocompleteEmpty`, `AutocompleteList`, `AutocompleteItem`, `AutocompleteGroup`, `AutocompleteLabel`, `AutocompleteCollection` | [autocomplete](https://appica.dev/ui/components/react/autocomplete) |
+| Button | `Button` (variants `primary`, `primary_outline`, `secondary`, `soft`, `outline`, `ghost`, `destructive`; sizes `sm`/`md`/`lg`; `icon: true`) | [button](https://appica.dev/ui/components/react/button) |
+| Drawer | `Drawer`, `DrawerTrigger`, `DrawerContent`, `DrawerHeader`, `DrawerTitle`, `DrawerDescription`, `DrawerBody`, `DrawerFooter`, `DrawerClose` | [drawer](https://appica.dev/ui/components/react/drawer) |
+
+### Render props
+
+Where Appica takes `render={<Button />}`, the Phlex part yields its attributes to a block that
+takes an argument, so you can put them on your own element:
+
+```ruby
+Drawer(side: :right) do
+  DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { "Open drawer" } }
+  DrawerContent do
+    DrawerHeader do
+      DrawerTitle { "Notifications" }
+      DrawerDescription { "Choose what you want to be notified about." }
+    end
+    DrawerBody { p { "…" } }
+    DrawerFooter do
+      DrawerClose { |close| Button(**close) { "Save" } }
+      DrawerClose { |close| Button(**close, variant: :outline) { "Cancel" } }
+    end
+  end
+end
+```
+
+Without an argument (`DrawerTrigger { "Open" }`) the part renders a plain `<button>`.
+`DrawerContent` is a native `<dialog>` opened with `showModal()`, so it sits in the top layer
+without a portal. Nest a `Drawer` inside `DrawerBody` for stacked drawers; `snap_points:` works
+on top/bottom drawers. JS events: `ui--drawer:open-change` and `ui--drawer:snap-point-change`.
+
 ## Layout
 
 Each component lives in its own folder with everything it needs:
@@ -99,6 +134,8 @@ cd test/dummy && bin/rails tailwindcss:build && bin/rails server
 
 Notes:
 - Previews live next to each component (`app/components/ui/<component>/*_preview.rb`) and reload on change.
+- After adding a **new component folder**, restart the server: the folders are collapsed for
+  Zeitwerk at boot, so until then you get `uninitialized constant UI::<Component>`.
 - Use the **Theme** switcher in Lookbook's toolbar to preview dark mode; the preview layout is
   `test/dummy/app/views/layouts/component_preview.html.erb`.
 - If styles look missing after adding new classes, check that the Tailwind watcher is running,

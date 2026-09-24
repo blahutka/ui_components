@@ -123,8 +123,10 @@ export default class extends Controller {
     this.placeContent()
     this.setPopupState(true)
 
+    // Commit the starting styles, then drop them so the popup transitions in
     this.contentTarget.setAttribute("data-starting-style", "")
-    requestAnimationFrame(() => requestAnimationFrame(() => this.contentTarget.removeAttribute("data-starting-style")))
+    getComputedStyle(this.contentTarget).opacity
+    this.contentTarget.removeAttribute("data-starting-style")
   }
 
   close() {

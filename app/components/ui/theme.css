@@ -11,9 +11,11 @@
   --background-strong: #e5e7eb; --background-inverse: #030712;
   --border: #e5e7eb; --border-muted: #f3f4f6; --border-strong: #d1d5dc; --border-emphasis: #99a1af;
   --border-intense: #6a7282; --border-inverse: #1e2939; --border-overlay: #f3f4f6;
-  --primary: #101828; --primary-foreground: #fff;
-  --error: #ffa3a3; --error-subtle: #fb2c361a; --error-emphasis: #fb2c36;
-  --focus-ring: #d1d5dc; --focus-ring-input: #e5e7eb; --focus-ring-error: #fb2c364d;
+  --primary: #101828; --primary-muted: #364153; --primary-foreground: #fff;
+  --secondary: #90c5ff; --secondary-muted: #bedbff; --secondary-foreground: #030712;
+  --error: #ffa3a3; --error-subtle: #fb2c361a; --error-muted: #ffcaca; --error-emphasis: #fb2c36; --error-foreground: #030712;
+  --focus-ring: #d1d5dc; --focus-ring-input: #e5e7eb; --focus-ring-primary: #d1d5dc;
+  --focus-ring-secondary: #3080ff4d; --focus-ring-error: #fb2c364d;
   --radius: .875rem;
   --shadow-color: #6a72822e; --selection-color: #0307121a;
   --opacity-disabled: .65;
@@ -27,9 +29,11 @@
   --background-strong: #1e2939; --background-inverse: #fff;
   --border: #1e2939; --border-muted: #101828; --border-strong: #364153; --border-emphasis: #4a5565;
   --border-intense: #6a7282; --border-inverse: #e5e7eb; --border-overlay: #1e2939;
-  --primary: #fff; --primary-foreground: #101828;
-  --error: #ff6568; --error-subtle: #fb2c361a; --error-emphasis: #fb2c36;
-  --focus-ring: #364153; --focus-ring-input: #1e2939; --focus-ring-error: #fb2c3680;
+  --primary: #fff; --primary-muted: #e5e7eb; --primary-foreground: #101828;
+  --secondary: #54a2ff; --secondary-muted: #90c5ff; --secondary-foreground: #030712;
+  --error: #ff6568; --error-subtle: #fb2c361a; --error-muted: #ffa3a3; --error-emphasis: #fb2c36; --error-foreground: #030712;
+  --focus-ring: #364153; --focus-ring-input: #1e2939; --focus-ring-primary: #364153;
+  --focus-ring-secondary: #3080ff80; --focus-ring-error: #fb2c3680;
   --shadow-color: #0000004d; --selection-color: #ffffff26;
 }
 
@@ -54,12 +58,20 @@
   --color-border-inverse: var(--border-inverse);
   --color-border-overlay: var(--border-overlay);
   --color-primary: var(--primary);
+  --color-primary-muted: var(--primary-muted);
   --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-muted: var(--secondary-muted);
+  --color-secondary-foreground: var(--secondary-foreground);
   --color-error: var(--error);
   --color-error-subtle: var(--error-subtle);
+  --color-error-muted: var(--error-muted);
   --color-error-emphasis: var(--error-emphasis);
+  --color-error-foreground: var(--error-foreground);
   --color-ring: var(--focus-ring);
   --color-ring-input: var(--focus-ring-input);
+  --color-ring-primary: var(--focus-ring-primary);
+  --color-ring-secondary: var(--focus-ring-secondary);
   --color-ring-error: var(--focus-ring-error);
 
   --radius-xs: calc(var(--radius) * 5 / 7);
@@ -67,7 +79,9 @@
   --radius-md: var(--radius);
   --radius-lg: calc(var(--radius) * 8 / 7);
   --radius-xl: calc(var(--radius) * 9 / 7);
+  --radius-2xl: calc(var(--radius) * 12 / 7);
 
+  --shadow-md: 0 4px 8px -2px var(--shadow-color);
   --shadow-2xl: 0 24px 32px -12px var(--shadow-color);
   --opacity-disabled: var(--opacity-disabled);
 }

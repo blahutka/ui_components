@@ -4,7 +4,7 @@
     {
       "name": "lookbook",
       "runtimeExecutable": "test/dummy/bin/dev",
-      "runtimeArgs": ["-p", "3047"],
+      "runtimeArgs": ["-p", "3047", "--pid", "tmp/pids/lookbook-preview.pid"],
       "port": 3047
     }
   ]

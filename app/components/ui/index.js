@@ -3,5 +3,7 @@
 import { application } from "controllers/application"
 
 import AutocompleteController from "ui/autocomplete/autocomplete_controller"
+import DrawerController from "ui/drawer/drawer_controller"
 
 application.register("ui--autocomplete", AutocompleteController)
+application.register("ui--drawer", DrawerController)
