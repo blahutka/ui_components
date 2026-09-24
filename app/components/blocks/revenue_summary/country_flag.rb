@@ -9,10 +9,7 @@ class Blocks::CountryFlag < Blocks::Base
     jp: %(<path fill="#f0f0f0" d="M40 28a11.950 11.95 0 0 1-1.765 6.268 12.1 12.1 0 0 1-3.688 3.790A11.940 11.94 0 0 1 28 40H12c-2.415 0-4.664-.714-6.547-1.942a12.1 12.1 0 0 1-3.688-3.790A11.940 11.94 0 0 1 0 28V12c0-2.2.592-4.262 1.626-6.035a12.1 12.1 0 0 1 3.552-3.838A11.950 11.95 0 0 1 12 0h16c2.540 0 4.895.79 6.835 2.135 1.28.889 2.379 2.020 3.230 3.328A11.940 11.94 0 0 1 40 12z"/><path fill="#d80027" d="M20 29.5a9.5 9.5 0 1 0 0-19 9.5 9.5 0 0 0 0 19"/>)
   }.freeze
 
-  def initialize(code, **attributes)
-    @code = code.to_s.downcase.to_sym
-    @attributes = attributes
-  end
+  param :code, ->(value) { value.to_s.downcase.to_sym }
 
   def view_template
     if (flag = FLAGS[@code])

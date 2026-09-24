@@ -1,10 +1,10 @@
 # The trend line under the markets - a Sparkline with a gradient fill that pins itself to the
 # bottom of the card. Hover it to read each period (labels + money formatting from the root).
 class Blocks::RevenueChart < Blocks::Base
-  def initialize(data:, labels: nil, height: 76, aria_label: "Revenue trend", **attributes)
-    @data, @labels, @height, @aria_label = data, labels, height, aria_label
-    @attributes = attributes
-  end
+  prop :data
+  prop :labels,     default: -> { nil }
+  prop :height,     default: -> { 76 }
+  prop :aria_label, default: -> { "Revenue trend" }
 
   def view_template
     summary = consume(:revenue_summary, component: "Blocks::RevenueSummary")

@@ -1,9 +1,9 @@
 # One market row: flag, name, amount and share of the total.
 class Blocks::RevenueMarket < Blocks::Base
-  def initialize(name:, value:, share: nil, country: nil, **attributes)
-    @name, @value, @share, @country = name, value, share, country
-    @attributes = attributes
-  end
+  prop :name
+  prop :value
+  prop :share,   default: -> { nil }
+  prop :country, default: -> { nil }
 
   def view_template
     summary = consume(:revenue_summary, component: "Blocks::RevenueSummary")

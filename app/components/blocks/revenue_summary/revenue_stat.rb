@@ -1,9 +1,6 @@
 # One figure: a muted label over a bold value.
 class Blocks::RevenueStat < Blocks::Base
-  def initialize(label:, **attributes)
-    @label = label
-    @attributes = attributes
-  end
+  prop :label
 
   def view_template(&)
     div(**mix({ data: { slot: "revenue-stat" } }, @attributes.except(:class)), class: @attributes[:class]) do

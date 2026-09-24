@@ -14,6 +14,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rails", ">= 8.0"
   spec.add_dependency "phlex-rails", "~> 2.1"
   spec.add_dependency "tailwind_merge", ">= 0.13"
+  spec.add_dependency "dry-initializer", "~> 3.2"
   spec.add_dependency "importmap-rails", ">= 2.0"
   spec.add_dependency "stimulus-rails", ">= 1.3"
 end

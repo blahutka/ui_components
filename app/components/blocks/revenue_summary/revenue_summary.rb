@@ -15,14 +15,13 @@
 class Blocks::RevenueSummary < Blocks::Base
   include UI::NumberFormat
 
-  attr_reader :currency
+  prop :value
+  prop :title,      default: -> { "Revenue" }
+  prop :previous,   default: -> { nil }
+  prop :comparison, default: -> { "last period" }
+  prop :currency,   ->(value) { value.to_s.upcase }, default: -> { "USD" }
 
-  def initialize(value:, title: "Revenue", previous: nil, comparison: "last period", currency: "USD", **attributes)
-    @value, @previous = value, previous
-    @title, @comparison = title, comparison
-    @currency = currency
-    @attributes = attributes
-  end
+  attr_reader :currency
 
   def money(amount)
     format_number(amount, style: :currency, currency: @currency, maximum_fraction_digits: (amount % 1).zero? ? 0 : 2)
