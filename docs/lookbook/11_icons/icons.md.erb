@@ -27,7 +27,7 @@ end
 The React package exports one component per icon (`<Star />`); in Phlex a single `UI::Icon` takes the name. It
 renders the same `<svg class="appica-icon">` markup as `@appica/icons-react` - fill/stroke attributes, 24×24
 viewBox, `aria-hidden` - with the icon's paths inside. Browse and search every icon in the
-[Gallery](<%= previews.find { |preview| preview.preview_class == UI::IconPreview }.scenarios.find { |scenario| scenario.name == "gallery" }.inspect_path %>) preview; clicking one copies its `Icon(...)` call.
+[Gallery](<%= Lookbook.previews.find { |preview| preview.preview_class == UI::IconPreview }.scenarios.find { |scenario| scenario.name == "gallery" }.inspect_path %>) preview; clicking one copies its `Icon(...)` call.
 
 ## Examples
 

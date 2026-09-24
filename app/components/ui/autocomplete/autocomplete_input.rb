@@ -82,9 +82,7 @@ class UI::AutocompleteInput < UI::Base
         type: "button", tabindex: "-1", hidden: root.value.blank?, aria: { label: "Clear selection" }, class: CLEAR,
         data: { slot: "autocomplete-clear", "ui--autocomplete-target": "clear", action: "ui--autocomplete#clear" }
       ) do
-        svg(xmlns: "http://www.w3.org/2000/svg", viewBox: "2 2 16 16", fill: "currentColor", aria_hidden: "true", class: "size-[1em]") do |s|
-          s.path(d: "M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z")
-        end
+        render UI::Icon.new(:x, stroke_width: 2, class: "size-[1em]")
       end
     end
 
@@ -94,10 +92,7 @@ class UI::AutocompleteInput < UI::Base
         aria: { label: "Toggle popup", expanded: "false", haspopup: "listbox" }, class: TOGGLE,
         data: { slot: "autocomplete-icon", "ui--autocomplete-target": "toggle", action: "ui--autocomplete#toggle" }
       ) do
-        svg(xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 16 16", fill: "currentColor", aria_hidden: "true",
-            class: "size-4.5 motion-safe:transition-transform motion-safe:duration-200 group-data-popup-open/autocomplete-icon:rotate-180") do |s|
-          s.path(d: "M11.594 5.594c.225-.225.588-.225.813 0s.225.588 0 .813l-4 4c-.225.225-.588.225-.812 0l-4-4c-.225-.225-.225-.588 0-.812s.588-.225.812 0L8 9.187l3.594-3.594z")
-        end
+        render UI::Icon.new(:chevron_down, stroke_width: 2, class: "size-4.5 motion-safe:transition-transform motion-safe:duration-200 group-data-popup-open/autocomplete-icon:rotate-180")
       end
     end
 end

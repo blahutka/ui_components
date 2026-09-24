@@ -104,9 +104,7 @@ class UI::DrawerPreview < UI::BasePreview
               TRACKS.each do |title, artist|
                 div(class: "flex items-center gap-3") do
                   span(class: "bg-background-muted text-foreground-muted flex size-9 shrink-0 items-center justify-center rounded-md") do
-                    svg(viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "1.5", stroke_linecap: "round", stroke_linejoin: "round", class: "size-4.5", aria_hidden: "true") do |s|
-                      s.path(d: "M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0m12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0")
-                    end
+                    Icon(:music, class: "size-4.5")
                   end
                   span(class: "flex min-w-0 flex-col") do
                     span(class: "text-foreground-intense truncate text-sm font-medium") { title }
@@ -174,9 +172,7 @@ class UI::DrawerPreview < UI::BasePreview
             Drawer(side: :right) do
               DrawerTrigger do |trigger|
                 Button(**trigger) do
-                  svg(viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "1.5", stroke_linecap: "round", stroke_linejoin: "round", aria_hidden: "true", data: { icon: "start" }) do |s|
-                    s.path(d: "M4 20h4L18.5 9.5a2.8 2.8 0 0 0-4-4L4 16zm9.5-13.5 4 4")
-                  end
+                  Icon(:pencil, data: { icon: "start" })
                   plain "Rename workspace"
                 end
               end

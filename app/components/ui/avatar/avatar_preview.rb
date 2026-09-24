@@ -16,7 +16,6 @@ class UI::AvatarPreview < UI::BasePreview
     { src: "/avatars/04.png", alt: "Ava Thompson", initials: "AT" }
   ].freeze
 
-  USER_ICON = "M12 3a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9m-7 16.5C5 16.46 7.46 14 10.5 14h3c3.04 0 5.5 2.46 5.5 5.5 0 .83-.67 1.5-1.5 1.5h-11c-.83 0-1.5-.67-1.5-1.5"
 
   # @label Usage
   # @param size [Symbol] select "Preset scale" { choices: [2xs, xs, sm, md, lg, xl, 2xl] }
@@ -45,7 +44,7 @@ class UI::AvatarPreview < UI::BasePreview
         Avatar(size: :lg) { AvatarFallback { "MR" } }
         Avatar(size: :lg) do
           AvatarFallback do
-            svg(viewBox: "0 0 24 24", fill: "currentColor", aria_hidden: "true") { |s| s.path(d: USER_ICON) }
+            Icon(:user_filled)
           end
         end
       end

@@ -9,9 +9,6 @@
 # @component UI::Spinner
 # @display width wide
 class UI::SpinnerPreview < UI::BasePreview
-  ICON = { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "1.75", stroke_linecap: "round", stroke_linejoin: "round", aria_hidden: "true" }.freeze
-  REFRESH = "M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4m-4 4a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"
-
   # @label Usage
   # @param variant [Symbol] select { choices: [circular, dots, sparkle] }
   # @param size [Symbol] select "Font size" { choices: [text-xl, text-3xl, text-[2.5rem], text-5xl, text-7xl] }
@@ -71,7 +68,7 @@ class UI::SpinnerPreview < UI::BasePreview
         end
         Button(variant: :outline, class: "rounded-full", data: { demo: "ask" }) do
           Spinner(variant: :sparkle, current_color: true, class: "text-lg", hidden: true, data: { icon: "start" })
-          svg(**ICON, data: { icon: "start" }) { |s| s.path(d: UI::Spinner::STAR) }
+          Icon(:sparkle, stroke_width: 1.75, data: { icon: "start" })
           span { "Ask AI" }
         end
       end
@@ -105,7 +102,7 @@ class UI::SpinnerPreview < UI::BasePreview
   def refresh
     phlex do
       Button(variant: :outline, icon: true, aria_label: "Refresh data", data: { demo: "refresh" }) do
-        svg(**ICON) { |s| s.path(d: REFRESH) }
+        Icon(:refresh, stroke_width: 1.75)
         Spinner(variant: :dots, current_color: true, class: "text-[1.25em]", hidden: true)
       end
       script(type: "module") do
@@ -139,7 +136,7 @@ class UI::SpinnerPreview < UI::BasePreview
             p(class: "text-foreground-muted mt-1 text-xs") { "Synced just now" }
           end
           Button(variant: :soft, size: :sm, class: "self-start") do
-            svg(**ICON, data: { icon: "start" }) { |s| s.path(d: REFRESH) }
+            Icon(:refresh, stroke_width: 1.75, data: { icon: "start" })
             plain "Reload"
           end
         end

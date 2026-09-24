@@ -10,5 +10,5 @@ class UI::CarouselPrev < UI::CarouselArrow
   private
     def direction = "prev"
     def label = "Previous slide"
-    def chevron_path = "m15 6-6 6 6 6"
+    def chevron_icon = :chevron_left
 end

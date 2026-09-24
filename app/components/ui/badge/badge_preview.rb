@@ -9,16 +9,14 @@
 # @component UI::Badge
 # @display width wide
 class UI::BadgePreview < UI::BasePreview
-  ICON = { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2", stroke_linecap: "round", stroke_linejoin: "round", aria_hidden: "true" }.freeze
-
   ICONS = {
-    check: "M5 12.5l4.5 4.5L19 7.5",
-    flame: "M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3 0-6 1-8.5z",
-    bell: "M6 16v-5a6 6 0 1 1 12 0v5l1.5 2h-15zM10 20.5a2 2 0 0 0 4 0",
-    bell_ringing: "M6 16v-5a6 6 0 1 1 12 0v5l1.5 2h-15zM10 20.5a2 2 0 0 0 4 0M3.5 9a8 8 0 0 1 2-4.5M20.5 9a8 8 0 0 0-2-4.5",
-    star: "M12 3.5l2.6 5.3 5.9.9-4.25 4.1 1 5.8L12 16.9l-5.25 2.7 1-5.8L3.5 9.7l5.9-.9z",
-    bolt: "M13 3 5 13.5h6L10 21l8-10.5h-6z",
-    crown: "M4 8l4 4 4-6 4 6 4-4-1.5 10h-13z"
+    check: :check,
+    flame: :flame,
+    bell: :bell,
+    bell_ringing: :bell_ringing,
+    star: :star,
+    bolt: :bolt,
+    crown: :crown
   }.freeze
 
   # @label Usage
@@ -52,7 +50,7 @@ class UI::BadgePreview < UI::BasePreview
       div(class: "relative flex h-44 w-full max-w-66 items-end justify-start overflow-hidden rounded-xl bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500") do
         div(class: "absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-transparent")
         Badge(variant: :light, class: "relative m-3") do
-          svg(**ICON, data: { icon: "start" }) { |s| s.path(d: ICONS[:crown]) }
+          Icon(ICONS[:crown], stroke_width: 2, data: { icon: "start" })
           plain "Premium"
         end
       end
@@ -77,16 +75,16 @@ class UI::BadgePreview < UI::BasePreview
     phlex do
       div(class: "flex flex-wrap items-center justify-center gap-2") do
         Badge(variant: :success) do
-          svg(**ICON, data: { icon: "start" }) { |s| s.path(d: ICONS[:check]) }
+          Icon(ICONS[:check], stroke_width: 2, data: { icon: "start" })
           plain "Verified"
         end
         Badge(variant: :warning) do
-          svg(**ICON, data: { icon: "start" }) { |s| s.path(d: ICONS[:flame]) }
+          Icon(ICONS[:flame], stroke_width: 2, data: { icon: "start" })
           plain "Hot"
         end
         Badge(variant: :soft) do
           plain "Notification"
-          svg(**ICON, data: { icon: "end" }) { |s| s.path(d: ICONS[:bell_ringing]) }
+          Icon(ICONS[:bell_ringing], stroke_width: 2, data: { icon: "end" })
         end
       end
     end
@@ -98,9 +96,9 @@ class UI::BadgePreview < UI::BasePreview
   def icon_only
     phlex do
       div(class: "flex flex-wrap items-center justify-center gap-2") do
-        Badge(variant: :success, size: :icon_sm, aria_label: "Verified") { svg(**ICON) { |s| s.path(d: ICONS[:check]) } }
-        Badge(variant: :primary_outline, size: :icon_md, aria_label: "Featured") { svg(**ICON) { |s| s.path(d: ICONS[:star]) } }
-        Badge(variant: :warning, size: :icon_lg, aria_label: "Boosted") { svg(**ICON) { |s| s.path(d: ICONS[:bolt]) } }
+        Badge(variant: :success, size: :icon_sm, aria_label: "Verified") { Icon(ICONS[:check], stroke_width: 2) }
+        Badge(variant: :primary_outline, size: :icon_md, aria_label: "Featured") { Icon(ICONS[:star], stroke_width: 2) }
+        Badge(variant: :warning, size: :icon_lg, aria_label: "Boosted") { Icon(ICONS[:bolt], stroke_width: 2) }
       end
     end
   end
@@ -111,7 +109,7 @@ class UI::BadgePreview < UI::BasePreview
   def notification_count
     phlex do
       div(class: "relative inline-flex self-center") do
-        Button(variant: :outline, icon: true, aria_label: "Notifications") { svg(**ICON) { |s| s.path(d: ICONS[:bell]) } }
+        Button(variant: :outline, icon: true, aria_label: "Notifications") { Icon(ICONS[:bell], stroke_width: 2) }
         Badge(variant: :secondary, size: :xs, class: "absolute -inset-e-1.5 -top-1.5 min-w-4 px-1 font-medium", aria_label: "3 unread notifications") { "3" }
       end
     end
@@ -137,7 +135,7 @@ class UI::BadgePreview < UI::BasePreview
     phlex do
       div(dir: "rtl", class: "flex flex-wrap items-center justify-center gap-2") do
         Badge(variant: :success) do
-          svg(**ICON, data: { icon: "start" }) { |s| s.path(d: ICONS[:check]) }
+          Icon(ICONS[:check], stroke_width: 2, data: { icon: "start" })
           plain "موثّق"
         end
         Badge(href: "#upgrade") { "ترقية" }

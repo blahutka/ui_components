@@ -13,12 +13,12 @@ class UI::AutocompletePreview < UI::BasePreview
   FRAMEWORKS = [ "Next.js", "Remix", "Astro", "Nuxt.js", "SvelteKit", "SolidStart", "Gatsby", "Vite" ].freeze
 
   COMMANDS = [
-    { label: "Dashboard", icon: "M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1m0 12h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1m10-4h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1m0-8h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1" },
-    { label: "Profile", icon: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8m-7 8a7 7 0 0 1 14 0" },
-    { label: "Settings", icon: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6m7.4-3a7.4 7.4 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7.5 7.5 0 0 0-2-1.2L14.5 3h-5l-.4 2.6a7.5 7.5 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6a7.4 7.4 0 0 0 0 2.4l-2 1.6 2 3.4 2.4-1a7.5 7.5 0 0 0 2 1.2l.4 2.6h5l.4-2.6a7.5 7.5 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6c.1-.4.1-.8.1-1.2" },
-    { label: "Billing", icon: "M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm0 3h18M7 15h2" },
-    { label: "Notifications", icon: "M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9m4.3 13a1.9 1.9 0 0 0 3.4 0" },
-    { label: "Messages", icon: "M4 6h16v12H4zm0 0 8 7 8-7" }
+    { label: "Dashboard", icon: :layout_dashboard },
+    { label: "Profile", icon: :user },
+    { label: "Settings", icon: :settings },
+    { label: "Billing", icon: :credit_card },
+    { label: "Notifications", icon: :bell },
+    { label: "Messages", icon: :mail }
   ].freeze
 
   COUNTRIES = [
@@ -113,10 +113,7 @@ class UI::AutocompletePreview < UI::BasePreview
           AutocompleteEmpty { "No commands found." }
           AutocompleteList do |command|
             AutocompleteItem(value: command) do
-              svg(viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "1.5",
-                  stroke_linecap: "round", stroke_linejoin: "round", aria_hidden: "true", data: { icon: "start" }) do |s|
-                s.path(d: command[:icon])
-              end
+              Icon(command[:icon], data: { icon: "start" })
               plain command[:label]
             end
           end

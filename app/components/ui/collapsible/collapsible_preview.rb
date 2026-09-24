@@ -8,16 +8,15 @@
 # @component UI::Collapsible
 # @display width wide
 class UI::CollapsiblePreview < UI::BasePreview
-  ICON = { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_linecap: "round", stroke_linejoin: "round", aria_hidden: "true" }.freeze
-  CHEVRON = "m9 6 6 6-6 6"
+  CHEVRON = :chevron_right
   CHEVRON_CLASS = "mt-0.75 size-4.5 shrink-0 stroke-2 transition-transform duration-200 group-data-panel-open:rotate-90 motion-reduce:transition-none rtl:-scale-x-100"
   TRIGGER_CLASS = "group text-foreground-intense data-disabled:text-foreground-muted inline-flex items-start gap-2 text-start font-medium"
 
-  FOLDER = "M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
-  FOLDER_OPEN = "M3 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v1M3 7v10a2 2 0 0 0 2 2h12l3.5-7.5A1 1 0 0 0 19.6 10H8.4a1 1 0 0 0-.9.6L3 19"
-  FILE = "M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zm0 0v5h5"
-  MAXIMIZE = "M4 9V4h5m6 0h5v5m0 6v5h-5m-6 0H4v-5"
-  MINIMIZE = "M9 4v5H4m16 0h-5V4m0 16v-5h5M4 15h5v5"
+  FOLDER = :folder
+  FOLDER_OPEN = :folder_open
+  FILE = :file
+  MAXIMIZE = :maximize
+  MINIMIZE = :minimize
 
   TREE = [
     { name: "app", children: [
@@ -40,7 +39,7 @@ class UI::CollapsiblePreview < UI::BasePreview
     phlex do
       Collapsible(open:, disabled:, class: "w-full max-w-100") do
         CollapsibleTrigger(class: TRIGGER_CLASS) do
-          svg(**ICON, class: CHEVRON_CLASS) { |s| s.path(d: CHEVRON) }
+          Icon(CHEVRON, class: CHEVRON_CLASS)
           plain "What's included in the free plan?"
         end
         CollapsibleContent do
@@ -58,9 +57,9 @@ class UI::CollapsiblePreview < UI::BasePreview
       if node[:children]
         Collapsible(open:) do
           CollapsibleTrigger(class: "group inline-flex items-center gap-1.5 py-1 font-medium") do
-            svg(**ICON, class: "size-4 shrink-0 stroke-[1.75] transition-transform duration-200 group-data-panel-open:rotate-90 motion-reduce:transition-none rtl:-scale-x-100") { |s| s.path(d: CHEVRON) }
-            svg(**ICON, class: "text-foreground-muted size-4 shrink-0 stroke-[1.75] group-data-panel-open:hidden") { |s| s.path(d: FOLDER) }
-            svg(**ICON, class: "text-foreground-muted hidden size-4 shrink-0 stroke-[1.75] group-data-panel-open:block") { |s| s.path(d: FOLDER_OPEN) }
+            Icon(CHEVRON, class: "size-4 shrink-0 stroke-[1.75] transition-transform duration-200 group-data-panel-open:rotate-90 motion-reduce:transition-none rtl:-scale-x-100")
+            Icon(FOLDER, class: "text-foreground-muted size-4 shrink-0 stroke-[1.75] group-data-panel-open:hidden")
+            Icon(FOLDER_OPEN, class: "text-foreground-muted hidden size-4 shrink-0 stroke-[1.75] group-data-panel-open:block")
             plain node[:name]
           end
           CollapsibleContent do
@@ -71,7 +70,7 @@ class UI::CollapsiblePreview < UI::BasePreview
         end
       else
         span(class: "text-foreground-muted flex items-center gap-1.5 py-1 ps-5.5") do
-          svg(**ICON, class: "size-4 shrink-0 stroke-[1.75]") { |s| s.path(d: FILE) }
+          Icon(FILE, class: "size-4 shrink-0 stroke-[1.75]")
           plain node[:name]
         end
       end
@@ -99,8 +98,8 @@ class UI::CollapsiblePreview < UI::BasePreview
           input(type: "number", value: "12", aria_label: "All corners", class: INPUT)
           CollapsibleTrigger(class: "shrink-0") do |trigger|
             Button(**trigger, variant: :outline, size: :sm, icon: true, aria_label: "Set each corner individually") do
-              svg(**ICON, class: "group-data-open:hidden") { |s| s.path(d: MAXIMIZE) }
-              svg(**ICON, class: "hidden group-data-open:block") { |s| s.path(d: MINIMIZE) }
+              Icon(MAXIMIZE, class: "group-data-open:hidden")
+              Icon(MINIMIZE, class: "hidden group-data-open:block")
             end
           end
         end
@@ -158,7 +157,7 @@ class UI::CollapsiblePreview < UI::BasePreview
         end
         div do
           CollapsibleTrigger(class: TRIGGER_CLASS) do
-            svg(**ICON, class: CHEVRON_CLASS) { |s| s.path(d: CHEVRON) }
+            Icon(CHEVRON, class: CHEVRON_CLASS)
             plain "Order #4982"
           end
           CollapsibleContent do
@@ -174,7 +173,7 @@ class UI::CollapsiblePreview < UI::BasePreview
     phlex do
       Collapsible(disabled: true, class: "w-full max-w-100") do
         CollapsibleTrigger(class: TRIGGER_CLASS) do
-          svg(**ICON, class: CHEVRON_CLASS) { |s| s.path(d: CHEVRON) }
+          Icon(CHEVRON, class: CHEVRON_CLASS)
           plain "Advanced settings"
         end
         CollapsibleContent { p(class: "ps-6.5 pt-2.5 text-sm") { "These settings unlock on a paid plan." } }
@@ -189,7 +188,7 @@ class UI::CollapsiblePreview < UI::BasePreview
     phlex do
       Collapsible(class: "w-full max-w-100") do
         CollapsibleTrigger(class: TRIGGER_CLASS) do
-          svg(**ICON, class: CHEVRON_CLASS) { |s| s.path(d: CHEVRON) }
+          Icon(CHEVRON, class: CHEVRON_CLASS)
           plain "Shipping & returns"
         end
         CollapsibleContent(hidden_until_found: true) do
@@ -207,7 +206,7 @@ class UI::CollapsiblePreview < UI::BasePreview
       div(dir: "rtl") do
         Collapsible(open: true, class: "w-full max-w-100") do
           CollapsibleTrigger(class: TRIGGER_CLASS) do
-            svg(**ICON, class: CHEVRON_CLASS) { |s| s.path(d: CHEVRON) }
+            Icon(CHEVRON, class: CHEVRON_CLASS)
             plain "ما الذي تتضمنه الخطة المجانية؟"
           end
           CollapsibleContent do

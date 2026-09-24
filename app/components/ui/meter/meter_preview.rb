@@ -13,7 +13,6 @@ class UI::MeterPreview < UI::BasePreview
   USAGE = { "Operations" => 32, "Marketing" => 64, "Infrastructure" => 94 }.freeze
   SKILLS = { "TypeScript" => 90, "React" => 82, "CSS" => 70, "Rust" => 38 }.freeze
   LEVELS = [ "Too weak", "Weak", "Fair", "Good", "Strong" ].freeze
-  LOCK = "M5 13a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2zm6 3a1 1 0 1 0 2 0 1 1 0 0 0-2 0m-3-5V7a4 4 0 1 1 8 0v4"
 
   # @label Usage
   # A label, a formatted value and a track; `value:` is read against the default 0-100 range.
@@ -76,8 +75,7 @@ class UI::MeterPreview < UI::BasePreview
     phlex do
       div(class: "flex w-72 max-w-full flex-col gap-2") do
         label(class: "relative block") do
-          svg(viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "1.75", stroke_linecap: "round", stroke_linejoin: "round", aria_hidden: "true",
-            class: "text-foreground-muted pointer-events-none absolute start-3 top-1/2 size-4.5 -translate-y-1/2") { |s| s.path(d: LOCK) }
+          Icon(:lock, stroke_width: 1.75, class: "text-foreground-muted pointer-events-none absolute start-3 top-1/2 size-4.5 -translate-y-1/2")
           input(type: "password", id: "password-demo", autocomplete: "new-password", placeholder: "Choose a password", aria_label: "Password",
             class: "border-border-strong bg-background text-foreground h-10 w-full min-w-0 rounded-md border ps-9.5 pe-3.5 text-sm outline-none focus:border-transparent focus:ring-3 focus:ring-ring-input")
         end

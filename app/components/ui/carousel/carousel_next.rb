@@ -10,5 +10,5 @@ class UI::CarouselNext < UI::CarouselArrow
   private
     def direction = "next"
     def label = "Next slide"
-    def chevron_path = "m9 6 6 6-6 6"
+    def chevron_icon = :chevron_right
 end

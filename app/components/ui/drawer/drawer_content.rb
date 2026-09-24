@@ -127,9 +127,7 @@ class UI::DrawerContent < UI::Base
         class: "absolute inset-e-3 top-3 z-10",
         data: { slot: "drawer-close-button", action: "ui--drawer#close" }
       ) do
-        svg(xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 16 16", fill: "currentColor", aria_hidden: "true") do |s|
-          s.path(d: "M11.594 3.594c.225-.225.588-.225.813 0s.225.588 0 .812L8.813 8l3.594 3.594c.225.225.225.588 0 .813s-.588.225-.812 0L8 8.812l-3.594 3.594c-.225.225-.588.225-.812 0s-.225-.588 0-.812L7.188 8 3.594 4.406c-.225-.225-.225-.588 0-.812s.588-.225.813 0L8 7.187l3.594-3.594z")
-        end
+        render UI::Icon.new(:x, stroke_width: 2)
       end
     end
 end

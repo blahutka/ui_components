@@ -78,7 +78,7 @@ opens to the inline-end side (below the trigger when there's no room).
 Menubar(orientation: :vertical, aria_label: "Workspace", class: "w-35") do
   MenubarMenu do
     MenubarTrigger do
-      svg(data: { icon: "start" }, ...) { |s| s.path(d: "...") }
+      Icon(:folder, data: { icon: "start" })
       plain "Projects"
     end
     MenubarContent { MenubarItem { "All projects" } }
@@ -125,7 +125,7 @@ item with a trailing `Kbd` shortcut pushed to the edge with `ms-auto`.
 
 ```ruby
 MenubarItem do
-  svg(data: { icon: "start" }, ...) { |s| s.path(d: "...") }
+  Icon(:file_plus, data: { icon: "start" })
   plain "New file"
   Kbd(size: :sm, class: "ms-auto") { "⌘N" }
 end

@@ -9,14 +9,12 @@
 # @component UI::Card
 # @display width full
 class UI::CardPreview < UI::BasePreview
-  ICON = { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "1.5", stroke_linecap: "round", stroke_linejoin: "round", aria_hidden: "true" }.freeze
-
   ICONS = {
-    bookmark: "M6 4h12v16l-6-4-6 4z",
-    folder_plus: "M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm9 3v6m-3-3h6",
-    plus: "M12 5v14M5 12h14",
-    heart: "M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10",
-    cart: "M3 4h2l2.4 11h10.2L20 8H6.2M10 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2m7 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2"
+    bookmark: :bookmark,
+    folder_plus: :folder_plus,
+    plus: :plus,
+    heart: :heart,
+    cart: :shopping_cart
   }.freeze
 
   INPUT = "border-transparent bg-background-muted text-foreground h-10 w-full rounded-md border px-3.5 text-sm outline-none focus:bg-background focus:border-transparent focus:ring-3 focus:ring-ring-input"
@@ -150,7 +148,7 @@ class UI::CardPreview < UI::BasePreview
               end
               span(class: "text-foreground-muted truncate text-xs") { "Sarah Jenkins · 12 March 2026" }
             end
-            Button(variant: :ghost, size: :sm, icon: true, aria_label: "Save for later") { svg(**ICON) { |s| s.path(d: ICONS[:bookmark]) } }
+            Button(variant: :ghost, size: :sm, icon: true, aria_label: "Save for later") { Icon(ICONS[:bookmark]) }
           end
         end
       end
@@ -210,14 +208,14 @@ class UI::CardPreview < UI::BasePreview
       Card(class: "mx-auto w-full max-w-110", content: { class: "bg-background-subtle items-center border-dashed border-border-strong text-center" }) do
         CardHeader(class: "items-center") do
           span(class: "border-border text-foreground-muted bg-background mb-2 flex size-12 items-center justify-center rounded-xl border [&_svg]:size-5") do
-            svg(**ICON) { |s| s.path(d: ICONS[:folder_plus]) }
+            Icon(ICONS[:folder_plus])
           end
           CardTitle { "No collections yet" }
           CardDescription(class: "max-w-70") { "Collections group related boards so your team can find them without digging through search." }
         end
         CardFooter do
           Button(size: :sm) do
-            svg(**ICON, data: { icon: "start" }) { |s| s.path(d: ICONS[:plus]) }
+            Icon(ICONS[:plus], data: { icon: "start" })
             plain "New collection"
           end
         end
@@ -234,7 +232,7 @@ class UI::CardPreview < UI::BasePreview
         CardMedia(class: "h-44") do
           img(src: "/carousel/slide-3.jpg", alt: "Tulip bouquet")
           Badge(variant: :light, size: :sm, class: "absolute inset-s-2 top-2") { "-20%" }
-          Button(variant: :light, size: :sm, icon: true, aria_label: "Add to wishlist", class: "absolute inset-e-2 top-2") { svg(**ICON) { |s| s.path(d: ICONS[:heart]) } }
+          Button(variant: :light, size: :sm, icon: true, aria_label: "Add to wishlist", class: "absolute inset-e-2 top-2") { Icon(ICONS[:heart]) }
         end
         CardHeader do
           div(class: "flex items-start justify-between gap-3") do
@@ -255,7 +253,7 @@ class UI::CardPreview < UI::BasePreview
         end
         CardFooter do
           Button(size: :sm, class: "w-full") do
-            svg(**ICON, data: { icon: "start" }) { |s| s.path(d: ICONS[:cart]) }
+            Icon(ICONS[:cart], data: { icon: "start" })
             plain "Add to cart"
           end
         end

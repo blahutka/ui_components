@@ -61,7 +61,7 @@ Place an icon before or after the text and tag it with `data: { icon: "start" }`
 
 ```ruby
 Badge(variant: :success) do
-  svg(data: { icon: "start" }, ...) { |s| s.path(d: check_icon) }
+  Icon(:check, data: { icon: "start" })
   plain "Verified"
 end
 ```

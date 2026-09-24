@@ -53,9 +53,6 @@ class UI::CarouselArrow < UI::Base
     end
 
     def chevron
-      svg(viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "1.5", stroke_linecap: "round", stroke_linejoin: "round",
-          aria_hidden: "true", class: (carousel.vertical? ? "rotate-90" : "rtl:rotate-180")) do |s|
-        s.path(d: chevron_path)
-      end
+      render UI::Icon.new(chevron_icon, class: (carousel.vertical? ? "rotate-90" : "rtl:rotate-180"))
     end
 end

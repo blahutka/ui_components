@@ -91,7 +91,7 @@ Autocomplete(items: commands, item_to_string_value: :label, clearable: true, ico
     AutocompleteEmpty { "No commands found." }
     AutocompleteList do |command|
       AutocompleteItem(value: command) do
-        svg(data: { icon: "start" }, ...) { |s| s.path(d: command[:icon]) }
+        Icon(command[:icon], data: { icon: "start" })
         plain command[:label]
       end
     end

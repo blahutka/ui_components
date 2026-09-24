@@ -40,7 +40,7 @@ it an `aria_label:`. Mark a leading or trailing icon with `data: { icon: "start"
 Button(variant: :soft, icon: true, aria_label: "Bookmark") { bookmark_icon }
 
 Button do
-  svg(data: { icon: "start" }, ...) { |s| s.path(d: "...") }
+  Icon(:pencil, data: { icon: "start" })
   plain "Rename workspace"
 end
 ```

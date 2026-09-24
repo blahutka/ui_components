@@ -45,9 +45,7 @@ class UI::ButtonPreview < UI::BasePreview
       div(class: "flex flex-wrap items-center gap-3") do
         [ :sm, :md, :lg ].each do |size|
           Button(variant: :soft, size:, icon: true, aria_label: "Bookmark") do
-            svg(viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "1.5", stroke_linecap: "round", stroke_linejoin: "round", aria_hidden: "true") do |s|
-              s.path(d: "M6 4h12v16l-6-4-6 4z")
-            end
+            Icon(:bookmark)
           end
         end
       end

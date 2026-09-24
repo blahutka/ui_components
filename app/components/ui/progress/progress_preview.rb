@@ -9,8 +9,6 @@
 # @component UI::Progress
 # @display width wide
 class UI::ProgressPreview < UI::BasePreview
-  PHOTO = "M15 8h.01M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3zm0 10 5-5c.928-.893 2.072-.893 3 0l5 5m-2-2 1-1c.928-.893 2.072-.893 3 0l2 2"
-
   # @label Usage
   # The bar layout: a label on the left, the percentage on the right, the track beneath.
   # @param value number
@@ -70,7 +68,7 @@ class UI::ProgressPreview < UI::BasePreview
       div(class: "group/upload border-border bg-background w-80 max-w-full rounded-xl border p-4") do
         div(class: "flex items-center gap-3") do
           span(class: "bg-background-muted text-foreground-muted group-has-data-complete/upload:bg-success-subtle group-has-data-complete/upload:text-success-emphasis flex size-12 shrink-0 items-center justify-center rounded-lg transition-colors") do
-            svg(viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "1.75", stroke_linecap: "round", stroke_linejoin: "round", aria_hidden: "true", class: "size-5 group-has-data-complete/upload:hidden") { |s| s.path(d: PHOTO) }
+            Icon(:photo, stroke_width: 1.75, class: "size-5 group-has-data-complete/upload:hidden")
             svg(viewBox: "0 0 24 24", fill: "none", aria_hidden: "true", class: "hidden size-5 group-has-data-complete/upload:block") do |s|
               s.path(d: "M5 12.5l4.5 4.5L19 7", stroke: "currentColor", stroke_width: "2", stroke_linecap: "round", stroke_linejoin: "round", pathLength: "1",
                 class: "[stroke-dasharray:1] [stroke-dashoffset:1] group-has-data-complete/upload:animate-[upload-check_500ms_ease-out_forwards] motion-reduce:[stroke-dashoffset:0]")
