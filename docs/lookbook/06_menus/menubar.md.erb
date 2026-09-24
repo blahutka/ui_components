@@ -1,0 +1,201 @@
+---
+id: menubar
+title: Menubar
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A bar of menus for an app's top-level commands.
+[Appica docs](https://appica.dev/ui/components/react/menubar)
+
+<%= embed UI::MenubarPreview, :default %>
+
+## Usage
+
+```ruby
+Menubar(aria_label: "Application") do
+  MenubarMenu do
+    MenubarTrigger { "File" }
+    MenubarContent do
+      MenubarItem { "New file" }
+      MenubarItem { "Open…" }
+      MenubarSub do
+        MenubarSubTrigger { "Open recent" }
+        MenubarSubContent do
+          MenubarItem { "project-alpha" }
+          MenubarItem { "landing-page" }
+        end
+      end
+      MenubarSeparator()
+      MenubarItem { "Save" }
+    end
+  end
+  MenubarMenu do
+    MenubarTrigger { "Edit" }
+    MenubarContent do
+      MenubarItem { "Undo" }
+      MenubarItem { "Redo" }
+    end
+  end
+end
+```
+
+The root is the bar that coordinates a row (or column) of menus, sharing `variant:`, `size:` and
+`orientation:` with all of them:
+
+- **MenubarMenu** - wraps one menu: a trigger and its popup.
+- **MenubarTrigger** - the top-level label that opens its menu. Once any menu is open, moving the pointer
+  to a sibling trigger switches to it; arrow keys move focus along the bar.
+- **MenubarContent** - the popup for that menu. In a vertical bar it opens to the side.
+- **MenubarItem** - one action. Dispatches `ui--menubar:select` and closes the menu by default.
+- **MenubarGroup / MenubarGroupLabel / MenubarSeparator** - structure for sectioned menus.
+- **MenubarCheckboxItem / MenubarRadioGroup + MenubarRadioItem** - stateful options with a check indicator.
+- **MenubarLinkItem** - an item that renders an `<a>` for navigation.
+- **MenubarSub / MenubarSubTrigger / MenubarSubContent** - a nested submenu.
+
+Inside an item, put a leading icon on `data: { icon: "start" }`, and push a trailing `Kbd` shortcut to the
+edge with `class: "ms-auto"`. All behaviour lives in the `ui--menubar` Stimulus controller.
+
+Reach for a Menubar for the persistent command bar of an application (File / Edit / View …).
+
+## Examples
+
+### Variants
+
+`variant: :pill` (default) gives each trigger a hover/active pill, while `variant: :line` draws an
+animated underline - closer to a classic desktop menu bar.
+
+<%= embed UI::MenubarPreview, :variants %>
+
+### Vertical
+
+`orientation: :vertical` stacks the menus into a sidebar. Triggers can carry a leading icon, and each menu
+opens to the inline-end side (below the trigger when there's no room).
+
+<%= embed UI::MenubarPreview, :vertical %>
+
+```ruby
+Menubar(orientation: :vertical, aria_label: "Workspace", class: "w-35") do
+  MenubarMenu do
+    MenubarTrigger do
+      svg(data: { icon: "start" }, ...) { |s| s.path(d: "...") }
+      plain "Projects"
+    end
+    MenubarContent { MenubarItem { "All projects" } }
+  end
+end
+```
+
+### Submenus
+
+Nest a `MenubarSub` inside a menu with its own `MenubarSubTrigger` and `MenubarSubContent`. The sub-trigger
+shows a chevron and opens to the side on hover, click or the arrow key, flipping near a screen edge.
+
+<%= embed UI::MenubarPreview, :submenus %>
+
+### Checkbox & radio items
+
+`MenubarCheckboxItem` toggles; a `MenubarRadioGroup` of `MenubarRadioItem`s picks a single value, both
+labelled with a `MenubarGroupLabel`. They keep the menu open and dispatch
+`ui--menubar:checked-change` ({ item, checked }) and `ui--menubar:value-change` ({ group, value }).
+
+<%= embed UI::MenubarPreview, :selections %>
+
+```ruby
+MenubarContent do
+  MenubarGroup do
+    MenubarGroupLabel { "Panels" }
+    MenubarCheckboxItem(checked: settings.toolbar?) { "Toolbar" }
+  end
+  MenubarSeparator()
+  MenubarRadioGroup(value: settings.theme) do
+    MenubarGroupLabel { "Theme" }
+    MenubarRadioItem(value: "light") { "Light" }
+    MenubarRadioItem(value: "dark") { "Dark" }
+  end
+end
+```
+
+### Leading icons
+
+A leading icon on `data: { icon: "start" }` works on both a `MenubarTrigger` and a `MenubarItem`; pair an
+item with a trailing `Kbd` shortcut pushed to the edge with `ms-auto`.
+
+<%= embed UI::MenubarPreview, :icons %>
+
+```ruby
+MenubarItem do
+  svg(data: { icon: "start" }, ...) { |s| s.path(d: "...") }
+  plain "New file"
+  Kbd(size: :sm, class: "ms-auto") { "⌘N" }
+end
+```
+
+### Handling selections
+
+Every part is plain markup; listen to the controller's events from your own Stimulus controller:
+
+```ruby
+Menubar(aria_label: "Application", data: { action: "ui--menubar:select->editor#command" }) { ... }
+```
+
+`event.detail` carries `{ item, label }` - put a `data-command` on the item to tell them apart.
+
+### RTL
+
+The bar lays out from the right, arrow-key focus reverses, and popups and submenus open towards the
+inline end.
+
+<%= embed UI::MenubarPreview, :rtl %>
+
+## API reference
+
+### Menubar
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` | `:pill`, `:line` | `:pill` | Trigger appearance - hover/active pill, or an animated underline. |
+| `size:` | `:sm`, `:md`, `:lg` | `:md` | Scales the triggers, popups, and items together. |
+| `orientation:` | `:horizontal`, `:vertical` | `:horizontal` | Lay the bar out as a row or a column. |
+| `loop_focus:` | `Boolean` | `true` | Wrap arrow-key focus from the last trigger back to the first. |
+| `disabled:` | `Boolean` | `false` | Disable every menu in the bar. |
+| `aria_label:`, `class:`, `data:`, … | | | Other attributes go on the bar. |
+
+### MenubarMenu, MenubarTrigger, MenubarContent
+
+| Part | Props |
+|------|-------|
+| `MenubarMenu` | `disabled:`, `id:` (the trigger and popup ids derive from it) |
+| `MenubarTrigger` | `disabled:`, `class:` |
+| `MenubarContent` | `class:` on the popup |
+
+### Items
+
+| Part | Props |
+|------|-------|
+| `MenubarItem` | `disabled:`, `close_on_click:` (default `true`), `label:` (typeahead text) |
+| `MenubarLinkItem` | `href:` (required), `close_on_click:`, `label:`, any anchor attribute |
+| `MenubarCheckboxItem` | `checked:`, `disabled:`, `close_on_click:` (default `false`), `label:` |
+| `MenubarRadioGroup` | `value:` (the selected item's value), `name:` |
+| `MenubarRadioItem` | `value:` (required), `disabled:`, `close_on_click:` (default `false`), `label:` |
+| `MenubarGroup`, `MenubarGroupLabel`, `MenubarSeparator` | `class:` |
+| `MenubarSub`, `MenubarSubTrigger`, `MenubarSubContent` | `disabled:` / `label:` on the sub-trigger; `class:` |
+
+### Events
+
+| Event | Detail |
+|-------|--------|
+| `ui--menubar:select` | `{ item, label }` |
+| `ui--menubar:checked-change` | `{ item, checked }` |
+| `ui--menubar:value-change` | `{ group, value }` |
+| `ui--menubar:open-change` | `{ menu, open }` |
+
+## Accessibility
+
+- The bar has `role="menubar"`; give it an accessible name with `aria_label:`. Triggers are `menuitem`s
+  with `aria-haspopup` and `aria-expanded`, and each popup is a `menu` labelled by its trigger.
+- ←/→ (or ↑/↓ when vertical) move focus between triggers (one tab stop for the whole bar); Enter / Space /
+  ↓ open a menu; Escape closes it back to its trigger; typeahead jumps to matching items.
+- With a menu open, hovering a sibling trigger switches to its menu without an extra click.
+- Disabled triggers and items are skipped by keyboard navigation.
+- Popup enter/exit transitions are skipped when the user prefers reduced motion.

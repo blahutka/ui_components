@@ -101,6 +101,9 @@
   --color-ring-info: var(--focus-ring-info);
   --color-ring-light: var(--focus-ring-light);
 
+  --radius-4xs: calc(var(--radius) * 2 / 7);
+  --radius-3xs: calc(var(--radius) * 3 / 7);
+  --radius-2xs: calc(var(--radius) * 4 / 7);
   --radius-xs: calc(var(--radius) * 5 / 7);
   --radius-sm: calc(var(--radius) * 6 / 7);
   --radius-md: var(--radius);
