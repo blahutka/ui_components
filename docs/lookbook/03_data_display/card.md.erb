@@ -1,0 +1,208 @@
+---
+id: card
+title: Card
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A flexible content container for a title, description, media, and actions.
+[Appica docs](https://appica.dev/ui/components/react/card)
+
+<%= embed UI::CardPreview, :default %>
+
+## Usage
+
+```ruby
+Card do
+  CardHeader do
+    CardTitle { "Weekly digest" }
+    CardDescription { "A short round-up of what changed and who shipped it." }
+  end
+  CardFooter { Button { "Read digest" } }
+end
+```
+
+Card is a layout container, not a widget - it has no state, no interaction and no JavaScript.
+Compose it from its parts:
+
+- **Card** - the root. Owns the frame, the inset, and the radius every other corner scales from. It
+  renders two elements: the outer frame and the inner content wrapper, a flex column that holds the slots.
+- **CardMedia** - a clipped box for an image or video. Place it above the header or below the footer.
+- **CardHeader** - the text column. It stretches, which is what pins `CardFooter` to the bottom of a
+  fixed-height card.
+- **CardTitle** - the headline (`<h3>`).
+- **CardDescription** - the supporting text (`<p>`).
+- **CardFooter** - a row for actions that stacks on narrow viewports.
+
+Every part is optional. A card can be nothing but a `CardMedia`, or nothing but a `CardHeader`.
+
+### One radius, everywhere
+
+`--card-radius` is the card's own corner (the one on the content wrapper) and the only number you set:
+
+```ruby
+Card(class: "[--card-radius:var(--radius-3xl)]") { ... }
+```
+
+The frame and the inset media scale off it: the frame rounds at ×4/3 and inset media at ×3/4, so the
+whole nest stays in proportion. Set the radius through `--card-radius` rather than a `rounded-*` class -
+a `rounded-*` class only paints the element you put it on.
+
+## Examples
+
+### Header and footer
+
+The most basic setup - no options, just a header and a footer.
+
+<%= embed UI::CardPreview, :header_and_footer %>
+
+### Frame
+
+`frame: :solid` (or `frame: true`) wraps the content in a band of `background-subtle` and softens the
+inner hairline to `border-muted`. Leave it off unless the card needs that extra separation from the page.
+
+<%= embed UI::CardPreview, :frame %>
+
+### Glass frame
+
+`frame: :glass` swaps the band for a translucent, blurred one and drops the inner border. Glass only
+exists relative to what's behind it - put the card over a photo, a gradient, or a colored section.
+
+<%= embed UI::CardPreview, :glass %>
+
+### Media
+
+`CardMedia` clips whatever you put in it. With the default inset, media floats inside the content wrapper
+with all four corners rounded. With `inset: false`, the header and footer take the full gutter and media
+runs edge to edge - the content wrapper clips it, so a top image rounds only its top corners.
+
+<%= embed UI::CardPreview, :media %>
+
+```ruby
+Card(inset: false) do
+  CardMedia(class: "h-44") { img(src: photo.url, alt: photo.caption) }
+  CardHeader { CardTitle { "Flush" } }
+end
+```
+
+Direct `<img>` and `<video>` children are stretched and `object-cover`'d, so a height on `CardMedia` is
+all the sizing a photo or an ambient video loop needs.
+
+### Horizontal layout
+
+There's no orientation option - the content wrapper is a flex column, so one class through `content:`
+turns the card sideways. Wrap the header and footer in a plain `div` so they keep stacking. `as: :article`
+renders the card as self-contained content, and only the title is a link.
+
+<%= embed UI::CardPreview, :horizontal %>
+
+```ruby
+Card(as: :article, content: { class: "md:flex-row md:gap-2" }) do
+  CardMedia(class: "h-48 shrink-0 md:h-auto md:w-56") { img(src: post.cover_url, alt: "") }
+  div(class: "flex min-w-0 flex-1 flex-col") do
+    CardHeader do
+      CardTitle { a(href: post_path(post), class: "hover:underline") { post.title } }
+      CardDescription { post.excerpt }
+    end
+    CardFooter(class: "flex-row items-center justify-between") { ... }
+  end
+end
+```
+
+### Overlay
+
+For a card that is an image, position `CardMedia` absolutely - `inset-2` when the card is inset,
+`inset-0` when it isn't - and let `CardHeader` stack above it. Add a scrim inside the media.
+
+<%= embed UI::CardPreview, :overlay %>
+
+### Profile
+
+Any content is welcome inside `CardHeader`; it's a plain flex column. Here an Avatar leads a centered
+profile card.
+
+<%= embed UI::CardPreview, :profile %>
+
+### Empty state
+
+`content:` restyles the surface itself - a dashed border and a subtle fill turn a card into a placeholder.
+
+<%= embed UI::CardPreview, :empty_state %>
+
+```ruby
+Card(content: { class: "bg-background-subtle items-center border-dashed border-border-strong text-center" }) { ... }
+```
+
+### Product card
+
+`CardHeader` can hold anything - a price row and size buttons here. Badges and buttons are positioned
+inside `CardMedia`, which is already `relative`.
+
+<%= embed UI::CardPreview, :product %>
+
+### Form in a card
+
+`as: :form` makes the card itself the form element, so fields and the submit button need no extra
+wrapper; other attributes (`action:`, `method:`, `data:`) go on the form.
+
+<%= embed UI::CardPreview, :form %>
+
+### Radius
+
+Changing `--card-radius` retunes the card and its inset media together, in one place.
+
+<%= embed UI::CardPreview, :radius %>
+
+### RTL
+
+Card is built from logical padding and flex ordering, so the footer's actions flow from the right and text
+aligns to the start edge with no direction-specific classes. Flush media follows the writing direction too.
+
+<%= embed UI::CardPreview, :rtl %>
+
+## API reference
+
+### Card
+
+The root. Renders the outer frame plus an inner content wrapper.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `frame:` | `false`, `true`, `:solid`, `:glass` | `false` | Wrap the content in a padded frame. `true` is an alias for `:solid`; `:glass` is translucent and blurred. |
+| `inset:` | `Boolean` | `true` | Float the slots inside the content, so media rounds all four corners. `false` gives edge-to-edge media. |
+| `as:` | `:div`, `:article`, `:section`, `:li`, `:form`, `:a` | `:div` | The root element. |
+| `content:` | `Hash` | `{}` | Attributes for the inner content wrapper, e.g. `{ class: "md:flex-row" }`. |
+| `class:` | `String` | - | Extra classes on the root, merged via tailwind_merge. |
+
+Any other attribute is forwarded to the root. The root carries `data-frame` and, when inset, `data-inset`.
+
+### --card-radius
+
+The card's corner radius, defaulting to `var(--radius-xl)`. Set it with an arbitrary-property class on
+`Card` (or anywhere above it) and the frame (×4/3) and inset media (×3/4) scale with it.
+
+### CardMedia, CardHeader, CardFooter
+
+`<div>`s. `CardMedia` gives direct `<img>` / `<video>` children `size-full object-cover`; `CardHeader`
+stretches to fill the content wrapper; `CardFooter` stacks in reverse order below the `sm` breakpoint so
+the primary action sits on top. All accept `class:` (merged via tailwind_merge) and other attributes.
+
+### CardTitle, CardDescription
+
+| Part | Element | Props |
+|------|---------|-------|
+| `CardTitle` | `<h3>` | `as:` (`:h2`, `:h4`, …) to fit the page outline; `class:` |
+| `CardDescription` | `<p>` | `class:` |
+
+## Accessibility
+
+- Card renders a plain `<div>` with no implicit role - it's a visual grouping, not a landmark. Use
+  `as: :article` when the card is self-contained content, or `as: :li` inside a list.
+- `CardTitle` is an `<h3>` so a page of cards reads as a coherent outline. If that's the wrong level,
+  change it with `as: :h2` rather than restyling a `<div>`.
+- Make the whole card clickable only through a real control: put an `<a>` or `<button>` on the title and
+  stretch its hit area (`after:absolute after:inset-0`) instead of a click handler on the root.
+- Decorative media should carry `alt: ""`; describe meaningful imagery in the alt text.
+- An autoplaying video in `CardMedia` must be muted, `playsinline`, short and purely decorative. Anything
+  meant to be watched needs controls and no autoplay.
+- The card adds no animation, so there is nothing to suppress for users who prefer reduced motion.

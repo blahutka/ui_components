@@ -107,6 +107,8 @@
   --radius-lg: calc(var(--radius) * 8 / 7);
   --radius-xl: calc(var(--radius) * 9 / 7);
   --radius-2xl: calc(var(--radius) * 12 / 7);
+  --radius-3xl: calc(var(--radius) * 16 / 7);
+  --radius-4xl: calc(var(--radius) * 20 / 7);
 
   --shadow-md: 0 4px 8px -2px var(--shadow-color);
   --shadow-2xl: 0 24px 32px -12px var(--shadow-color);
