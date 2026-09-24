@@ -1,9 +1,6 @@
 # The assistant's "working on it" row with the sparkle spinner. Shown while a reply is pending.
 class Blocks::ChatStatus < Blocks::Base
-  def initialize(hidden: false, **attributes)
-    @hidden = hidden
-    @attributes = attributes
-  end
+  prop :hidden, default: -> { false }
 
   def view_template(&)
     span(**mix({ hidden: @hidden, data: { slot: "chat-status", "blocks--chat-assistant-target": "status" } }, @attributes.except(:class)),

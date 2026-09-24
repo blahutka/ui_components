@@ -1,9 +1,7 @@
 # The assistant's avatar (with an online badge) and name.
 class Blocks::ChatHeader < Blocks::Base
-  def initialize(title: nil, icon: :sparkles, **attributes)
-    @title, @icon = title, icon
-    @attributes = attributes
-  end
+  prop :title, default: -> { nil }
+  prop :icon,  default: -> { :sparkles }
 
   def view_template
     chat = consume(:chat_assistant, component: "Blocks::ChatAssistant")

@@ -15,16 +15,14 @@
 # `turbo_stream.append messages_id, Blocks::ChatMessage.new(from: :assistant) { … }`.
 # Without an `action:` it runs a demo that replies with `demo_replies:` - handy in previews.
 class Blocks::ChatAssistant < Blocks::Base
-  attr_reader :title, :action, :method, :messages_id
+  prop :title,        default: -> { "Assistant" }
+  prop :action,       default: -> { nil }
+  prop :method,       default: -> { :post }
+  prop :status,       ->(value) { value.to_sym }, default: -> { :online }
+  prop :messages_id,  default: -> { "chat-messages-#{SecureRandom.hex(4)}" }
+  prop :demo_replies, default: -> { [] }
 
-  def initialize(title: "Assistant", action: nil, method: :post, status: :online, messages_id: nil, demo_replies: [], **attributes)
-    @title = title
-    @action, @method = action, method
-    @status = status.to_sym
-    @demo_replies = demo_replies
-    @attributes = attributes
-    @messages_id = messages_id || "chat-messages-#{SecureRandom.hex(4)}"
-  end
+  attr_reader :title, :action, :method, :messages_id
 
   def online?
     @status == :online

@@ -5,10 +5,7 @@ class Blocks::ChatMessage < Blocks::Base
     assistant: "bg-background-muted text-foreground rounded-es-3xs self-start"
   }.freeze
 
-  def initialize(from: :assistant, **attributes)
-    @from = FROM.key?(from.to_sym) ? from.to_sym : :assistant
-    @attributes = attributes
-  end
+  prop :from, ->(value) { FROM.key?(value.to_sym) ? value.to_sym : :assistant }, default: -> { :assistant }
 
   def view_template(&)
     p(**mix({ data: { slot: "chat-message", from: @from } }, @attributes.except(:class)),

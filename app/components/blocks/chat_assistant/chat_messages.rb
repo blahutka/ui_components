@@ -1,10 +1,6 @@
 # The scrolling conversation. Its id (the root's `messages_id`) is the Turbo Stream target
 # for new messages.
 class Blocks::ChatMessages < Blocks::Base
-  def initialize(**attributes)
-    @attributes = attributes
-  end
-
   def view_template(&)
     chat = consume(:chat_assistant, component: "Blocks::ChatAssistant")
 

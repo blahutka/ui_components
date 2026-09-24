@@ -1,11 +1,11 @@
 # The message form: a text field with attach, dictate and send buttons. Posts `name:` to the
 # root's `action:`; the Stimulus controller shows the message right away and clears the field.
 class Blocks::ChatComposer < Blocks::Base
-  def initialize(placeholder: "Ask anything…", name: "message", label: "Message the assistant", attach: true, dictate: true, **attributes)
-    @placeholder, @name, @label = placeholder, name, label
-    @attach, @dictate = attach, dictate
-    @attributes = attributes
-  end
+  prop :placeholder, default: -> { "Ask anything…" }
+  prop :name,        default: -> { "message" }
+  prop :label,       default: -> { "Message the assistant" }
+  prop :attach,      default: -> { true }
+  prop :dictate,     default: -> { true }
 
   def view_template
     chat = consume(:chat_assistant, component: "Blocks::ChatAssistant")

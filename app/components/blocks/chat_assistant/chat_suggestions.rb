@@ -3,10 +3,7 @@
 #   ChatSuggestions([ "Add a FAQ section", "Use dark theme" ])
 #   ChatSuggestions { ChatSuggestion("Summarize") }
 class Blocks::ChatSuggestions < Blocks::Base
-  def initialize(suggestions = [], **attributes)
-    @suggestions = suggestions
-    @attributes = attributes
-  end
+  param :suggestions, default: -> { [] }
 
   def view_template(&)
     div(**mix({ data: { slot: "chat-suggestions", "blocks--chat-assistant-target": "suggestions" } }, @attributes.except(:class)),
