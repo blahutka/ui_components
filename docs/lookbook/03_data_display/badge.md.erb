@@ -1,0 +1,139 @@
+---
+id: badge
+title: Badge
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A small label that highlights a status, count, or category.
+[Appica docs](https://appica.dev/ui/components/react/badge)
+
+<%= embed UI::BadgePreview, :default %>
+
+## Usage
+
+```ruby
+Badge(variant: :success) { "Active" }
+```
+
+Badge is a compact, non-interactive label for a piece of metadata - a status, a count, a tag, a
+category. It renders a `<span>` and sizes to its content. Pick a `variant:` for the color scheme and
+a `size:` for the scale; put an icon next to the text and tag it with `data: { icon: "start" }` /
+`data: { icon: "end" }` so the padding tightens on that side.
+
+To make a badge clickable (a filter chip, a category link), give it `href:` for an `<a>` or
+`as: :button` for a `<button>`. It then becomes focusable and gains hover/press affordances.
+
+## Examples
+
+### Variants
+
+Each variant carries a semantic color. The solid `primary`/`secondary` and tinted
+`error`/`success`/`warning`/`info` schemes draw attention to a status, while `soft`, `outline` and
+`primary_outline` stay quieter for neutral metadata.
+
+<%= embed UI::BadgePreview, :variants %>
+
+```ruby
+Badge(variant: :primary_outline) { "Primary outline" }
+Badge(variant: :warning) { "Warning" }
+```
+
+### On dark backgrounds
+
+The `light` variant is built for dark or photographic backgrounds - a translucent white fill that
+reads against the surface beneath it.
+
+<%= embed UI::BadgePreview, :on_dark %>
+
+### Sizes
+
+Four sizes scale the badge from `:xs` to `:lg`. The text and any icons scale together.
+
+<%= embed UI::BadgePreview, :sizes %>
+
+### With an icon
+
+Place an icon before or after the text and tag it with `data: { icon: "start" }` or
+`data: { icon: "end" }` - the badge tightens the padding on that edge so the icon sits snug.
+
+<%= embed UI::BadgePreview, :with_icon %>
+
+```ruby
+Badge(variant: :success) do
+  svg(data: { icon: "start" }, ...) { |s| s.path(d: check_icon) }
+  plain "Verified"
+end
+```
+
+### Icon only
+
+`size: :icon_sm`, `:icon_md` and `:icon_lg` render a square badge for a lone icon. Give it an
+`aria_label:` so the meaning is announced.
+
+<%= embed UI::BadgePreview, :icon_only %>
+
+```ruby
+Badge(variant: :warning, size: :icon_lg, aria_label: "Boosted") { bolt_icon }
+```
+
+### Notification count
+
+Absolutely position a small badge against an icon button to surface an unread count. Keep the
+number in the badge and the full meaning in its `aria_label:`.
+
+<%= embed UI::BadgePreview, :notification_count %>
+
+```ruby
+div(class: "relative inline-flex") do
+  Button(variant: :outline, icon: true, aria_label: "Notifications") { bell_icon }
+  Badge(variant: :secondary, size: :xs, class: "absolute -inset-e-1.5 -top-1.5 min-w-4 px-1 font-medium",
+        aria_label: "#{count} unread notifications") { count.to_s }
+end
+```
+
+### Interactive (link or button)
+
+`href:` turns the badge into a link, `as: :button` into a `<button>`. It becomes focusable and
+animates on hover and press.
+
+<%= embed UI::BadgePreview, :interactive %>
+
+```ruby
+Badge(variant: :soft, href: tag_path(tag)) { tag.name }
+Badge(variant: :primary_outline, as: :button, data: { action: "follow#toggle" }) { "Follow" }
+```
+
+### RTL
+
+The icon flips to the start (right) edge and the tightened padding follows, because both are
+expressed with logical properties.
+
+<%= embed UI::BadgePreview, :rtl %>
+
+## API reference
+
+### Badge
+
+Renders a `<span>`, or an `<a>` / `<button>` when interactive. Every other attribute is forwarded.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` | `:primary`, `:primary_outline`, `:secondary`, `:soft`, `:outline`, `:error`, `:success`, `:warning`, `:info`, `:light` | `:primary` | Color scheme. |
+| `size:` | `:xs`, `:sm`, `:md`, `:lg`, `:icon_sm`, `:icon_md`, `:icon_lg` | `:md` | Scale. The `icon_*` sizes render a square badge for a lone icon. |
+| `href:` | `String` | - | Render an `<a>`; makes the badge focusable and interactive. |
+| `as:` | `:span`, `:a`, `:button` | `:span` | The element to render; `:button` gets `type="button"`. |
+| `class:` | `String` | - | Extra classes, merged via tailwind_merge. |
+
+The root carries `data-variant` and `data-size` (e.g. `primary-outline`, `icon-sm`) for styling hooks.
+
+## Accessibility
+
+- A plain Badge is a `<span>` - purely visual. Don't rely on color alone to convey meaning; back it
+  with text (e.g. "Active", not just a green badge).
+- For an icon-only badge, supply an `aria_label:` so the icon's meaning is announced.
+- For a count badge, keep the visible number short and put the full meaning in `aria_label:`
+  (e.g. "3 unread notifications").
+- When you make a badge interactive, use `href:` or `as: :button` so it's a real `<a>` or `<button>`:
+  keyboard-focusable and announced with the correct role.
+- Hover/press transitions are skipped when the user prefers reduced motion.

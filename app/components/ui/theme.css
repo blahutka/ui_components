@@ -14,9 +14,12 @@
   --primary: #101828; --primary-muted: #364153; --primary-foreground: #fff;
   --secondary: #90c5ff; --secondary-muted: #bedbff; --secondary-foreground: #030712;
   --error: #ffa3a3; --error-subtle: #fb2c361a; --error-muted: #ffcaca; --error-emphasis: #fb2c36; --error-foreground: #030712;
-  --success: #5ee9b5; --success-subtle: #00bb7f1a; --success-emphasis: #00bb7f;
+  --success: #5ee9b5; --success-subtle: #00bb7f1a; --success-muted: #a4f4cf; --success-emphasis: #00bb7f; --success-foreground: #030712;
+  --warning: #ffb96d; --warning-subtle: #fe6e001a; --warning-muted: #ffd7a8; --warning-emphasis: #fe6e00; --warning-foreground: #030712;
+  --info: #77d4ff; --info-subtle: #00a5ef1a; --info-muted: #b8e6fe; --info-emphasis: #00a5ef; --info-foreground: #030712;
   --focus-ring: #d1d5dc; --focus-ring-input: #e5e7eb; --focus-ring-primary: #d1d5dc;
-  --focus-ring-secondary: #3080ff4d; --focus-ring-error: #fb2c364d;
+  --focus-ring-secondary: #3080ff4d; --focus-ring-error: #fb2c364d; --focus-ring-success: #00bb7f4d;
+  --focus-ring-warning: #fe6e004d; --focus-ring-info: #00a5ef4d; --focus-ring-light: #ffffff40;
   --radius: .875rem;
   --shadow-color: #6a72822e; --selection-color: #0307121a;
   --opacity-disabled: .65;
@@ -33,9 +36,12 @@
   --primary: #fff; --primary-muted: #e5e7eb; --primary-foreground: #101828;
   --secondary: #54a2ff; --secondary-muted: #90c5ff; --secondary-foreground: #030712;
   --error: #ff6568; --error-subtle: #fb2c361a; --error-muted: #ffa3a3; --error-emphasis: #fb2c36; --error-foreground: #030712;
-  --success: #00d294; --success-subtle: #00bb7f1a; --success-emphasis: #00bb7f;
+  --success: #00d294; --success-subtle: #00bb7f1a; --success-muted: #5ee9b5; --success-emphasis: #00bb7f; --success-foreground: #030712;
+  --warning: #ff8b1a; --warning-subtle: #fe6e001a; --warning-muted: #ffb96d; --warning-emphasis: #fe6e00; --warning-foreground: #030712;
+  --info: #00bcfe; --info-subtle: #00a5ef1a; --info-muted: #77d4ff; --info-emphasis: #00a5ef; --info-foreground: #030712;
   --focus-ring: #364153; --focus-ring-input: #1e2939; --focus-ring-primary: #364153;
-  --focus-ring-secondary: #3080ff80; --focus-ring-error: #fb2c3680;
+  --focus-ring-secondary: #3080ff80; --focus-ring-error: #fb2c3680; --focus-ring-success: #00bb7f80;
+  --focus-ring-warning: #fe6e0080; --focus-ring-info: #00a5ef80; --focus-ring-light: #ffffff40;
   --shadow-color: #0000004d; --selection-color: #ffffff26;
 }
 
@@ -72,12 +78,28 @@
   --color-error-foreground: var(--error-foreground);
   --color-success: var(--success);
   --color-success-subtle: var(--success-subtle);
+  --color-success-muted: var(--success-muted);
   --color-success-emphasis: var(--success-emphasis);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-warning-muted: var(--warning-muted);
+  --color-warning-emphasis: var(--warning-emphasis);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-subtle: var(--info-subtle);
+  --color-info-muted: var(--info-muted);
+  --color-info-emphasis: var(--info-emphasis);
+  --color-info-foreground: var(--info-foreground);
   --color-ring: var(--focus-ring);
   --color-ring-input: var(--focus-ring-input);
   --color-ring-primary: var(--focus-ring-primary);
   --color-ring-secondary: var(--focus-ring-secondary);
   --color-ring-error: var(--focus-ring-error);
+  --color-ring-success: var(--focus-ring-success);
+  --color-ring-warning: var(--focus-ring-warning);
+  --color-ring-info: var(--focus-ring-info);
+  --color-ring-light: var(--focus-ring-light);
 
   --radius-xs: calc(var(--radius) * 5 / 7);
   --radius-sm: calc(var(--radius) * 6 / 7);
