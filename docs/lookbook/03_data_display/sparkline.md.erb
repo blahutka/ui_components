@@ -1,0 +1,182 @@
+---
+id: sparkline
+title: Sparkline
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A compact, interactive inline chart for showing a trend at a glance.
+[Appica docs](https://appica.dev/ui/components/react/sparkline)
+
+<%= embed UI::SparklinePreview, :default %>
+
+## Usage
+
+```ruby
+Sparkline(data: [8, 14, 10, 18, 15, 22, 19, 27]) do
+  SparklineChart(variant: :area, aria_label: "Signups over 8 weeks")
+end
+```
+
+Sparkline is a compound component. The root owns the series, labels, formatting, and active point;
+`SparklineChart` draws it; `SparklineValue` and `SparklineLabel` show the active reading (or the last
+reading while idle).
+
+Line and area charts are server-rendered SVG. Columns are ordinary HTML elements. JavaScript only
+adds pointer/touch state, so the chart is complete before the controller connects.
+
+## Examples
+
+### Line
+
+The default is a crisp stroke. Its hover indicator snaps to the nearest point.
+
+<%= embed UI::SparklinePreview, :default %>
+
+### Area
+
+`variant: :area` fills between the curve and `baseline:` (zero by default). Values below the
+baseline fill below it, so a signed series reads as magnitude rather than only direction.
+
+<%= embed UI::SparklinePreview, :area %>
+
+### Filled line
+
+A line is stroke-only by default. Add `fill: true` for a gradient that fades to the bottom edge.
+This works well for KPIs far from zero; use `variant: :area` when the baseline itself has meaning.
+
+<%= embed UI::SparklinePreview, :filled_line %>
+
+### Columns
+
+`variant: :column` renders one bar per reading. Bars grow above or below `baseline:` and the active
+bucket is highlighted on hover.
+
+<%= embed UI::SparklinePreview, :columns %>
+
+### Line smoothing
+
+`curve:` ranges from `0` (straight segments) to `1` (fully rounded peaks).
+
+<%= embed UI::SparklinePreview, :smoothing %>
+
+### Line weight
+
+`stroke_width:` is measured in pixels and stays the same at any chart width.
+
+<%= embed UI::SparklinePreview, :line_weight %>
+
+### Tooltip
+
+Set `tooltip: true` to float the current value. Root `labels:` appear beside it.
+
+<%= embed UI::SparklinePreview, :tooltip %>
+
+### Value headline
+
+Put `SparklineValue` and `SparklineLabel` anywhere inside the root. They show the final point while
+idle and follow the nearest point while the chart is active.
+
+<%= embed UI::SparklinePreview, :value_headline %>
+
+```ruby
+Sparkline(data: totals, labels: dates, class: "w-72") do
+  SparklineLabel()
+  SparklineValue(class: "text-2xl")
+  SparklineChart(fill: true, height: 56, tooltip: true,
+                 aria_label: "Active users this week")
+end
+```
+
+### Reacting to the active point
+
+The root dispatches `ui--sparkline:active-change` with `{ point: { index, value, label } }`, or
+`{ point: null }` when the pointer leaves or a touch ends. Connect it to another Stimulus controller
+when a reading needs to appear outside the sparkline.
+
+```ruby
+Sparkline(data: totals, labels: dates,
+          data: { action: "ui--sparkline:active-change->dashboard#showReading" }) do
+  SparklineChart(aria_label: "Weekly requests")
+end
+```
+
+### Custom tooltip and text
+
+A render block receives each point. Sparkline pre-renders those variants and the controller swaps
+the active one, so custom content still works without client-side templates.
+
+```ruby
+Sparkline(data: totals, labels: dates) do
+  SparklineValue { |formatted, _value| "#{formatted} users" }
+  SparklineLabel { |label, point| "#{label} · day #{point[:index] + 1}" }
+  SparklineChart do |point|
+    strong { "#{point[:label]}: #{point[:value]}" }
+  end
+end
+```
+
+### Custom colors
+
+`color:` accepts a theme token or any CSS color and drives the line, fill, indicator, columns, and
+tooltip swatch.
+
+<%= embed UI::SparklinePreview, :colors %>
+
+### RTL
+
+The visualization and pointer mapping mirror automatically under `dir="rtl"`.
+
+<%= embed UI::SparklinePreview, :rtl %>
+
+## API reference
+
+### Sparkline
+
+The root `<div>`. Every other HTML attribute is forwarded.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data:` | `Array<Numeric>` | required | Series to plot. |
+| `labels:` | `Array<String>` | - | Per-point labels for label and tooltip parts. |
+| `color:` | CSS color | `var(--primary)` | Shared accent exposed as `--sparkline-color`. |
+| `format:` | `Hash` | - | Number options: `style: :currency/:percent`, `currency:`, `maximum_fraction_digits:`. |
+| `locale:` | locale | - | Rails/I18n locale for initial server formatting. |
+| `class:` | `String` | - | Extra classes, merged via tailwind_merge. |
+
+### SparklineChart
+
+The visualization wrapper (`<div role="img">`).
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` | `:line`, `:area`, `:column` | `:line` | Visualization style. |
+| `curve:` | `0..1` | `0.5` | Line smoothing. |
+| `fill:` | `Boolean` | `false` | Gradient fill for a line. Area is always filled. |
+| `baseline:` | `Numeric` | `0` | Pivot for area and columns. |
+| `height:` | `Numeric` | `48` | Chart height in pixels. |
+| `stroke_width:` | `Numeric` | `2` | Line/area stroke width in pixels. |
+| `indicator:` | `Boolean` | `true` | Show dot/guide or active-column highlight. |
+| `tooltip:` | `Boolean` | `false` | Show a tooltip at the active point. |
+| `aria_label:` | `String` | `"{variant} chart"` | Accessible graphic name; prefer a descriptive summary. |
+| block | `(point) -> content` | - | Custom tooltip; implies tooltip. |
+
+### SparklineValue
+
+Renders the active-or-last formatted value in a `<span>`. A block receives `formatted, value` and
+may render custom content.
+
+### SparklineLabel
+
+Renders the active-or-last label in a `<span>`, or nothing when the root has no labels. A block
+receives `label, point`.
+
+## Accessibility
+
+- `SparklineChart` has `role="img"`. Give it a descriptive `aria_label:` that summarizes the data,
+  not merely "chart".
+- Tooltip and indicator overlays are `aria-hidden`; important values should also appear as text via
+  `SparklineValue`, `SparklineLabel`, or an active-change listener.
+- Pointer interaction is supplemental. The full trend remains visible without interaction or
+  JavaScript.
+- Motion classes are guarded by `motion-safe`, so transitions stop under reduced motion.
