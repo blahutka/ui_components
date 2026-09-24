@@ -240,13 +240,34 @@ class UI::IconPreview < UI::BasePreview
           if (!button) return
 
           const { snippet } = button.dataset
-          try {
-            await navigator.clipboard.writeText(snippet)
+          if (await copy(snippet)) {
             window.UI?.toast?.add({ title: "Copied to clipboard", description: snippet, icon: "success", timeout: 2500 })
-          } catch {
+          } else {
             window.UI?.toast?.add({ title: snippet, description: "Copy it from here - clipboard access was blocked.", timeout: 6000 })
           }
+          button.focus()
         })
+
+        // Lookbook renders previews in an iframe without clipboard permission, where
+        // navigator.clipboard is refused - fall back to copying a selected textarea
+        async function copy(text) {
+          try {
+            await navigator.clipboard.writeText(text)
+            return true
+          } catch {
+            const field = Object.assign(document.createElement("textarea"), { value: text, readOnly: true })
+            field.style.cssText = "position: fixed; top: 0; left: 0; opacity: 0; pointer-events: none"
+            document.body.append(field)
+            field.select()
+            try {
+              return document.execCommand("copy")
+            } catch {
+              return false
+            } finally {
+              field.remove()
+            }
+          }
+        }
       JS
   end
 end
