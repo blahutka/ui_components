@@ -1,0 +1,94 @@
+---
+id: loader
+title: Loader
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+An indicator that shows a loading state.
+[Appica docs](https://appica.dev/ui/components/react/loader)
+
+<%= embed UI::LoaderPreview, :default %>
+
+## Usage
+
+```ruby
+Loader()
+Loader(variant: :dots, current_color: true, class: "text-3xl")
+```
+
+Loader is an indeterminate progress indicator - it conveys "working on it" without a percentage. It comes in
+two shapes via `variant:` - `:bar` (a track with a sweeping fill, the default) and `:dots` (three dots flowing
+left to right). Both read a little more like progress than a [Spinner](<%= page_path(:spinner) %>), so they
+suit section- and status-level waits.
+
+It's sized by font-size - set a `text-*` class (or inherit `1em`) - and `current_color: true` makes it match
+the surrounding text instead of the primary accent. The shapes are SVG with SMIL `<animate>` elements, so they
+loop with no JavaScript; under `prefers-reduced-motion` a static frame is shown instead.
+
+## Examples
+
+### Variants
+
+<%= embed UI::LoaderPreview, :variants %>
+
+### Sizing
+
+There's no size prop - a `text-*` utility resizes the loader, and its width/height ratio is fixed.
+
+<%= embed UI::LoaderPreview, :sizing %>
+
+### Color
+
+The primary accent with a soft track by default; `current_color: true` adopts the text color.
+
+<%= embed UI::LoaderPreview, :color %>
+
+### Load more
+
+A "load more" button shows the dots loader while the next page fetches; `current_color:` matches the button text.
+
+<%= embed UI::LoaderPreview, :load_more %>
+
+### Section loading
+
+Show a centered loader while a panel's data is in flight, then swap in the content.
+
+<%= embed UI::LoaderPreview, :section %>
+
+With Turbo, a lazy frame's placeholder content is exactly this spot:
+
+```erb
+<%%= turbo_frame_tag "revenue", src: revenue_path, loading: :lazy do %>
+  <%%= render UI::Loader.new(class: "text-4xl") %>
+<%% end %>
+```
+
+### Inline status
+
+Sized in `em` with `current_color:`, a loader sits on the line next to a "syncing…" message.
+
+<%= embed UI::LoaderPreview, :inline_status %>
+
+### RTL
+
+<%= embed UI::LoaderPreview, :rtl %>
+
+## API reference
+
+Loader renders a single `<span role="status">`; other attributes are forwarded to it.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` | `:bar`, `:dots` | `:bar` | The animated shape. |
+| `current_color:` | `Boolean` | `false` | Inherit the surrounding text color instead of the primary accent. |
+| `aria_label:` | `String` | `"Loading"` | Accessible name for the status region. |
+| `class:` | `String` | - | Extra classes, merged via tailwind_merge. Set a `text-*` size here. |
+
+## Accessibility
+
+- The loader is a `role="status"` live region labelled "Loading"; pass a more specific `aria_label:`
+  ("Uploading files") when it helps.
+- When a loader replaces a section's content, keep one labelled status in the region rather than several.
+- A loader beside text that already states the status can be `aria_hidden: true` to avoid a duplicate announcement.
+- The animation is replaced by a static frame when the user prefers reduced motion.

@@ -27,9 +27,18 @@ export default class extends Controller {
     this.openValue = true
   }
 
-  // The server renders the initial state, so only react to changes after connecting
-  openValueChanged(open, previous) {
-    if (previous === undefined) return
+  // Stimulus runs change callbacks once before connect() (with the default as the previous
+  // value); the server already rendered that state, so only react once connected
+  connect() {
+    this.connected = true
+  }
+
+  disconnect() {
+    this.connected = false
+  }
+
+  openValueChanged(open) {
+    if (!this.connected) return
 
     this.setState(open)
     this.contentTargets.forEach(content => open ? this.expand(content) : this.collapse(content))

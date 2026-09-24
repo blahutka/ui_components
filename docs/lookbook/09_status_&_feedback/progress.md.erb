@@ -1,0 +1,106 @@
+---
+id: progress
+title: Progress
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+Displays the completion status of a task that takes a while.
+[Appica docs](https://appica.dev/ui/components/react/progress)
+
+<%= embed UI::ProgressPreview, :default %>
+
+## Usage
+
+```ruby
+Progress(value: 60) do
+  ProgressLabel { "Uploading" }
+  ProgressValue()
+end
+```
+
+Progress tracks a task moving toward completion (an upload, an import, an install), unlike
+[Meter](<%= page_path(:meter) %>), which shows a static measurement. Set `value:` from 0 to 100 (or pass
+`min:` / `max:`). When you can't compute a percentage, reach for a [Loader](<%= page_path(:loader) %>) or
+[Spinner](<%= page_path(:spinner) %>).
+
+Two layouts via `variant:`: `:bar` (a horizontal track, the default) with the label and value above it, and
+`:circular` (an SVG ring) with the value centered inside. Recolor the fill with `indicator_color:` and tune its
+weight with `thickness:` (plus `size:` for the ring).
+
+## Examples
+
+### Circular
+
+<%= embed UI::ProgressPreview, :circular %>
+
+### Custom color & thickness
+
+`indicator_color:` accepts any CSS color (a theme token like `var(--success-emphasis)` keeps it on-brand) and
+`thickness:` the weight in pixels - for both the bar and the ring.
+
+<%= embed UI::ProgressPreview, :custom %>
+
+### File upload (controlled)
+
+Advance the value as bytes arrive by setting `data-ui--progress-value-value` - the fill animates between
+values, and at `max` every part gets `data-complete`, which the card uses (`group-has-data-complete:`) to swap
+the icon and label and reveal an action.
+
+<%= embed UI::ProgressPreview, :upload %>
+
+```js
+xhr.upload.addEventListener("progress", ({ loaded, total }) => {
+  progress.setAttribute("data-ui--progress-value-value", Math.round((loaded / total) * 100))
+})
+```
+
+From the server, replace it with a Turbo Stream as a job advances:
+
+```ruby
+turbo_stream.replace "import-progress", UI::Progress.new(value: import.percent, id: "import-progress", aria_label: "Import")
+```
+
+### RTL
+
+The label and value swap sides and the bar fills from the right.
+
+<%= embed UI::ProgressPreview, :rtl %>
+
+## API reference
+
+The root exposes `data-variant` and one of `data-progressing`, `data-complete` or `data-indeterminate`
+(also set on the label, value and track) for styling.
+
+### Progress
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value:` | `Numeric`, `nil` | - | Current value from `min:` to `max:`; `nil` is indeterminate. |
+| `variant:` | `:bar`, `:circular` | `:bar` | Horizontal track or SVG ring. |
+| `min:` | `Numeric` | `0` | Lower bound of the range. |
+| `max:` | `Numeric` | `100` | Upper bound of the range. |
+| `indicator_color:` | `String` (CSS color) | `var(--primary)` | Fill color, set as `--progress-color`. |
+| `thickness:` | `Integer` (px) | `6` / `4` | Track weight: 6 for the bar, 4 for the ring. |
+| `size:` | `Integer` (px) | `56` | Diameter of the ring (circular only). |
+| `format:` | `Hash` (Intl.NumberFormat options) | percent | Formatting of the displayed value, as for Meter. |
+| `locale:` | `String` | browser's | Locale for live updates. |
+| `aria_label:` | `String` | - | Name the progress bar when there's no `ProgressLabel`. |
+
+Other attributes go to the `role="progressbar"` root; `class:` is merged (set the bar width here).
+
+### ProgressLabel
+
+A `<span>` wired to the root with `aria-labelledby`.
+
+### ProgressValue
+
+A `<span>` with the formatted value; a block receives `|formatted, value|` to build the text yourself.
+
+## Accessibility
+
+- Progress renders `role="progressbar"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and
+  `aria-valuetext` reflecting the value.
+- Give every progress bar a name - a `ProgressLabel` or `aria_label:` on the root.
+- The circular SVG is `aria-hidden`; the accessible value comes from the root's ARIA attributes.
+- The fill animation is disabled when the user prefers reduced motion.

@@ -24,6 +24,13 @@ class UI::Base < Phlex::HTML
       context[key] = previous
     end
 
+    # A component's default attributes minus the ones the caller sets itself, so a caller's
+    # `aria_label:` or `role:` replaces the default instead of being appended by mix()
+    # (data: still merges).
+    def defaults(**attributes)
+      attributes.except(*(@attributes.keys - [ :data ]))
+    end
+
     def consume(key, component:)
       context[key] || raise(ArgumentError, "#{self.class.name} must be rendered inside #{component}")
     end

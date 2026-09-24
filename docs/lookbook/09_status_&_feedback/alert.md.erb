@@ -1,0 +1,127 @@
+---
+id: alert
+title: Alert
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A prominent, in-page message that draws attention to a status or event.
+[Appica docs](https://appica.dev/ui/components/react/alert)
+
+<%= embed UI::AlertPreview, :default %>
+
+## Usage
+
+```ruby
+Alert(variant: :info) do
+  AlertIcon { info_icon }
+  AlertTitle { "Scheduled maintenance" }
+  AlertDescription { "Some features may be unavailable Sunday night." }
+end
+```
+
+Alert is a banner for a message that lives in the page layout - a status, a heads-up, a result. Compose it
+from its parts:
+
+- `Alert` - the `role="alert"` container. Sets the variant color and layout, and owns the optional dismiss behavior.
+- `AlertIcon` - a leading icon slot that automatically takes the variant's color.
+- `AlertTitle` - the headline (`<h5>`).
+- `AlertDescription` - the supporting body text.
+- `AlertAction` - a trailing row for buttons.
+
+The slots are placed by a grid, so include only the ones you need. For a transient, stacked notification
+use a [Toast](<%= page_path(:toast) %>) instead; for a blocking confirmation, a dialog.
+
+## Examples
+
+### Variants
+
+Seven variants color the alert for its purpose: `:default`, `:primary`, `:secondary`, `:info`, `:success`,
+`:warning` and `:error`. The `AlertIcon` inherits the variant's accent color.
+
+<%= embed UI::AlertPreview, :variants %>
+
+### Inline layout
+
+`layout: :inline` flows the icon, title and description onto a single row once there's room. The alert is a
+container-query box, so it falls back to the stacked layout when it gets narrow - good for slim page-top banners.
+
+<%= embed UI::AlertPreview, :inline %>
+
+### With actions
+
+Add an `AlertAction` row for buttons. It sits below the text in the block layout and trails the message inline.
+
+<%= embed UI::AlertPreview, :actions %>
+
+### Dismissible
+
+`dismissible: true` adds a close button; the alert scales down, blurs and collapses away. To remember the
+dismissal across visits give it a `persist_key:` - the choice is stored in `localStorage` (or
+`sessionStorage` with `persist_storage: :session`) and the alert stays hidden on return.
+
+<%= embed UI::AlertPreview, :dismissible %>
+
+```ruby
+Alert(variant: :primary, dismissible: true, persist_key: "reports-announcement") { … }
+```
+
+### Controlled
+
+The Stimulus controller sits on the alert's outer box. Set its `data-ui--alert-open-value` to `"true"` /
+`"false"` to show or hide it (animated), and listen for `ui--alert:open-change` (`{ open }`) - here to bring
+a dismissed alert back. `open: false` renders the alert closed.
+
+<%= embed UI::AlertPreview, :controlled %>
+
+```js
+box.addEventListener("ui--alert:open-change", ({ detail }) => showButton.hidden = detail.open)
+showButton.addEventListener("click", () => box.setAttribute("data-ui--alert-open-value", "true"))
+```
+
+### RTL
+
+The icon moves to the right, the dismiss button to the left, and the action row aligns to the start edge -
+all from CSS logical properties.
+
+<%= embed UI::AlertPreview, :rtl %>
+
+## API reference
+
+### Alert
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` | `:default`, `:primary`, `:secondary`, `:info`, `:success`, `:warning`, `:error` | `:default` | Color scheme; also drives the `AlertIcon` accent. |
+| `layout:` | `:block`, `:inline` | `:block` | Stack the parts, or flow them on one row when wide enough. |
+| `dismissible:` | `Boolean` | `false` | Render a close button that hides the alert (with an exit animation). |
+| `open:` | `Boolean` | `true` | Initial visibility; drive it later through `data-ui--alert-open-value`. |
+| `persist_key:` | `String` | - | Remember the dismissal under this key so the alert stays hidden on return. |
+| `persist_storage:` | `:local`, `:session` | `:local` | Which Web Storage backs `persist_key:`. |
+| `close_label:` | `String` | `"Dismiss"` | Accessible label for the close button. |
+| `role:` | `String` | `"alert"` | Live-region role. Use `"status"` for a polite, non-interruptive alert. |
+
+Other attributes (`class:`, `id:`, `data:` …) go to the `role="alert"` element; `class:` is merged with tailwind_merge.
+
+Actions: `ui--alert#dismiss`, `ui--alert#show`. Event: `ui--alert:open-change` with `{ open }`.
+
+### AlertIcon, AlertDescription, AlertAction
+
+Render a `<span>`, `<p>` and `<div>`; they take any attributes, and `class:` is merged.
+
+### AlertTitle
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `as:` | `:h1` … `:h6`, `:div` | `:h5` | Heading level, so the alert fits the page's outline. |
+
+## Accessibility
+
+- Alert renders with `role="alert"`, so assistive tech announces its contents when it appears - keep the
+  message concise. It's an assertive live region: mount it when there's something to announce, or use
+  `role: "status"` for a polite one.
+- The dismiss button is a real `<button>` named by `close_label:`; customize it when "Dismiss" is ambiguous.
+- `AlertIcon` is decorative - convey meaning in the title and description, not the icon alone.
+- The exit/enter animation is skipped when the user prefers reduced motion. With `persist_key:` the alert
+  is hidden when the controller connects, so a remembered alert can flash briefly on a full page load -
+  prefer rendering it with `open: false` when the server knows it was dismissed.

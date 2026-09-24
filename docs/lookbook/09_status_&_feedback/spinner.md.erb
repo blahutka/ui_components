@@ -1,0 +1,97 @@
+---
+id: spinner
+title: Spinner
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A spinning indicator that shows a loading state.
+[Appica docs](https://appica.dev/ui/components/react/spinner)
+
+<%= embed UI::SpinnerPreview, :default %>
+
+## Usage
+
+```ruby
+Spinner()
+Button(disabled: true) do
+  Spinner(current_color: true, class: "text-[1.2em]")
+  plain "Saving…"
+end
+```
+
+Spinner is a small, self-contained loading indicator - use it whenever something is happening and you can't
+show progress. Three shapes via `variant:`: `:circular` (the default sweep), `:dots` (a ring of fading ticks)
+and `:sparkle` (a morphing four-point star).
+
+It's sized by font-size, so set a `text-*` class (or inherit `1em` from a parent), and `current_color: true`
+takes the surrounding text color instead of the primary accent - what you want inside a colored button. The
+animation is SVG SMIL, so it runs without JavaScript; under `prefers-reduced-motion` a static frame is shown.
+
+For a wider "this section is loading" indicator, use [Loader](<%= page_path(:loader) %>).
+
+## Examples
+
+### Variants
+
+<%= embed UI::SpinnerPreview, :variants %>
+
+### Sizing
+
+<%= embed UI::SpinnerPreview, :sizing %>
+
+### Color
+
+<%= embed UI::SpinnerPreview, :color %>
+
+### In a button
+
+Show a spinner while the action runs: `current_color:` matches the button text, `text-[1.2em]` scales with
+the button, and the button is disabled meanwhile. The second pairs the sparkle variant with an "Ask AI" affordance.
+
+<%= embed UI::SpinnerPreview, :in_button %>
+
+With Turbo you can get this without JavaScript: render the spinner hidden inside the submit button and reveal
+it while the form submits (Turbo sets `aria-busy` on the form, so give the form `class: "group"`):
+
+```ruby
+Button(type: "submit", class: "group-aria-busy:pointer-events-none") do
+  Spinner(current_color: true, class: "hidden text-[1.2em] group-aria-busy:inline-flex")
+  plain "Save changes"
+end
+```
+
+### Refresh button
+
+In an icon button, swap the icon for a spinner - the button keeps its size, so the layout never jumps.
+
+<%= embed UI::SpinnerPreview, :refresh %>
+
+### Loading a panel
+
+<%= embed UI::SpinnerPreview, :panel %>
+
+### RTL
+
+The spinner is direction-agnostic; inside a button it leads the label on the correct side.
+
+<%= embed UI::SpinnerPreview, :rtl %>
+
+## API reference
+
+Spinner renders a single `<span role="status">`; other attributes are forwarded to it.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` | `:circular`, `:dots`, `:sparkle` | `:circular` | The animated shape. |
+| `current_color:` | `Boolean` | `false` | Inherit the surrounding text color instead of the primary accent. |
+| `aria_label:` | `String` | `"Loading"` | Accessible name for the status region. |
+| `class:` | `String` | - | Extra classes, merged via tailwind_merge. Set a `text-*` size here. |
+
+## Accessibility
+
+- The spinner is a `role="status"` live region labelled "Loading"; give it a more specific `aria_label:`
+  ("Saving") when the context warrants it.
+- Inside a button, the button's own text ("Saving…") is the accessible name - the spinner reinforces it visually.
+- A purely decorative spinner beside text that already conveys the state can be `aria_hidden: true`.
+- The animation is replaced by a static frame when the user prefers reduced motion.
