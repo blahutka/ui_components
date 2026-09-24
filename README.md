@@ -168,5 +168,12 @@ Notes:
   390px device frame, so breakpoints and media queries respond as on a real device. Touch input
   and `pointer: coarse` still need browser device emulation (open the preview in a new window).
   The preview layout is `test/dummy/app/views/layouts/component_preview.html.erb`.
+- The inspector drawer has an **Editor** tab (hotkey `e`) with links that open the scenario's
+  method, every file in the component's folder and its docs page in your editor. RubyMine by
+  default (`x-mine://`, macOS); set `LOOKBOOK_EDITOR=idea|vscode|cursor|zed` (or a URL template
+  with `%{file}` and `%{line}`) for another one. The links go through the dev server
+  (`/editor/open`, development and local requests only, project files only), which hands the
+  editor URL to macOS - so they also work in embedded browsers that won't follow `x-mine://`.
+  See `test/dummy/app/lib/editor_link.rb`.
 - If styles look missing after adding new classes, check that the Tailwind watcher is running,
   or rebuild with `bin/rails tailwindcss:build` from `test/dummy`.

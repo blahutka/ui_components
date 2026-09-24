@@ -1,0 +1,54 @@
+<%# Lookbook "Editor" panel: open the preview, the scenario and the component's files in your editor.
+    Registered in config/initializers/lookbook.rb; links come from app/lib/editor_link.rb. %>
+<% root = UiComponents::Engine.root %>
+<% relative = ->(path) { Pathname(path).relative_path_from(root).to_s } %>
+
+<style>
+  .editor-panel { padding: 1rem 1.25rem; font-size: 0.8125rem; line-height: 1.5; }
+  .editor-panel h6 { margin: 0 0 0.5rem; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; opacity: 0.55; }
+  .editor-panel section + section { margin-top: 1.25rem; }
+  .editor-panel ul { list-style: none; margin: 0; padding: 0; }
+  .editor-panel li { margin: 0.125rem 0; }
+  .editor-panel a { display: inline-flex; align-items: baseline; gap: 0.5rem; color: rgb(67 56 202); text-decoration: none; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .editor-panel a:hover { text-decoration: underline; }
+  .editor-panel .hint { opacity: 0.55; font-family: inherit; }
+  .editor-panel .note { margin-top: 1.25rem; opacity: 0.55; }
+</style>
+
+<div class="editor-panel">
+  <section>
+    <h6>Scenario</h6>
+    <ul>
+      <% scenarios.each do |scenario| %>
+        <% file, line = EditorLink.scenario_location(preview, scenario) %>
+        <li>
+          <a target="editor-sink" href="<%= EditorLink.open_path(file, line) %>">
+            <span><%= scenario.label %></span>
+            <span class="hint"><%= relative.call(file) %>:<%= line %></span>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+
+  <section>
+    <h6>Component folder</h6>
+    <ul>
+      <% EditorLink.component_files(preview).each do |path| %>
+        <li><a target="editor-sink" href="<%= EditorLink.open_path(path) %>"><%= relative.call(path) %></a></li>
+      <% end %>
+    </ul>
+  </section>
+
+  <% if (docs = EditorLink.docs_file(preview)) %>
+    <section>
+      <h6>Docs page</h6>
+      <ul><li><a target="editor-sink" href="<%= EditorLink.open_path(docs) %>"><%= relative.call(docs) %></a></li></ul>
+    </section>
+  <% end %>
+
+  <%# Links load into this hidden frame, so clicking one doesn't leave Lookbook %>
+  <iframe name="editor-sink" title="Editor links" hidden></iframe>
+
+  <p class="note">Opens in <%= EditorLink.editor_name %>. Set <code>LOOKBOOK_EDITOR</code> (rubymine, idea, vscode, cursor, zed) to change it.</p>
+</div>
