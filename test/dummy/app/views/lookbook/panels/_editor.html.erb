@@ -13,6 +13,7 @@
   .editor-panel a:hover { text-decoration: underline; }
   .editor-panel .hint { opacity: 0.55; font-family: inherit; }
   .editor-panel .note { margin-top: 1.25rem; opacity: 0.55; }
+  .editor-panel .file-icon { width: 1rem; height: 1rem; flex: none; align-self: center; }
 </style>
 
 <div class="editor-panel">
@@ -23,6 +24,7 @@
         <% file, line = EditorLink.scenario_location(preview, scenario) %>
         <li>
           <a target="editor-sink" href="<%= EditorLink.open_path(file, line) %>">
+            <%= EditorLink.icon(file) %>
             <span><%= scenario.label %></span>
             <span class="hint"><%= relative.call(file) %>:<%= line %></span>
           </a>
@@ -35,7 +37,7 @@
     <h6>Component folder</h6>
     <ul>
       <% EditorLink.component_files(preview).each do |path| %>
-        <li><a target="editor-sink" href="<%= EditorLink.open_path(path) %>"><%= relative.call(path) %></a></li>
+        <li><a target="editor-sink" href="<%= EditorLink.open_path(path) %>"><%= EditorLink.icon(path) %><span><%= relative.call(path) %></span></a></li>
       <% end %>
     </ul>
   </section>
@@ -43,7 +45,7 @@
   <% if (docs = EditorLink.docs_file(preview)) %>
     <section>
       <h6>Docs page</h6>
-      <ul><li><a target="editor-sink" href="<%= EditorLink.open_path(docs) %>"><%= relative.call(docs) %></a></li></ul>
+      <ul><li><a target="editor-sink" href="<%= EditorLink.open_path(docs) %>"><%= EditorLink.icon(docs) %><span><%= relative.call(docs) %></span></a></li></ul>
     </section>
   <% end %>
 

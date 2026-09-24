@@ -53,6 +53,42 @@ module EditorLink
     end
   end
 
+  # The file's type, from its (compound) extension: card.md.erb → :markdown, show.html.erb → :html
+  def file_type(path)
+    name = File.basename(path.to_s)
+    case name
+    when /\.md(\.erb)?\z/, /\.markdown\z/ then :markdown
+    when /\.html(\.\w+)?\z/, /\.erb\z/ then :html
+    when /\.rb\z/, /\.rake\z/, "Gemfile" then :ruby
+    when /\.(js|mjs)\z/ then :js
+    when /\.scss\z/ then :scss
+    when /\.css\z/ then :css
+    else :file
+    end
+  end
+
+  # A 16px badge for the file type (inline SVG)
+  def icon(path)
+    ICONS.fetch(file_type(path)).html_safe
+  end
+
+  TILE = ->(color, text, text_color: "#fff", size: 7) do
+    %(<svg class="file-icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="0.5" y="0.5" width="15" height="15" rx="3" fill="#{color}"/>) +
+      %(<text x="8" y="11" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="#{size}" font-weight="700" fill="#{text_color}">#{text}</text></svg>)
+  end
+
+  ICONS = {
+    ruby: %(<svg class="file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 2.5h7l3 4-6.5 7.5L1.5 6.5z" fill="#CC342D"/>) +
+      %(<path d="M1.5 6.5h13M4.5 2.5 6 6.5l2 7.5 2-7.5 1.5-4M6 6.5h4" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width=".8" stroke-linejoin="round"/></svg>),
+    js: TILE.call("#F7DF1E", "JS", text_color: "#1f1f1f"),
+    html: TILE.call("#E34F26", "&lt;&gt;", size: 7.5),
+    css: TILE.call("#1572B6", "{}", size: 8),
+    scss: TILE.call("#CF649A", "S", size: 9),
+    markdown: TILE.call("#6B7280", "M&#8595;", size: 6.5),
+    file: %(<svg class="file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 1.5h5.5L13 5v9.5H4z" fill="none" stroke="#9CA3AF" stroke-width="1.2" stroke-linejoin="round"/>) +
+      %(<path d="M9.5 1.5V5H13" fill="none" stroke="#9CA3AF" stroke-width="1.2" stroke-linejoin="round"/></svg>)
+  }.freeze
+
   # The docs page for the component, matched by name (card_preview.rb → docs/**/card.md.erb)
   def docs_file(preview)
     name = preview.file_path.basename.to_s.delete_suffix("_preview.rb")
