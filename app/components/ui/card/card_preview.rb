@@ -9,14 +9,6 @@
 # @component UI::Card
 # @display width full
 class UI::CardPreview < UI::BasePreview
-  ICONS = {
-    bookmark: :bookmark,
-    folder_plus: :folder_plus,
-    plus: :plus,
-    heart: :heart,
-    cart: :shopping_cart
-  }.freeze
-
   INPUT = "border-transparent bg-background-muted text-foreground h-10 w-full rounded-md border px-3.5 text-sm outline-none focus:bg-background focus:border-transparent focus:ring-3 focus:ring-ring-input"
 
   # @label Usage
@@ -148,7 +140,7 @@ class UI::CardPreview < UI::BasePreview
               end
               span(class: "text-foreground-muted truncate text-xs") { "Sarah Jenkins · 12 March 2026" }
             end
-            Button(variant: :ghost, size: :sm, icon: true, aria_label: "Save for later") { Icon(ICONS[:bookmark]) }
+            Button(variant: :ghost, size: :sm, icon: true, aria_label: "Save for later") { Icon(:bookmark) }
           end
         end
       end
@@ -208,14 +200,14 @@ class UI::CardPreview < UI::BasePreview
       Card(class: "mx-auto w-full max-w-110", content: { class: "bg-background-subtle items-center border-dashed border-border-strong text-center" }) do
         CardHeader(class: "items-center") do
           span(class: "border-border text-foreground-muted bg-background mb-2 flex size-12 items-center justify-center rounded-xl border [&_svg]:size-5") do
-            Icon(ICONS[:folder_plus])
+            Icon(:folder_plus)
           end
           CardTitle { "No collections yet" }
           CardDescription(class: "max-w-70") { "Collections group related boards so your team can find them without digging through search." }
         end
         CardFooter do
           Button(size: :sm) do
-            Icon(ICONS[:plus], data: { icon: "start" })
+            Icon(:plus, data: { icon: "start" })
             plain "New collection"
           end
         end
@@ -232,7 +224,7 @@ class UI::CardPreview < UI::BasePreview
         CardMedia(class: "h-44") do
           img(src: "/carousel/slide-3.jpg", alt: "Tulip bouquet")
           Badge(variant: :light, size: :sm, class: "absolute inset-s-2 top-2") { "-20%" }
-          Button(variant: :light, size: :sm, icon: true, aria_label: "Add to wishlist", class: "absolute inset-e-2 top-2") { Icon(ICONS[:heart]) }
+          Button(variant: :light, size: :sm, icon: true, aria_label: "Add to wishlist", class: "absolute inset-e-2 top-2") { Icon(:heart) }
         end
         CardHeader do
           div(class: "flex items-start justify-between gap-3") do
@@ -253,7 +245,7 @@ class UI::CardPreview < UI::BasePreview
         end
         CardFooter do
           Button(size: :sm, class: "w-full") do
-            Icon(ICONS[:cart], data: { icon: "start" })
+            Icon(:shopping_cart, data: { icon: "start" })
             plain "Add to cart"
           end
         end

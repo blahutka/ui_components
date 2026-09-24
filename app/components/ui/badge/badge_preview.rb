@@ -9,16 +9,6 @@
 # @component UI::Badge
 # @display width wide
 class UI::BadgePreview < UI::BasePreview
-  ICONS = {
-    check: :check,
-    flame: :flame,
-    bell: :bell,
-    bell_ringing: :bell_ringing,
-    star: :star,
-    bolt: :bolt,
-    crown: :crown
-  }.freeze
-
   # @label Usage
   # @param variant [Symbol] select "Color scheme" { choices: [primary, primary_outline, secondary, soft, outline, error, success, warning, info, light] }
   # @param size [Symbol] select "Scale" { choices: [xs, sm, md, lg] }
@@ -50,7 +40,7 @@ class UI::BadgePreview < UI::BasePreview
       div(class: "relative flex h-44 w-full max-w-66 items-end justify-start overflow-hidden rounded-xl bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500") do
         div(class: "absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-transparent")
         Badge(variant: :light, class: "relative m-3") do
-          Icon(ICONS[:crown], stroke_width: 2, data: { icon: "start" })
+          Icon(:crown, stroke_width: 2, data: { icon: "start" })
           plain "Premium"
         end
       end
@@ -75,16 +65,16 @@ class UI::BadgePreview < UI::BasePreview
     phlex do
       div(class: "flex flex-wrap items-center justify-center gap-2") do
         Badge(variant: :success) do
-          Icon(ICONS[:check], stroke_width: 2, data: { icon: "start" })
+          Icon(:check, stroke_width: 2, data: { icon: "start" })
           plain "Verified"
         end
         Badge(variant: :warning) do
-          Icon(ICONS[:flame], stroke_width: 2, data: { icon: "start" })
+          Icon(:flame, stroke_width: 2, data: { icon: "start" })
           plain "Hot"
         end
         Badge(variant: :soft) do
           plain "Notification"
-          Icon(ICONS[:bell_ringing], stroke_width: 2, data: { icon: "end" })
+          Icon(:bell_ringing, stroke_width: 2, data: { icon: "end" })
         end
       end
     end
@@ -96,9 +86,9 @@ class UI::BadgePreview < UI::BasePreview
   def icon_only
     phlex do
       div(class: "flex flex-wrap items-center justify-center gap-2") do
-        Badge(variant: :success, size: :icon_sm, aria_label: "Verified") { Icon(ICONS[:check], stroke_width: 2) }
-        Badge(variant: :primary_outline, size: :icon_md, aria_label: "Featured") { Icon(ICONS[:star], stroke_width: 2) }
-        Badge(variant: :warning, size: :icon_lg, aria_label: "Boosted") { Icon(ICONS[:bolt], stroke_width: 2) }
+        Badge(variant: :success, size: :icon_sm, aria_label: "Verified") { Icon(:check, stroke_width: 2) }
+        Badge(variant: :primary_outline, size: :icon_md, aria_label: "Featured") { Icon(:star, stroke_width: 2) }
+        Badge(variant: :warning, size: :icon_lg, aria_label: "Boosted") { Icon(:bolt, stroke_width: 2) }
       end
     end
   end
@@ -109,7 +99,7 @@ class UI::BadgePreview < UI::BasePreview
   def notification_count
     phlex do
       div(class: "relative inline-flex self-center") do
-        Button(variant: :outline, icon: true, aria_label: "Notifications") { Icon(ICONS[:bell], stroke_width: 2) }
+        Button(variant: :outline, icon: true, aria_label: "Notifications") { Icon(:bell, stroke_width: 2) }
         Badge(variant: :secondary, size: :xs, class: "absolute -inset-e-1.5 -top-1.5 min-w-4 px-1 font-medium", aria_label: "3 unread notifications") { "3" }
       end
     end
@@ -135,7 +125,7 @@ class UI::BadgePreview < UI::BasePreview
     phlex do
       div(dir: "rtl", class: "flex flex-wrap items-center justify-center gap-2") do
         Badge(variant: :success) do
-          Icon(ICONS[:check], stroke_width: 2, data: { icon: "start" })
+          Icon(:check, stroke_width: 2, data: { icon: "start" })
           plain "موثّق"
         end
         Badge(href: "#upgrade") { "ترقية" }

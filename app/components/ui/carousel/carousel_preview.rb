@@ -11,8 +11,6 @@
 # @display width full
 # @display min_height 26rem
 class UI::CarouselPreview < UI::BasePreview
-  CHEVRON = { left: :chevron_left, right: :chevron_right, up: :chevron_up, down: :chevron_down }.freeze
-
   PLACES = [
     { n: 1, title: "Sunlit summit", caption: "Aurora Range", body: "First light catches the ridgeline while the valley below stays in shadow - the clearest window for the summit push." },
     { n: 2, title: "Heather bloom", caption: "Meadowvale Heath", body: "The heath turns violet at golden hour, birches standing in a sea of flowering heather." },
@@ -43,8 +41,8 @@ class UI::CarouselPreview < UI::BasePreview
               CarouselSlide { img(src: "/carousel/slide-#{n}.jpg", alt: "Slide #{n}", class: "aspect-3/2 w-full rounded-xl object-cover") }
             end
           end
-          CarouselPrev { |prev| Button(**prev, variant: :outline, icon: true, class: "rounded-full") { Icon(CHEVRON[:left]) } }
-          CarouselNext { |nxt| Button(**nxt, variant: :outline, icon: true, class: "rounded-full") { Icon(CHEVRON[:right]) } }
+          CarouselPrev { |prev| Button(**prev, variant: :outline, icon: true, class: "rounded-full") { Icon(:chevron_left) } }
+          CarouselNext { |nxt| Button(**nxt, variant: :outline, icon: true, class: "rounded-full") { Icon(:chevron_right) } }
           CarouselPagination(class: "absolute inset-x-0 top-full mt-5 justify-center")
         end
       end
@@ -63,8 +61,8 @@ class UI::CarouselPreview < UI::BasePreview
               CarouselSlide(class: "sm:basis-1/2 md:basis-1/3") { img(src: "/carousel/slide-#{n}.jpg", alt: "Slide #{n}", class: "aspect-square w-full rounded-xl object-cover") }
             end
           end
-          CarouselPrev(position: :outside) { |prev| Button(**prev, variant: :outline, icon: true, class: "rounded-full") { Icon(CHEVRON[:left]) } }
-          CarouselNext(position: :outside) { |nxt| Button(**nxt, variant: :outline, icon: true, class: "rounded-full") { Icon(CHEVRON[:right]) } }
+          CarouselPrev(position: :outside) { |prev| Button(**prev, variant: :outline, icon: true, class: "rounded-full") { Icon(:chevron_left) } }
+          CarouselNext(position: :outside) { |nxt| Button(**nxt, variant: :outline, icon: true, class: "rounded-full") { Icon(:chevron_right) } }
         end
       end
     end
@@ -81,8 +79,8 @@ class UI::CarouselPreview < UI::BasePreview
               CarouselSlide(class: "basis-2/3") { img(src: "/carousel/slide-#{n}.jpg", alt: "Slide #{n}", class: "aspect-3/2 w-full rounded-xl object-cover") }
             end
           end
-          CarouselPrev { |prev| Button(**prev, variant: :outline, icon: true, class: "rounded-full") { Icon(CHEVRON[:left]) } }
-          CarouselNext { |nxt| Button(**nxt, variant: :outline, icon: true, class: "rounded-full") { Icon(CHEVRON[:right]) } }
+          CarouselPrev { |prev| Button(**prev, variant: :outline, icon: true, class: "rounded-full") { Icon(:chevron_left) } }
+          CarouselNext { |nxt| Button(**nxt, variant: :outline, icon: true, class: "rounded-full") { Icon(:chevron_right) } }
         end
       end
     end
@@ -99,8 +97,8 @@ class UI::CarouselPreview < UI::BasePreview
               CarouselSlide { img(src: "/carousel/slide-#{n}.jpg", alt: "Slide #{n}", class: "size-full rounded-xl object-cover") }
             end
           end
-          CarouselPrev { |prev| Button(**prev, variant: :outline, icon: true, class: "rounded-full") { Icon(CHEVRON[:up]) } }
-          CarouselNext { |nxt| Button(**nxt, variant: :outline, icon: true, class: "rounded-full") { Icon(CHEVRON[:down]) } }
+          CarouselPrev { |prev| Button(**prev, variant: :outline, icon: true, class: "rounded-full") { Icon(:chevron_up) } }
+          CarouselNext { |nxt| Button(**nxt, variant: :outline, icon: true, class: "rounded-full") { Icon(:chevron_down) } }
         end
         CarouselPagination(orientation: :vertical)
       end
@@ -151,8 +149,8 @@ class UI::CarouselPreview < UI::BasePreview
               CarouselSlide { img(src: "/carousel/slide-#{n}.jpg", alt: "Slide #{n}", class: "aspect-3/2 w-full rounded-xl object-cover") }
             end
           end
-          CarouselPrev { |prev| Button(**prev, variant: :outline, icon: true, class: "rounded-full") { Icon(CHEVRON[:left]) } }
-          CarouselNext { |nxt| Button(**nxt, variant: :outline, icon: true, class: "rounded-full") { Icon(CHEVRON[:right]) } }
+          CarouselPrev { |prev| Button(**prev, variant: :outline, icon: true, class: "rounded-full") { Icon(:chevron_left) } }
+          CarouselNext { |nxt| Button(**nxt, variant: :outline, icon: true, class: "rounded-full") { Icon(:chevron_right) } }
           CarouselPagination(class: "absolute inset-x-0 top-full mt-5 justify-center")
         end
       end
@@ -177,9 +175,9 @@ class UI::CarouselPreview < UI::BasePreview
             end
           end
           div(class: "mt-5 flex items-center justify-between gap-4") do
-            CarouselPrev(position: :none) { |prev| Button(**prev, variant: :outline, icon: true) { Icon(CHEVRON[:left]) } }
+            CarouselPrev(position: :none) { |prev| Button(**prev, variant: :outline, icon: true) { Icon(:chevron_left) } }
             CarouselPagination()
-            CarouselNext(position: :none) { |nxt| Button(**nxt, variant: :outline, icon: true) { Icon(CHEVRON[:right]) } }
+            CarouselNext(position: :none) { |nxt| Button(**nxt, variant: :outline, icon: true) { Icon(:chevron_right) } }
           end
         end
       end
@@ -220,8 +218,8 @@ class UI::CarouselPreview < UI::BasePreview
               CarouselProgress(variant: :circular)
             end
             div(class: "flex gap-2") do
-              CarouselPrev(position: :none) { |prev| Button(**prev, variant: :outline, icon: true) { Icon(CHEVRON[:left]) } }
-              CarouselNext(position: :none) { |nxt| Button(**nxt, variant: :outline, icon: true) { Icon(CHEVRON[:right]) } }
+              CarouselPrev(position: :none) { |prev| Button(**prev, variant: :outline, icon: true) { Icon(:chevron_left) } }
+              CarouselNext(position: :none) { |nxt| Button(**nxt, variant: :outline, icon: true) { Icon(:chevron_right) } }
             end
           end
         end
@@ -285,8 +283,8 @@ class UI::CarouselPreview < UI::BasePreview
               CarouselSlide { img(src: "/carousel/slide-#{place[:n]}.jpg", alt: place[:title], class: "aspect-3/2 w-full rounded-xl object-cover") }
             end
           end
-          CarouselPrev(position: :outside) { |prev| Button(**prev, variant: :outline, icon: true, class: "rounded-full") { Icon(CHEVRON[:left]) } }
-          CarouselNext(position: :outside) { |nxt| Button(**nxt, variant: :outline, icon: true, class: "rounded-full") { Icon(CHEVRON[:right]) } }
+          CarouselPrev(position: :outside) { |prev| Button(**prev, variant: :outline, icon: true, class: "rounded-full") { Icon(:chevron_left) } }
+          CarouselNext(position: :outside) { |nxt| Button(**nxt, variant: :outline, icon: true, class: "rounded-full") { Icon(:chevron_right) } }
         end
         Carousel(id: "synced-captions", loop: true, fade: true, draggable: false) do
           CarouselContent do
@@ -322,8 +320,8 @@ class UI::CarouselPreview < UI::BasePreview
             end
           end
           div(class: "mt-5 flex justify-center gap-2") do
-            CarouselPrev(position: :none) { |prev| Button(**prev, variant: :outline, icon: true) { Icon(CHEVRON[:left]) } }
-            CarouselNext(position: :none) { |nxt| Button(**nxt, variant: :outline, icon: true) { Icon(CHEVRON[:right]) } }
+            CarouselPrev(position: :none) { |prev| Button(**prev, variant: :outline, icon: true) { Icon(:chevron_left) } }
+            CarouselNext(position: :none) { |nxt| Button(**nxt, variant: :outline, icon: true) { Icon(:chevron_right) } }
           end
         end
       end
@@ -346,8 +344,8 @@ class UI::CarouselPreview < UI::BasePreview
             end
           end
           div(class: "mt-5 flex justify-center gap-2") do
-            CarouselPrev(position: :none) { |prev| Button(**prev, variant: :outline, icon: true) { Icon(CHEVRON[:left]) } }
-            CarouselNext(position: :none) { |nxt| Button(**nxt, variant: :outline, icon: true) { Icon(CHEVRON[:right]) } }
+            CarouselPrev(position: :none) { |prev| Button(**prev, variant: :outline, icon: true) { Icon(:chevron_left) } }
+            CarouselNext(position: :none) { |nxt| Button(**nxt, variant: :outline, icon: true) { Icon(:chevron_right) } }
           end
         end
       end
@@ -374,8 +372,8 @@ class UI::CarouselPreview < UI::BasePreview
               end
             end
           end
-          CarouselPrev { |prev| Button(**prev, variant: :light, icon: true, class: "rounded-full") { Icon(CHEVRON[:left]) } }
-          CarouselNext { |nxt| Button(**nxt, variant: :light, icon: true, class: "rounded-full") { Icon(CHEVRON[:right]) } }
+          CarouselPrev { |prev| Button(**prev, variant: :light, icon: true, class: "rounded-full") { Icon(:chevron_left) } }
+          CarouselNext { |nxt| Button(**nxt, variant: :light, icon: true, class: "rounded-full") { Icon(:chevron_right) } }
           CarouselPagination(class: "absolute inset-x-0 bottom-5 justify-center")
         end
       end
@@ -395,14 +393,14 @@ class UI::CarouselPreview < UI::BasePreview
             end
           end
           div(class: "mt-5 flex items-center justify-between") do
-            CarouselPrev(position: :none) { |prev| Button(**prev, variant: :outline, icon: true) { Icon(CHEVRON[:left]) } }
+            CarouselPrev(position: :none) { |prev| Button(**prev, variant: :outline, icon: true) { Icon(:chevron_left) } }
             p(class: "text-sm tabular-nums") do
               plain "Slide "
               span(data: { "ui--carousel-target": "current" }) { "1" }
               plain " of "
               span(data: { "ui--carousel-target": "count" }) { "5" }
             end
-            CarouselNext(position: :none) { |nxt| Button(**nxt, variant: :outline, icon: true) { Icon(CHEVRON[:right]) } }
+            CarouselNext(position: :none) { |nxt| Button(**nxt, variant: :outline, icon: true) { Icon(:chevron_right) } }
           end
         end
       end
@@ -420,8 +418,8 @@ class UI::CarouselPreview < UI::BasePreview
               CarouselSlide { img(src: "/carousel/slide-#{n}.jpg", alt: "الشريحة #{n}", class: "aspect-3/2 w-full rounded-xl object-cover") }
             end
           end
-          CarouselPrev(aria_label: "الشريحة السابقة") { |prev| Button(**prev, variant: :outline, icon: true, class: "rounded-full") { Icon(CHEVRON[:left], class: "rotate-180") } }
-          CarouselNext(aria_label: "الشريحة التالية") { |nxt| Button(**nxt, variant: :outline, icon: true, class: "rounded-full") { Icon(CHEVRON[:right], class: "rotate-180") } }
+          CarouselPrev(aria_label: "الشريحة السابقة") { |prev| Button(**prev, variant: :outline, icon: true, class: "rounded-full") { Icon(:chevron_left, class: "rotate-180") } }
+          CarouselNext(aria_label: "الشريحة التالية") { |nxt| Button(**nxt, variant: :outline, icon: true, class: "rounded-full") { Icon(:chevron_right, class: "rotate-180") } }
           CarouselPagination(class: "absolute inset-x-0 top-full mt-5 justify-center")
         end
       end

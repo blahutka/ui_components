@@ -10,26 +10,6 @@
 # @display width wide
 # @display min_height 22rem
 class UI::MenubarPreview < UI::BasePreview
-  ICONS = {
-    file: :file_text,
-    pencil: :pencil,
-    eye: :eye,
-    file_plus: :file_plus,
-    folder: :folder,
-    download: :download,
-    undo: :arrow_back_up,
-    redo: :arrow_forward_up,
-    cut: :scissors,
-    copy: :copy,
-    paste: :clipboard,
-    zoom_in: :zoom_in,
-    zoom_out: :zoom_out,
-    maximize: :maximize,
-    dashboard: :layout_dashboard,
-    users: :users,
-    settings: :settings
-  }.freeze
-
   # @label Application menu
   # A desktop-style command bar: File, Edit and View menus with shortcuts, separators,
   # a nested "Open recent" submenu and a disabled item.
@@ -109,11 +89,11 @@ class UI::MenubarPreview < UI::BasePreview
   def vertical
     phlex do
       Menubar(orientation: :vertical, aria_label: "Workspace", class: "w-35") do
-        { "Overview" => [ :dashboard, [ "Summary", "Activity" ] ], "Projects" => [ :folder, [ "All projects", "New project", nil, "Archived" ] ],
+        { "Overview" => [ :layout_dashboard, [ "Summary", "Activity" ] ], "Projects" => [ :folder, [ "All projects", "New project", nil, "Archived" ] ],
           "Team" => [ :users, [ "Members", "Invitations" ] ], "Settings" => [ :settings, [ "General", "Billing" ] ] }.each do |label, (icon, items)|
           MenubarMenu do
             MenubarTrigger do
-              Icon(ICONS[icon], data: { icon: "start" })
+              Icon(icon, data: { icon: "start" })
               plain label
             end
             MenubarContent do
@@ -208,23 +188,23 @@ class UI::MenubarPreview < UI::BasePreview
       Menubar(aria_label: "Application") do
         MenubarMenu do
           MenubarTrigger do
-            Icon(ICONS[:file], data: { icon: "start" })
+            Icon(:file_text, data: { icon: "start" })
             plain "File"
           end
           MenubarContent do
             MenubarItem do
-              Icon(ICONS[:file_plus], data: { icon: "start" })
+              Icon(:file_plus, data: { icon: "start" })
               plain "New file"
               Kbd(size: :sm, class: "ms-auto") { "⌘N" }
             end
             MenubarItem do
-              Icon(ICONS[:folder], data: { icon: "start" })
+              Icon(:folder, data: { icon: "start" })
               plain "Open…"
               Kbd(size: :sm, class: "ms-auto") { "⌘O" }
             end
             MenubarSeparator()
             MenubarItem do
-              Icon(ICONS[:download], data: { icon: "start" })
+              Icon(:download, data: { icon: "start" })
               plain "Save"
               Kbd(size: :sm, class: "ms-auto") { "⌘S" }
             end
@@ -232,14 +212,14 @@ class UI::MenubarPreview < UI::BasePreview
         end
         MenubarMenu do
           MenubarTrigger do
-            Icon(ICONS[:pencil], data: { icon: "start" })
+            Icon(:pencil, data: { icon: "start" })
             plain "Edit"
           end
           MenubarContent do
-            { undo: "Undo", redo: "Redo", nil => nil, cut: "Cut", copy: "Copy", paste: "Paste" }.each do |icon, label|
+            { arrow_back_up: "Undo", arrow_forward_up: "Redo", nil => nil, scissors: "Cut", copy: "Copy", clipboard: "Paste" }.each do |icon, label|
               if label
                 MenubarItem do
-                  Icon(ICONS[icon], data: { icon: "start" })
+                  Icon(icon, data: { icon: "start" })
                   plain label
                 end
               else
@@ -250,19 +230,19 @@ class UI::MenubarPreview < UI::BasePreview
         end
         MenubarMenu do
           MenubarTrigger do
-            Icon(ICONS[:eye], data: { icon: "start" })
+            Icon(:eye, data: { icon: "start" })
             plain "View"
           end
           MenubarContent do
             { zoom_in: "Zoom in", zoom_out: "Zoom out" }.each do |icon, label|
               MenubarItem do
-                Icon(ICONS[icon], data: { icon: "start" })
+                Icon(icon, data: { icon: "start" })
                 plain label
               end
             end
             MenubarSeparator()
             MenubarItem do
-              Icon(ICONS[:maximize], data: { icon: "start" })
+              Icon(:maximize, data: { icon: "start" })
               plain "Enter full screen"
             end
           end

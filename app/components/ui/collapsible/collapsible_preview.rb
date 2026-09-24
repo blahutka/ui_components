@@ -8,15 +8,8 @@
 # @component UI::Collapsible
 # @display width wide
 class UI::CollapsiblePreview < UI::BasePreview
-  CHEVRON = :chevron_right
   CHEVRON_CLASS = "mt-0.75 size-4.5 shrink-0 stroke-2 transition-transform duration-200 group-data-panel-open:rotate-90 motion-reduce:transition-none rtl:-scale-x-100"
   TRIGGER_CLASS = "group text-foreground-intense data-disabled:text-foreground-muted inline-flex items-start gap-2 text-start font-medium"
-
-  FOLDER = :folder
-  FOLDER_OPEN = :folder_open
-  FILE = :file
-  MAXIMIZE = :maximize
-  MINIMIZE = :minimize
 
   TREE = [
     { name: "app", children: [
@@ -39,7 +32,7 @@ class UI::CollapsiblePreview < UI::BasePreview
     phlex do
       Collapsible(open:, disabled:, class: "w-full max-w-100") do
         CollapsibleTrigger(class: TRIGGER_CLASS) do
-          Icon(CHEVRON, class: CHEVRON_CLASS)
+          Icon(:chevron_right, class: CHEVRON_CLASS)
           plain "What's included in the free plan?"
         end
         CollapsibleContent do
@@ -57,9 +50,9 @@ class UI::CollapsiblePreview < UI::BasePreview
       if node[:children]
         Collapsible(open:) do
           CollapsibleTrigger(class: "group inline-flex items-center gap-1.5 py-1 font-medium") do
-            Icon(CHEVRON, class: "size-4 shrink-0 stroke-[1.75] transition-transform duration-200 group-data-panel-open:rotate-90 motion-reduce:transition-none rtl:-scale-x-100")
-            Icon(FOLDER, class: "text-foreground-muted size-4 shrink-0 stroke-[1.75] group-data-panel-open:hidden")
-            Icon(FOLDER_OPEN, class: "text-foreground-muted hidden size-4 shrink-0 stroke-[1.75] group-data-panel-open:block")
+            Icon(:chevron_right, class: "size-4 shrink-0 stroke-[1.75] transition-transform duration-200 group-data-panel-open:rotate-90 motion-reduce:transition-none rtl:-scale-x-100")
+            Icon(:folder, class: "text-foreground-muted size-4 shrink-0 stroke-[1.75] group-data-panel-open:hidden")
+            Icon(:folder_open, class: "text-foreground-muted hidden size-4 shrink-0 stroke-[1.75] group-data-panel-open:block")
             plain node[:name]
           end
           CollapsibleContent do
@@ -70,7 +63,7 @@ class UI::CollapsiblePreview < UI::BasePreview
         end
       else
         span(class: "text-foreground-muted flex items-center gap-1.5 py-1 ps-5.5") do
-          Icon(FILE, class: "size-4 shrink-0 stroke-[1.75]")
+          Icon(:file, class: "size-4 shrink-0 stroke-[1.75]")
           plain node[:name]
         end
       end
@@ -98,8 +91,8 @@ class UI::CollapsiblePreview < UI::BasePreview
           input(type: "number", value: "12", aria_label: "All corners", class: INPUT)
           CollapsibleTrigger(class: "shrink-0") do |trigger|
             Button(**trigger, variant: :outline, size: :sm, icon: true, aria_label: "Set each corner individually") do
-              Icon(MAXIMIZE, class: "group-data-open:hidden")
-              Icon(MINIMIZE, class: "hidden group-data-open:block")
+              Icon(:maximize, class: "group-data-open:hidden")
+              Icon(:minimize, class: "hidden group-data-open:block")
             end
           end
         end
@@ -157,7 +150,7 @@ class UI::CollapsiblePreview < UI::BasePreview
         end
         div do
           CollapsibleTrigger(class: TRIGGER_CLASS) do
-            Icon(CHEVRON, class: CHEVRON_CLASS)
+            Icon(:chevron_right, class: CHEVRON_CLASS)
             plain "Order #4982"
           end
           CollapsibleContent do
@@ -173,7 +166,7 @@ class UI::CollapsiblePreview < UI::BasePreview
     phlex do
       Collapsible(disabled: true, class: "w-full max-w-100") do
         CollapsibleTrigger(class: TRIGGER_CLASS) do
-          Icon(CHEVRON, class: CHEVRON_CLASS)
+          Icon(:chevron_right, class: CHEVRON_CLASS)
           plain "Advanced settings"
         end
         CollapsibleContent { p(class: "ps-6.5 pt-2.5 text-sm") { "These settings unlock on a paid plan." } }
@@ -188,7 +181,7 @@ class UI::CollapsiblePreview < UI::BasePreview
     phlex do
       Collapsible(class: "w-full max-w-100") do
         CollapsibleTrigger(class: TRIGGER_CLASS) do
-          Icon(CHEVRON, class: CHEVRON_CLASS)
+          Icon(:chevron_right, class: CHEVRON_CLASS)
           plain "Shipping & returns"
         end
         CollapsibleContent(hidden_until_found: true) do
@@ -206,7 +199,7 @@ class UI::CollapsiblePreview < UI::BasePreview
       div(dir: "rtl") do
         Collapsible(open: true, class: "w-full max-w-100") do
           CollapsibleTrigger(class: TRIGGER_CLASS) do
-            Icon(CHEVRON, class: CHEVRON_CLASS)
+            Icon(:chevron_right, class: CHEVRON_CLASS)
             plain "ما الذي تتضمنه الخطة المجانية؟"
           end
           CollapsibleContent do
