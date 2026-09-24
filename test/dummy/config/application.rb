@@ -45,6 +45,10 @@ module Dummy
     config.lookbook.listen_paths << UiComponents::Engine.root.join("app/components").to_s
     config.lookbook.listen_paths << Rails.root.join("app/assets/builds").to_s
     config.lookbook.listen_extensions += %w[ js css ]
-    config.lookbook.preview_display_options = { theme: [ "light", "dark" ], width: [ "narrow", "wide", "full" ] }
+    config.lookbook.preview_display_options = {
+      theme: [ "light", "dark" ],
+      viewport: [ "desktop", "tablet", "mobile" ],
+      width: [ "narrow", "wide", "full" ]
+    }
   end
 end

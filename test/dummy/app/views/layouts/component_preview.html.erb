@@ -1,18 +1,37 @@
 <!DOCTYPE html>
 <% display = params.dig(:lookbook, :display) || {} %>
 <% widths = { "narrow" => "max-w-70", "wide" => "max-w-2xl", "full" => "max-w-none" } %>
+<%# Viewport option: "mobile" and "tablet" load this same preview inside a device-sized iframe,
+    so breakpoints and media queries see a real 390px / 820px viewport. The inner request
+    carries viewport_frame=1 and renders the scenario normally. %>
+<% devices = { "mobile" => { label: "Mobile", width: 390, height: 844 }, "tablet" => { label: "Tablet", width: 820, height: 1180 } } %>
+<% framed = params[:viewport_frame].present? %>
+<% device = devices[display[:viewport].to_s] unless framed %>
 <html class="<%= display[:theme] == "dark" ? "dark" : "" %>">
   <head>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= stylesheet_link_tag "tailwind" %>
-    <%= javascript_importmap_tags %>
+    <%= javascript_importmap_tags unless device %>
   </head>
 
-  <body class="min-h-screen p-10 font-sans antialiased">
-    <%# min_height leaves room for popups and drawers, which don't add to the content height (e.g. in docs embeds) %>
-    <div class="mx-auto flex w-full <%= widths.fetch(display[:width].to_s, widths["narrow"]) %> flex-col gap-4"
-         style="<%= "min-height: #{display[:min_height]}" if display[:min_height].to_s.match?(/\A[\d.]+(rem|px|vh)\z/) %>">
-      <%= yield %>
-    </div>
-  </body>
+  <% if device %>
+    <body class="bg-background-muted flex min-h-screen justify-center overflow-x-auto p-6 font-sans antialiased">
+      <div class="flex flex-col items-center gap-2">
+        <p class="text-foreground-muted text-xs tabular-nums"><%= device[:label] %> · <%= device[:width] %> × <%= device[:height] %></p>
+        <iframe
+          src="<%= "#{request.path}?#{request.query_parameters.merge("viewport_frame" => "1").to_query}" %>"
+          title="<%= device[:label] %> viewport"
+          class="bg-background border-foreground-intense box-content shrink-0 rounded-[2.25rem] border-[10px] shadow-2xl"
+          style="width: <%= device[:width] %>px; height: min(<%= device[:height] %>px, calc(100vh - 5rem))"></iframe>
+      </div>
+    </body>
+  <% else %>
+    <body class="min-h-screen <%= framed ? "p-5" : "p-10" %> font-sans antialiased">
+      <%# min_height leaves room for popups and drawers, which don't add to the content height (e.g. in docs embeds) %>
+      <div class="mx-auto flex w-full <%= widths.fetch(display[:width].to_s, widths["narrow"]) %> flex-col gap-4"
+           style="<%= "min-height: #{display[:min_height]}" if display[:min_height].to_s.match?(/\A[\d.]+(rem|px|vh)\z/) %>">
+        <%= yield %>
+      </div>
+    </body>
+  <% end %>
 </html>

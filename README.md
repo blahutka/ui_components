@@ -162,7 +162,10 @@ changing the engine, initializers, the Gemfile or anything else loaded once at b
 
 Notes:
 - Previews live next to each component (`app/components/ui/<component>/*_preview.rb`).
-- Use the **Theme** switcher in Lookbook's toolbar to preview dark mode; the preview layout is
-  `test/dummy/app/views/layouts/component_preview.html.erb`.
+- Lookbook's **display options** (⚙ in the preview toolbar) switch **Theme** (light/dark) and
+  **Viewport** (desktop/tablet/mobile). Tablet and mobile render the scenario inside an 820px /
+  390px device frame, so breakpoints and media queries respond as on a real device. Touch input
+  and `pointer: coarse` still need browser device emulation (open the preview in a new window).
+  The preview layout is `test/dummy/app/views/layouts/component_preview.html.erb`.
 - If styles look missing after adding new classes, check that the Tailwind watcher is running,
   or rebuild with `bin/rails tailwindcss:build` from `test/dummy`.
