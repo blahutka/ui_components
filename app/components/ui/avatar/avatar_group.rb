@@ -1,0 +1,23 @@
+# Overlaps a row (or column) of avatars and rings each one with the background
+# color. `size:` / `shape:` are defaults for child avatars that don't set their own.
+class UI::AvatarGroup < UI::Base
+  ORIENTATIONS = {
+    horizontal: "flex space-x-[-0.2em]",
+    vertical: "flex flex-col space-y-[-0.2em]"
+  }.freeze
+
+  attr_reader :size, :shape
+
+  def initialize(size: nil, shape: nil, orientation: :horizontal, **attributes)
+    @size, @shape = size, shape
+    @orientation = ORIENTATIONS.key?(orientation.to_sym) ? orientation.to_sym : :horizontal
+    @attributes = attributes
+  end
+
+  def view_template(&)
+    provide(:ui_avatar_group, self) do
+      div(**mix({ data: { slot: "avatar-group", orientation: @orientation } }, @attributes.except(:class)),
+          class: cn("isolate", ORIENTATIONS[@orientation], "*:data-[slot=avatar]:ring-background *:data-[slot=avatar]:ring-[calc(1em/12)]", override: @attributes[:class]), &)
+    end
+  end
+end

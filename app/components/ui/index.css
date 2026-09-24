@@ -2,3 +2,4 @@
    Imported by the host app's Tailwind entrypoint (see README). */
 @import "./theme.css";
 @import "./autocomplete/autocomplete.css";
+@import "./avatar/avatar.css";

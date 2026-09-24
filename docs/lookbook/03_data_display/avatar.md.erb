@@ -1,0 +1,211 @@
+---
+id: avatar
+title: Avatar
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A user image with a text or icon fallback when it's missing.
+[Appica docs](https://appica.dev/ui/components/react/avatar)
+
+<%= embed UI::AvatarPreview, :default %>
+
+## Usage
+
+```ruby
+Avatar do
+  AvatarImage(src: "/avatars/01.jpg", alt: "Sarah Jenkins")
+  AvatarFallback { "SJ" }
+end
+```
+
+Avatar represents a person or entity. Compose it from its parts:
+
+- **Avatar** - the root that sets size and shape and clips its children to the rounded silhouette.
+- **AvatarImage** - the photo. It stays hidden until it has loaded, so a broken or slow image never
+  flashes; the `ui--avatar` controller then swaps it in for the fallback.
+- **AvatarFallback** - what shows until (or unless) the image loads: initials or an icon.
+- **AvatarBadge** - an optional status dot in the corner.
+- **AvatarGroup** - a wrapper that overlaps a row of avatars and passes a shared size/shape down.
+
+The whole component is sized in em, so a single `size:` (a preset or a pixel number) scales the
+image, fallback text, and status badge together.
+
+## Examples
+
+### Fallback
+
+When the image is missing, still loading, or fails to load, `AvatarFallback` renders instead. Use
+initials for people, or an icon for a generic placeholder.
+
+<%= embed UI::AvatarPreview, :fallback %>
+
+```ruby
+Avatar(size: :lg) do
+  AvatarImage(src: user.avatar_url, alt: user.name)
+  AvatarFallback { user.initials }
+end
+
+Avatar(size: :lg) do
+  AvatarFallback { svg(...) { |s| s.path(d: user_icon) } }
+end
+```
+
+### Sizes
+
+Seven presets run from `:"2xs"` to `:"2xl"`. Because the avatar is sized in em, the fallback text
+and status badge scale along with the image.
+
+<%= embed UI::AvatarPreview, :sizes %>
+
+### Custom size
+
+Pass a number to `size:` for an exact pixel dimension when a preset doesn't fit. It drives the
+root's font-size, so everything inside still scales proportionally.
+
+<%= embed UI::AvatarPreview, :custom_size %>
+
+```ruby
+Avatar(size: 44) { ... }
+```
+
+### Shape
+
+`shape: :circle` (the default) renders a full circle; `shape: :rounded` uses a squircle-style
+rounded square for a more app-like look.
+
+<%= embed UI::AvatarPreview, :shape %>
+
+### Status badge
+
+Drop an `AvatarBadge` inside the avatar for a corner status dot. Add `animate: true` for a pulsing
+ping that draws the eye to an online indicator, and recolor it with a `text-*` class.
+
+<%= embed UI::AvatarPreview, :status_badge %>
+
+```ruby
+Avatar(size: :lg) do
+  AvatarImage(src: user.avatar_url, alt: user.name)
+  AvatarFallback { user.initials }
+  AvatarBadge(animate: user.online?, class: ("text-foreground-subtle" unless user.online?))
+end
+```
+
+### Avatar group
+
+`AvatarGroup` overlaps a row of avatars and rings each one with the background color so they read
+as a stack. It passes a shared `size:`/`shape:` to its children, and any non-image avatar (like a
++5 counter) sits in the same rhythm. `orientation: :vertical` stacks them in a column.
+
+<%= embed UI::AvatarPreview, :group %>
+
+```ruby
+AvatarGroup(size: :md, aria_label: "Project members") do
+  members.first(4).each do |member|
+    Avatar do
+      AvatarImage(src: member.avatar_url, alt: member.name)
+      AvatarFallback { member.initials }
+    end
+  end
+  Avatar { AvatarFallback(class: "text-foreground-muted text-sm") { "+#{members.size - 4}" } }
+end
+```
+
+### Loading animation
+
+`AvatarFallback` renders until the image finishes loading, so a pulsing placeholder inside it is
+swapped for the photo automatically - no extra state needed. The demo image is served with a 2.5s
+delay; use the embed's reload to watch it again.
+
+<%= embed UI::AvatarPreview, :loading %>
+
+```ruby
+Avatar(size: :xl, class: "bg-transparent") do
+  AvatarImage(src: user.avatar_url, alt: user.name)
+  AvatarFallback { span(class: "bg-background-strong size-full animate-pulse rounded-[inherit]") }
+end
+```
+
+### Listening for loading changes
+
+The controller moves the root's `data-status` through `idle`, `loading`, `loaded` and `error`, and
+dispatches `ui--avatar:loading-status-change` with `{ status }` (React's `onLoadingStatusChange`).
+
+```ruby
+Avatar(data: { action: "ui--avatar:loading-status-change->profile#avatarStatus" }) { ... }
+```
+
+### RTL
+
+The status badge moves to the start corner and the group stacks from the right, because both are
+expressed with logical properties.
+
+<%= embed UI::AvatarPreview, :rtl %>
+
+## API reference
+
+### Avatar
+
+The root. Renders a `<span>` that sizes and clips its children.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size:` | `:"2xs"`, `:xs`, `:sm`, `:md`, `:lg`, `:xl`, `:"2xl"`, `Integer` | `:md` | A preset scale, or a pixel number for an exact size. |
+| `shape:` | `:circle`, `:rounded` | `:circle` | Full circle or rounded square. |
+| `class:` | `String` | - | Extra classes, merged via tailwind_merge. |
+
+### AvatarImage
+
+The photo. Renders an `<img>` that is shown once the source has loaded.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `src:` | `String` | - | Image URL. Without one the avatar stays on its fallback. |
+| `alt:` | `String` | `""` | Alternative text describing the person or entity. |
+| `class:` | `String` | - | Extra classes, merged via tailwind_merge. |
+
+Other attributes (`loading: "lazy"`, `srcset:`, …) go on the `<img>`.
+
+### AvatarFallback
+
+Shown until (or unless) the image loads. Renders a `<span>`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `delay:` | `Integer` | - | Milliseconds to wait before showing the fallback (avoids a flash on fast loads). |
+| block | | - | Initials or an icon. Text renders at 0.4em; an svg fills the avatar. |
+| `class:` | `String` | - | Extra classes, merged via tailwind_merge. |
+
+### AvatarBadge
+
+An optional status dot in the corner. Renders a `<span>`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `animate:` | `Boolean` | `false` | Add a pulsing ping behind the dot (skipped under reduced motion). |
+| `class:` | `String` | - | Extra classes - recolor with a `text-*` class. |
+
+### AvatarGroup
+
+Overlaps a row of avatars and passes a shared size/shape down. Renders a `<div>`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size:` | Avatar `size:` | - | Default size for child avatars that don't set their own. |
+| `shape:` | Avatar `shape:` | - | Default shape for child avatars that don't set their own. |
+| `orientation:` | `:horizontal`, `:vertical` | `:horizontal` | Stack the avatars in a row or a column. |
+| `class:` | `String` | - | Extra classes, merged via tailwind_merge. |
+
+A child Avatar's own `size:`/`shape:` always wins over the group default.
+
+## Accessibility
+
+- Give every meaningful `AvatarImage` an `alt:` that names the person or entity. For a purely
+  decorative avatar, leave `alt: ""` (the default).
+- The `AvatarFallback` text (initials) is visible content, so it's announced; for an icon-only
+  fallback, the icon is decorative - make sure the surrounding context names the user.
+- `AvatarBadge` is a visual status indicator. If the status matters, say it in text nearby
+  (e.g. "Online") rather than relying on the dot's color alone.
+- In an `AvatarGroup`, each avatar keeps its own accessible name; add an `aria_label:` to the group
+  (e.g. "Project members") and visible text for any +N overflow count.
+- The badge's pulsing animation is skipped when the user prefers reduced motion.

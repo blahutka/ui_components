@@ -2,7 +2,8 @@
 # Builds Tailwind, keeps it watching, and serves Lookbook at http://localhost:3000/lookbook
 cd "$(dirname "$0")/.."
 bin/rails tailwindcss:build
-bin/rails tailwindcss:watch[always] &
+# `debug` skips --minify: with it, the Tailwind 4.3 watcher misses classes added to existing files
+bin/rails tailwindcss:watch[always,debug] &
 WATCHER=$!
 trap 'kill $WATCHER 2>/dev/null' EXIT INT TERM
 bin/rails server "$@"

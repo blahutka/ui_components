@@ -1,0 +1,11 @@
+/* Avatar: the paced ping behind an animated AvatarBadge (`animate-ping-paced`) */
+@theme {
+  --animate-ping-paced: ping-paced 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+
+  @keyframes ping-paced {
+    25%, 100% {
+      opacity: 0;
+      transform: scale(2.2);
+    }
+  }
+}
