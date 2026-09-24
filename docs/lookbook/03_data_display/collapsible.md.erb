@@ -1,0 +1,146 @@
+---
+id: collapsible
+title: Collapsible
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A section that expands and collapses to show or hide its content.
+[Appica docs](https://appica.dev/ui/components/react/collapsible)
+
+<%= embed UI::CollapsiblePreview, :default %>
+
+## Usage
+
+```ruby
+Collapsible do
+  CollapsibleTrigger { "What's included in the free plan?" }
+  CollapsibleContent { "Up to three projects, 1 GB of storage, and community support." }
+end
+```
+
+Collapsible is a single show/hide disclosure - one trigger controlling one panel. Reach for it for a
+"read more", an inline details section, or any one-off toggle. Compose it from three parts:
+
+- **Collapsible** - the root. Owns the open state (`open:`) and can be `disabled:`.
+- **CollapsibleTrigger** - the button that toggles the panel. It exposes `data-panel-open` and
+  `data-disabled` for styling.
+- **CollapsibleContent** - the panel, which animates its height open and closed through the
+  `--collapsible-panel-height` CSS variable.
+
+The parts ship almost unstyled so the collapsible inherits your layout - the examples add the chevron and
+spacing. The state is rendered on the server (`data-open` / `data-closed` on the root), so the page is
+right before JavaScript loads; the `ui--collapsible` controller toggles and animates it.
+
+## Examples
+
+### File tree
+
+Nest a Collapsible inside another Collapsible's content to build an expandable tree. Each folder is its
+own disclosure; files are plain rows.
+
+<%= embed UI::CollapsiblePreview, :file_tree %>
+
+```ruby
+def tree_item(node)
+  return span { node.name } unless node.children?
+
+  Collapsible do
+    CollapsibleTrigger(class: "group inline-flex items-center gap-1.5") do
+      chevron(class: "group-data-panel-open:rotate-90")
+      plain node.name
+    end
+    CollapsibleContent { div(class: "ms-2 border-s ps-2") { node.children.each { |child| tree_item(child) } } }
+  end
+end
+```
+
+### Settings panel
+
+Reveal extra controls only when they're needed. The trigger renders as a Button through its block argument,
+and the icon swaps from the root's `data-open` state (`group-data-open:`) - no extra JavaScript.
+
+<%= embed UI::CollapsiblePreview, :settings_panel %>
+
+```ruby
+Collapsible(class: "group") do
+  CollapsibleTrigger do |trigger|
+    Button(**trigger, variant: :outline, size: :sm, icon: true, aria_label: "Set each corner individually") do
+      maximize_icon(class: "group-data-open:hidden")
+      minimize_icon(class: "hidden group-data-open:block")
+    end
+  end
+  CollapsibleContent { ... }
+end
+```
+
+### Show more
+
+Because the trigger and panel are independent, the trigger can sit below the always-visible text, with its
+label following the open state.
+
+<%= embed UI::CollapsiblePreview, :show_more %>
+
+### Controlled
+
+Any button inside the root drives it with `data: { action: "ui--collapsible#toggle" }` (or `#open` /
+`#close`). The controller dispatches `ui--collapsible:open-change` with `{ open }`.
+
+<%= embed UI::CollapsiblePreview, :controlled %>
+
+### Disabled
+
+`disabled: true` locks the panel shut. The trigger drops out of the tab order and exposes `data-disabled`.
+
+<%= embed UI::CollapsiblePreview, :disabled %>
+
+### Hidden until found
+
+Closed panels carry the `hidden` attribute. With `hidden_until_found: true` they use the native
+`hidden="until-found"` instead, so the browser's find-in-page (and crawlers) can reach the text - and a
+match opens the panel.
+
+<%= embed UI::CollapsiblePreview, :hidden_until_found %>
+
+### RTL
+
+The trigger and panel align to the right, the indent moves via the logical `ps-*` padding, and the chevron
+mirrors (`rtl:-scale-x-100`).
+
+<%= embed UI::CollapsiblePreview, :rtl %>
+
+## API reference
+
+### Collapsible
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `open:` / `default_open:` | `Boolean` | `false` | Initial open state. |
+| `disabled:` | `Boolean` | `false` | Disable the trigger so the panel can't toggle. |
+| `id:`, `class:`, `data:`, … | | | Other attributes go on the root `<div>`. |
+
+The root carries `data-open` / `data-closed`; the controller exposes the `toggle`, `open` and `close`
+actions and the `ui--collapsible:open-change` event.
+
+### CollapsibleTrigger
+
+Renders a `<button>` with `aria-expanded` / `aria-controls`, `data-panel-open` and `data-disabled`. A block
+taking an argument receives these attributes to put on your own element (e.g. a `Button`).
+
+### CollapsibleContent
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `hidden_until_found:` | `Boolean` | `false` | Use `hidden="until-found"` so closed text stays findable. |
+| `class:` | `String` | - | Extra classes, merged via tailwind_merge. |
+
+Renders a `<div>` with `data-open` / `data-closed`.
+
+## Accessibility
+
+- `CollapsibleTrigger` is a real `<button>` with `aria-expanded` reflecting the state and `aria-controls`
+  pointing at the panel, so assistive tech announces "expanded" / "collapsed".
+- Enter and Space toggle the panel while the trigger is focused.
+- A disabled collapsible removes the trigger from the tab order and marks it `data-disabled`.
+- Indicator icons (the chevrons in these examples) are decorative - the trigger's text carries the meaning.
+- The height animation honors `prefers-reduced-motion`, collapsing instantly.
