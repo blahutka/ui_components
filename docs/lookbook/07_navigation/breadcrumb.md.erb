@@ -1,0 +1,81 @@
+---
+id: breadcrumb
+title: Breadcrumb
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+Shows where the current page sits in a hierarchy - a trail of links ending in the current page.
+[Appica docs](https://appica.dev/ui/components/react/breadcrumb)
+
+<%= embed UI::BreadcrumbPreview, :default %>
+
+## Usage
+
+```ruby
+Breadcrumb do
+  BreadcrumbList do
+    BreadcrumbItem { BreadcrumbLink(href: root_path) { "Home" } }
+    BreadcrumbSeparator()
+    BreadcrumbItem { BreadcrumbLink(href: projects_path) { "Projects" } }
+    BreadcrumbSeparator()
+    BreadcrumbItem { BreadcrumbLink(active: true) { @project.name } }
+  end
+end
+```
+
+Plain semantic parts with no state - lay the trail out yourself:
+
+- `Breadcrumb` - the `<nav>` landmark (named "Breadcrumb", translated; `aria_label:` overrides).
+- `BreadcrumbList` - the `<ol>`, wrapping on narrow screens.
+- `BreadcrumbItem` - one `<li>`.
+- `BreadcrumbLink` - an `<a>`; `active: true` makes it the current page (a `<span>` with `aria-current="page"`).
+- `BreadcrumbSeparator` - a chevron (flipped under RTL) unless given content.
+- `BreadcrumbEllipsis` - "…" for collapsed crumbs.
+
+For switching between sibling views use Tabs or Navigation instead.
+
+## Examples
+
+### With icons
+
+<%= embed UI::BreadcrumbPreview, :icons %>
+
+### Custom separators
+
+<%= embed UI::BreadcrumbPreview, :separators %>
+
+### Soft badges
+
+A block that takes an argument receives the crumb's attributes (Appica's `render` prop) - here onto a soft
+[Badge](<%= page_path(:badge) %>), which keeps idle crumbs muted and fills the current one. The same works for a
+`link_to`: `BreadcrumbLink { |crumb| a(**crumb, href: …) { … } }`.
+
+<%= embed UI::BreadcrumbPreview, :badges %>
+
+### Collapsed trail
+
+<%= embed UI::BreadcrumbPreview, :collapsed %>
+
+### RTL
+
+<%= embed UI::BreadcrumbPreview, :rtl %>
+
+## API reference
+
+| Part | Props | Description |
+|------|-------|-------------|
+| `Breadcrumb` | `aria_label:` | The `<nav>` landmark. |
+| `BreadcrumbList` | - | The `<ol>` of crumbs and separators. |
+| `BreadcrumbItem` | - | One `<li>`. |
+| `BreadcrumbLink` | `href:`, `active:`, `disabled:`; block `{ \|crumb\| … }` | A crumb; `active` is the current page, `disabled` is dimmed and out of the tab order. |
+| `BreadcrumbSeparator` | content | The divider (a chevron by default). |
+| `BreadcrumbEllipsis` | content | "…" with a screen-reader-only "More". |
+
+Every part forwards other attributes to its element; `class:` is merged.
+
+## Accessibility
+
+- A `<nav>` landmark with a name; the current page is `aria-current="page"` and not a link.
+- Separators and the dots are hidden from assistive tech (`aria-hidden` / `role="presentation"`).
+- Disabled crumbs set `aria-disabled` and leave the tab order.

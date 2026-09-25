@@ -1,0 +1,24 @@
+en:
+  ui_components:
+    ui:
+      breadcrumb:
+        label: Breadcrumb
+        more: More
+cs:
+  ui_components:
+    ui:
+      breadcrumb:
+        label: Drobečková navigace
+        more: Další
+de:
+  ui_components:
+    ui:
+      breadcrumb:
+        label: Brotkrümelnavigation
+        more: Mehr
+ar:
+  ui_components:
+    ui:
+      breadcrumb:
+        label: مسار التنقل
+        more: المزيد

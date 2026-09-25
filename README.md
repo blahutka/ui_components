@@ -53,6 +53,7 @@ See Lookbook's **Form builder** page for the full API and a working `/users/new`
 |-----------|-------|-------------|
 | Alert | `Alert`, `AlertIcon`, `AlertTitle`, `AlertDescription`, `AlertAction` (variants, `layout: :inline`, `dismissible:`, `persist_key:`) | [alert](https://appica.dev/ui/components/react/alert) |
 | Autocomplete | `Autocomplete`, `AutocompleteInput`, `AutocompleteContent`, `AutocompleteEmpty`, `AutocompleteList`, `AutocompleteItem`, `AutocompleteGroup`, `AutocompleteLabel`, `AutocompleteCollection` | [autocomplete](https://appica.dev/ui/components/react/autocomplete) |
+| Breadcrumb | `Breadcrumb`, `BreadcrumbList`, `BreadcrumbItem`, `BreadcrumbLink` (`active:`, `disabled:`, render prop), `BreadcrumbSeparator`, `BreadcrumbEllipsis` | [breadcrumb](https://appica.dev/ui/components/react/breadcrumb) |
 | Button | `Button` (variants `primary`, `primary_outline`, `secondary`, `soft`, `outline`, `ghost`, `destructive`; sizes `sm`/`md`/`lg`; `icon: true`) | [button](https://appica.dev/ui/components/react/button) |
 | Button Group | `ButtonGroup` (shares `variant:`/`size:`/`icon:`/`disabled:` with its Buttons, horizontal/vertical) | [button-group](https://appica.dev/ui/components/react/button-group) |
 | Checkbox | `Checkbox`, `CheckboxGroup` (native checkbox, indeterminate, `parent:` select-all, `unchecked_value:`) | [checkbox](https://appica.dev/ui/components/react/checkbox) |

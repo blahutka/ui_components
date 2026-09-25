@@ -16,14 +16,19 @@ class UI::Badge < UI::Base
   # Solid schemes light up with a radial gradient on hover when interactive
   GLOW = "[a,button]:before:opacity-0 [a,button]:hover:before:opacity-100 [a,button]:data-pressed:before:opacity-100 [a,button]:data-popup-open:before:opacity-100"
 
+  # Crumbs projected onto a badge stay muted until hovered or current (BreadcrumbLink)
+  BREADCRUMB = "data-[slot=breadcrumb-link]:not-data-active:text-foreground-muted data-[slot=breadcrumb-link]:hover:text-foreground-intense"
+
   VARIANTS = {
     primary: "relative bg-primary text-primary-foreground outline-ring-primary [a,button]:before:bg-[radial-gradient(138.15%_78.13%_at_52.05%_50%,var(--primary)_0%,var(--primary-muted)_75%)] #{GLOW}",
     primary_outline: "relative text-primary before:border before:border-primary outline-ring-primary [a,button]:hover:before:bg-primary [a,button]:hover:text-primary-foreground [a,button]:data-pressed:before:bg-primary [a,button]:data-pressed:text-primary-foreground [a,button]:data-popup-open:before:bg-primary [a,button]:data-popup-open:text-primary-foreground",
     secondary: "relative bg-secondary-muted text-secondary-foreground outline-ring-secondary [a,button]:before:bg-[radial-gradient(138.15%_78.13%_at_52.05%_50%,var(--secondary)_0%,var(--secondary-muted)_95%)] #{GLOW}",
     soft: "relative text-foreground-intense before:bg-background-muted before:backdrop-blur-md [a,button]:before:border [a,button]:before:border-transparent outline-ring " \
+      "#{BREADCRUMB} " \
       "[a,button]:hover:before:bg-background-subtle [a,button]:hover:before:border-border [a,button]:data-pressed:before:bg-background-subtle [a,button]:data-pressed:before:border-border " \
       "[a,button]:data-popup-open:before:bg-background-subtle [a,button]:data-popup-open:before:border-border data-active:before:bg-background-subtle data-active:border data-active:before:border-border",
     outline: "relative bg-background text-foreground-intense before:bg-background before:border-border before:border outline-ring " \
+      "#{BREADCRUMB} " \
       "[a,button]:hover:before:bg-background-subtle [a,button]:hover:before:border-border-strong [a,button]:data-pressed:before:bg-background-subtle [a,button]:data-pressed:before:border-border-strong " \
       "[a,button]:data-popup-open:before:bg-background-subtle [a,button]:data-popup-open:before:border-border-strong data-active:before:bg-background-subtle data-active:before:border-border-strong",
     error: "relative bg-error-muted text-error-foreground outline-ring-error [a,button]:before:bg-[radial-gradient(138.15%_78.13%_at_52.05%_50%,var(--error-muted)_0%,rgba(255,255,255,.5)_95%)] #{GLOW}",
@@ -69,6 +74,7 @@ class UI::Badge < UI::Base
     end
 
     def badge_attributes
-      { data: { slot: "badge", variant: @variant.to_s.dasherize, size: @size.to_s.dasherize } }
+      # Keep the slot of a part projected onto the badge (e.g. "breadcrumb-link")
+      { data: { slot: ("badge" unless @attributes.dig(:data, :slot)), variant: @variant.to_s.dasherize, size: @size.to_s.dasherize } }
     end
 end
