@@ -98,6 +98,26 @@ end
 `as:` renames the ivar (`prop :as, as: :tag`). Defaults apply only when the keyword is missing, so values where an
 explicit `nil` means "default" are resolved in a reader instead.
 
+### Translations
+
+Components translate with `t(".key")` (`UI::Localized`, in `UI::Base`). The scope comes from the component's folder -
+`blocks/revenue_summary/*` → `ui_components.blocks.revenue_summary` - so every part of a compound component shares it
+without declaring anything (`translation_scope "…"` overrides). The strings sit next to the component in one
+`*.locales.yml` file with all languages side by side (`test/components/locales_test.rb` checks they define the same
+keys); country names are shared in `app/components/ui/countries.locales.yml`.
+
+Translated defaults are declared on the props, and `translated` turns Symbol values into keys:
+
+```ruby
+prop :period, one_of(PERIODS, :other), default: -> { :other }
+prop :title,  default: -> { t(".title.#{@period}") }   # "Monthly revenue" / "Měsíční tržby"
+prop :label,  translated(".stats")                     # :orders → "Orders"; "Custom" stays
+```
+
+`format_money(amount, currency:)`, `format_count(value)` and `format_percent(value, sign:)` format in the current
+locale (host apps need number formats for their locales, e.g. from rails-i18n). To override a string or add a
+language, define the same keys in your app's locale files.
+
 ## Layout
 
 Each component lives in its own folder with everything it needs:

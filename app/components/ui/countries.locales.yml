@@ -1,0 +1,39 @@
+# Country names by ISO code (ui_components.countries.*).
+# Every language in one file; add a locale as another top-level key with the same keys
+# (test/components/locales_test.rb checks that they match).
+en:
+  ui_components:
+    countries:
+      us: United States
+      de: Germany
+      jp: Japan
+      fr: France
+      gb: United Kingdom
+      cz: Czechia
+cs:
+  ui_components:
+    countries:
+      us: Spojené státy
+      de: Německo
+      jp: Japonsko
+      fr: Francie
+      gb: Spojené království
+      cz: Česko
+de:
+  ui_components:
+    countries:
+      us: Vereinigte Staaten
+      de: Deutschland
+      jp: Japan
+      fr: Frankreich
+      gb: Vereinigtes Königreich
+      cz: Tschechien
+ar:
+  ui_components:
+    countries:
+      us: الولايات المتحدة
+      de: ألمانيا
+      jp: اليابان
+      fr: فرنسا
+      gb: المملكة المتحدة
+      cz: التشيك

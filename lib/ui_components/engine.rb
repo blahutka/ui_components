@@ -18,6 +18,12 @@ module UiComponents
       end
     end
 
+    # Translations live next to each component: app/components/**/*.locales.yml (every
+    # language in one file, keys under ui_components.<kit>.<component>)
+    initializer "ui_components.i18n" do |app|
+      app.config.i18n.load_path += Dir[COMPONENTS_PATH.join("**/*.locales.yml")]
+    end
+
     # Serve the component .js/.css files straight from the component folders,
     # plus vendored third-party modules (Embla Carousel)
     initializer "ui_components.assets" do |app|

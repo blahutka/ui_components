@@ -1,5 +1,6 @@
 class UI::Base < Phlex::HTML
   include UI::Props
+  include UI::Localized
 
   MERGER = TailwindMerge::Merger.new
 

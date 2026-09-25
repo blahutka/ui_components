@@ -37,9 +37,9 @@ end
 The card renders in the current `I18n.locale`. Switch the **Locale** display option in the preview toolbar
 (⚙ - English, Čeština, Deutsch, العربية) to try it.
 
-- The engine ships translations under `ui_components.revenue_summary.*` and `ui_components.countries.*`
-  (`config/locales/ui_components.{en,cs,de,ar}.yml`). Add a locale by adding the same keys to your app's
-  locale files; override any single key the same way.
+- The strings live next to the component in `revenue_summary.locales.yml` (English, Czech, German and Arabic side
+  by side, under `ui_components.blocks.revenue_summary`); country names in `ui/countries.locales.yml`. Add a locale
+  or override any single key by defining the same keys in your app's locale files.
 - `period:` (`:day`, `:week`, `:month`, `:year`) picks the translated title ("Monthly revenue") and the
   comparison ("vs $42,900 last month"). `title:` and `comparison:` take your own wording instead.
 - Market names come from the country code (`country: :us` → "United States" / "Spojené státy"); `name:`
