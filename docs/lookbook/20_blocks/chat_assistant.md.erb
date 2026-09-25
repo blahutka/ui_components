@@ -64,6 +64,15 @@ end
 
 For streamed answers, broadcast the same append from a job (`Turbo::StreamsChannel.broadcast_append_to`).
 
+## Localization
+
+The block's own strings - the default title, the badge's "Online"/"Offline", the conversation and composer labels,
+the placeholder, the "Thinking…" status and the demo reply - are translated. They live next to the component in
+`chat_assistant.locales.yml` (English, Czech, German and Arabic side by side, under
+`ui_components.blocks.chat_assistant`). Anything you pass (`title:`, `placeholder:`, messages, suggestions) is shown
+as-is. Switch the **Locale** display option in the preview toolbar to try it - the previews' sample conversation is
+translated too (`chat_assistant_preview.locales.yml`, loaded only in Lookbook).
+
 ## Examples
 
 ### Empty state

@@ -78,8 +78,8 @@ export default class extends Controller {
   demoReply() {
     clearTimeout(this.replyTimer)
     this.replyTimer = setTimeout(() => {
-      const replies = this.repliesValue.length ? this.repliesValue : [ "Done - have a look at the preview." ]
-      this.append("assistant", replies[this.replyIndex++ % replies.length])
+      const replies = this.repliesValue
+      if (replies.length) this.append("assistant", replies[this.replyIndex++ % replies.length])
       this.hideStatus()
     }, 1600)
   }
@@ -88,7 +88,6 @@ export default class extends Controller {
     if (!this.hasStatusTarget) return
 
     this.messagesTarget.append(this.statusTarget)
-    if (this.hasStatusTextTarget && !this.statusTextTarget.textContent.trim()) this.statusTextTarget.textContent = "Thinking…"
     this.statusTarget.hidden = false
     this.scrollToEnd()
   }

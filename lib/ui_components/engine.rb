@@ -20,8 +20,11 @@ module UiComponents
 
     # Translations live next to each component: app/components/**/*.locales.yml (every
     # language in one file, keys under ui_components.<kit>.<component>)
+    # (the previews' sample content in *_preview.locales.yml only when Lookbook runs)
     initializer "ui_components.i18n" do |app|
-      app.config.i18n.load_path += Dir[COMPONENTS_PATH.join("**/*.locales.yml")]
+      files = Dir[COMPONENTS_PATH.join("**/*.locales.yml")]
+      files = files.reject { |file| file.end_with?("_preview.locales.yml") } unless defined?(Lookbook)
+      app.config.i18n.load_path += files
     end
 
     # Serve the component .js/.css files straight from the component folders,

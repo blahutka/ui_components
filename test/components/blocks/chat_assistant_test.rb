@@ -64,6 +64,38 @@ class Blocks::ChatAssistantTest < ComponentTestCase
     assert_nil html.at_css("[data-slot=avatar-badge] .animate-ping-paced")
   end
 
+  test "its own strings are translated" do
+    html = I18n.with_locale(:cs) do
+      render_ui do
+        ChatAssistant(status: :offline) do
+          ChatHeader()
+          ChatMessages { ChatStatus(hidden: true) }
+          ChatComposer()
+        end
+      end
+    end
+    root = html.at_css("[data-slot=chat-assistant]")
+
+    assert_equal "Asistent", html.at_css("[data-slot=chat-header]").text.strip
+    assert_equal "Offline", html.at_css("[data-slot=avatar-badge]")["aria-label"]
+    assert_equal "Konverzace", html.at_css("[data-slot=chat-messages]")["aria-label"]
+    assert_equal "Přemýšlím…", html.at_css("[data-slot=chat-status]").text.strip
+    assert_equal '["Hotovo – podívejte se na náhled."]', root["data-blocks--chat-assistant-replies-value"]
+    input = html.at_css("input[name=message]")
+    assert_equal "Zeptejte se na cokoli…", input["placeholder"]
+    assert_equal "Napište asistentovi", input["aria-label"]
+    assert_equal "Psaní zprávy", html.at_css("[role=toolbar]")["aria-label"]
+    assert_equal [ "Přiložit soubory", "Nadiktovat zprávu", "Odeslat zprávu" ], html.css("form button").map { |button| button["aria-label"] }
+  end
+
+  test "explicit props still win over the translations" do
+    html = I18n.with_locale(:de) { render_ui { ChatAssistant(title: "Helper") { ChatHeader(); ChatComposer(placeholder: "Frage?") } } }
+
+    assert_equal "Helper", html.at_css("[data-slot=chat-header]").text.strip
+    assert_equal "Frage?", html.at_css("input[name=message]")["placeholder"]
+    assert_equal "Nachricht senden", html.at_css("button[type=submit]")["aria-label"]
+  end
+
   test "parts outside a ChatAssistant raise" do
     assert_raises(ArgumentError) { render_ui { ChatComposer() } }
   end

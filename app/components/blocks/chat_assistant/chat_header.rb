@@ -10,7 +10,7 @@ class Blocks::ChatHeader < Blocks::Base
       Avatar(size: :sm) do
         AvatarFallback(class: "bg-background-inverse text-foreground-inverse") do
           Icon(@icon, class: "size-4.5")
-          AvatarBadge(animate: chat.online?, class: (chat.online? ? nil : "text-foreground-subtle"), aria_label: (chat.online? ? "Online" : "Offline"))
+          AvatarBadge(animate: chat.online?, class: (chat.online? ? nil : "text-foreground-subtle"), aria_label: t(chat.online? ? ".online" : ".offline"))
         end
       end
       span(class: "text-foreground-intense text-sm font-semibold") { @title || chat.title }

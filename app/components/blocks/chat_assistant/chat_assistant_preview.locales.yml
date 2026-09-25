@@ -1,0 +1,122 @@
+# Sample conversations for the Lookbook previews (loaded only when Lookbook is, never in host apps).
+# Every language in one file; test/components/locales_test.rb checks the keys match.
+en:
+  ui_components:
+    previews:
+      chat_assistant:
+        title: Appica Assistant
+        conversation:
+          - Build me a pricing page with a monthly / annual toggle.
+          - On it - composing Tabs, Switch and Table into a three-tier layout.
+          - Make the Pro tier featured.
+        status: Generating preview
+        suggestions:
+          - Add a FAQ section
+          - Use dark theme
+        replies:
+          - Done - the Pro tier now has a highlighted border and a “Most popular” badge.
+          - Added an FAQ section with six collapsible questions under the pricing table.
+          - Switched the page to the dark theme; the featured tier keeps its accent.
+        empty:
+          greeting: Hi! Describe the page you need and I'll compose it from Appica components.
+          placeholder: Describe a page…
+          starters:
+            - Pricing page
+            - Sign-in form
+            - Settings screen
+        long:
+          request: "Iteration %{n}: tighten the spacing in the hero."
+          reply: Reduced the hero padding and aligned the CTA with the heading (step %{n}).
+        offline:
+          message: I'm offline right now - I'll pick this up when I'm back.
+          placeholder: Assistant is offline
+cs:
+  ui_components:
+    previews:
+      chat_assistant:
+        title: Asistent Appica
+        conversation:
+          - Vytvoř mi stránku s ceníkem a přepínačem měsíčně / ročně.
+          - Pracuji na tom – skládám Tabs, Switch a Table do třísloupcového rozvržení.
+          - Zvýrazni tarif Pro.
+        status: Generuji náhled
+        suggestions:
+          - Přidat sekci FAQ
+          - Použít tmavý motiv
+        replies:
+          - Hotovo – tarif Pro má teď zvýrazněný rámeček a štítek „Nejoblíbenější“.
+          - Pod ceník jsem přidal sekci FAQ se šesti rozbalovacími otázkami.
+          - Stránka teď používá tmavý motiv; zvýrazněný tarif si ponechal akcent.
+        empty:
+          greeting: Ahoj! Popište stránku, kterou potřebujete, a složím ji z komponent Appica.
+          placeholder: Popište stránku…
+          starters:
+            - Stránka s ceníkem
+            - Přihlašovací formulář
+            - Nastavení
+        long:
+          request: "Iterace %{n}: zmenši mezery v úvodní sekci."
+          reply: Zmenšil jsem odsazení úvodu a zarovnal tlačítko s nadpisem (krok %{n}).
+        offline:
+          message: Teď jsem offline – ozvu se, až budu zpět.
+          placeholder: Asistent je offline
+de:
+  ui_components:
+    previews:
+      chat_assistant:
+        title: Appica-Assistent
+        conversation:
+          - Bau mir eine Preisseite mit einem Monatlich/Jährlich-Umschalter.
+          - Bin dran – ich kombiniere Tabs, Switch und Table zu einem dreistufigen Layout.
+          - Hebe den Pro-Tarif hervor.
+        status: Vorschau wird erstellt
+        suggestions:
+          - FAQ-Bereich hinzufügen
+          - Dunkles Design verwenden
+        replies:
+          - Fertig – der Pro-Tarif hat jetzt einen hervorgehobenen Rahmen und ein „Beliebteste Wahl“-Badge.
+          - Unter der Preistabelle gibt es jetzt einen FAQ-Bereich mit sechs aufklappbaren Fragen.
+          - Die Seite nutzt jetzt das dunkle Design; der hervorgehobene Tarif behält seinen Akzent.
+        empty:
+          greeting: Hallo! Beschreib die Seite, die du brauchst, und ich baue sie aus Appica-Komponenten.
+          placeholder: Beschreib eine Seite…
+          starters:
+            - Preisseite
+            - Anmeldeformular
+            - Einstellungen
+        long:
+          request: "Iteration %{n}: verkleinere die Abstände im Hero."
+          reply: Hero-Abstände reduziert und den CTA an der Überschrift ausgerichtet (Schritt %{n}).
+        offline:
+          message: Ich bin gerade offline – ich melde mich, sobald ich zurück bin.
+          placeholder: Der Assistent ist offline
+ar:
+  ui_components:
+    previews:
+      chat_assistant:
+        title: مساعد أبيكا
+        conversation:
+          - أنشئ صفحة أسعار مع مفتاح شهري / سنوي.
+          - جارٍ العمل - أجمع علامات التبويب والمفتاح والجدول في تخطيط من ثلاث فئات.
+          - اجعل الخطة الاحترافية مميزة.
+        status: جارٍ إنشاء المعاينة
+        suggestions:
+          - أضف قسم الأسئلة الشائعة
+          - استخدم السمة الداكنة
+        replies:
+          - تم - أصبح للخطة الاحترافية إطار مميز وشارة „الأكثر شيوعًا“.
+          - أضفت قسم أسئلة شائعة بستة أسئلة قابلة للطي أسفل جدول الأسعار.
+          - تستخدم الصفحة الآن السمة الداكنة؛ وتحتفظ الخطة المميزة بلونها.
+        empty:
+          greeting: مرحبًا! صف الصفحة التي تحتاجها وسأبنيها من مكونات أبيكا.
+          placeholder: صف صفحة…
+          starters:
+            - صفحة الأسعار
+            - نموذج تسجيل الدخول
+            - الإعدادات
+        long:
+          request: "التكرار %{n}: قلّل المسافات في القسم الرئيسي."
+          reply: قلّلت الحشو في القسم الرئيسي ومحاذاة زر الدعوة مع العنوان (الخطوة %{n}).
+        offline:
+          message: أنا غير متصل الآن - سأتابع عند عودتي.
+          placeholder: المساعد غير متصل
