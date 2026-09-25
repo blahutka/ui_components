@@ -1,0 +1,93 @@
+---
+id: navigation
+title: Navigation
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+Links between pages or sections, with the current one highlighted.
+[Appica docs](https://appica.dev/ui/components/react/navigation)
+
+<%= embed UI::NavigationPreview, :default %>
+
+## Usage
+
+```ruby
+Navigation(aria_label: "Main", active_link: controller_name) do
+  NavigationList do
+    NavigationItem { NavigationLink(href: dashboard_path, value: "dashboard") { "Dashboard" } }
+    NavigationItem { NavigationLink(href: projects_path, value: "projects") { "Projects" } }
+    NavigationItem { NavigationLink(href: settings_path, active: current_page?(settings_path)) { "Settings" } }
+  end
+end
+```
+
+The root `<nav>` shares `variant:`, `size:` and `orientation:` with its links. Mark the current link either with
+`active_link:` on the root and a matching `value:` on each link, or with `active: true` on the link itself (which
+wins) - it's stamped `aria-current="page"`. The highlight is rendered on the server; there's no JavaScript. To swap
+panels within a page use Tabs; for the trail to the current page use a [Breadcrumb](<%= page_path(:breadcrumb) %>).
+
+## Examples
+
+### Variants
+
+<%= embed UI::NavigationPreview, :variants %>
+
+### Sizes
+
+<%= embed UI::NavigationPreview, :sizes %>
+
+### With icons & badges
+
+<%= embed UI::NavigationPreview, :icons %>
+
+### Vertical sidebar
+
+<%= embed UI::NavigationPreview, :vertical %>
+
+### Indicator variant
+
+<%= embed UI::NavigationPreview, :indicator %>
+
+### Controlled selection
+
+<%= embed UI::NavigationPreview, :controlled %>
+
+### Disabled link
+
+<%= embed UI::NavigationPreview, :disabled %>
+
+### RTL
+
+<%= embed UI::NavigationPreview, :rtl %>
+
+## API reference
+
+### Navigation
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` | `:pill`, `:line`, `:indicator` | `:pill` | How the current / hovered link is drawn; `:indicator` is for vertical sidebars. |
+| `size:` | `:sm`, `:md`, `:lg` | `:md` | Link text, padding and icons. |
+| `orientation:` | `:horizontal`, `:vertical` | `:horizontal` | A row or a column. |
+| `active_link:` | `String`, `Symbol` | - | The `value:` of the current link. |
+| `aria_label:` | `String` | - | Name the landmark. |
+
+### NavigationLink
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value:` | `String`, `Symbol` | - | Matched against `active_link:`. |
+| `active:` | `Boolean` | - | Current, overriding `active_link:`. |
+| `disabled:` | `Boolean` | `false` | Dimmed and out of the tab order. |
+| `indicator:` | `Symbol`, `Proc` | chevron | The `:indicator` variant's marker. |
+| `variant:`, `size:`, `orientation:` | | root's | Per-link overrides. |
+
+A block that takes an argument receives the attributes (Appica's `render` prop) - put them on a `<button>` or your
+own link. `NavigationList` is the `<ul>`, `NavigationItem` an `<li>`.
+
+## Accessibility
+
+- A `<nav>` landmark - give it an `aria_label:` so several navs are distinguishable.
+- The current link is `aria-current="page"`; disabled links are `aria-disabled` and skipped by Tab.
+- Hover and current transitions are skipped under `prefers-reduced-motion`.

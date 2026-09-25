@@ -66,6 +66,7 @@ See Lookbook's **Form builder** page for the full API and a working `/users/new`
 | Input | `Input` (`:outline`/`:soft`, sizes, `start_slot:`/`end_slot:`, `clearable:`) | [input](https://appica.dev/ui/components/react/input) |
 | Loader | `Loader` (`:bar`, `:dots`; SVG SMIL, no JS) | [loader](https://appica.dev/ui/components/react/loader) |
 | Meter | `Meter`, `MeterLabel`, `MeterValue`, `MeterProgress` (`low:`/`high:`/`optimum:` status colors) | [meter](https://appica.dev/ui/components/react/meter) |
+| Navigation | `Navigation`, `NavigationList`, `NavigationItem`, `NavigationLink` (`:pill`/`:line`/`:indicator`, `active_link:`, render prop) | [navigation](https://appica.dev/ui/components/react/navigation) |
 | Number Field | `NumberField` (steppers, Intl `format:`, hidden plain value) | [number-field](https://appica.dev/ui/components/react/number-field) |
 | OTP Field | `OTPField`, `OTPFieldInput`, `OTPFieldSeparator` (paste / autofill, `mask:`, `auto_submit:`) | [otp-field](https://appica.dev/ui/components/react/otp-field) |
 | Progress | `Progress`, `ProgressLabel`, `ProgressValue` (`:bar`, `:circular`) | [progress](https://appica.dev/ui/components/react/progress) |
