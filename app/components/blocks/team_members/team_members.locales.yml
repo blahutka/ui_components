@@ -1,0 +1,87 @@
+# Blocks::TeamMembers strings - t(".key") in any of its parts looks here.
+# Every language in one file; add a locale as another top-level key with the same keys
+# (test/components/locales_test.rb checks that they match).
+en:
+  ui_components:
+    blocks:
+      team_members:
+        title: Team members
+        seats: "%{used} of %{seats} seats used"
+        online: Online
+        offline: Offline
+        roles:
+          owner: Owner
+          admin: Admin
+          editor: Editor
+          viewer: Viewer
+          invited: Invited
+        invite:
+          button: Invite
+          label: Invite by email
+          placeholder: teammate@example.com
+          send: Send invite
+          full: All seats are taken
+          invalid: Enter a valid email address
+cs:
+  ui_components:
+    blocks:
+      team_members:
+        title: Členové týmu
+        seats: "Obsazeno %{used} z %{seats} míst"
+        online: Online
+        offline: Offline
+        roles:
+          owner: Vlastník
+          admin: Správce
+          editor: Editor
+          viewer: Čtenář
+          invited: Pozván
+        invite:
+          button: Pozvat
+          label: Pozvat e-mailem
+          placeholder: kolega@example.com
+          send: Odeslat pozvánku
+          full: Všechna místa jsou obsazena
+          invalid: Zadejte platnou e-mailovou adresu
+de:
+  ui_components:
+    blocks:
+      team_members:
+        title: Teammitglieder
+        seats: "%{used} von %{seats} Plätzen belegt"
+        online: Online
+        offline: Offline
+        roles:
+          owner: Inhaber
+          admin: Admin
+          editor: Bearbeiter
+          viewer: Betrachter
+          invited: Eingeladen
+        invite:
+          button: Einladen
+          label: Per E-Mail einladen
+          placeholder: kollege@example.com
+          send: Einladung senden
+          full: Alle Plätze sind belegt
+          invalid: Gib eine gültige E-Mail-Adresse ein
+ar:
+  ui_components:
+    blocks:
+      team_members:
+        title: أعضاء الفريق
+        seats: "%{used} من %{seats} مقاعد مستخدمة"
+        online: متصل
+        offline: غير متصل
+        roles:
+          owner: المالك
+          admin: مسؤول
+          editor: محرر
+          viewer: مشاهد
+          invited: مدعو
+        invite:
+          button: دعوة
+          label: الدعوة عبر البريد الإلكتروني
+          placeholder: teammate@example.com
+          send: إرسال الدعوة
+          full: جميع المقاعد مشغولة
+          invalid: أدخل بريدًا إلكترونيًا صالحًا

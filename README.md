@@ -47,6 +47,7 @@ Higher-level compositions of the primitives live in `app/components/blocks/` (th
 |-------|-------|
 | Chat assistant | `ChatAssistant`, `ChatHeader`, `ChatMessages`, `ChatMessage`, `ChatStatus`, `ChatSuggestions`, `ChatSuggestion`, `ChatComposer` |
 | Revenue summary | `RevenueSummary`, `RevenueMarkets`, `RevenueMarket`, `RevenueChart`, `RevenueStats`, `RevenueStat`, `CountryFlag` |
+| Team members | `TeamMembers`, `TeamMemberList`, `TeamMember`, `TeamInvite` |
 
 ### Render props
 

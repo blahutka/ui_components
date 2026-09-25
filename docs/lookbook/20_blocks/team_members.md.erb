@@ -1,0 +1,97 @@
+---
+id: team_members
+title: Team members
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A team card: members with roles and presence, a seat count and an invite-by-email form. A **block** composed from
+Avatar, Badge, Button and Icon, as on the [Appica homepage](https://appica.dev/ui) - with the invite form wired up.
+
+<%= embed Blocks::TeamMembersPreview, :default %>
+
+## Usage
+
+```ruby
+TeamMembers(seats: account.seats, used: members.size, action: invitations_path, list_id: "team") do
+  TeamMemberList do
+    members.each do |member|
+      TeamMember(name: member.name, email: member.email, avatar: member.avatar_url, role: member.role.to_sym, online: member.online?)
+    end
+  end
+  TeamInvite()
+end
+```
+
+- The header shows the title and "4 of 5 seats used"; its **Invite** button focuses the email field.
+- The invite form validates the address in the browser and posts `email` to `action:` (Turbo submits it). Reply
+  with a Turbo Stream that appends the new row - the seat count follows the rows, and once every seat is taken the
+  field and buttons disable ("All seats are taken").
+- Without an `action:` the block runs a demo and adds the invited row itself, as in these previews.
+
+```ruby
+# app/controllers/invitations_controller.rb
+def create
+  invitation = Current.account.invitations.create!(email: params[:email])
+  render turbo_stream: turbo_stream.append("team", Blocks::TeamMember.new(name: invitation.email, email: invitation.email, role: :invited))
+end
+```
+
+## Localization
+
+The title, seat count, roles, presence labels and the form's placeholder, labels and messages are translated -
+`team_members.locales.yml` next to the component (English, Czech, German and Arabic). Roles given as symbols
+(`:owner`, `:admin`, `:editor`, `:viewer`, `:invited`) are translated; strings are shown as-is. Switch the
+**Locale** display option to try it.
+
+## Examples
+
+### All seats taken
+
+<%= embed Blocks::TeamMembersPreview, :full %>
+
+### Roles & pending invites
+
+The owner gets an outlined badge, a pending invite an outline badge, everyone else a soft one. Members without an
+avatar show their initials; `online: nil` hides the presence dot.
+
+<%= embed Blocks::TeamMembersPreview, :roles %>
+
+### Read-only
+
+<%= embed Blocks::TeamMembersPreview, :read_only %>
+
+### RTL
+
+<%= embed Blocks::TeamMembersPreview, :rtl %>
+
+## API reference
+
+### TeamMembers
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `seats:` | `Integer` | - | Seats in the plan; shows the count and locks inviting when full. |
+| `used:` | `Integer` | `0` | Seats taken when the page renders (then the controller counts the rows). |
+| `title:` | `String` | translated | Heading ("Team members"). |
+| `action:` / `method:` | `String` / `Symbol` | - / `:post` | Where the invite form posts. Without `action:` the block runs a demo. |
+| `invite:` | `Boolean` | `true` | Show the header's Invite button. |
+| `list_id:` | `String` | generated | Id of the member list - the Turbo Stream target. |
+
+### Parts
+
+| Part | Description |
+|------|-------------|
+| `TeamMemberList` | The `role="list"` of members. |
+| `TeamMember(name:, email:, avatar:, role:, online:)` | A row: avatar (or initials) with a presence dot, name, email, role badge. |
+| `TeamInvite(placeholder:, name: "email", label:)` | The email field and send button, under a divider. |
+
+### Controller (`blocks--team-members`)
+
+Emits `blocks--team-members:invite` with `{ email }` before sending - call `preventDefault()` to handle it yourself.
+
+## Accessibility
+
+- Members are a labelled list; presence dots carry "Online" / "Offline" labels.
+- The email field is labelled ("Invite by email"), uses `type="email"`, and shows a translated validation message.
+- The icon-only send button is labelled ("Send invite"); disabled controls stay visible but inert when the team is full.
