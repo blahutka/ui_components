@@ -1,0 +1,20 @@
+en:
+  ui_components:
+    ui:
+      toc:
+        label: Table of contents
+cs:
+  ui_components:
+    ui:
+      toc:
+        label: Obsah
+de:
+  ui_components:
+    ui:
+      toc:
+        label: Inhaltsverzeichnis
+ar:
+  ui_components:
+    ui:
+      toc:
+        label: جدول المحتويات

@@ -1,0 +1,71 @@
+---
+id: toc
+title: Table of Contents
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+An "on this page" sidebar that highlights the links whose headings are in view.
+[Appica docs](https://appica.dev/ui/components/react/toc)
+
+<%= embed UI::TocPreview, :default %>
+
+## Usage
+
+```ruby
+Toc(aria_label: "On this page", root_margin: "-64px 0px 0px 0px") do
+  TocList do
+    @article.headings.each do |heading|
+      TocItem { TocLink(href: "##{heading.anchor}", depth: heading.level) { heading.text } }
+    end
+  end
+end
+```
+
+Each `TocLink` points at a heading's `id`. The `ui--toc` controller observes those headings and marks the links
+whose heading is in view `data-active`; the topmost one also gets `aria-current="location"`, and the indicator on the
+rail slides over them. With nothing in view the heading nearest the top wins. Give headings `scroll-mt-*` so they
+aren't hidden under a sticky header when a link jumps to them, and offset the tracking boundary with `root_margin:`.
+
+The examples track a scrolling panel with `container:`, which also makes clicks scroll that panel; on a normal page
+leave it out and the anchors jump the page.
+
+## Examples
+
+### Nested headings
+
+<%= embed UI::TocPreview, :nested %>
+
+### With icons
+
+<%= embed UI::TocPreview, :icons %>
+
+### RTL
+
+<%= embed UI::TocPreview, :rtl %>
+
+## API reference
+
+### Toc
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `aria_label:` | `String` | "Table of contents" | The landmark's name (translated). |
+| `root_margin:` | `String` | `"0px"` | IntersectionObserver margin - offset the boundary for a sticky header. |
+| `container:` | `String` | - | A CSS selector of the scrolling element to track (and scroll on click). |
+
+### TocLink
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `href:` | `String` | - | **Required.** `#id` of the heading. |
+| `depth:` | `Integer` | `2` | The heading level (2-6), indenting deeper entries. |
+
+A block that takes an argument receives the attributes for your own element. `TocList` is the `<ul>` with the rail,
+`TocItem` an `<li>`.
+
+## Accessibility
+
+- A `<nav>` landmark named "Table of contents" - rename it ("On this page") to suit the page.
+- The topmost link in view is `aria-current="location"`; the scroll-spy never moves focus or scrolls by itself.
+- Links are ordinary anchors; the indicator and link transitions honor `prefers-reduced-motion`.
