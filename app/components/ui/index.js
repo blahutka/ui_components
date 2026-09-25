@@ -20,6 +20,7 @@ import FieldController from "ui/field/field_controller"
 import InputController from "ui/input/input_controller"
 import MenubarController from "ui/menubar/menubar_controller"
 import MeterController from "ui/meter/meter_controller"
+import NavigationMenuController from "ui/navigation_menu/navigation_menu_controller"
 import NumberFieldController from "ui/number_field/number_field_controller"
 import SelectController from "ui/select/select_controller"
 import SliderController from "ui/slider/slider_controller"
@@ -51,6 +52,7 @@ application.register("ui--field", FieldController)
 application.register("ui--input", InputController)
 application.register("ui--menubar", MenubarController)
 application.register("ui--meter", MeterController)
+application.register("ui--navigation-menu", NavigationMenuController)
 application.register("ui--number-field", NumberFieldController)
 application.register("ui--select", SelectController)
 application.register("ui--slider", SliderController)

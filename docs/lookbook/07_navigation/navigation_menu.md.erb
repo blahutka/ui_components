@@ -1,0 +1,117 @@
+---
+id: navigation_menu
+title: Navigation Menu
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+Site navigation whose items open rich panels of links - a marketing-style mega-menu.
+[Appica docs](https://appica.dev/ui/components/react/navigation-menu)
+
+<%= embed UI::NavigationMenuPreview, :default %>
+
+## Usage
+
+```ruby
+NavigationMenu(aria_label: "Main") do
+  NavigationMenuList do
+    NavigationMenuItem do
+      NavigationMenuTrigger { plain "Products"; NavigationMenuIcon() }
+      NavigationMenuContent do
+        ul(class: "grid w-96 grid-cols-2 gap-0.5") do
+          li { NavigationMenuLink(href: analytics_path) { "Analytics" } }
+          li { NavigationMenuLink(href: components_path) { "Components" } }
+        end
+      end
+    end
+    NavigationMenuItem { NavigationMenuLink(href: pricing_path) { "Pricing" } }
+  end
+end
+```
+
+- `NavigationMenu` - the `<nav>`; shares `variant:`, `size:`, `orientation:` and the trigger `icon:` with its parts.
+- `NavigationMenuList` / `NavigationMenuItem` - the row of entries; an item holds a trigger + content, or one link.
+- `NavigationMenuTrigger` - opens its item's panel on hover, click, Enter / Space or the arrow toward the panel.
+- `NavigationMenuIcon` - the open / close indicator.
+- `NavigationMenuContent` - the panel; lay links out inside however you like.
+- `NavigationMenuLink` - a link, in a panel (a full-width row) or in the bar.
+
+Panels are rendered on the server, hidden inside their items, so crawlers and no-JS visitors still get every link.
+The `ui--navigation-menu` controller moves the open panel into a popup in the browser's top layer, places it under
+its trigger (beside it when vertical, flipping for RTL and the viewport edge) and morphs the popup's size as you move
+between items. For a menu of actions from a button use a DropdownMenu; for an app command bar a
+[Menubar](<%= page_path(:menubar) %>).
+
+## Examples
+
+### Variants
+
+<%= embed UI::NavigationMenuPreview, :variants %>
+
+### Sizes
+
+<%= embed UI::NavigationMenuPreview, :sizes %>
+
+### Indicator
+
+<%= embed UI::NavigationMenuPreview, :indicator %>
+
+### Vertical
+
+<%= embed UI::NavigationMenuPreview, :vertical %>
+
+### Backdrop
+
+<%= embed UI::NavigationMenuPreview, :backdrop %>
+
+### Nested submenus
+
+A vertical `NavigationMenu` inside a panel is a submenu with its own popup beside the parent's.
+
+<%= embed UI::NavigationMenuPreview, :nested %>
+
+### Nested inline submenus
+
+<%= embed UI::NavigationMenuPreview, :inline %>
+
+### RTL
+
+<%= embed UI::NavigationMenuPreview, :rtl %>
+
+## API reference
+
+### NavigationMenu
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` | `:pill`, `:line` | `:pill` | Trigger style. |
+| `size:` | `:sm`, `:md`, `:lg` | `:md` | Triggers, popup radius and link padding. |
+| `orientation:` | `:horizontal`, `:vertical` | `:horizontal` | A bar or a sidebar (panels open beside it). |
+| `icon:` | `:chevron`, `:caret`, `:plus`, `false` | `:chevron` | The indicator of every NavigationMenuIcon. |
+| `morph:` | `Boolean` | `true` | Animate the popup's size and position between items. |
+| `backdrop:` | `Boolean` | `false` | Dim and blur the page behind the open panel. |
+| `viewport:` | `Boolean` | `true` | `false` - no popup; panels show in your NavigationMenuViewport. |
+| `default_value:` | `String` | - | Open this item's panel on load (inline menus). |
+| `delay:` / `close_delay:` | `Integer` | `50` | Hover open / close delays in ms. |
+| `side_offset:` | `Integer` | `6` (`12` nested) | Gap between trigger and popup. |
+
+Event: `ui--navigation-menu:change` with `{ value }` (`null` when closed).
+
+### Parts
+
+| Part | Props | Description |
+|------|-------|-------------|
+| `NavigationMenuItem` | `value:` | Names the item (for `default_value:`). |
+| `NavigationMenuTrigger` | `disabled:` | The panel opener. |
+| `NavigationMenuIcon` | `icon:` | Per-trigger indicator override (`false` hides it). |
+| `NavigationMenuContent` | - | The panel. |
+| `NavigationMenuLink` | `href:`, `active:`, `close_on_click:`; block `{ \|link\| … }` | A link; `active` is `aria-current="page"`. |
+| `NavigationMenuViewport` | - | Where an inline (`viewport: false`) menu shows its panels. |
+
+## Accessibility
+
+- A `<nav>` landmark - name it with `aria_label:`. Triggers are buttons with `aria-expanded` / `aria-controls`; each
+  panel is a `role="group"` labelled by its trigger.
+- ←/→ (↑/↓ when vertical) move between the bar's items; the arrow toward a panel opens it and focuses its first link;
+  Escape closes and returns focus to the trigger; tabbing out closes it.
+- The popup's enter, exit and morph transitions honor `prefers-reduced-motion`.

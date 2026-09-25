@@ -30,6 +30,16 @@ class UI::NavigationLink < UI::Base
 
   CHEVRON = "M5.558 3.558c.244-.244.641-.244.885 0l4 4c.244.244.244.641 0 .885l-4 4c-.244.244-.641.244-.885 0s-.244-.641 0-.885L9.115 8 5.558 4.442c-.244-.244-.244-.641 0-.885z"
 
+  # A navigation link's look - shared with NavigationMenu's triggers and links
+  def self.style(variant, size)
+    style = case variant.to_sym
+    when :line then [ UI::Menubar::LINE, LINE_CURRENT, UI::Menubar::LINE_SIZES[size.to_sym] ]
+    when :indicator then [ INDICATOR, INDICATOR_SIZES[size.to_sym] ]
+    else [ UI::Menubar::PILL, UI::Menubar::PILL_SIZES[size.to_sym] ]
+    end
+    [ UI::Menubar::ROW.sub("outline-hidden", "outline-none"), *style ].join(" ")
+  end
+
   prop :value,       default: -> { nil }
   prop :active,      default: -> { nil }
   prop :disabled,    default: -> { false }
@@ -74,12 +84,7 @@ class UI::NavigationLink < UI::Base
     end
 
     def classes
-      style = case variant
-      when :line then [ UI::Menubar::LINE, LINE_CURRENT, UI::Menubar::LINE_SIZES[size] ]
-      when :indicator then [ INDICATOR, INDICATOR_SIZES[size] ]
-      else [ UI::Menubar::PILL, UI::Menubar::PILL_SIZES[size] ]
-      end
-      cn(UI::Menubar::ROW.sub("outline-hidden", "outline-none"), *style, override: @attributes[:class])
+      cn(self.class.style(variant, size), override: @attributes[:class])
     end
 
     def indicator_content
