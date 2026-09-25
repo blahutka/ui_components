@@ -7,7 +7,9 @@
 <% devices = { "mobile" => { label: "Mobile", width: 390, height: 844 }, "tablet" => { label: "Tablet", width: 820, height: 1180 } } %>
 <% framed = params[:viewport_frame].present? %>
 <% device = devices[display[:viewport].to_s] unless framed %>
-<html class="<%= display[:theme] == "dark" ? "dark" : "" %>">
+<%# The toolbar's Locale option (applied around the request); right-to-left languages flip the page %>
+<% rtl = %w[ ar he fa ur ].include?(I18n.locale.to_s) %>
+<html lang="<%= I18n.locale %>" dir="<%= rtl ? "rtl" : "ltr" %>" class="<%= display[:theme] == "dark" ? "dark" : "" %>">
   <head>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= stylesheet_link_tag "tailwind" %>

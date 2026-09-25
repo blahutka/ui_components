@@ -42,6 +42,45 @@ class Blocks::RevenueSummaryTest < ComponentTestCase
     assert_equal "Orders12", html.at_css("[data-slot=revenue-stat]").text
   end
 
+  test "period: picks the translated title and comparison" do
+    html = render_ui { RevenueSummary(value: 48_210, previous: 42_900, period: :month) }
+
+    assert_includes html.text, "Monthly revenue"
+    assert_includes html.text, "vs $42,900 last month"
+  end
+
+  test "renders in the current locale: wording, country names and number formats" do
+    html = I18n.with_locale(:cs) do
+      render_ui do
+        RevenueSummary(value: 48_210, previous: 42_900, period: :month) do
+          RevenueMarkets { RevenueMarket(country: :us, value: 21_690, share: 45) }
+          RevenueChart(data: [ 1_000, 2_000 ], labels: %w[ led úno ])
+          RevenueStats do
+            RevenueStat(label: :orders, value: 1_208)
+            RevenueStat(label: :average_order, value: 39.9, money: true)
+          end
+        end
+      end
+    end
+
+    assert_includes html.text, "Měsíční tržby"
+    assert_equal "48 210 $", html.at_css("[data-slot=revenue-value]").text
+    assert_includes html.text, "oproti 42 900 $ minulý měsíc"
+    assert_equal "+12,4%", html.at_css("[data-trend]").text.strip
+    assert_includes html.at_css("[data-slot=revenue-markets]").text, "Hlavní trhy"
+    assert_includes html.at_css("[data-slot=revenue-market]").text, "Spojené státy"
+    assert_equal [ "Objednávky1.208", "Průměrná objednávka39,90 $" ], html.css("[data-slot=revenue-stat]").map(&:text)
+    assert_equal "Vývoj tržeb", html.at_css("[data-slot=sparkline] [role=img]")["aria-label"]
+    assert_includes html.at_css("[data-slot=sparkline]")["data-ui--sparkline-formatted-values-value"], "2 000 $"
+  end
+
+  test "explicit wording overrides the translations" do
+    html = I18n.with_locale(:de) { render_ui { RevenueSummary(value: 10, previous: 5, title: "Shop", comparison: "Vorjahr") } }
+
+    assert_includes html.text, "Shop"
+    assert_includes html.text, "vs. 5 $ Vorjahr"
+  end
+
   test "parts outside a RevenueSummary raise" do
     assert_raises(ArgumentError) { render_ui { RevenueMarket(name: "Japan", value: 1) } }
   end

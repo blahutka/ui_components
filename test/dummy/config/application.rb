@@ -38,6 +38,10 @@ module Dummy
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    # The locales the Lookbook "Locale" switch offers (number formats etc. from rails-i18n)
+    config.i18n.available_locales = %i[ en cs de ar ]
+    config.i18n.default_locale = :en
+
     config.lookbook.project_name = "UI Components"
     config.lookbook.preview_layout = "component_preview"
     # Refresh open Lookbook pages when previews, pages, components or their JS/CSS change
@@ -47,6 +51,7 @@ module Dummy
     config.lookbook.listen_extensions += %w[ js css ]
     config.lookbook.preview_display_options = {
       theme: [ "light", "dark" ],
+      locale: [ [ "English", "en" ], [ "Čeština", "cs" ], [ "Deutsch", "de" ], [ "العربية", "ar" ] ],
       viewport: [ "desktop", "tablet", "mobile" ],
       width: [ "narrow", "wide", "full" ]
     }

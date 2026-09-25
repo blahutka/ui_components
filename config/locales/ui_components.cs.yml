@@ -1,0 +1,30 @@
+cs:
+  ui_components:
+    revenue_summary:
+      title:
+        day: Tržby dnes
+        week: Týdenní tržby
+        month: Měsíční tržby
+        year: Roční tržby
+        other: Tržby
+      previous:
+        day: včera
+        week: minulý týden
+        month: minulý měsíc
+        year: minulý rok
+        other: předchozí období
+      comparison: "oproti %{amount} %{previous}"
+      markets: Hlavní trhy
+      chart: Vývoj tržeb
+      stats:
+        orders: Objednávky
+        average_order: Průměrná objednávka
+        refunds: Vrácení
+        conversion: Konverze
+    countries:
+      us: Spojené státy
+      de: Německo
+      jp: Japonsko
+      fr: Francie
+      gb: Spojené království
+      cz: Česko

@@ -1,12 +1,14 @@
 # A revenue overview card: the period's total with a trend badge, top markets, a trend chart
 # and key stats - composed from Badge, Icon and Sparkline.
 #
+# Localized: switch the toolbar's **Locale** display option (English, Čeština, Deutsch,
+# العربية) and the wording, country names, month labels and number formats follow.
+#
 # @label Revenue summary
 # @logical_path Blocks
 # @component Blocks::RevenueSummary
 # @display width wide
 class Blocks::RevenueSummaryPreview < UI::BasePreview
-  MONTHS = %w[ Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec ].freeze
   REVENUE = [ 33_900, 32_100, 36_800, 35_700, 32_800, 39_200, 44_700, 42_700, 40_200, 40_900, 43_600, 48_210 ].freeze
 
   # @label Usage
@@ -14,19 +16,20 @@ class Blocks::RevenueSummaryPreview < UI::BasePreview
   # read each month.
   # @param value number
   # @param previous number
-  # @param currency [Symbol] select { choices: [USD, EUR, GBP] }
-  def default(value: 48_210, previous: 42_900, currency: :USD)
+  # @param period [Symbol] select { choices: [day, week, month, year] }
+  # @param currency [Symbol] select { choices: [USD, EUR, GBP, CZK] }
+  def default(value: 48_210, previous: 42_900, period: :month, currency: :USD)
     phlex do
-      RevenueSummary(title: "Monthly revenue", value: value.to_f, previous: previous.to_f, comparison: "last month", currency: currency.to_s, class: "w-100 max-w-full") do
+      RevenueSummary(value: value.to_f, previous: previous.to_f, period:, currency: currency.to_s, class: "w-100 max-w-full") do
         RevenueMarkets do
-          RevenueMarket(country: :us, name: "United States", value: 21_690, share: 45)
-          RevenueMarket(country: :de, name: "Germany", value: 9_640, share: 20)
-          RevenueMarket(country: :jp, name: "Japan", value: 7_230, share: 15)
+          RevenueMarket(country: :us, value: 21_690, share: 45)
+          RevenueMarket(country: :de, value: 9_640, share: 20)
+          RevenueMarket(country: :jp, value: 7_230, share: 15)
         end
-        RevenueChart(data: REVENUE[0...-1] + [ value.to_f ], labels: MONTHS, aria_label: "Revenue over the last 12 months")
+        RevenueChart(data: REVENUE[0...-1] + [ value.to_f ], labels: I18n.t("date.abbr_month_names").compact)
         RevenueStats do
-          RevenueStat(label: "Orders") { "1,208" }
-          RevenueStat(label: "Avg. order value") { "$39.90" }
+          RevenueStat(label: :orders, value: 1_208)
+          RevenueStat(label: :average_order, value: 39.9, money: true)
         end
       end
     end
@@ -36,45 +39,62 @@ class Blocks::RevenueSummaryPreview < UI::BasePreview
   # A drop flips the badge to the error color and a falling arrow.
   def decline
     phlex do
-      RevenueSummary(title: "Weekly revenue", value: 9_870, previous: 11_240, comparison: "last week", class: "w-100 max-w-full") do
-        RevenueChart(data: [ 11_240, 10_900, 11_600, 10_300, 9_800, 10_100, 9_870 ], labels: %w[ Mon Tue Wed Thu Fri Sat Sun ], aria_label: "Revenue this week")
+      RevenueSummary(value: 9_870, previous: 11_240, period: :week, class: "w-100 max-w-full") do
+        RevenueChart(data: [ 11_240, 10_900, 11_600, 10_300, 9_800, 10_100, 9_870 ], labels: I18n.t("date.abbr_day_names").rotate)
         RevenueStats do
-          RevenueStat(label: "Orders") { "312" }
-          RevenueStat(label: "Refunds") { "14" }
-          RevenueStat(label: "Conversion") { "2.8%" }
+          RevenueStat(label: :orders, value: 312)
+          RevenueStat(label: :refunds, value: 14)
+          RevenueStat(label: :conversion) { ActiveSupport::NumberHelper.number_to_percentage(2.8, precision: 1, locale: I18n.locale) }
         end
       end
     end
   end
 
   # @label Compact
-  # Every part is optional: just the total and the markets.
+  # Every part is optional: just the total and the markets. Countries without a bundled flag
+  # show their code on a tile.
   def compact
     phlex do
-      RevenueSummary(title: "Revenue today", value: 1_845.5, currency: "EUR", class: "w-80 max-w-full") do
-        RevenueMarkets(title: "By country") do
-          RevenueMarket(country: :de, name: "Germany", value: 1_120, share: 61)
-          RevenueMarket(country: :fr, name: "France", value: 725.5, share: 39)
+      RevenueSummary(value: 1_845.5, period: :day, currency: "EUR", class: "w-80 max-w-full") do
+        RevenueMarkets do
+          RevenueMarket(country: :de, value: 1_120, share: 61)
+          RevenueMarket(country: :fr, value: 725.5, share: 39)
         end
       end
     end
   end
 
+  # @label Custom wording
+  # `title:`, `comparison:`, market `name:` and stat labels take plain strings when the built-in
+  # translations don't fit.
+  def custom_wording
+    phlex do
+      RevenueSummary(value: 48_210, previous: 42_900, title: "Store revenue · EU", comparison: "the same month last year", class: "w-100 max-w-full") do
+        RevenueMarkets(title: "Best-selling regions") do
+          RevenueMarket(country: :de, name: "DACH", value: 21_690, share: 45)
+        end
+        RevenueStats { RevenueStat(label: "New customers", value: 342) }
+      end
+    end
+  end
+
   # @label RTL
-  # Amounts and shares align to the inline end, and the chart (like Sparkline) runs in the
-  # reading direction; the trend figure stays "+12.4%".
+  # Rendered in Arabic whatever the toolbar says: amounts and shares align to the inline end,
+  # and the chart runs in the reading direction.
   def rtl
     phlex do
-      div(dir: "rtl") do
-        RevenueSummary(title: "الإيرادات الشهرية", value: 48_210, previous: 42_900, comparison: "الشهر الماضي", class: "w-100 max-w-full") do
-          RevenueMarkets(title: "أهم الأسواق") do
-            RevenueMarket(country: :us, name: "الولايات المتحدة", value: 21_690, share: 45)
-            RevenueMarket(country: :de, name: "ألمانيا", value: 9_640, share: 20)
-          end
-          RevenueChart(data: REVENUE, aria_label: "الإيرادات خلال 12 شهرًا")
-          RevenueStats do
-            RevenueStat(label: "الطلبات") { "1,208" }
-            RevenueStat(label: "متوسط قيمة الطلب") { "$39.90" }
+      I18n.with_locale(:ar) do
+        div(dir: "rtl") do
+          RevenueSummary(value: 48_210, previous: 42_900, period: :month, class: "w-100 max-w-full") do
+            RevenueMarkets do
+              RevenueMarket(country: :us, value: 21_690, share: 45)
+              RevenueMarket(country: :de, value: 9_640, share: 20)
+            end
+            RevenueChart(data: REVENUE, labels: I18n.t("date.abbr_month_names").compact)
+            RevenueStats do
+              RevenueStat(label: :orders, value: 1_208)
+              RevenueStat(label: :average_order, value: 39.9, money: true)
+            end
           end
         end
       end

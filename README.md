@@ -204,7 +204,9 @@ changing the engine, initializers, the Gemfile or anything else loaded once at b
 
 Notes:
 - Previews live next to each component (`app/components/ui/<component>/*_preview.rb`).
-- Lookbook's **display options** (⚙ in the preview toolbar) switch **Theme** (light/dark) and
+- Lookbook's **display options** (⚙ in the preview toolbar) switch **Theme** (light/dark),
+  **Locale** (English, Čeština, Deutsch, العربية - the preview renders in that `I18n.locale`, and
+  right-to-left languages flip `dir`; see `test/dummy/config/initializers/lookbook.rb`) and
   **Viewport** (desktop/tablet/mobile). Tablet and mobile render the scenario inside an 820px /
   390px device frame, so breakpoints and media queries respond as on a real device. Touch input
   and `pointer: coarse` still need browser device emulation (open the preview in a new window).
