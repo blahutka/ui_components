@@ -1,0 +1,110 @@
+---
+id: tabs
+title: Tabs
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+Several panels sharing one region, one shown at a time.
+[Appica docs](https://appica.dev/ui/components/react/tabs)
+
+<%= embed UI::TabsPreview, :default %>
+
+## Usage
+
+```ruby
+Tabs(default_value: "overview") do
+  TabsList do
+    TabsTrigger(value: "overview") { "Overview" }
+    TabsTrigger(value: "activity") { "Activity" }
+  end
+  TabsContent(value: "overview") { render "overview" }
+  TabsContent(value: "activity") { render "activity" }
+end
+```
+
+Each `TabsTrigger` is matched to the `TabsContent` with the same `value:`. The selected tab and panel are rendered
+on the server (the others' panels are `hidden`), so the page is right before JavaScript loads; the `ui--tabs`
+controller then switches panels, slides the indicator and handles the keyboard. `variant:` (`:pill`, `:line`),
+`size:` and `orientation:` are set on the root. To move between pages use [Navigation](<%= page_path(:navigation) %>).
+
+## Examples
+
+### Variants
+
+<%= embed UI::TabsPreview, :variants %>
+
+### Sizes
+
+<%= embed UI::TabsPreview, :sizes %>
+
+### Vertical
+
+<%= embed UI::TabsPreview, :vertical %>
+
+### With icons & badges
+
+<%= embed UI::TabsPreview, :icons %>
+
+### Icon-only
+
+<%= embed UI::TabsPreview, :icon_only %>
+
+### Controlled
+
+```js
+tabs.dispatchEvent(new CustomEvent("ui--tabs:select", { detail: { value: "review" } }))
+tabs.addEventListener("ui--tabs:change", ({ detail }) => console.log(detail.value))
+```
+
+<%= embed UI::TabsPreview, :controlled %>
+
+### Disabled
+
+<%= embed UI::TabsPreview, :disabled %>
+
+### RTL
+
+<%= embed UI::TabsPreview, :rtl %>
+
+## API reference
+
+### Tabs
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `default_value:` / `value:` | `String` | - | The selected tab. |
+| `variant:` | `:pill`, `:line` | `:pill` | A filled track with a sliding pill, or an underline. |
+| `size:` | `:sm`, `:md`, `:lg` | `:md` | Trigger padding and text. |
+| `orientation:` | `:horizontal`, `:vertical` | `:horizontal` | Layout and arrow-key axis. |
+
+Events: `ui--tabs:change` (`{ value }`); dispatch `ui--tabs:select` with `{ value }` to switch.
+
+### TabsList
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` / `size:` | | root's | Overrides for this list. |
+| `activate_on_focus:` | `Boolean` | `false` | Switch panels as the arrow keys move focus. |
+| `loop_focus:` | `Boolean` | `true` | Wrap focus at the ends. |
+
+### TabsTrigger
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value:` | `String` | - | **Required.** Matches a TabsContent. |
+| `disabled:` | `Boolean` | `false` | Not selectable; skipped by the arrow keys. |
+| `icon:` | `Boolean` | `false` | Square, label-less - add an `aria_label:`. |
+| `variant:` / `size:` | | list's | Per-trigger overrides. |
+
+### TabsContent
+
+`TabsContent(value:)` - the `role="tabpanel"` for that value.
+
+## Accessibility
+
+- The WAI-ARIA tabs pattern: `tablist`, `tab` (with `aria-selected` / `aria-controls`) and `tabpanel`
+  (`aria-labelledby`).
+- One tab stop; ←/→ (↑/↓ when vertical, following the reading direction) move focus, Home / End jump, Enter / Space
+  select.
+- The indicator and panel transitions honor `prefers-reduced-motion`.

@@ -79,6 +79,7 @@ See Lookbook's **Form builder** page for the full API and a working `/users/new`
 | Sparkline | `Sparkline`, `SparklineChart`, `SparklineValue`, `SparklineLabel` | [sparkline](https://appica.dev/ui/components/react/sparkline) |
 | Spinner | `Spinner` (`:circular`, `:dots`, `:sparkle`; SVG SMIL, no JS) | [spinner](https://appica.dev/ui/components/react/spinner) |
 | Switch | `Switch` (native checkbox with `role="switch"`, sizes, `unchecked_value:`) | [switch](https://appica.dev/ui/components/react/switch) |
+| Tabs | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent` (`:pill`/`:line`, vertical, sliding indicator, icon tabs) | [tabs](https://appica.dev/ui/components/react/tabs) |
 | Textarea | `Textarea` (`rows:`, Input's variants, sizes, slots and `clearable:`) | [textarea](https://appica.dev/ui/components/react/textarea) |
 | Toggle | `Toggle`, `ToggleGroup` (render-prop onto a Button, single/multiple, roving focus, `name:`) | [toggle](https://appica.dev/ui/components/react/toggle) |
 | Toolbar | `Toolbar`, `ToolbarButton`, `ToolbarLink`, `ToolbarInput`, `ToolbarGroup`, `ToolbarSeparator` (roving focus, render props) | [toolbar](https://appica.dev/ui/components/react/toolbar) |

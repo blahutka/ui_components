@@ -26,6 +26,7 @@ import SliderController from "ui/slider/slider_controller"
 import OTPFieldController from "ui/otp_field/otp_field_controller"
 import ProgressController from "ui/progress/progress_controller"
 import RatingController from "ui/rating/rating_controller"
+import TabsController from "ui/tabs/tabs_controller"
 import ToolbarController from "ui/toolbar/toolbar_controller"
 import ToasterController from "ui/toast/toaster_controller"
 import "ui/toast/toast"
@@ -55,6 +56,7 @@ application.register("ui--slider", SliderController)
 application.register("ui--otp-field", OTPFieldController)
 application.register("ui--progress", ProgressController)
 application.register("ui--rating", RatingController)
+application.register("ui--tabs", TabsController)
 application.register("ui--toolbar", ToolbarController)
 application.register("ui--toaster", ToasterController)
 application.register("ui--sparkline", SparklineController)
