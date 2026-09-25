@@ -104,6 +104,18 @@ class UI::ChipPreview < UI::BasePreview
     end
   end
 
+  # @label Selectable (form)
+  # ChipCheckbox: a chip around a hidden checkbox, so a set of them submits like check boxes.
+  def selectable
+    phlex do
+      ChipGroup(variant: :outline, role: "group", aria_label: "Job type") do
+        { remote: "Remote", full_time: "Full-time", part_time: "Part-time", contract: "Contract" }.each do |value, text|
+          ChipCheckbox(name: "job_types[]", value:, checked: value == :remote) { text }
+        end
+      end
+    end
+  end
+
   # @label As a link
   # `href:` renders an <a> with the chip styling.
   def link

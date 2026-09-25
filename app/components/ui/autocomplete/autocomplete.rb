@@ -39,6 +39,11 @@ class UI::Autocomplete < UI::Base
     end
   end
 
+  # Inside a Field the input takes its id, name, description and invalid state
+  def field
+    context[:ui_field]
+  end
+
   def clearable? = @clearable
   def icon? = @icon
   def grid? = @grid

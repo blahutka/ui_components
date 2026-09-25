@@ -33,6 +33,7 @@ module UiComponents
     initializer "ui_components.form_builder" do
       ActiveSupport.on_load(:action_view) do
         ActionView::Helpers::FormBuilder.include(UiComponents::FormBuilderExtension)
+        Phlex::Rails::Builder.include(UiComponents::PhlexFormBuilderExtension) if defined?(Phlex::Rails::Builder)
       end
     end
 

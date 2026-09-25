@@ -1,15 +1,17 @@
 # A labelled Field around one control, as UI::FormBuilder renders it: the label above the
-# control, or (`inline: true`, for a check box or switch) beside it.
+# control (`layout: :stacked`), beside it (`:inline`, for a check box or switch) or shown by the
+# control itself (`:control`, a toggle button's text).
 class UI::FormBuilderField < UI::Base
   prop :field
   prop :label
   prop :description, default: -> { nil }
   prop :control
-  prop :inline, default: -> { false }
+  prop :layout, one_of(%i[ stacked inline control ], :stacked), default: -> { :stacked }
 
   def view_template
     render UI::Field.new(**@field) do
-      if @inline
+      case @layout
+      when :inline
         div(class: "flex items-start gap-2.5") do
           span(class: "flex h-5 shrink-0 items-center") { render @control }
           div(class: "flex min-w-0 flex-col") do
@@ -17,6 +19,9 @@ class UI::FormBuilderField < UI::Base
             details
           end
         end
+      when :control
+        render @control
+        details
       else
         render(UI::FieldLabel.new) { @label }
         render @control
@@ -27,7 +32,7 @@ class UI::FormBuilderField < UI::Base
 
   private
     def details
-      render(UI::FieldDescription.new(class: ("mt-0.5" if @inline))) { @description } if @description
+      render(UI::FieldDescription.new(class: ("mt-0.5" if @layout == :inline))) { @description } if @description
       render UI::FieldError.new
     end
 end

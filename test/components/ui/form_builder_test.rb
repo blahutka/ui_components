@@ -429,7 +429,7 @@ class UI::FormBuilderTest < ActionView::TestCase
 
   test "an edit form shows a persisted record's stored values and its children's ids" do
     user = User.create!(name: "Ada", age: 42, locations: %w[prg], plan: "team", interests: %w[sales], language: "de", skills: %w[SQL],
-      experience: 9, pin: "4321", newsletter: true, terms_of_service: "1",
+      experience: 9, pin: "4321", newsletter: true, terms_of_service: "1", email: "ada@example.com", tags: %w[remote], city: "Brno", score: 4, alignment: "left",
       address: Address.new(city: "Prague", country: "cz"), phones: [ Phone.new(number: "+420 123 456 789", kind: "home") ])
     user = User.find(user.id)
 
@@ -457,6 +457,87 @@ class UI::FormBuilderTest < ActionView::TestCase
     assert_equal user.address.id.to_s, html.at_css('input[name="user[address_attributes][id]"]')["value"]
     assert html.at_css("#user_phones_attributes_0_kind_home").key?("checked")
     assert_equal user.phones.first.id.to_s, html.at_css('input[name="user[phones_attributes][0][id]"]')["value"]
+  end
+
+  test "chip groups submit an array of selectable chips with a blank sentinel" do
+    html = form_html(User.new(tags: %w[remote mentor])) { |form| form.ui.chip_group(:tags, User::TAGS, variant: :soft) }
+
+    inputs = html.css("input[name='user[tags][]']")
+    assert_equal [ "hidden", "" ], [ inputs.first["type"], inputs.first["value"] ]
+    group = html.at_css("#user_tags[role=group][data-slot=chip-group]")
+    assert_equal "user_tags-field-label", group["aria-labelledby"]
+    chips = group.css("input[type=checkbox]")
+    assert_equal %w[user_tags_remote user_tags_full_time user_tags_part_time user_tags_contract user_tags_mentor], chips.map { |chip| chip["id"] }
+    assert_equal %w[remote mentor], chips.select { |chip| chip.key?("checked") }.map { |chip| chip["value"] }
+    assert_equal "Remote", chips.first.ancestors("label").first.text.strip
+    assert_equal "soft", chips.first.ancestors("label").first["data-variant"]
+
+    html = form_html(User.new) { |form| form.ui.chip_group(:tags, User::TAGS, include_hidden: false) }
+    assert_nil html.at_css("input[type=hidden]")
+  end
+
+  test "autocompletes submit the typed text with the Field's id and constraints" do
+    html = form_html(User.new(city: "Brno")) { |form| form.ui.autocomplete(:city, User::CITIES, placeholder: "Search a city") }
+
+    input = html.at_css("input#user_city[role=combobox]")
+    assert_equal [ "user[city]", "Brno", "Search a city" ], %w[name value placeholder].map { |attribute| input[attribute] }
+    assert input.key?("required")
+    assert html.at_css('label[for="user_city"]')
+    assert_equal User::CITIES, html.css("[role=option]").map { |option| option["data-value"] }
+  end
+
+  test "ratings submit the score from a hidden input and label their radiogroup" do
+    html = form_html(User.new(score: 4)) { |form| form.ui.rating(:score) }
+
+    assert_equal "4", html.at_css("input[type=hidden][name='user[score]']")["value"]
+    group = html.at_css("#user_score[role=radiogroup]")
+    assert_equal "user_score-field-label", group["aria-labelledby"]
+    assert_nil group["aria-label"]
+    assert_equal "true", group.at_css("[data-index='4']")["aria-checked"]
+  end
+
+  test "toggles submit check_box's values through one hidden input and show the label" do
+    html = form_html(User.new(featured: true)) { |form| form.ui.toggle(:featured, label: "Feature me", description: "Pinned") }
+
+    hidden = html.at_css("input[type=hidden][name='user[featured]']")
+    assert_equal [ "1", "1", "0" ], [ hidden["value"], hidden["data-checked-value"], hidden["data-unchecked-value"] ]
+    button = html.at_css("button#user_featured")
+    assert_equal [ "true", "Feature me" ], [ button["aria-pressed"], button.text.strip ]
+    assert_includes button["aria-describedby"], "user_featured-field-description"
+    assert_nil html.at_css("label")
+
+    html = form_html(User.new) { |form| form.ui.toggle(:featured) }
+    assert_equal [ "0", "false" ], [ html.at_css("input[type=hidden]")["value"], html.at_css("button")["aria-pressed"] ]
+  end
+
+  test "toggle groups submit one value, or an array with multiple" do
+    html = form_html(User.new(alignment: "center", formats: %w[bold])) do |form|
+      safe_join([ form.ui.toggle_group(:alignment, User::ALIGNMENTS), form.ui.toggle_group(:formats, User::FORMATS, multiple: true) ])
+    end
+
+    assert_equal [ "", "center" ], html.css("input[name='user[alignment]']").map { |input| input["value"] }
+    assert_equal [ "", "bold" ], html.css("input[name='user[formats][]']").map { |input| input["value"] }
+    group = html.at_css("#user_alignment[role=group]")
+    assert_equal [ "user_alignment-field-label", "user[alignment]" ], [ group["aria-labelledby"], group["data-ui--toggle-group-name-value"] ]
+    assert_equal "true", html.at_css("#user_alignment_center")["aria-pressed"]
+    assert_equal "Center", html.at_css("#user_alignment_center").text.strip
+  end
+
+  test "the new helpers mark their controls invalid from server errors" do
+    user = User.new(tags: [], city: "", score: nil, alignment: "")
+    user.valid?
+    html = form_html(user) do |form|
+      safe_join([ form.ui.chip_group(:tags, User::TAGS), form.ui.autocomplete(:city, User::CITIES), form.ui.rating(:score), form.ui.toggle_group(:alignment, User::ALIGNMENTS) ])
+    end
+
+    %w[tags city score alignment].each do |attribute|
+      field = html.at_css("#user_#{attribute}-field")
+      assert field.key?("data-invalid"), attribute
+      assert_equal user.errors[attribute].to_sentence, field.at_css("[data-slot=field-error]").text
+    end
+    assert_equal "true", html.at_css("#user_city")["aria-invalid"]
+    assert_equal "true", html.at_css("#user_score")["aria-invalid"]
+    assert_equal "true", html.at_css("#user_alignment")["aria-invalid"]
   end
 
   private

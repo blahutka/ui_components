@@ -6,11 +6,14 @@
 #
 # Standalone it flips itself (`ui--toggle`) and emits `ui--toggle:change` with { pressed }.
 # Inside a ToggleGroup it's pressed when the group's value includes its `value:` and the group
-# manages it. `name:` submits `value:` with a form while pressed.
+# manages it. Standalone, `name:` submits `value:` with a form while pressed (and
+# `unchecked_value:` while released) through a hidden input the controller keeps in sync.
 class UI::Toggle < UI::Base
   prop :pressed,  default: -> { nil }
   prop :value,    default: -> { nil }
   prop :disabled, default: -> { false }
+  prop :name,     default: -> { nil }
+  prop :unchecked_value, default: -> { nil }
 
   def before_template(&content)
     @render_prop = content&.arity == 1
@@ -20,6 +23,8 @@ class UI::Toggle < UI::Base
   def view_template(&)
     attributes = mix(toggle_attributes, @attributes)
 
+    hidden_input if @name && !group
+
     if @render_prop
       yield attributes
     else
@@ -28,8 +33,19 @@ class UI::Toggle < UI::Base
   end
 
   private
+    # Right before the button, where the controller finds it
+    def hidden_input
+      value = pressed? ? @value : @unchecked_value
+      input(type: "hidden", name: @name, value:, disabled: (true if value.nil?), autocomplete: "off",
+        data: { slot: "toggle-input", checked_value: @value, unchecked_value: @unchecked_value })
+    end
+
     def group
       context[:ui_toggle_group]
+    end
+
+    def field
+      context[:ui_field]
     end
 
     def pressed?
@@ -41,12 +57,13 @@ class UI::Toggle < UI::Base
     end
 
     def disabled?
-      @disabled || group&.disabled?
+      @disabled || group&.disabled? || (field&.disabled? unless group)
     end
 
     def toggle_attributes
       {
         type: "button", value: @value, aria_pressed: pressed?.to_s, disabled: (true if disabled?),
+        aria_describedby: (field&.described_by.presence unless group), aria_invalid: ("true" if !group && field&.invalid?),
         data: {
           slot: "toggle", pressed: ("" if pressed?), disabled: ("" if disabled?),
           controller: ("ui--toggle" unless group), action: ("ui--toggle#toggle" unless group),

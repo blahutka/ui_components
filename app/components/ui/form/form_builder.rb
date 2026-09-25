@@ -13,6 +13,11 @@
 #     <%= form.ui.otp_field :pin, length: 4 %>
 #     <%= form.ui.switch :newsletter %>
 #     <%= form.ui.check_box :terms_of_service %>
+#     <%= form.ui.chip_group :tags, %w[ ruby rails ] %>
+#     <%= form.ui.autocomplete :city, %w[ Prague Berlin ] %>
+#     <%= form.ui.rating :score %>
+#     <%= form.ui.toggle :featured %>
+#     <%= form.ui.toggle_group :alignment, %w[ left center right ] %>
 #     <%= form.fields_for :address do |address| %>
 #       <%= address.ui.text_field :city %>
 #     <% end %>
@@ -58,13 +63,13 @@ class UI::FormBuilder
   # The unchecked value goes in a hidden input first, so an unticked box still submits
   # (`include_hidden: false` leaves it out).
   def check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
-    toggle(UI::Checkbox, method, options, checked_value, unchecked_value)
+    boolean_control(UI::Checkbox, method, options, checked_value, unchecked_value)
   end
   alias_method :checkbox, :check_box
 
   # A check box drawn as a switch - same signature and params as check_box
   def switch(method, options = {}, checked_value = "1", unchecked_value = "0")
-    toggle(UI::Switch, method, options, checked_value, unchecked_value)
+    boolean_control(UI::Switch, method, options, checked_value, unchecked_value)
   end
 
   # One RadioGroup for the attribute, a Radio per choice (the choices select accepts)
@@ -85,6 +90,16 @@ class UI::FormBuilder
     field(method, label:, description:, multiple: true, id: options.delete(:id), name: options.delete(:name)) do |control|
       UI::FormBuilderChoices.new(type: :checkbox, id: control[:id], items: normalize_choices(choices), hidden_name: (control[:name] if include_hidden),
         group: { id: control[:id], name: control[:name], value: Array(value).map(&:to_s), **options })
+    end
+  end
+
+  # Selectable Chips for an array attribute (like checkbox_group); submits `name[]`
+  def chip_group(method, choices, label: nil, description: nil, include_hidden: true, **options)
+    value = options.key?(:value) ? options.delete(:value) : attribute_value(method)
+
+    field(method, label:, description:, multiple: true, id: options.delete(:id), name: options.delete(:name)) do |control|
+      UI::FormBuilderChoices.new(type: :chip, id: control[:id], items: normalize_choices(choices), hidden_name: (control[:name] if include_hidden),
+        group: { name: control[:name], value: Array(value).map(&:to_s), **options })
     end
   end
 
@@ -114,6 +129,50 @@ class UI::FormBuilder
     field(method, label:, description:, multiple:, id: options.delete(:id), name: options.delete(:name)) do |control|
       UI::FormBuilderCombobox.new(items: normalize_choices(choices), placeholder:, input: {},
         combobox: { id: "#{control[:id]}-combobox", name: control[:name], value:, multiple:, include_hidden:, required: !!required, **options })
+    end
+  end
+
+  # Free text with suggestions: an Autocomplete submitting what's typed (or picked)
+  def autocomplete(method, suggestions, label: nil, description: nil, placeholder: nil, **options)
+    value = options.key?(:value) ? options.delete(:value) : value_for(method)
+    input = constraints(method, type: "text").merge(options.extract!(:required, :maxlength, :autofocus))
+
+    field(method, label:, description:, id: options.delete(:id), name: options.delete(:name)) do |control|
+      UI::FormBuilderAutocomplete.new(placeholder:, input:,
+        autocomplete: { id: "#{control[:id]}-autocomplete", items: Array(suggestions), name: control[:name], value: value&.to_s, **options })
+    end
+  end
+
+  # A Rating; its hidden input submits the score ("0" once cleared)
+  def rating(method, label: nil, description: nil, **options)
+    field(method, label:, description:, id: options.delete(:id), name: options.delete(:name)) do |control|
+      UI::Rating.new(value: (value_for(method) unless options.key?(:value)), name: control[:name], **options)
+    end
+  end
+
+  # A Toggle button with check_box's signature and params: checked_value while pressed, the
+  # unchecked value (in the same hidden input) while released. The button shows the label.
+  def toggle(method, options = {}, checked_value = "1", unchecked_value = "0")
+    options = options.dup
+    text = options.delete(:label) || human_name(method)
+    description = options.delete(:description)
+    include_hidden = options.delete(:include_hidden) { true }
+    pressed = options.key?(:checked) ? options.delete(:checked) : checked?(attribute_value(method), checked_value)
+
+    field(method, label: text, description:, layout: :control, id: options.delete(:id), name: options.delete(:name)) do |control|
+      UI::FormBuilderToggle.new(text:, button: options,
+        toggle: { id: control[:id], name: control[:name], value: checked_value, unchecked_value: (unchecked_value if include_hidden), pressed: })
+    end
+  end
+
+  # A ToggleGroup, a Toggle button per choice: one value, or `multiple: true` for `name[]`.
+  # An empty hidden entry goes first, like a radio group or multiple select.
+  def toggle_group(method, choices, label: nil, description: nil, multiple: false, include_hidden: true, **options)
+    value = options.key?(:value) ? options.delete(:value) : attribute_value(method)
+
+    field(method, label:, description:, multiple:, id: options.delete(:id), name: options.delete(:name)) do |control|
+      UI::FormBuilderToggleGroup.new(id: control[:id], items: normalize_choices(choices),
+        group: { id: control[:id], name: control[:name], value: Array(value).map(&:to_s).compact_blank, multiple:, include_hidden:, **options })
     end
   end
 
@@ -169,7 +228,7 @@ class UI::FormBuilder
   private
 
   # A Field around the control, or the bare control (with its name and id) for `label: false`
-  def field(method, label:, description:, multiple: false, inline: false, id: nil, name: nil)
+  def field(method, label:, description:, multiple: false, layout: :stacked, id: nil, name: nil)
     name ||= @form.field_name(method, multiple:)
     id ||= @form.field_id(method)
 
@@ -178,19 +237,19 @@ class UI::FormBuilder
     else
       @template.render(UI::FormBuilderField.new(
         field: { name:, id: "#{id}-field", control_id: id, error: errors_for(method) },
-        label: label || human_name(method), description:, inline:, control: yield(name:, id:)
+        label: label || human_name(method), description:, layout:, control: yield(name:, id:)
       ))
     end
   end
 
-  def toggle(component, method, options, checked_value, unchecked_value)
+  def boolean_control(component, method, options, checked_value, unchecked_value)
     options = options.dup
     label = options.delete(:label)
     description = options.delete(:description)
     include_hidden = options.delete(:include_hidden) { true }
     checked = options.key?(:checked) ? options.delete(:checked) : checked?(attribute_value(method), checked_value)
 
-    field(method, label:, description:, inline: true, id: options[:id], name: options[:name]) do |control|
+    field(method, label:, description:, layout: :inline, id: options[:id], name: options[:name]) do |control|
       component.new(value: checked_value, unchecked_value: (unchecked_value if include_hidden), checked:,
         **constraints(method).slice(:required), **control, **options)
     end

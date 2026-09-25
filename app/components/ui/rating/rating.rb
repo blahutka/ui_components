@@ -10,7 +10,7 @@
 # labelled image ("4.3 out of 5") without buttons. The `ui--rating` controller handles the
 # pointer preview, clicks and arrow keys, and dispatches `ui--rating:change` with { value }.
 class UI::Rating < UI::Base
-  ROOT = "text-primary relative inline-flex w-fit items-center data-disabled:cursor-not-allowed data-disabled:opacity-disabled " \
+  ROOT = "text-primary relative inline-flex w-fit items-center data-disabled:cursor-not-allowed data-disabled:opacity-disabled data-invalid:text-error-emphasis " \
     "data-[orientation=vertical]:flex-col data-[orientation=horizontal]:mx-[calc(var(--rating-size)/-6)] data-[orientation=vertical]:my-[calc(var(--rating-size)/-6)]"
   ITEM = "outline-ring rounded-sm relative inline-flex cursor-pointer items-center justify-center disabled:pointer-events-none p-[calc(var(--rating-size)/6)]"
 
@@ -32,11 +32,20 @@ class UI::Rating < UI::Base
     div(**mix(defaults(**root_attributes), @attributes.except(:class, :style)), style: "--rating-size: #{@size}; #{@attributes[:style]}".strip,
       class: cn(ROOT, override: @attributes[:class])) do
       1.upto(@count) { |index| @read_only ? static_item(index) : item(index) }
-      input(type: "hidden", name: @name, value: format_value(current), data: { "ui--rating-target": "input" }) if @name
+      input(type: "hidden", name: input_name, value: format_value(current), data: { "ui--rating-target": "input" }) if input_name
     end
   end
 
   private
+    # Inside a Field the rating takes its name, label, description and invalid state
+    def field
+      context[:ui_field]
+    end
+
+    def input_name
+      @name || field&.name
+    end
+
     def current
       (@value || @default_value).to_f.clamp(0, @count)
     end
@@ -47,14 +56,16 @@ class UI::Rating < UI::Base
     end
 
     def root_attributes
-      labelled = @attributes.key?(:aria_label) || @attributes.key?(:aria_labelledby)
-      data = { slot: "rating", orientation: @orientation, variant: @variant, readonly: ("" if @read_only), disabled: ("" if @disabled) }
+      labelled = @attributes.key?(:aria_label) || @attributes.key?(:aria_labelledby) || field
+      data = { slot: "rating", orientation: @orientation, variant: @variant, readonly: ("" if @read_only), disabled: ("" if @disabled), invalid: ("" if field&.invalid?) }
 
       if @read_only
         { role: "img", aria_label: (t(".read_only", value: format_value(current), count: @count) unless labelled), data: }
       else
         {
           role: "radiogroup", aria_orientation: @orientation, aria_label: (t(".label") unless labelled), aria_disabled: ("true" if @disabled),
+          id: field&.control_id, aria_labelledby: (field.label_id if field && !@attributes.key?(:aria_label)),
+          aria_describedby: field&.described_by.presence, aria_invalid: ("true" if field&.invalid?),
           data: data.merge(
             controller: "ui--rating", action: "pointermove->ui--rating#preview pointerleave->ui--rating#reset keydown->ui--rating#navigate",
             "ui--rating-value-value": current, "ui--rating-step-value": @step, "ui--rating-count-value": @count,

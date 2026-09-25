@@ -4,7 +4,7 @@
 # icon name, text or a block) and `clearable:` wrap it in one frame. Label it with a Field, a
 # <label for> or aria_label.
 #
-# @label Input
+# @label Text field
 # @logical_path Actions & Inputs
 # @component UI::Input
 # @display width wide

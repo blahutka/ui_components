@@ -60,7 +60,7 @@ export default class extends Controller {
 
     this.inputTargets.forEach(input => input.remove())
     this.value.forEach(value => {
-      const input = Object.assign(document.createElement("input"), { type: "hidden", name: `${this.nameValue}[]`, value })
+      const input = Object.assign(document.createElement("input"), { type: "hidden", name: this.nameValue, value })
       input.setAttribute("data-ui--toggle-group-target", "input")
       this.element.append(input)
     })

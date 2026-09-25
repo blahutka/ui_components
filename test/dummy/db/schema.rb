@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_25_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_26_000000) do
   create_table "addresses", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "city"
@@ -43,5 +43,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_000000) do
     t.string "pin"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email"
+    t.string "website"
+    t.json "tags", default: []
+    t.string "city"
+    t.integer "score"
+    t.boolean "featured", default: false, null: false
+    t.string "alignment"
+    t.json "formats", default: []
   end
 end

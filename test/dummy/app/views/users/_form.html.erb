@@ -1,5 +1,7 @@
 <%= form_with model: user, url: main_app.users_path, html: { novalidate: !local_assigns.fetch(:browser_validation, true) }, class: "flex w-full max-w-md flex-col gap-5" do |form| %>
   <%= form.ui.text_field :name, description: "As it appears on your profile" %>
+  <%= form.ui.email_field :email %>
+  <%= form.ui.url_field :website, placeholder: "https://" %>
   <%= form.ui.number_field :age %>
   <%= form.ui.text_area :bio, description: "Up to 280 characters", rows: 3 %>
   <%= form.ui.select :locations, User::LOCATIONS, { prompt: "Pick cities" }, { multiple: true } %>
@@ -9,6 +11,11 @@
   <%= form.ui.combobox :skills, User::SKILLS, multiple: true, placeholder: "Add skills", clearable: true %>
   <%= form.ui.range_field :experience, label: "Years of experience", tooltip: :always %>
   <%= form.ui.otp_field :pin, length: 4, label: "PIN", required: true, description: "4 digits to unlock your profile" %>
+  <%= form.ui.chip_group :tags, User::TAGS %>
+  <%= form.ui.autocomplete :city, User::CITIES, placeholder: "Search a city" %>
+  <%= form.ui.rating :score, label: "How do you like it?" %>
+  <%= form.ui.toggle_group :alignment, User::ALIGNMENTS %>
+  <%= form.ui.toggle_group :formats, User::FORMATS, multiple: true %>
 
   <fieldset class="flex min-w-0 flex-col gap-4">
     <legend class="text-foreground-intense mb-4 text-lg font-medium">Address</legend>
@@ -29,6 +36,7 @@
   </fieldset>
 
   <%= form.ui.switch :newsletter, description: "A monthly summary, no spam" %>
+  <%= form.ui.toggle :featured, label: "Feature my profile", description: "Pinned to the top of the directory" %>
   <%= form.ui.check_box :terms_of_service, label: "I accept the terms of service" %>
 
   <%= render(UI::Button.new(type: "submit", class: "self-start")) { "Save" } %>

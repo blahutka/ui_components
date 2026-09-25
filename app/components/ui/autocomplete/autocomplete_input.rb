@@ -58,18 +58,19 @@ class UI::AutocompleteInput < UI::Base
     def field
       input(**mix({
         type: "text",
-        id: "#{root.id}-input",
-        name: root.name,
+        id: root.field&.control_id || "#{root.id}-input",
+        name: root.name || root.field&.name,
         value: root.value,
         placeholder: @placeholder,
         disabled: root.disabled?,
         autocomplete: "off", spellcheck: "false", autocorrect: "off", autocapitalize: "none",
         role: "combobox",
-        aria: { expanded: "false", haspopup: "listbox", autocomplete: "list", controls: root.list_id },
+        aria: { expanded: "false", haspopup: "listbox", autocomplete: "list", controls: root.list_id,
+          invalid: ("true" if root.field&.invalid?), describedby: root.field&.described_by.presence },
         class: FIELD,
         data: {
           slot: "#{root.slot}-input-field",
-          "#{root.identifier}-target": "input",
+          "#{root.identifier}-target": "input", "ui--field-target": ("control" if root.field), invalid: ("" if root.field&.invalid?),
           action: "input->#{root.identifier}#filter keydown->#{root.identifier}#navigate focus->#{root.identifier}#focus click->#{root.identifier}#focus"
         }
       }, @attributes.except(:class)))

@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 
   # The form builder demo (form.ui)
   resources :users, only: %i[ new create ]
+  # The form builder previews' submit target: the params and errors of one small form
+  resources :form_submissions, only: :create
 
   get "up" => "rails/health#show", as: :rails_health_check
 end

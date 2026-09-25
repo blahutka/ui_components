@@ -1,10 +1,10 @@
-# A RadioGroup or CheckboxGroup with one labelled Radio / Checkbox per choice, as
-# UI::FormBuilder renders it. Like Rails' collection helpers, an empty hidden input goes first
-# so a group with nothing chosen still submits its key.
+# A RadioGroup, CheckboxGroup or ChipGroup with one labelled Radio / Checkbox / ChipCheckbox per
+# choice, as UI::FormBuilder renders it. Like Rails' collection helpers, an empty hidden input
+# goes first so a group with nothing chosen still submits its key.
 class UI::FormBuilderChoices < UI::Base
   ITEM = "flex w-fit items-center gap-2 text-sm select-none has-[input:disabled]:text-foreground-muted"
 
-  prop :type, one_of(%i[ radio checkbox ], :radio)
+  prop :type, one_of(%i[ radio checkbox chip ], :radio)
   prop :group
   prop :items
   prop :id
@@ -12,22 +12,39 @@ class UI::FormBuilderChoices < UI::Base
 
   def view_template
     input(type: "hidden", name: @hidden_name, value: "", autocomplete: "off") if @hidden_name
-    render group_class.new(**@group) do
-      @items.each do |value, text|
-        label(class: ITEM) do
-          render item_class.new(value:, id: "#{@id}_#{sanitized(value)}")
-          plain text
-        end
-      end
+
+    case @type
+    when :radio then render(UI::RadioGroup.new(**@group)) { labelled_items(UI::Radio) }
+    when :checkbox then render(UI::CheckboxGroup.new(**@group)) { labelled_items(UI::Checkbox) }
+    when :chip then chips
     end
   end
 
   private
-    def group_class = @type == :radio ? UI::RadioGroup : UI::CheckboxGroup
-    def item_class = @type == :radio ? UI::Radio : UI::Checkbox
+    def labelled_items(component)
+      @items.each do |value, text|
+        label(class: ITEM) do
+          render component.new(value:, id: item_id(value))
+          plain text
+        end
+      end
+    end
+
+    # A ChipGroup has no value of its own: each chip gets the name and its checked state
+    def chips
+      name, selected, disabled = @group.values_at(:name, :value, :disabled)
+      field = context[:ui_field]
+
+      render UI::ChipGroup.new(role: "group", id: @id, aria_labelledby: (field.label_id if field), aria_describedby: field&.described_by.presence,
+        **@group.except(:name, :value, :disabled)) do
+        @items.each do |value, text|
+          render(UI::ChipCheckbox.new(name:, value:, id: item_id(value), checked: selected.include?(value.to_s), disabled: (true if disabled))) { text }
+        end
+      end
+    end
 
     # Rails' ids for collection items: user_plan_pro
-    def sanitized(value)
-      value.to_s.gsub(/[\s.]/, "_").gsub(/[^-[[:word:]]]/, "").downcase
+    def item_id(value)
+      "#{@id}_#{value.to_s.gsub(/[\s.]/, "_").gsub(/[^-[[:word:]]]/, "").downcase}"
     end
 end

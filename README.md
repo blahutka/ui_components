@@ -79,7 +79,7 @@ to the dummy app's SQLite database.
 | Dropdown Menu | `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem`, `DropdownMenuCheckboxItem`, `DropdownMenuRadioGroup`, `DropdownMenuRadioItem`, `DropdownMenuLinkItem`, `DropdownMenuGroup`, `DropdownMenuGroupLabel`, `DropdownMenuSeparator`, `DropdownMenuSub`, `DropdownMenuSubTrigger`, `DropdownMenuSubContent` (top-layer, submenus, hover) | [dropdown-menu](https://appica.dev/ui/components/react/dropdown-menu) |
 | Field | `Field`, `FieldLabel`, `FieldDescription`, `FieldError`, `Fieldset`, `FieldsetLegend` (native validation on submit/blur/change, server `error:`) | [field](https://appica.dev/ui/components/react/field) |
 | Icon | `Icon(:name, size:, stroke_width:)` - the ~5,000 [Appica icons](https://appica.dev/ui/icons) by name | [icons](https://appica.dev/ui/icons) |
-| Input | `Input` (`:outline`/`:soft`, sizes, `start_slot:`/`end_slot:`, `clearable:`) | [input](https://appica.dev/ui/components/react/input) |
+| Text field | `Input` (`:outline`/`:soft`, sizes, `start_slot:`/`end_slot:`, `clearable:`) | [input](https://appica.dev/ui/components/react/input) |
 | Loader | `Loader` (`:bar`, `:dots`; SVG SMIL, no JS) | [loader](https://appica.dev/ui/components/react/loader) |
 | Meter | `Meter`, `MeterLabel`, `MeterValue`, `MeterProgress` (`low:`/`high:`/`optimum:` status colors) | [meter](https://appica.dev/ui/components/react/meter) |
 | Navigation | `Navigation`, `NavigationList`, `NavigationItem`, `NavigationLink` (`:pill`/`:line`/`:indicator`, `active_link:`, render prop) | [navigation](https://appica.dev/ui/components/react/navigation) |

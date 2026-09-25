@@ -38,4 +38,24 @@ class UI::ToggleTest < ComponentTestCase
     assert_equal "item", left["data-ui--toggle-group-target"]
     assert_equal [ "align[]", "center" ], group.at_css("input[type=hidden]").then { |input| [ input["name"], input["value"] ] }
   end
+
+  test "a named standalone toggle keeps a hidden input at its pressed or released value" do
+    html = render_ui { Toggle(name: "featured", value: "1", unchecked_value: "0", pressed: false) { "Featured" } }
+
+    hidden = html.at_css("input[type=hidden][name=featured]")
+    assert_equal [ "0", "1", "0" ], [ hidden["value"], hidden["data-checked-value"], hidden["data-unchecked-value"] ]
+    assert_equal hidden, html.at_css("button").previous_element
+
+    hidden = render_ui { Toggle(name: "bold", value: "on", pressed: false) { "B" } }.at_css("input[type=hidden]")
+    assert hidden.key?("disabled"), "no unchecked value submits nothing while released"
+  end
+
+  test "a single toggle group submits one plain name, with an optional blank first" do
+    group = render_ui do
+      ToggleGroup(default_value: %w[ left ], name: "align", include_hidden: true, aria_label: "Alignment") { Toggle(value: "left") { "L" } }
+    end
+
+    assert_equal [ [ "align", "" ], [ "align", "left" ] ], group.css("input[type=hidden]").map { |input| [ input["name"], input["value"] ] }
+    assert_equal "align", group.at_css("[data-slot=toggle-group]")["data-ui--toggle-group-name-value"]
+  end
 end

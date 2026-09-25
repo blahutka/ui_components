@@ -6,6 +6,7 @@
 class UI::BasePreview < Lookbook::Preview
   class Example < UI::Base
     include ::Blocks
+    include Phlex::Rails::Helpers::FormWith
     # Phlex::SGML.new keeps a passed block as the content block, so the template is a keyword
     def initialize(template:)
       @template = template
@@ -13,6 +14,11 @@ class UI::BasePreview < Lookbook::Preview
 
     def view_template
       instance_exec(&@template)
+    end
+
+    # The host app's routes (`main_app.users_path`), as in a view - previews render inside Lookbook's engine
+    def main_app
+      view_context.main_app
     end
   end
 

@@ -48,6 +48,15 @@ A `<button>` (an `<a>` with `href:`) in [Button](<%= page_path(:button) %>)'s pa
 
 <%= embed UI::ChipPreview, :group %>
 
+### Selectable (form)
+
+`ChipCheckbox` is a chip you can select: a `<label>` around a visually hidden checkbox, so a set of
+them submits like check boxes (`job_types[]`). The checked chip turns primary and shows a check,
+with no JavaScript. In a Rails form, `form.ui.chip_group :tags, choices` renders the whole group
+bound to the model - see the [Form builder](<%= page_path(:form_builder) %>).
+
+<%= embed UI::ChipPreview, :selectable %>
+
 ### As a link
 
 <%= embed UI::ChipPreview, :link %>
@@ -78,6 +87,15 @@ Event: `ui--chip:dismiss` (cancelable).
 | `variant:` / `size:` | as Chip | - | Defaults for the chips inside. |
 
 Dispatch `ui--chip-group:clear` on it to dismiss every dismissible chip.
+
+### ChipCheckbox
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name:` / `value:` | `String` | - | The checkbox's name and the value it submits when checked. |
+| `checked:` | `Boolean` | - | Starts selected. |
+| `variant:` / `size:` | as Chip | the group's, else `:outline` / `:md` | Look while unselected; selected is primary. |
+| `disabled:` / `invalid:` | `Boolean` | `false` | Also taken from a surrounding Field. |
 
 ## Accessibility
 

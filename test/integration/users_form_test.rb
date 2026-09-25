@@ -1,12 +1,13 @@
 require "test_helper"
 
 class UsersFormTest < ActionDispatch::IntegrationTest
-  test "Lookbook preview posts to the host application users route" do
-    get "/lookbook/preview/Actions%20&%20Inputs/form_builder/default"
+  test "the full ERB form renders every form.ui helper" do
+    get "/users/new"
 
     assert_response :success
-    assert_select 'form[action="/users"][method=post]'
-    assert_select "#user_phones_attributes_0_kind-field [role=option][data-selected][data-value=mobile]"
+    %w[ user[email] user[website] user[tags][] user[city] user[score] user[featured] user[alignment] user[formats][] ].each do |name|
+      assert_select "form [name='#{name}']", { minimum: 1 }, name
+    end
   end
 
   test "new form renders one address and two phone rows" do
@@ -22,13 +23,17 @@ class UsersFormTest < ActionDispatch::IntegrationTest
   test "ordinary encoded form params save a valid user and nested records" do
     assert_difference -> { User.count } => 1, -> { Address.count } => 1, -> { Phone.count } => 2 do
       post "/users", params: URI.encode_www_form([
-        [ "user[name]", "Ada" ], [ "user[age]", "42" ], [ "user[bio]", "Mathematician" ],
+        [ "user[name]", "Ada" ], [ "user[email]", "ada@example.com" ], [ "user[website]", "https://ada.dev" ],
+        [ "user[age]", "42" ], [ "user[bio]", "Mathematician" ],
         [ "user[locations][]", "" ], [ "user[locations][]", "prg" ], [ "user[locations][]", "ber" ],
         [ "user[plan]", "" ], [ "user[plan]", "pro" ],
         [ "user[interests][]", "" ], [ "user[interests][]", "design" ], [ "user[interests][]", "sales" ],
         [ "user[language]", "cs" ],
         [ "user[skills][]", "" ], [ "user[skills][]", "Ruby" ], [ "user[skills][]", "Rails" ],
         [ "user[experience]", "7" ], [ "user[pin]", "1234" ],
+        [ "user[tags][]", "" ], [ "user[tags][]", "remote" ], [ "user[city]", "Brno" ], [ "user[score]", "4" ],
+        [ "user[alignment]", "" ], [ "user[alignment]", "center" ], [ "user[formats][]", "" ], [ "user[formats][]", "bold" ],
+        [ "user[featured]", "0" ], [ "user[featured]", "1" ],
         [ "user[address_attributes][city]", "Prague" ], [ "user[address_attributes][country]", "cz" ],
         [ "user[phones_attributes][0][number]", "+420 123 456 789" ], [ "user[phones_attributes][0][kind]", "mobile" ],
         [ "user[phones_attributes][1][number]", "+49 123 456 789" ], [ "user[phones_attributes][1][kind]", "work" ],
@@ -43,6 +48,7 @@ class UsersFormTest < ActionDispatch::IntegrationTest
     assert_equal %w[prg ber], user.locations
     assert_equal %w[design sales], user.interests
     assert_equal %w[Ruby Rails], user.skills
+    assert_equal [ %w[remote], "Brno", 4, true, "center", %w[bold] ], user.values_at(:tags, :city, :score, :featured, :alignment, :formats)
     assert_equal "Prague", user.address.city
     assert_equal %w[mobile work], user.phones.order(:id).map(&:kind)
     assert_select "strong", text: "true"
@@ -153,8 +159,9 @@ class UsersFormTest < ActionDispatch::IntegrationTest
   private
     def valid_params
       {
-        name: "Ada", age: "42", bio: "", locations: [ "", "prg", "ber" ], plan: "pro", interests: [ "" ],
+        name: "Ada", age: "42", bio: "", locations: [ "", "prg", "ber" ], plan: "pro",
         language: "en", skills: [ "" ], experience: "3", pin: "1234", newsletter: "1", terms_of_service: "1",
+        email: "ada@example.com", tags: [ "", "remote" ], city: "Prague", score: "5", alignment: "left", interests: [ "", "design" ],
         address_attributes: { city: "Prague", country: "cz" },
         phones_attributes: {
           "0" => { number: "+420 123 456 789", kind: "mobile" },
