@@ -1,0 +1,76 @@
+---
+id: order_tracker
+title: Order tracker
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A shipment card: the order number and total, a status badge, the delivery progress, a timeline of steps and the
+courier. A **block** composed from Badge, [Progress](<%= page_path(:progress) %>), Icon,
+[Separator](<%= page_path(:separator) %>), Avatar and Button, as on the [Appica homepage](https://appica.dev/ui).
+
+<%= embed Blocks::OrderTrackerPreview, :default %>
+
+## Usage
+
+```ruby
+OrderTracker(number: order.number, items: order.items.count, total: order.total, currency: order.currency,
+             status: order.shipment_status.to_sym, progress: order.shipment_progress) do
+  OrderTimeline do
+    order.tracking_events.each do |event|
+      OrderStep(title: event.kind.to_sym, at: event.occurred_at, state: event.state.to_sym)
+    end
+  end
+  OrderCourier(name: courier.first_name, avatar: courier.avatar_url, stops: courier.stops_left, href: tracking_url)
+end
+```
+
+- `status:` picks the badge text and dot color: `:processing`, `:shipped`, `:in_transit`, `:out_for_delivery`,
+  `:delivered`, `:delayed`.
+- Steps are `:done` (a check), `:current` (a ringed dot, `aria-current="step"`) or `:upcoming` (a hollow dot, its
+  time shown as an ETA). Times read relative to today: "Today, 11:05 AM", "Yesterday, 6:12 PM", "Jul 4, 9:41 AM".
+- To update it live, re-render the card with a Turbo Stream `replace` when a tracking event arrives.
+
+## Localization
+
+`order_tracker.locales.yml` holds the statuses, the step titles given as symbols (`:confirmed`, `:shipped`,
+`:sorting_hub`, `:local_facility`, `:out_for_delivery`, `:delivered`), the pluralized item and stop counts and the
+date/time formats per language. Money uses the locale's currency format. Switch the **Locale** display option to try it.
+
+## Examples
+
+### Delivered
+
+<%= embed Blocks::OrderTrackerPreview, :delivered %>
+
+### Custom steps
+
+<%= embed Blocks::OrderTrackerPreview, :custom_steps %>
+
+### RTL
+
+<%= embed Blocks::OrderTrackerPreview, :rtl %>
+
+## API reference
+
+### OrderTracker
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `number:` | `String` | - | Required. Shown as "Order #10482". |
+| `items:` / `total:` / `currency:` | `Integer` / `Numeric` / `String` | - / - / `"USD"` | The "2 items · $148.00" line. |
+| `status:` | see above | `:processing` | Badge text and color. |
+| `progress:` | `Numeric` (0-100) | - | Delivery progress bar; omit to hide it. |
+
+### Parts
+
+| Part | Description |
+|------|-------------|
+| `OrderTimeline` | The ordered list of steps. |
+| `OrderStep(title:, at:, state:)` | A step: a symbol title is translated, `at:` a Time. |
+| `OrderCourier(name:, avatar:, stops:, href:)` | Under a separator: the courier, stops left and a link to the map. |
+
+## Accessibility
+
+- The timeline is a labelled ordered list; the current step carries `aria-current="step"`; times are `<time datetime>`.
+- The progress bar is labelled "Delivery progress"; the icon-only map button is labelled "Track on map".

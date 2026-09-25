@@ -1,0 +1,165 @@
+# Blocks::OrderTracker strings - t(".key") in any of its parts looks here.
+# Every language in one file; add a locale as another top-level key with the same keys
+# (test/components/locales_test.rb checks that they match; plural forms may differ per language).
+en:
+  ui_components:
+    blocks:
+      order_tracker:
+        title: "Order #%{number}"
+        summary:
+          one: "%{formatted} item · %{total}"
+          other: "%{formatted} items · %{total}"
+        progress: Delivery progress
+        timeline: Shipment progress
+        statuses:
+          processing: Processing
+          shipped: Shipped
+          in_transit: In transit
+          out_for_delivery: Out for delivery
+          delivered: Delivered
+          delayed: Delayed
+        steps:
+          confirmed: Order confirmed
+          shipped: Packed & shipped
+          sorting_hub: Arrived at sorting hub
+          local_facility: At local courier facility
+          out_for_delivery: Out for delivery
+          delivered: Delivered
+        when:
+          today: "Today, %{time}"
+          yesterday: "Yesterday, %{time}"
+          date: "%{date}, %{time}"
+        eta: "ETA %{time}"
+        formats:
+          date: "%b %-d"
+          time: "%-l:%M %p"
+        courier:
+          on_the_way: "%{name} is on the way"
+          stops:
+            one: "%{formatted} stop away"
+            other: "%{formatted} stops away"
+          track: Track on map
+cs:
+  ui_components:
+    blocks:
+      order_tracker:
+        title: "Objednávka č. %{number}"
+        summary:
+          one: "%{formatted} položka · %{total}"
+          few: "%{formatted} položky · %{total}"
+          other: "%{formatted} položek · %{total}"
+        progress: Průběh doručení
+        timeline: Průběh zásilky
+        statuses:
+          processing: Zpracovává se
+          shipped: Odesláno
+          in_transit: Na cestě
+          out_for_delivery: Doručuje se
+          delivered: Doručeno
+          delayed: Zpožděno
+        steps:
+          confirmed: Objednávka potvrzena
+          shipped: Zabaleno a odesláno
+          sorting_hub: Dorazilo do třídicího centra
+          local_facility: V místním depu kurýra
+          out_for_delivery: Kurýr doručuje
+          delivered: Doručeno
+        when:
+          today: "Dnes, %{time}"
+          yesterday: "Včera, %{time}"
+          date: "%{date}, %{time}"
+        eta: "Odhad %{time}"
+        formats:
+          date: "%-d. %-m."
+          time: "%H:%M"
+        courier:
+          on_the_way: "%{name} je na cestě"
+          stops:
+            one: "%{formatted} zastávka před vámi"
+            few: "%{formatted} zastávky před vámi"
+            other: "%{formatted} zastávek před vámi"
+          track: Sledovat na mapě
+de:
+  ui_components:
+    blocks:
+      order_tracker:
+        title: "Bestellung Nr. %{number}"
+        summary:
+          one: "%{formatted} Artikel · %{total}"
+          other: "%{formatted} Artikel · %{total}"
+        progress: Lieferfortschritt
+        timeline: Sendungsverlauf
+        statuses:
+          processing: In Bearbeitung
+          shipped: Versandt
+          in_transit: Unterwegs
+          out_for_delivery: In Zustellung
+          delivered: Zugestellt
+          delayed: Verzögert
+        steps:
+          confirmed: Bestellung bestätigt
+          shipped: Verpackt & versandt
+          sorting_hub: Im Verteilzentrum angekommen
+          local_facility: Im Zustelldepot
+          out_for_delivery: In Zustellung
+          delivered: Zugestellt
+        when:
+          today: "Heute, %{time}"
+          yesterday: "Gestern, %{time}"
+          date: "%{date}, %{time}"
+        eta: "Voraussichtlich %{time}"
+        formats:
+          date: "%-d. %b"
+          time: "%H:%M"
+        courier:
+          on_the_way: "%{name} ist unterwegs"
+          stops:
+            one: "Noch %{formatted} Stopp"
+            other: "Noch %{formatted} Stopps"
+          track: Auf der Karte verfolgen
+ar:
+  ui_components:
+    blocks:
+      order_tracker:
+        title: "الطلب رقم %{number}"
+        summary:
+          zero: "لا عناصر · %{total}"
+          one: "عنصر واحد · %{total}"
+          two: "عنصران · %{total}"
+          few: "%{formatted} عناصر · %{total}"
+          many: "%{formatted} عنصرًا · %{total}"
+          other: "%{formatted} عنصر · %{total}"
+        progress: تقدم التوصيل
+        timeline: مسار الشحنة
+        statuses:
+          processing: قيد المعالجة
+          shipped: تم الشحن
+          in_transit: في الطريق
+          out_for_delivery: خارج للتوصيل
+          delivered: تم التوصيل
+          delayed: متأخر
+        steps:
+          confirmed: تم تأكيد الطلب
+          shipped: تم التغليف والشحن
+          sorting_hub: وصل إلى مركز الفرز
+          local_facility: في مركز البريد المحلي
+          out_for_delivery: خارج للتوصيل
+          delivered: تم التوصيل
+        when:
+          today: "اليوم، %{time}"
+          yesterday: "أمس، %{time}"
+          date: "%{date}، %{time}"
+        eta: "الوصول المتوقع %{time}"
+        formats:
+          date: "%-d %b"
+          time: "%H:%M"
+        courier:
+          on_the_way: "%{name} في الطريق"
+          stops:
+            zero: "لا توقفات متبقية"
+            one: "توقف واحد متبقٍ"
+            two: "توقفان متبقيان"
+            few: "%{formatted} توقفات متبقية"
+            many: "%{formatted} توقفًا متبقيًا"
+            other: "%{formatted} توقف متبقٍ"
+          track: تتبع على الخريطة

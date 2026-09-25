@@ -51,6 +51,7 @@ Higher-level compositions of the primitives live in `app/components/blocks/` (th
 | Revenue summary | `RevenueSummary`, `RevenueMarkets`, `RevenueMarket`, `RevenueChart`, `RevenueStats`, `RevenueStat`, `CountryFlag` |
 | Team members | `TeamMembers`, `TeamMemberList`, `TeamMember`, `TeamInvite` |
 | Review summary | `ReviewSummary`, `ReviewBreakdown`, `ReviewHighlight` |
+| Order tracker | `OrderTracker`, `OrderTimeline`, `OrderStep`, `OrderCourier` |
 
 ### Render props
 
