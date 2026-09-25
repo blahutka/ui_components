@@ -1,0 +1,68 @@
+---
+id: textarea
+title: Textarea
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A multi-line text field that shares [Input](<%= page_path(:input) %>)'s look, variants, sizes and slots.
+[Appica docs](https://appica.dev/ui/components/react/textarea)
+
+<%= embed UI::TextareaPreview, :default %>
+
+## Usage
+
+```ruby
+Textarea(rows: 4, placeholder: "Write a message…", aria_label: "Message")
+Textarea(value: @post.body, name: "post[body]", clearable: true)
+Textarea(start_slot: -> { Avatar(size: :"2xs") { AvatarImage(src: user.avatar_url) } },
+         end_slot: -> { Button(variant: :soft, size: :sm, icon: true) { Icon(:send_2) } })
+```
+
+`rows:` sets the starting height; the user can still resize it vertically. `value:` is the content. Slots align to
+the first line of text; with a slot or `clearable:` the textarea sits in a frame that `class:` styles, and
+`textarea: { … }` reaches the inner element.
+
+## Examples
+
+### Variants
+
+<%= embed UI::TextareaPreview, :variants %>
+
+### Sizes
+
+<%= embed UI::TextareaPreview, :sizes %>
+
+### Start & end slots
+
+<%= embed UI::TextareaPreview, :slots %>
+
+### Clearable
+
+<%= embed UI::TextareaPreview, :clearable %>
+
+### Disabled, read-only & error states
+
+<%= embed UI::TextareaPreview, :states %>
+
+### RTL
+
+<%= embed UI::TextareaPreview, :rtl %>
+
+## API reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `rows:` | `Integer` | `3` | Visible lines before it scrolls; also the frame's starting height. |
+| `value:` | `String` | - | The content. |
+| `variant:` | `:outline`, `:soft` | `:outline` | Bordered or filled. |
+| `size:` | `:sm`, `:md`, `:lg` | `:md` | Padding and text size. |
+| `start_slot:` / `end_slot:` | `Symbol`, `String`, `Proc` | - | Adornments aligned to the first line. |
+| `clearable:` | `Boolean` | `false` | A ✕ that empties the field once it has a value. |
+| `invalid:` | `Boolean` | - | Paints the error state and sets `aria-invalid`. |
+| `textarea:` | `Hash` | `{}` | Attributes for the inner `<textarea>` when it's wrapped. |
+
+## Accessibility
+
+- Label it like an Input: a Field, a `<label for>` or `aria_label:`.
+- A live counter in a slot should not be announced on every keystroke; keep it out of `aria-live` regions.

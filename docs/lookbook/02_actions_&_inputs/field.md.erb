@@ -1,0 +1,95 @@
+---
+id: field
+title: Field
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+Wires a label, description and error message to one control, and validates it with the browser's own constraints.
+[Appica docs](https://appica.dev/ui/components/react/field)
+
+<%= embed UI::FieldPreview, :default %>
+
+## Usage
+
+```ruby
+Field(name: "user[email]", error: @user.errors[:email].to_sentence.presence, validation_mode: :blur,
+      messages: { value_missing: "Email is required", type_mismatch: "Enter a valid email address" }) do
+  FieldLabel { "Email" }
+  Input(type: "email", required: true, value: @user.email)
+  FieldDescription { "We'll send your receipt here." }
+  FieldError()
+end
+```
+
+The control inside - an [Input](<%= page_path(:input) %>), a [Textarea](<%= page_path(:textarea) %>) - takes the
+field's id, `name:`, `aria-describedby` and its disabled and invalid state, so the parts need no ids.
+
+Validation uses the control's native constraints (`required`, `type`, `pattern`, `minlength`, `min`/`max`…).
+`validation_mode:` picks when they are checked: on the form's `:submit` (the default - an invalid field stops the
+submit and takes focus), on `:blur` or on every `:change`. Once invalid, the field re-checks as you type and clears
+as soon as the value is valid. The message is the browser's unless `messages:` has one for the failure.
+
+Server errors come in as `error:`: the field renders invalid with that message, so a re-rendered form shows it
+without JavaScript.
+
+## Examples
+
+### Validation
+
+<%= embed UI::FieldPreview, :validation %>
+
+### Server errors
+
+`FieldError(match: :too_short) { "…" }` shows its own text for one failure only.
+
+<%= embed UI::FieldPreview, :server_error %>
+
+### Disabled & read-only
+
+<%= embed UI::FieldPreview, :disabled %>
+
+### Fieldset
+
+<%= embed UI::FieldPreview, :fieldset %>
+
+### RTL
+
+<%= embed UI::FieldPreview, :rtl %>
+
+## API reference
+
+### Field
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name:` | `String` | - | The control's `name`. |
+| `error:` | `String` | - | A server-side message; renders the field invalid. |
+| `invalid:` | `Boolean` | - | Render invalid without a message. |
+| `disabled:` | `Boolean` | `false` | Disables the control and dims the parts. |
+| `validation_mode:` | `:submit`, `:blur`, `:change` | `:submit` | When the constraints are checked. |
+| `messages:` | `Hash` | `{}` | Text per failure: `value_missing`, `type_mismatch`, `pattern_mismatch`, `too_short`, `too_long`, `range_underflow`, `range_overflow`, `step_mismatch`, `bad_input`. |
+| `id:` | `String` | random | Prefix for the parts' ids. |
+
+Events: `ui--field:valid` and `ui--field:invalid` (with `{ failure }`).
+
+### FieldLabel, FieldDescription
+
+A `<label>` pointing at the control, and the help text linked with `aria-describedby`.
+
+### FieldError
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `match:` | `Symbol` | - | Show this block only for one failure (`:value_missing`…). Without it, shows the field's message. |
+
+### Fieldset, FieldsetLegend
+
+A `<fieldset>` labelled by its legend; `disabled: true` disables every control inside.
+
+## Accessibility
+
+- The label is a real `<label for>`; the description and any showing error are listed in the control's
+  `aria-describedby`.
+- Invalid controls get `aria-invalid="true"`; the error is a `role="alert"` region, announced when it appears.
+- The error slides open with a height transition that is skipped under `prefers-reduced-motion`.

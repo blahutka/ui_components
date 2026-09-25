@@ -1,0 +1,22 @@
+# UI::Input / UI::Textarea strings. Every language in one file (test/components/locales_test.rb
+# checks the keys match).
+en:
+  ui_components:
+    ui:
+      input:
+        clear: Clear input
+cs:
+  ui_components:
+    ui:
+      input:
+        clear: Vymazat pole
+de:
+  ui_components:
+    ui:
+      input:
+        clear: Eingabe löschen
+ar:
+  ui_components:
+    ui:
+      input:
+        clear: مسح الحقل

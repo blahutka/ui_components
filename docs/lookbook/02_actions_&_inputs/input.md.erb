@@ -1,0 +1,76 @@
+---
+id: input
+title: Input
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A single-line text field with optional icons, text or controls at either end, and a clear button.
+[Appica docs](https://appica.dev/ui/components/react/input)
+
+<%= embed UI::InputPreview, :default %>
+
+## Usage
+
+```ruby
+Input(type: "email", placeholder: "you@example.com", aria_label: "Email")
+Input(variant: :soft, size: :sm, start_slot: :search, clearable: true)
+Input(start_slot: :mail, end_slot: "@example.com")
+Input(end_slot: -> { Button(variant: :ghost, size: :sm, icon: true) { Icon(:eye) } })
+```
+
+A plain `Input` is a native `<input>` and takes any native attribute - `type`, `name`, `value`, `required`,
+`pattern`, `aria_*`. As soon as it has a slot or `clearable:`, it sits in one bordered frame: `class:` styles the
+frame and `input: { … }` reaches the inner `<input>`. Label it with a [Field](<%= page_path(:field) %>), a
+`<label for>` or `aria_label:`.
+
+## Examples
+
+### Variants
+
+<%= embed UI::InputPreview, :variants %>
+
+### Sizes
+
+<%= embed UI::InputPreview, :sizes %>
+
+### Start & end slots
+
+A slot is an [icon](<%= page_path(:icons) %>) name, a string, or a block that renders anything - an Avatar, a
+Button.
+
+<%= embed UI::InputPreview, :slots %>
+
+### Clearable
+
+<%= embed UI::InputPreview, :clearable %>
+
+### Disabled, read-only & error states
+
+<%= embed UI::InputPreview, :states %>
+
+### RTL
+
+<%= embed UI::InputPreview, :rtl %>
+
+## API reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` | `:outline`, `:soft` | `:outline` | Bordered or filled. |
+| `size:` | `:sm`, `:md`, `:lg` | `:md` | Height, padding and text size. |
+| `start_slot:` / `end_slot:` | `Symbol`, `String`, `Proc` | - | Adornments: an icon name, text, or a block. |
+| `clearable:` | `Boolean` | `false` | A ✕ that empties the field once it has a value. |
+| `clear_label:` | `String` | "Clear input" | The clear button's accessible name (translated). |
+| `invalid:` | `Boolean` | - | Paints the error state and sets `aria-invalid` (a Field sets it for you). |
+| `input:` | `Hash` | `{}` | Attributes for the inner `<input>` when it's wrapped. |
+
+Any other attribute goes to the `<input>` (`class:` to the frame when wrapped). Clearing dispatches `input` on the
+field and `ui--input:clear` on the frame.
+
+## Accessibility
+
+- Give every input a label: a Field's `FieldLabel`, a `<label for>` or `aria_label:`.
+- The clear button is a real `<button>` with a translated name; it appears only while there is a value and returns
+  focus to the input.
+- `invalid:` sets `aria-invalid="true"`; inside a Field the error is linked with `aria-describedby`.
