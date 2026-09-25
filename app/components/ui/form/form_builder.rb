@@ -5,6 +5,14 @@
 #     <%= form.ui.text_field :name, description: "As it appears on your profile" %>
 #     <%= form.ui.number_field :age %>
 #     <%= form.ui.select :locations, [ [ "Prague", "prg" ], [ "Berlin", "ber" ] ], { prompt: "Pick cities" }, { multiple: true } %>
+#     <%= form.ui.text_area :bio %>
+#     <%= form.ui.radio_group :plan, [ [ "Free", "free" ], [ "Pro", "pro" ] ] %>
+#     <%= form.ui.checkbox_group :interests, [ [ "Design", "design" ], [ "Sales", "sales" ] ] %>
+#     <%= form.ui.combobox :language, [ [ "Czech", "cs" ], [ "English", "en" ] ] %>
+#     <%= form.ui.range_field :experience, max: 30 %>
+#     <%= form.ui.otp_field :pin, length: 4 %>
+#     <%= form.ui.switch :newsletter %>
+#     <%= form.ui.check_box :terms_of_service %>
 #     <%= form.fields_for :address do |address| %>
 #       <%= address.ui.text_field :city %>
 #     <% end %>
@@ -39,6 +47,96 @@ class UI::FormBuilder
     end
   end
 
+  def text_area(method, label: nil, description: nil, **options)
+    field(method, label:, description:, id: options[:id], name: options[:name]) do |control|
+      UI::Textarea.new(value: (value_for(method) unless options.key?(:value)), **constraints(method, type: "textarea"), **control, **options)
+    end
+  end
+  alias_method :textarea, :text_area
+
+  # Rails' signature: check_box(method, options = {}, checked_value = "1", unchecked_value = "0").
+  # The unchecked value goes in a hidden input first, so an unticked box still submits
+  # (`include_hidden: false` leaves it out).
+  def check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
+    toggle(UI::Checkbox, method, options, checked_value, unchecked_value)
+  end
+  alias_method :checkbox, :check_box
+
+  # A check box drawn as a switch - same signature and params as check_box
+  def switch(method, options = {}, checked_value = "1", unchecked_value = "0")
+    toggle(UI::Switch, method, options, checked_value, unchecked_value)
+  end
+
+  # One RadioGroup for the attribute, a Radio per choice (the choices select accepts)
+  def radio_group(method, choices, label: nil, description: nil, include_hidden: true, **options)
+    value = options.key?(:value) ? options.delete(:value) : attribute_value(method)
+    required = options.key?(:required) ? options.delete(:required) : constraints(method)[:required]
+
+    field(method, label:, description:, id: options.delete(:id), name: options.delete(:name)) do |control|
+      UI::FormBuilderChoices.new(type: :radio, id: control[:id], items: normalize_choices(choices), hidden_name: (control[:name] if include_hidden),
+        group: { id: control[:id], name: control[:name], value: value&.to_s, required: !!required, **options })
+    end
+  end
+
+  # One CheckboxGroup for an array attribute, a Checkbox per choice; submits `name[]`
+  def checkbox_group(method, choices, label: nil, description: nil, include_hidden: true, **options)
+    value = options.key?(:value) ? options.delete(:value) : attribute_value(method)
+
+    field(method, label:, description:, multiple: true, id: options.delete(:id), name: options.delete(:name)) do |control|
+      UI::FormBuilderChoices.new(type: :checkbox, id: control[:id], items: normalize_choices(choices), hidden_name: (control[:name] if include_hidden),
+        group: { id: control[:id], name: control[:name], value: Array(value).map(&:to_s), **options })
+    end
+  end
+
+  # Rails' signature: collection_radio_buttons(method, collection, value_method, text_method, options = {}, html_options = {})
+  def collection_radio_buttons(method, collection, value_method, text_method, options = {}, html_options = {})
+    radio_group(method, collection_choices(collection, value_method, text_method), **collection_options(options, html_options))
+  end
+
+  # Rails' signature: collection_check_boxes(method, collection, value_method, text_method, options = {}, html_options = {})
+  def collection_check_boxes(method, collection, value_method, text_method, options = {}, html_options = {})
+    checkbox_group(method, collection_choices(collection, value_method, text_method), **collection_options(options, html_options))
+  end
+
+  # Rails' signature: collection_select(method, collection, value_method, text_method, options = {}, html_options = {})
+  def collection_select(method, collection, value_method, text_method, options = {}, html_options = {})
+    select(method, collection_choices(collection, value_method, text_method), options, html_options)
+  end
+
+  # A searchable Select: a Combobox with an input, or chips for `multiple: true` (`name[]`, with
+  # an empty hidden entry first like a multiple select). Other options go to the Combobox
+  # (`clearable:`, `variant:`, `size:`…).
+  def combobox(method, choices, label: nil, description: nil, multiple: false, placeholder: nil, include_hidden: true, **options)
+    value = options.key?(:value) ? options.delete(:value) : attribute_value(method)
+    value = multiple ? Array(value).map(&:to_s).compact_blank : value.to_s.presence
+    required = options.key?(:required) ? options.delete(:required) : constraints(method)[:required]
+
+    field(method, label:, description:, multiple:, id: options.delete(:id), name: options.delete(:name)) do |control|
+      UI::FormBuilderCombobox.new(items: normalize_choices(choices), placeholder:, input: {},
+        combobox: { id: "#{control[:id]}-combobox", name: control[:name], value:, multiple:, include_hidden:, required: !!required, **options })
+    end
+  end
+
+  # A Slider; `min` / `max` / `step` come from numericality validators like number_field's.
+  # Its thumb tooltip gets room below the label.
+  def range_field(method, label: nil, description: nil, **options)
+    options[:class] = [ ("pt-6" unless options[:tooltip] == :never), options[:class] ].compact.join(" ")
+
+    field(method, label:, description:, id: options.delete(:id), name: options[:name]) do |control|
+      UI::Slider.new(default_value: (value_for(method) unless options.key?(:value)), **constraints(method, type: "number").slice(:min, :max, :step), name: control[:name], **options)
+    end
+  end
+  alias_method :slider, :range_field
+
+  # An OTPField of `length` characters, submitted as one value
+  def otp_field(method, length: 6, label: nil, description: nil, **options)
+    required = options.key?(:required) ? options.delete(:required) : constraints(method)[:required]
+
+    field(method, label:, description:, id: options.delete(:id), name: options.delete(:name)) do |control|
+      UI::FormBuilderOTP.new(id: control[:id], otp: { length:, value: (value_for(method) unless options.key?(:value)), name: control[:name], required: !!required, **options })
+    end
+  end
+
   # Rails' signature: select(method, choices, options = {}, html_options = {})
   def select(method, choices = nil, options = {}, html_options = {})
     options = options.dup
@@ -50,7 +148,7 @@ class UI::FormBuilder
     elsif options[:include_blank]
       options[:include_blank].is_a?(String) ? options[:include_blank] : ""
     end
-    value = options.key?(:selected) ? options[:selected] : value_for(method)
+    value = options.key?(:selected) ? options[:selected] : attribute_value(method)
     value = nil if !multiple && value.to_s.empty?
     required = html_options.key?(:required) ? html_options.delete(:required) : constraints(method)[:required]
 
@@ -71,7 +169,7 @@ class UI::FormBuilder
   private
 
   # A Field around the control, or the bare control (with its name and id) for `label: false`
-  def field(method, label:, description:, multiple: false, id: nil, name: nil)
+  def field(method, label:, description:, multiple: false, inline: false, id: nil, name: nil)
     name ||= @form.field_name(method, multiple:)
     id ||= @form.field_id(method)
 
@@ -80,8 +178,31 @@ class UI::FormBuilder
     else
       @template.render(UI::FormBuilderField.new(
         field: { name:, id: "#{id}-field", control_id: id, error: errors_for(method) },
-        label: label || human_name(method), description:, control: yield(name:, id:)
+        label: label || human_name(method), description:, inline:, control: yield(name:, id:)
       ))
+    end
+  end
+
+  def toggle(component, method, options, checked_value, unchecked_value)
+    options = options.dup
+    label = options.delete(:label)
+    description = options.delete(:description)
+    include_hidden = options.delete(:include_hidden) { true }
+    checked = options.key?(:checked) ? options.delete(:checked) : checked?(attribute_value(method), checked_value)
+
+    field(method, label:, description:, inline: true, id: options[:id], name: options[:name]) do |control|
+      component.new(value: checked_value, unchecked_value: (unchecked_value if include_hidden), checked:,
+        **constraints(method).slice(:required), **control, **options)
+    end
+  end
+
+  # Rails' CheckBox#checked?: booleans, "1", 1 and collections containing the checked value
+  def checked?(value, checked_value)
+    case value
+    when TrueClass, FalseClass then value == !!checked_value
+    when NilClass then false
+    when String then value == checked_value.to_s
+    else value.respond_to?(:include?) ? value.include?(checked_value) : value.to_i == checked_value.to_i
     end
   end
 
@@ -97,6 +218,12 @@ class UI::FormBuilder
     elsif object.respond_to?(method)
       object.public_send(method)
     end
+  end
+
+  # The cast value, which check boxes, radios and comboboxes compare against (like Rails)
+  def attribute_value(method)
+    object = @form.object
+    object.public_send(method) if object.respond_to?(method)
   end
 
   def errors_for(method)
@@ -117,7 +244,7 @@ class UI::FormBuilder
     object.class.validators_on(method).reject { |validator| (validator.options.keys & %i[ if unless on ]).any? }.each_with_object({}) do |validator, attributes|
       options = validator.options
       case validator.kind
-      when :presence then attributes[:required] = true
+      when :presence, :acceptance then attributes[:required] = true
       when :length
         maximum = options[:maximum]
         attributes[:maxlength] = maximum if type && type != "number" && maximum.is_a?(Numeric)
@@ -130,6 +257,22 @@ class UI::FormBuilder
         attributes[:step] = 1 if options[:only_integer] == true && type == "number"
       end
     end.compact.then { |attributes| type == "number" ? attributes.slice(:required, :min, :max, :step) : attributes.except(:min, :max, :step) }
+  end
+
+  # [ text, value ] pairs, from methods or procs like options_from_collection_for_select
+  def collection_choices(collection, value_method, text_method)
+    collection.map { |item| [ read(item, text_method), read(item, value_method) ] }
+  end
+
+  def read(item, method)
+    method.respond_to?(:call) ? method.call(item) : item.public_send(method)
+  end
+
+  # Rails' collection helpers split their options: `checked:` becomes the value
+  def collection_options(options, html_options)
+    options = options.symbolize_keys
+    options[:value] = options.delete(:checked) if options.key?(:checked)
+    { **html_options.symbolize_keys, **options.slice(:label, :description, :include_hidden, :value, :required, :disabled) }
   end
 
   # options_for_select's shapes: "a", [ "Label", "value" ], { "Label" => "value" }

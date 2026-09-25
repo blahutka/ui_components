@@ -52,8 +52,8 @@ class UI::Checkbox < UI::Base
 
     def control_defaults
       {
-        type: "checkbox", id: field&.control_id, name: control_name, value: @value, checked: checked?,
-        disabled: (true if disabled?), aria_invalid: ("true" if invalid?), aria_describedby: field&.described_by,
+        type: "checkbox", id: (field&.control_id unless group), name: control_name, value: @value, checked: checked?,
+        disabled: (true if disabled?), aria_invalid: ("true" if invalid?), aria_describedby: (field&.described_by unless group),
         data: {
           slot: "checkbox-input", indeterminate: flag(@indeterminate), invalid: flag(invalid?),
           controller: ("ui--checkbox" if @indeterminate && !group),

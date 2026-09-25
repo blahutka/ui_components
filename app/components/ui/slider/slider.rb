@@ -41,7 +41,7 @@ class UI::Slider < UI::Base
     div(**mix(defaults(
       role: "group",
       data: {
-        slot: "slider", orientation: @orientation, disabled: ("" if @disabled), controller: "ui--slider",
+        slot: "slider", orientation: @orientation, disabled: ("" if disabled?), controller: "ui--slider",
         "ui--slider-min-value": number(@min), "ui--slider-max-value": number(@max), "ui--slider-step-value": number(@step),
         "ui--slider-large-step-value": number(@large_step), "ui--slider-min-steps-between-value": @min_steps_between_values,
         "ui--slider-format-value": (@format.to_h.transform_keys { |key| key.to_s.camelize(:lower) }.to_json if @format),
@@ -49,7 +49,7 @@ class UI::Slider < UI::Base
       }
     ), @attributes.except(:class)),
       class: cn("data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-fit", override: @attributes[:class])) do
-      div(data: { slot: "slider-control", orientation: @orientation, disabled: ("" if @disabled), "ui--slider-target": "control", action: "pointerdown->ui--slider#start" },
+      div(data: { slot: "slider-control", orientation: @orientation, disabled: ("" if disabled?), "ui--slider-target": "control", action: "pointerdown->ui--slider#start" },
         class: "relative flex w-full touch-none items-center select-none data-disabled:opacity-disabled data-disabled:pointer-events-none " \
           "data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-40 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col") do
         div(data: { slot: "slider-track", orientation: @orientation },
@@ -97,17 +97,29 @@ class UI::Slider < UI::Base
             span(data: { slot: "slider-tooltip", orientation: @orientation, "ui--slider-target": "tooltip" }, aria_hidden: "true", class: "#{TOOLTIP} #{TOOLTIPS[@tooltip]}") { formatted(value) }
           end
         end
-        input(type: "range", name: input_name, value: number(value), min: number(@min), max: number(@max), step: number(@step),
-          disabled: (true if @disabled), aria_label: thumb_label(index), aria_orientation: @orientation, aria_valuetext: (formatted(value) if @format),
-          data: { "ui--slider-target": "input", action: "keydown->ui--slider#key focus->ui--slider#focus" },
+        input(type: "range", id: (field&.control_id if index.zero?), name: input_name, value: number(value), min: number(@min), max: number(@max), step: number(@step),
+          disabled: (true if disabled?), aria_label: thumb_label(index), aria_orientation: @orientation, aria_valuetext: (formatted(value) if @format),
+          aria_labelledby: (field.label_id if field && !thumb_label(index)), aria_describedby: field&.described_by.presence,
+          aria_invalid: ("true" if field&.invalid?),
+          data: { "ui--slider-target": "input", "ui--field-target": ("control" if field), action: "keydown->ui--slider#key focus->ui--slider#focus" },
           class: "sr-only")
       end
     end
 
     def input_name
-      return unless @name
+      name = @name || field&.name
+      return unless name
 
-      @range ? "#{@name}[]" : @name
+      @range && !name.end_with?("[]") ? "#{name}[]" : name
+    end
+
+    # Inside a Field: the first thumb is the labelled control, the name comes from the Field
+    def field
+      context[:ui_field]
+    end
+
+    def disabled?
+      @disabled || field&.disabled?
     end
 
     def thumb_label(index)

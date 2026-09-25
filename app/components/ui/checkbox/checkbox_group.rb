@@ -28,12 +28,19 @@ class UI::CheckboxGroup < UI::Base
     (@value.nil? ? @default_value : Array(@value).map(&:to_s)).include?(value.to_s)
   end
 
-  def disabled? = @disabled
+  def disabled? = @disabled || field&.disabled?
+
+  # Inside a Field the group takes its control id, name, label and description
+  def field
+    context[:ui_field]
+  end
 
   def view_template(&)
+    @name ||= field&.name
     provide(:ui_checkbox_group, self) do
-      div(**mix(defaults(role: "group", aria_orientation: @orientation, aria_disabled: ("true" if @disabled),
-        data: { slot: "checkbox-group", disabled: ("" if @disabled), controller: "ui--checkbox-group", action: "change->ui--checkbox-group#update" }),
+      div(**mix(defaults(role: "group", id: field&.control_id, aria_orientation: @orientation, aria_disabled: ("true" if disabled?),
+        aria_labelledby: (field.label_id if field && !@attributes.key?(:aria_label)), aria_describedby: field&.described_by.presence,
+        data: { slot: "checkbox-group", disabled: ("" if disabled?), invalid: ("" if field&.invalid?), controller: "ui--checkbox-group", action: "change->ui--checkbox-group#update" }),
         @attributes.except(:class)), class: cn(ORIENTATIONS[@orientation], override: @attributes[:class]), &)
     end
   end

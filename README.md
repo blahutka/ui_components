@@ -33,19 +33,31 @@ Use `form.ui` on the builder you already get from `form_with` or `fields_for`:
   <%= form.ui.number_field :age, min: 0 %>
   <%= form.ui.select :locations, [["Prague", "prg"], ["Berlin", "ber"]],
         { prompt: "Pick cities" }, { multiple: true } %>
+  <%= form.ui.text_area :bio %>
+  <%= form.ui.radio_group :plan, [["Free", "free"], ["Pro", "pro"]] %>
+  <%= form.ui.checkbox_group :interests, [["Design", "design"], ["Sales", "sales"]] %>
+  <%= form.ui.combobox :skills, %w[Ruby Rails SQL], multiple: true %>
+  <%= form.ui.range_field :experience %>
+  <%= form.ui.otp_field :pin, length: 4 %>
+  <%= form.ui.switch :newsletter %>
+  <%= form.ui.check_box :terms_of_service %>
   <%= form.submit %>
 <% end %>
 ```
 
-Each helper renders a labelled Field, bound to Rails' names, IDs, raw values and model errors.
-Unconditional presence, length and numericality validators supply browser constraints; explicit
-options override them. `label: false` renders only the control. Text helpers also include email,
-password, telephone, URL and search inputs. Nested builders use their own object's labels,
+Each helper renders a labelled Field, bound to Rails' names, IDs, values and model errors.
+Unconditional presence, acceptance, length and numericality validators supply browser constraints;
+explicit options override them. `label: false` renders only the control. Text helpers also include
+email, password, telephone, URL and search inputs; `collection_select`, `collection_radio_buttons`
+and `collection_check_boxes` keep Rails' signatures. Nested builders use their own object's labels,
 validators and errors, with stable IDs per row.
 
-Controllers receive ordinary strong parameters. Multiple selections include a blank hidden entry
-so clearing them submits the key; normalize with `compact_blank` in your model if needed.
-See Lookbook's **Form builder** page for the full API and a working `/users/new` submission demo.
+Controllers receive ordinary strong parameters, so `User.new(user_params).save` works with Active
+Record and `accepts_nested_attributes_for`. Check boxes and switches send Rails' hidden `"0"`;
+multiple selections, check box groups and multiple comboboxes include a blank hidden entry so
+clearing them submits the key; normalize with `compact_blank` in your model if needed.
+See Lookbook's **Form builder** page for the full API and a working `/users/new` demo that saves
+to the dummy app's SQLite database.
 
 ## Components
 

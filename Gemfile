@@ -14,3 +14,6 @@ gem "rails-i18n", "~> 8.0"
 
 # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
 gem "rubocop-rails-omakase", require: false
+
+# The dummy app's database: form builder demo and Active Record tests (test/dummy/db)
+gem "sqlite3", ">= 2.1"

@@ -6,6 +6,7 @@ en:
         toggle: Toggle popup
         remove: Remove
         create: Create "%{query}"
+        empty: No results found.
 cs:
   ui_components:
     ui:
@@ -14,6 +15,7 @@ cs:
         toggle: Přepnout nabídku
         remove: Odebrat
         create: Vytvořit „%{query}“
+        empty: Nic nenalezeno.
 de:
   ui_components:
     ui:
@@ -22,6 +24,7 @@ de:
         toggle: Liste umschalten
         remove: Entfernen
         create: "„%{query}“ erstellen"
+        empty: Keine Ergebnisse gefunden.
 ar:
   ui_components:
     ui:
@@ -30,3 +33,4 @@ ar:
         toggle: تبديل القائمة
         remove: إزالة
         create: إنشاء "%{query}"
+        empty: لا توجد نتائج.

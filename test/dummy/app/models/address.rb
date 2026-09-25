@@ -1,11 +1,7 @@
-class Address
-  include ActiveModel::Model
-  include ActiveModel::Attributes
-
+class Address < ApplicationRecord
   COUNTRIES = [ [ "Czechia", "cz" ], [ "Germany", "de" ], [ "United States", "us" ] ].freeze
 
-  attribute :city, :string
-  attribute :country, :string
+  belongs_to :user
 
   validates :city, presence: true
   validates :country, inclusion: { in: COUNTRIES.map(&:last) }

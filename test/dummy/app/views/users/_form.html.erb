@@ -1,7 +1,14 @@
 <%= form_with model: user, url: main_app.users_path, html: { novalidate: !local_assigns.fetch(:browser_validation, true) }, class: "flex w-full max-w-md flex-col gap-5" do |form| %>
   <%= form.ui.text_field :name, description: "As it appears on your profile" %>
   <%= form.ui.number_field :age %>
+  <%= form.ui.text_area :bio, description: "Up to 280 characters", rows: 3 %>
   <%= form.ui.select :locations, User::LOCATIONS, { prompt: "Pick cities" }, { multiple: true } %>
+  <%= form.ui.radio_group :plan, User::PLANS, orientation: :horizontal %>
+  <%= form.ui.checkbox_group :interests, User::INTERESTS, orientation: :horizontal %>
+  <%= form.ui.combobox :language, User::LANGUAGES, placeholder: "Search a language" %>
+  <%= form.ui.combobox :skills, User::SKILLS, multiple: true, placeholder: "Add skills", clearable: true %>
+  <%= form.ui.range_field :experience, label: "Years of experience", tooltip: :always %>
+  <%= form.ui.otp_field :pin, length: 4, label: "PIN", required: true, description: "4 digits to unlock your profile" %>
 
   <fieldset class="flex min-w-0 flex-col gap-4">
     <legend class="text-foreground-intense mb-4 text-lg font-medium">Address</legend>
@@ -20,6 +27,9 @@
       </div>
     <% end %>
   </fieldset>
+
+  <%= form.ui.switch :newsletter, description: "A monthly summary, no spam" %>
+  <%= form.ui.check_box :terms_of_service, label: "I accept the terms of service" %>
 
   <%= render(UI::Button.new(type: "submit", class: "self-start")) { "Save" } %>
 <% end %>

@@ -10,7 +10,8 @@ module UiComponents
     initializer "ui_components.autoloader", before: :setup_main_autoloader do
       Rails.autoloaders.main.inflector.inflect(
         "ui" => "UI",
-        "otp_field" => "OTPField", "otp_field_input" => "OTPFieldInput", "otp_field_separator" => "OTPFieldSeparator", "otp_field_preview" => "OTPFieldPreview"
+        "otp_field" => "OTPField", "otp_field_input" => "OTPFieldInput", "otp_field_separator" => "OTPFieldSeparator", "otp_field_preview" => "OTPFieldPreview",
+        "form_builder_otp" => "FormBuilderOTP"
       )
       Rails.autoloaders.main.collapse(COMPONENTS_PATH.join("ui/*"))
       Rails.autoloaders.main.collapse(COMPONENTS_PATH.join("blocks/*"))
@@ -21,6 +22,11 @@ module UiComponents
         Rails.autoloaders.main.ignore(COMPONENTS_PATH.join("blocks/**/*_preview.rb"))
         Rails.autoloaders.main.ignore(root.join("app/lookbook"))
       end
+    end
+
+    # Run this configuration during initialization
+    initializer "ui_components.configure_action_view" do |app|
+      app.config.action_view.annotate_rendered_view_with_filenames = true
     end
 
     # `form.ui.text_field :name` on every Rails form builder (UI::FormBuilder)

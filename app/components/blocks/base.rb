@@ -4,4 +4,5 @@
 class Blocks::Base < UI::Base
   include UI
   include Blocks
+  include UI::ViewAnnotation
 end

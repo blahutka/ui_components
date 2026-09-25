@@ -39,6 +39,32 @@ overrides a label; `label: false` renders only the control. Other attributes suc
 | `email_field`, `password_field`, `telephone_field`, `url_field`, `search_field` | Input with the corresponding type | Same options; passwords are blank unless `value:` is explicitly supplied |
 | `number_field` | NumberField | `label:`, `description:`, `min:`, `max:`, `step:`, NumberField options |
 | `select(method, choices, options = {}, html_options = {})` | Select | Labels, description, `prompt:`, `include_blank:`, `selected:`, `include_hidden:` in `options`; `multiple:`, `required:`, `disabled:` and trigger attributes in `html_options` |
+| `collection_select(method, collection, value_method, text_method, options = {}, html_options = {})` | Select | As `select`; value and text methods may be symbols or procs |
+| `text_area` (`textarea`) | Textarea | `label:`, `description:`, `rows:`, Textarea options |
+| `check_box(method, options = {}, checked_value = "1", unchecked_value = "0")` (`checkbox`) | Checkbox beside its label | `label:`, `description:`, `checked:`, `include_hidden:` in `options` |
+| `switch(method, options = {}, checked_value = "1", unchecked_value = "0")` | Switch beside its label | Same as `check_box` |
+| `radio_group(method, choices, **options)` | RadioGroup with a Radio per choice | `label:`, `description:`, `value:`, `include_hidden:`, `orientation:`, `required:`, `disabled:` |
+| `collection_radio_buttons(method, collection, value_method, text_method, options = {}, html_options = {})` | RadioGroup | `checked:` and the `radio_group` options in `options`; group attributes in `html_options` |
+| `checkbox_group(method, choices, **options)` | CheckboxGroup with a Checkbox per choice | `label:`, `description:`, `value:`, `include_hidden:`, `orientation:`, `disabled:` |
+| `collection_check_boxes(method, collection, value_method, text_method, options = {}, html_options = {})` | CheckboxGroup | As `collection_radio_buttons` |
+| `combobox(method, choices, **options)` | Combobox with an input, or chips with `multiple: true` | `label:`, `description:`, `placeholder:`, `multiple:`, `include_hidden:`, `required:`, `clearable:`, `variant:`, `size:` |
+| `range_field` (`slider`) | Slider | `label:`, `description:`, `min:`, `max:`, `step:`, Slider options |
+| `otp_field(method, length: 6, **options)` | OTPField | `label:`, `description:`, `required:`, `mask:`, `validation_type:` |
+
+Radios, check boxes and comboboxes compare against the cast attribute value, like Rails, so a
+record loaded from the database checks its stored booleans and JSON arrays. Text, number,
+range and OTP controls show the value before type cast, so invalid input re-renders as typed.
+
+### What each control submits
+
+| Helper | Params |
+|--------|--------|
+| `check_box`, `switch` | `user[newsletter]` = `"0"` (hidden) then `"1"` when checked; `include_hidden: false` drops the hidden input |
+| `radio_group` | `user[plan]` = `""` (hidden) then the chosen value; a required group with nothing picked fails presence |
+| `checkbox_group`, `combobox multiple: true` | `user[interests][]` = `""` (hidden) then each checked value |
+| `combobox` | `user[language]` = the chosen value (the input shows its label) |
+| `range_field` | `user[experience]` = the thumb's number |
+| `otp_field` | `user[pin]` = all characters as one string |
 
 Select choices accept strings, `[label, value]` pairs, a label-to-value Hash, or objects
 responding to `first` and `last`. The selected values are submitted; the trigger displays
@@ -57,6 +83,7 @@ The builder reads unconditional validators to provide browser constraints:
 | `numericality: { less_than_or_equal_to: 120 }` | `max: 120` |
 | `numericality: { in: 18..120 }` | `min: 18, max: 120` |
 | `numericality: { only_integer: true }` | `step: 1` |
+| `acceptance: true` | `required: true` (the check box must be ticked) |
 
 Validators with `if:`, `unless:`, or `on:` are not inferred. Explicit options win, including
 `required: false`. Server validation remains authoritative; format, inclusion, custom
@@ -94,8 +121,8 @@ rows remain distinct and IDs stay stable on re-render.
 ```ruby
 def create
   @user = User.new(user_params)
-  if @user.valid?
-    # Save or continue with the validated model.
+  if @user.save
+    redirect_to @user
   else
     render :new, status: :unprocessable_entity
   end
@@ -103,26 +130,54 @@ end
 
 def user_params
   params.require(:user).permit(
-    :name, :age, locations: [],
+    :name, :age, :bio, :plan, :language, :experience, :pin, :newsletter, :terms_of_service,
+    locations: [], interests: [], skills: [],
     address_attributes: %i[city country],
     phones_attributes: %i[number kind]
   )
 end
 ```
 
-The demo posts to `/users` and displays the permitted params and validation result:
+The demo posts to `/users`, saves the record and displays the permitted params next to the
+saved User:
 
 ```ruby
-{ "name" => "Ada", "age" => "42", "locations" => ["", "prg", "ber"],
+{ "name" => "Ada", "age" => "42", "plan" => "pro", "newsletter" => "1",
+  "locations" => ["", "prg", "ber"], "interests" => ["", "design"],
   "address_attributes" => { "city" => "Prague", "country" => "cz" },
   "phones_attributes" => { "0" => { "number" => "+420 123 456 789", "kind" => "mobile" } } }
 ```
 
-Like Rails, multiple Select and Combobox controls include an empty hidden input so clearing
-all selections still submits the key. Disable it with `include_hidden: false` (in Select's
-`options` hash when using `form.ui`). The dummy User setter normalizes locations with
-`Array(values).compact_blank`, so `[""]` becomes `[]` and fails presence validation.
+Like Rails, multiple Select, check box groups and multiple Combobox controls include an empty
+hidden input so clearing all selections still submits the key. Disable it with
+`include_hidden: false` (in Select's `options` hash when using `form.ui`). The dummy User setters
+normalize those arrays with `Array(values).compact_blank`, so `[""]` becomes `[]` and fails presence
+validation.
 
-The demo uses ActiveModel with no database. Its small `NestedAttributes` concern builds
-one Address and indexed Phone records and validates the children. In an Active Record app,
-use your normal associations and `accepts_nested_attributes_for`.
+## Active Record
+
+The demo models are Active Record, stored in the dummy app's SQLite database
+(`test/dummy/db/schema.rb`):
+
+```ruby
+class User < ApplicationRecord
+  has_one :address
+  has_many :phones
+  accepts_nested_attributes_for :address, :phones
+
+  validates :name, presence: true, length: { maximum: 40 }
+  validates :terms_of_service, acceptance: true
+end
+```
+
+- JSON columns (`locations`, `interests`, `skills`) hold the arrays that multiple selects,
+  check box groups and multiple comboboxes submit.
+- Build the `has_one` child before rendering the form. `fields_for` renders nothing for a nil
+  association, so the demo starts from `User.new(address: Address.new, phones: [...])`.
+- On a persisted record, `fields_for` adds the children's hidden `id` inputs, so saving updates
+  them instead of creating new ones. Permit `:id` in the nested attributes for edit forms.
+- Nested errors land on the child (shown in its row's Field) and on the parent as
+  `errors[:"phones.number"]`.
+
+Plain ActiveModel objects work too: the builder only needs `field_name`, the attribute readers,
+`errors` and, optionally, `validators_on` and `human_attribute_name`.
