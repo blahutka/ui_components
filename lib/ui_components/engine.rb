@@ -1,3 +1,5 @@
+require_relative "form_builder_extension"
+
 module UiComponents
   class Engine < ::Rails::Engine
     COMPONENTS_PATH = root.join("app/components")
@@ -21,9 +23,14 @@ module UiComponents
       end
     end
 
-    # Translations live next to each component: app/components/**/*.locales.yml (every
-    # language in one file, keys under ui_components.<kit>.<component>)
-    # (the previews' sample content in *_preview.locales.yml only when Lookbook runs)
+    # `form.ui.text_field :name` on every Rails form builder (UI::FormBuilder)
+    initializer "ui_components.form_builder" do
+      ActiveSupport.on_load(:action_view) do
+        ActionView::Helpers::FormBuilder.include(UiComponents::FormBuilderExtension)
+      end
+    end
+
+    # Translations live next to each component, with preview-only strings in *_preview.locales.yml.
     initializer "ui_components.i18n" do |app|
       files = Dir[COMPONENTS_PATH.join("**/*.locales.yml")]
       files = files.reject { |file| file.end_with?("_preview.locales.yml") } unless defined?(Lookbook)

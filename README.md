@@ -23,6 +23,30 @@ end
 
 From ERB: `<%= render FrameworkPicker.new %>`.
 
+## Rails forms
+
+Use `form.ui` on the builder you already get from `form_with` or `fields_for`:
+
+```erb
+<%= form_with model: @user do |form| %>
+  <%= form.ui.text_field :name, description: "As it appears on your profile" %>
+  <%= form.ui.number_field :age, min: 0 %>
+  <%= form.ui.select :locations, [["Prague", "prg"], ["Berlin", "ber"]],
+        { prompt: "Pick cities" }, { multiple: true } %>
+  <%= form.submit %>
+<% end %>
+```
+
+Each helper renders a labelled Field, bound to Rails' names, IDs, raw values and model errors.
+Unconditional presence, length and numericality validators supply browser constraints; explicit
+options override them. `label: false` renders only the control. Text helpers also include email,
+password, telephone, URL and search inputs. Nested builders use their own object's labels,
+validators and errors, with stable IDs per row.
+
+Controllers receive ordinary strong parameters. Multiple selections include a blank hidden entry
+so clearing them submits the key; normalize with `compact_blank` in your model if needed.
+See Lookbook's **Form builder** page for the full API and a working `/users/new` submission demo.
+
 ## Components
 
 | Component | Parts | Appica docs |

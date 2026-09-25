@@ -15,7 +15,7 @@ class UI::FieldError < UI::Base
     shown = !@match && field.error.present?
 
     div(class: WRAPPER, data: { slot: "field-error-wrapper" }) do
-      div(**mix({ id: [ field.error_id, @match ].compact.join("-").dasherize, role: "alert", aria_live: "polite", hidden: !shown,
+      div(**mix({ id: [ field.error_id, @match&.to_s&.dasherize ].compact.join("-"), role: "alert", aria_live: "polite", hidden: !shown,
         data: { slot: "field-error", "ui--field-target": "error", match: @match&.to_s&.camelize(:lower) } }, @attributes.except(:class)),
         class: cn(MESSAGE, override: @attributes[:class])) do
         if block

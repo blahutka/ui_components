@@ -8,6 +8,7 @@
 #     FieldError()
 #   end
 #
+# `control_id:` sets the control's id (a form builder passes Rails' `user_name`).
 # The control gets the field's id, `name:`, `aria-describedby`, and its disabled / invalid
 # state. Server-side errors: `error: "Email is taken"` renders invalid with that message.
 # In the browser, the native constraints (required, type, pattern, minlength…) are checked on
@@ -23,10 +24,11 @@ class UI::Field < UI::Base
   prop :validation_mode, one_of(MODES, :submit), default: -> { :submit }
   prop :messages,        default: -> { {} }
   prop :id,              default: -> { "field-#{SecureRandom.hex(4)}" }
+  prop :control_id,      default: -> { "#{@id}-control" }
 
   attr_reader :name, :error
 
-  def control_id = "#{@id}-control"
+  attr_reader :control_id
   def label_id = "#{@id}-label"
   def description_id = "#{@id}-description"
   def error_id = "#{@id}-error"

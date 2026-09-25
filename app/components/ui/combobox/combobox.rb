@@ -22,6 +22,7 @@ class UI::Combobox < UI::Autocomplete
   prop :required,  default: -> { false }
   prop :id,        default: -> { "combobox-#{SecureRandom.hex(4)}" }
   prop :item_to_string_label, default: -> { nil }
+  prop :include_hidden, default: -> { true }
 
   def identifier = "ui--combobox"
   def slot = "combobox"
@@ -78,10 +79,15 @@ class UI::Combobox < UI::Autocomplete
 
     def form_inputs
       if @multiple && control_name
-        values.each { |value| input(type: "hidden", name: "#{control_name}[]", value:, data: { "#{identifier}-target": "hidden" }) }
+        input(type: "hidden", name: multiple_name, value: "", autocomplete: "off", disabled: (true if disabled?)) if @include_hidden
+        values.each { |value| input(type: "hidden", name: multiple_name, value:, disabled: (true if disabled?), data: { "#{identifier}-target": "hidden" }) }
       end
       input(type: "text", tabindex: "-1", aria_hidden: "true", class: "sr-only", autocomplete: "off",
         name: (control_name unless @multiple), value: values.join(","), required: (true if @required), disabled: (true if disabled?),
         data: { "#{identifier}-target": "validity", "ui--field-target": ("control" if field), action: "focus->#{identifier}#focusField" })
+    end
+
+    def multiple_name
+      control_name.to_s.end_with?("[]") ? control_name : "#{control_name}[]"
     end
 end

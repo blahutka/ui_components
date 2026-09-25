@@ -1,0 +1,128 @@
+---
+id: form_builder
+title: Form builder
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+Keep Rails' `form_with` and use `form.ui` for model-bound UI components. Each helper renders
+a Field with a label, the control, an optional description, and the model's validation errors.
+No custom `builder:` option is needed.
+
+Turn off **Browser validation** in the preview's Params panel to submit invalid values and
+see server errors. This applies `novalidate` only to the demo form; model validation still runs.
+
+<%= embed UI::FormBuilderPreview, :default %>
+
+## Usage
+
+```erb
+<%%= form_with model: @user do |form| %>
+  <%%= form.ui.text_field :name, description: "As it appears on your profile" %>
+  <%%= form.ui.number_field :age, min: 0 %>
+  <%%= form.ui.select :locations, [["Prague", "prg"], ["Berlin", "ber"]],
+        { prompt: "Pick cities" }, { multiple: true } %>
+  <%%= form.submit %>
+<%% end %>
+```
+
+The components use Rails' field names and IDs (`user[name]`, `user_name`) and current model
+values. Labels use `human_attribute_name`, including translations. `label: "Display name"`
+overrides a label; `label: false` renders only the control. Other attributes such as `class:`,
+`placeholder:`, `disabled:`, and `required:` are passed to the control.
+
+## Helpers
+
+| Helper | Control | Options |
+|--------|---------|---------|
+| `text_field` | Input | `label:`, `description:`, native input attributes |
+| `email_field`, `password_field`, `telephone_field`, `url_field`, `search_field` | Input with the corresponding type | Same options; passwords are blank unless `value:` is explicitly supplied |
+| `number_field` | NumberField | `label:`, `description:`, `min:`, `max:`, `step:`, NumberField options |
+| `select(method, choices, options = {}, html_options = {})` | Select | Labels, description, `prompt:`, `include_blank:`, `selected:`, `include_hidden:` in `options`; `multiple:`, `required:`, `disabled:` and trigger attributes in `html_options` |
+
+Select choices accept strings, `[label, value]` pairs, a label-to-value Hash, or objects
+responding to `first` and `last`. The selected values are submitted; the trigger displays
+their labels (or the standard count summary for multiple selections). A prompt or blank
+label becomes the empty control's placeholder.
+
+## Model validation
+
+The builder reads unconditional validators to provide browser constraints:
+
+| Validator | Inferred option |
+|-----------|-----------------|
+| `presence: true` | `required: true` |
+| `length: { maximum: 40 }` | `maxlength: 40` |
+| `numericality: { greater_than_or_equal_to: 18 }` | `min: 18` |
+| `numericality: { less_than_or_equal_to: 120 }` | `max: 120` |
+| `numericality: { in: 18..120 }` | `min: 18, max: 120` |
+| `numericality: { only_integer: true }` | `step: 1` |
+
+Validators with `if:`, `unless:`, or `on:` are not inferred. Explicit options win, including
+`required: false`. Server validation remains authoritative; format, inclusion, custom
+validators, and dynamic bounds are not translated into browser constraints.
+
+When validation fails, re-render the form with the invalid model and status 422. Its
+`errors[attribute].to_sentence` appears inside the Field, linked to the control. NumberField
+preserves invalid raw text (such as `"abc"`) on re-render instead of showing the cast number.
+An empty number submits `""`, which an integer model attribute casts to `nil`.
+
+## Nested forms
+
+The builder returned by `fields_for` also has `ui`. Rails supplies every name and ID, including
+`_attributes`, collection indices, and a custom `child_index:`:
+
+```erb
+<%%= form.fields_for :address do |address| %>
+  <%%= address.ui.text_field :city %>
+  <%%= address.ui.select :country, Address::COUNTRIES %>
+<%% end %>
+<%%= form.fields_for :phones do |phone| %>
+  <%%= phone.ui.telephone_field :number %>
+  <%%= phone.ui.select :kind, %w[mobile home work] %>
+<%% end %>
+```
+
+For a model using nested attributes, the first phone submits
+`user[phones_attributes][0][number]`; a multiple select in that row submits
+`user[phones_attributes][0][tags][]`. Each row uses its own object's values, labels,
+validators and errors. Field description/error IDs derive from the Rails control ID, so
+rows remain distinct and IDs stay stable on re-render.
+
+## Controller params
+
+```ruby
+def create
+  @user = User.new(user_params)
+  if @user.valid?
+    # Save or continue with the validated model.
+  else
+    render :new, status: :unprocessable_entity
+  end
+end
+
+def user_params
+  params.require(:user).permit(
+    :name, :age, locations: [],
+    address_attributes: %i[city country],
+    phones_attributes: %i[number kind]
+  )
+end
+```
+
+The demo posts to `/users` and displays the permitted params and validation result:
+
+```ruby
+{ "name" => "Ada", "age" => "42", "locations" => ["", "prg", "ber"],
+  "address_attributes" => { "city" => "Prague", "country" => "cz" },
+  "phones_attributes" => { "0" => { "number" => "+420 123 456 789", "kind" => "mobile" } } }
+```
+
+Like Rails, multiple Select and Combobox controls include an empty hidden input so clearing
+all selections still submits the key. Disable it with `include_hidden: false` (in Select's
+`options` hash when using `form.ui`). The dummy User setter normalizes locations with
+`Array(values).compact_blank`, so `[""]` becomes `[]` and fails presence validation.
+
+The demo uses ActiveModel with no database. Its small `NestedAttributes` concern builds
+one Address and indexed Phone records and validates the children. In an Active Record app,
+use your normal associations and `accepts_nested_attributes_for`.

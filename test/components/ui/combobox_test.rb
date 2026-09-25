@@ -45,7 +45,7 @@ class UI::ComboboxTest < ComponentTestCase
     end
 
     assert_equal %w[ Remix Astro ], combobox.css("[data-slot=combobox-chips-list] > [data-slot=combobox-chip]").map { |chip| chip["data-value"] }
-    assert_equal %w[ Remix Astro ], combobox.css("input[type=hidden][name='frameworks[]']").map { |input| input["value"] }
+    assert_equal [ "", "Remix", "Astro" ], combobox.css("input[type=hidden][name='frameworks[]']").map { |input| input["value"] }
     assert combobox.at_css("template[data-ui--combobox-target=chipTemplate]")
     assert_equal %(Create "%{query}"), combobox.at_css("[data-slot=combobox]")["data-ui--combobox-create-label-value"]
   end

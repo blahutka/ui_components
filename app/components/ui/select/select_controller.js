@@ -199,7 +199,7 @@ export default class extends Controller {
     if (this.multipleValue && this.nameValue) {
       this.hiddenTargets.forEach(input => input.remove())
       values.forEach(value => {
-        const input = Object.assign(document.createElement("input"), { type: "hidden", name: `${this.nameValue}[]`, value })
+        const input = Object.assign(document.createElement("input"), { type: "hidden", name: this.nameValue.endsWith("[]") ? this.nameValue : `${this.nameValue}[]`, value, disabled: this.inputTarget.disabled })
         input.setAttribute("data-ui--select-target", "hidden")
         this.inputTarget.before(input)
       })

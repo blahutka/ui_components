@@ -1,0 +1,25 @@
+<%= form_with model: user, url: main_app.users_path, html: { novalidate: !local_assigns.fetch(:browser_validation, true) }, class: "flex w-full max-w-md flex-col gap-5" do |form| %>
+  <%= form.ui.text_field :name, description: "As it appears on your profile" %>
+  <%= form.ui.number_field :age %>
+  <%= form.ui.select :locations, User::LOCATIONS, { prompt: "Pick cities" }, { multiple: true } %>
+
+  <fieldset class="flex min-w-0 flex-col gap-4">
+    <legend class="text-foreground-intense mb-4 text-lg font-medium">Address</legend>
+    <%= form.fields_for :address do |address| %>
+      <%= address.ui.text_field :city %>
+      <%= address.ui.select :country, Address::COUNTRIES, prompt: "Pick a country" %>
+    <% end %>
+  </fieldset>
+
+  <fieldset class="flex min-w-0 flex-col gap-4">
+    <legend class="text-foreground-intense mb-4 text-lg font-medium">Phones</legend>
+    <%= form.fields_for :phones do |phone| %>
+      <div class="grid min-w-0 grid-cols-1 items-start gap-3 sm:grid-cols-[minmax(0,1fr)_8rem]">
+        <%= phone.ui.telephone_field :number, placeholder: "+420 123 456 789" %>
+        <%= phone.ui.select :kind, Phone::KINDS, label: "Kind" %>
+      </div>
+    <% end %>
+  </fieldset>
+
+  <%= render(UI::Button.new(type: "submit", class: "self-start")) { "Save" } %>
+<% end %>

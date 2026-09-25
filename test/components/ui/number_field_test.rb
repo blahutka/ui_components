@@ -1,6 +1,23 @@
 require "test_helper"
 
 class UI::NumberFieldTest < ComponentTestCase
+  test "keeps invalid text in the visible and submitted value" do
+    field = render_ui { NumberField(value: "abc", name: "age", min: 18, max: 120, step: 1) }
+    input = field.at_css("[data-slot=number-field-input]")
+
+    assert_equal "abc", input["value"]
+    assert_nil input["aria-valuenow"]
+    assert_equal "abc", field.at_css("input[type=hidden]")["value"]
+    assert_equal [ "18", "120", "1" ], %w[ min max step ].map { |key| input[key] }
+  end
+
+  test "empty value submits an empty string" do
+    field = render_ui { NumberField(value: "", name: "age") }
+
+    assert_equal "", field.at_css("input[type=hidden]")["value"]
+    assert_nil field.at_css("[data-slot=number-field-input]")["aria-valuenow"]
+  end
+
   test "renders steppers around a spinbutton and a hidden plain value" do
     field = render_ui { NumberField(default_value: 10, min: 0, max: 10, name: "quantity", aria_label: "Quantity") }
     input = field.at_css("[data-slot=number-field-input]")

@@ -8,5 +8,8 @@ Rails.application.routes.draw do
   # Lookbook "Editor" panel: opens a project file in your editor (local requests, development only)
   get "editor/open" => "editor_openings#show", as: :editor_opening if Rails.env.development?
 
+  # The form builder demo (form.ui)
+  resources :users, only: %i[ new create ]
+
   get "up" => "rails/health#show", as: :rails_health_check
 end

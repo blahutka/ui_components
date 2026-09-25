@@ -1,0 +1,6 @@
+<div class="flex w-full max-w-md flex-col gap-4 text-sm">
+  <p class="text-foreground-intense font-medium">The controller received</p>
+  <pre class="bg-background-subtle border-border-muted overflow-x-auto rounded-lg border p-4 font-mono text-xs"><%= JSON.pretty_generate(@submitted_params.to_h) %></pre>
+  <p><code>User.new(user_params).valid?</code> → <strong class="text-success-emphasis"><%= @user.valid? %></strong></p>
+  <%= link_to "Back to the form", new_user_path, class: "underline" %>
+</div>

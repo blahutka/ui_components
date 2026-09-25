@@ -39,7 +39,7 @@ class UI::SelectTest < ComponentTestCase
     assert empty.at_css("[data-slot=select-trigger][data-placeholder]")
     assert empty.at_css("[data-slot=select-clear][hidden]")
     assert_equal "2 selected", multiple.at_css("[data-slot=select-value]").text
-    assert_equal %w[ apple pear ], multiple.css("input[type=hidden][name='fruits[]']").map { |input| input["value"] }
+    assert_equal [ "", "apple", "pear" ], multiple.css("input[type=hidden][name='fruits[]']").map { |input| input["value"] }
     assert_equal "true", multiple.at_css("[role=listbox]")["aria-multiselectable"]
   end
 

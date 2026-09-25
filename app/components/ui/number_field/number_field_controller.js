@@ -6,12 +6,13 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = [ "input", "hidden", "increment", "decrement" ]
   static values = { min: Number, max: Number, step: { type: Number, default: 1 }, smallStep: { type: Number, default: 0.1 },
-    largeStep: { type: Number, default: 10 }, format: Object, locale: String }
+    largeStep: { type: Number, default: 10 }, format: Object, locale: String, invalidMessage: String }
 
   connect() {
     const now = this.inputTarget.getAttribute("aria-valuenow")
     this.value = now === null ? null : Number(now)
-    this.render()
+    // A re-rendered invalid entry ("abc") stays as typed until it's edited
+    this.render({ keepText: now === null && this.inputTarget.value !== "" })
   }
 
   disconnect() {
@@ -21,11 +22,15 @@ export default class extends Controller {
   // While typing only the hidden value follows; the display is re-formatted on commit
   type() {
     const value = this.parse(this.inputTarget.value)
-    this.setHidden(value)
+    this.setHidden(value === null ? this.inputTarget.value : value)
+    this.updateValidity(value)
   }
 
   commit() {
-    this.set(this.parse(this.inputTarget.value))
+    const value = this.parse(this.inputTarget.value)
+    this.updateValidity(value)
+    // Invalid entries must survive a submit and server error re-render unchanged.
+    if (this.inputTarget.validity.valid) this.set(value)
   }
 
   key(event) {
@@ -92,9 +97,9 @@ export default class extends Controller {
     }
   }
 
-  render() {
+  render({ keepText = false } = {}) {
     const value = this.value
-    this.inputTarget.value = value === null ? "" : this.format(value)
+    if (!keepText) this.inputTarget.value = value === null ? "" : this.format(value)
     if (value === null) {
       this.inputTarget.removeAttribute("aria-valuenow")
       this.inputTarget.removeAttribute("aria-valuetext")
@@ -102,13 +107,27 @@ export default class extends Controller {
       this.inputTarget.setAttribute("aria-valuenow", value)
       if (this.hasFormatValue) this.inputTarget.setAttribute("aria-valuetext", this.format(value))
     }
-    this.setHidden(value)
+    if (!keepText) this.setHidden(value)
+    this.updateValidity(value)
     if (this.hasIncrementTarget) this.incrementTarget.disabled = this.inputTarget.disabled || this.readOnly || (this.hasMaxValue && value !== null && value >= this.maxValue)
     if (this.hasDecrementTarget) this.decrementTarget.disabled = this.inputTarget.disabled || this.readOnly || (this.hasMinValue && value !== null && value <= this.minValue)
   }
 
   setHidden(value) {
     if (this.hasHiddenTarget) this.hiddenTarget.value = value === null ? "" : value
+  }
+
+  // The visible control is text so it can show formatted numbers and invalid raw input.
+  // Let a native number input supply localized min/max/step validation messages.
+  updateValidity(value) {
+    const input = this.inputTarget
+    const validityInput = document.createElement("input")
+    validityInput.type = "number"
+    for (const attribute of [ "min", "max", "step", "required" ]) {
+      if (input.hasAttribute(attribute)) validityInput.setAttribute(attribute, input.getAttribute(attribute))
+    }
+    validityInput.value = value === null ? "" : String(value)
+    input.setCustomValidity(value === null && input.value.trim() !== "" ? this.invalidMessageValue : validityInput.validationMessage)
   }
 
   format(value) {
@@ -119,6 +138,8 @@ export default class extends Controller {
   parse(text) {
     const parts = new Intl.NumberFormat(this.localeValue || undefined).formatToParts(1234.5)
     const decimal = parts.find(part => part.type === "decimal")?.value || "."
+    const group = parts.find(part => part.type === "group")?.value
+    if (!this.hasFormatValue && [...text].some(character => !"0123456789+-".includes(character) && character !== decimal && character !== group && !/\s/.test(character))) return null
     const cleaned = text.replace(new RegExp(`[^0-9\\-${decimal === "." ? "\\." : decimal}]`, "g"), "").replace(decimal, ".")
     if (cleaned === "" || cleaned === "-" || isNaN(Number(cleaned))) return null
 

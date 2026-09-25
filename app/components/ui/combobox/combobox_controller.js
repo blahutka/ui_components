@@ -216,7 +216,7 @@ export default class extends AutocompleteController {
     if (this.multipleValue && this.nameValue) {
       this.hiddenTargets.forEach(input => input.remove())
       values.forEach(value => {
-        const input = Object.assign(document.createElement("input"), { type: "hidden", name: `${this.nameValue}[]`, value })
+        const input = Object.assign(document.createElement("input"), { type: "hidden", name: this.nameValue.endsWith("[]") ? this.nameValue : `${this.nameValue}[]`, value, disabled: this.validityTarget.disabled })
         input.setAttribute("data-ui--combobox-target", "hidden")
         this.validityTarget.before(input)
       })

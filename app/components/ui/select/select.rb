@@ -11,7 +11,8 @@
 # The root holds the value and the shared `size:` / `variant:`; the popup opens in the top layer
 # (so no overflow clips it), over the trigger with the selected item aligned to it
 # (`align_item_with_trigger: false` to open below instead). A visually hidden input submits
-# `name:` (`name[]` per value when multiple) and carries `required:`. `items:` (a value → label
+# `name:` (`name[]` per value when multiple, after an empty one unless `include_hidden: false`)
+# and carries `required:`. `items:` (a value → label
 # Hash) lets the trigger show labels before the list is read. Emits `ui--select:change` with
 # { value }. Inside a Field it takes the field's id, name and state.
 class UI::Select < UI::Base
@@ -27,6 +28,7 @@ class UI::Select < UI::Base
   prop :required,      default: -> { false }
   prop :read_only,     default: -> { false }
   prop :id,            default: -> { "select-#{SecureRandom.hex(4)}" }
+  prop :include_hidden, default: -> { true }
 
   attr_reader :size, :variant, :id
 
@@ -71,10 +73,16 @@ class UI::Select < UI::Base
     # One visually hidden input carries validity (required) and, for a single value, the name
     def form_inputs
       if @multiple && control_name
-        values.each { |value| input(type: "hidden", name: "#{control_name}[]", value:, data: { "ui--select-target": "hidden" }) }
+        # Like Rails' select: an empty entry so deselecting everything still submits the key
+        input(type: "hidden", name: multiple_name, value: "", autocomplete: "off", disabled: (true if disabled?)) if @include_hidden
+        values.each { |value| input(type: "hidden", name: multiple_name, value:, disabled: (true if disabled?), data: { "ui--select-target": "hidden" }) }
       end
       input(type: "text", tabindex: "-1", aria_hidden: "true", class: "sr-only", autocomplete: "off",
         name: (control_name unless @multiple), value: values.join(","), required: (true if @required), disabled: (true if disabled?),
         data: { "ui--select-target": "input", "ui--field-target": ("control" if field), action: "focus->ui--select#focusTrigger" })
+    end
+
+    def multiple_name
+      control_name.to_s.end_with?("[]") ? control_name : "#{control_name}[]"
     end
 end

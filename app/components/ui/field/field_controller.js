@@ -14,7 +14,10 @@ export default class extends Controller {
   connect() {
     this.onInput = () => { if (this.modeValue === "change" || this.element.hasAttribute("data-invalid")) this.validate() }
     this.onBlur = () => { if (this.modeValue === "blur") this.validate() }
-    this.onSubmit = event => { if (!this.validate()) { event.preventDefault(); this.controlTarget.focus() } }
+    this.onSubmit = event => {
+      if (this.form.noValidate || event.submitter?.formNoValidate) return
+      if (!this.validate()) { event.preventDefault(); this.controlTarget.focus() }
+    }
     // The browser checks the constraints before `submit` fires and stops there when one fails:
     // show our message instead of its bubble, and focus the first invalid control
     this.onInvalid = event => {
@@ -44,7 +47,6 @@ export default class extends Controller {
     if (!this.hasControlTarget) return true
 
     const control = this.controlTarget
-    control.setCustomValidity("")
     const validity = control.validity
     const failure = this.constructor.failures.find(key => validity[key])
     const valid = !failure

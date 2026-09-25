@@ -39,6 +39,7 @@ class UI::NumberField < UI::Base
   prop :invalid,       default: -> { nil }
   prop :read_only,     default: -> { false }
   prop :required,      default: -> { false }
+  prop :invalid_number_message, default: -> { t(".invalid_number") }
   prop :allow_wheel_scrub, default: -> { false }
   prop :increment_label, default: -> { t(".increment") }
   prop :decrement_label, default: -> { t(".decrement") }
@@ -51,6 +52,7 @@ class UI::NumberField < UI::Base
       "ui--number-field-small-step-value": number(@small_step), "ui--number-field-large-step-value": number(@large_step),
       "ui--number-field-format-value": (@format.to_h.transform_keys { |key| key.to_s.camelize(:lower) }.to_json if @format),
       "ui--number-field-locale-value": (@locale || I18n.locale).to_s,
+      "ui--number-field-invalid-message-value": @invalid_number_message,
       action: ("wheel->ui--number-field#wheel" if @allow_wheel_scrub)
     }, class: cn(BASE, VARIANTS[@variant], TEXT[@size], STATES[:within], "h-auto shrink-0 p-px", WIDTHS[@size], override: @attributes[:class])) do
       stepper(:decrement, "M5 12h14", @decrement_label, at_bound?(@min, :<=))
@@ -58,9 +60,10 @@ class UI::NumberField < UI::Base
         input(**control_attributes({
           type: "text", inputmode: "decimal", autocomplete: "off", autocorrect: "off", spellcheck: "false",
           id: input_id, role: "spinbutton", aria_roledescription: "Number field",
-          value: (display(current) if current), aria_valuenow: (number(current) if current), aria_valuemin: (number(@min) if @min),
+          value: (current ? display(current) : raw.presence&.to_s), aria_valuenow: (number(current) if current), aria_valuemin: (number(@min) if @min),
           aria_valuemax: (number(@max) if @max), aria_valuetext: (display(current) if current && @format),
           disabled: (true if disabled?), readonly: (true if @read_only), required: (true if @required),
+          min: @min, max: @max, step: number(@step),
           aria_invalid: ("true" if invalid?), aria_describedby: field&.described_by,
           data: {
             slot: "number-field-input", invalid: flag(invalid?), "ui--number-field-target": "input", "ui--field-target": ("control" if field),
@@ -69,7 +72,7 @@ class UI::NumberField < UI::Base
         }, @attributes.except(:class).merge(@input)), class: cn(INPUT, override: @input[:class]))
       end
       stepper(:increment, "M12 5v14M5 12h14", @increment_label, at_bound?(@max, :>=))
-      input(type: "hidden", name: control_name, value: (number(current) if current), disabled: (true if disabled?), data: { "ui--number-field-target": "hidden" }) if control_name
+      input(type: "hidden", name: control_name, value: (current ? number(current) : raw.to_s), disabled: (true if disabled?), data: { "ui--number-field-target": "hidden" }) if control_name
     end
   end
 
@@ -79,8 +82,16 @@ class UI::NumberField < UI::Base
     end
 
     def current
-      value = @value.nil? ? @default_value : @value
-      value&.to_f
+      value = raw
+      value.to_f if numeric?(value)
+    end
+
+    def raw
+      @value.nil? ? @default_value : @value
+    end
+
+    def numeric?(value)
+      value.is_a?(Numeric) || value.to_s.match?(/\A\s*-?\d+(\.\d+)?\s*\z/)
     end
 
     def at_bound?(bound, operator)
