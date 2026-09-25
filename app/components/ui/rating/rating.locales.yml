@@ -1,0 +1,30 @@
+# UI::Rating strings. Every language in one file; add a locale as another top-level key with the
+# same keys (test/components/locales_test.rb checks that they match).
+en:
+  ui_components:
+    ui:
+      rating:
+        label: Rating
+        item: "%{value} of %{count}"
+        read_only: "%{value} out of %{count}"
+cs:
+  ui_components:
+    ui:
+      rating:
+        label: Hodnocení
+        item: "%{value} z %{count}"
+        read_only: "%{value} z %{count}"
+de:
+  ui_components:
+    ui:
+      rating:
+        label: Bewertung
+        item: "%{value} von %{count}"
+        read_only: "%{value} von %{count}"
+ar:
+  ui_components:
+    ui:
+      rating:
+        label: التقييم
+        item: "%{value} من %{count}"
+        read_only: "%{value} من %{count}"

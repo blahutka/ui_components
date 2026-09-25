@@ -5,8 +5,19 @@ require "test_helper"
 class LocalesTest < ActiveSupport::TestCase
   FILES = Dir[UiComponents::Engine::COMPONENTS_PATH.join("**/*.locales.yml")].sort
 
+  PLURAL_FORMS = %w[ zero one two few many other ].freeze
+
+  # Leaf keys; a pluralized entry ({ one:, few:, other: … }) counts as one key, since each
+  # language has its own set of plural forms
   def keys(tree, prefix = nil)
-    tree.flat_map { |key, value| value.is_a?(Hash) ? keys(value, [ prefix, key ].compact.join(".")) : [ [ prefix, key ].compact.join(".") ] }
+    tree.flat_map do |key, value|
+      path = [ prefix, key ].compact.join(".")
+      value.is_a?(Hash) && !plural?(value) ? keys(value, path) : [ path ]
+    end
+  end
+
+  def plural?(value)
+    value.keys.map(&:to_s).all? { |form| PLURAL_FORMS.include?(form) } && value.key?("other")
   end
 
   test "there are component translation files" do
@@ -21,6 +32,27 @@ class LocalesTest < ActiveSupport::TestCase
       locales.each do |locale, tree|
         assert_equal reference, keys(tree).sort, "#{locale} keys differ from en"
       end
+    end
+  end
+
+  test "pluralized entries define every plural form their language needs" do
+    FILES.each do |file|
+      YAML.load_file(file).each do |locale, tree|
+        forms = I18n.t(:"i18n.plural.keys", locale:, default: %i[ one other ]).map(&:to_s)
+        plural_entries(tree).each do |path, entry|
+          missing = forms - entry.keys.map(&:to_s)
+          assert_empty missing, "#{file.split("/").last} #{locale}: #{path} misses plural forms #{missing.join(", ")}"
+        end
+      end
+    end
+  end
+
+  def plural_entries(tree, prefix = nil)
+    tree.flat_map do |key, value|
+      path = [ prefix, key ].compact.join(".")
+      next [] unless value.is_a?(Hash)
+
+      plural?(value) ? [ [ path, value ] ] : plural_entries(value, path)
     end
   end
 

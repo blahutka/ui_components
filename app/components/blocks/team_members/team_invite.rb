@@ -15,7 +15,7 @@ class Blocks::TeamInvite < Blocks::Base
     team = consume(:team_members, component: "Blocks::TeamMembers")
     full = team.full?
 
-    hr(class: "border-border my-4 w-full shrink-0 border-t", data: { slot: "separator" })
+    Separator(class: "my-4")
     form(**mix({ action: team.action || "#", method: team.method, novalidate: true, data: { slot: "team-invite", action: "blocks--team-members#invite" } }, @attributes.except(:class)),
       class: cn(INPUT, override: @attributes[:class])) do
       input(type: "email", name: @name, required: true, autocomplete: "off", disabled: full, aria_label: @label,

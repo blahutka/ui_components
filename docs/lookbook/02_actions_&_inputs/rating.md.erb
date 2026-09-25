@@ -1,0 +1,104 @@
+---
+id: rating
+title: Rating
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A score input built from a row of stars - or any icon pair - with support for fractional values.
+[Appica docs](https://appica.dev/ui/components/react/rating)
+
+<%= embed UI::RatingPreview, :default %>
+
+## Usage
+
+```ruby
+Rating(default_value: 3, aria_label: "Rate this product")
+Rating(name: "score", clearable: true, aria_labelledby: "score-label")      # submits with a form
+Rating(value: 4.3, step: 0.1, read_only: true, size: 14, class: "text-warning-emphasis")
+```
+
+A `radiogroup` of icon buttons that fills from the start of the row up to the value. Moving the pointer previews the
+rating a click would set (snapped to `step`) and lifts the icon under it; a click commits it. The group is one tab
+stop: ←/→/↑/↓ step by `step` (←/→ swap under RTL), Home/End jump to the ends, Space/Enter select the focused item.
+The fill is rendered on the server (a `--rating-fill` per item), so read-only ratings need no JavaScript. The accent
+is the text color (`text-primary` by default). Every animation honors `prefers-reduced-motion`.
+
+## Examples
+
+### Icons
+
+`icon:` takes any [icon](<%= page_path(:icons) %>) name with a `-filled` twin (`:heart`, `:thumb_up`, `:bolt`…), or
+an `{ empty:, filled: }` pair.
+
+<%= embed UI::RatingPreview, :icons %>
+
+### Variants
+
+<%= embed UI::RatingPreview, :variants %>
+
+### Orientation
+
+<%= embed UI::RatingPreview, :orientation %>
+
+### Sizes
+
+<%= embed UI::RatingPreview, :sizes %>
+
+### Fractions
+
+<%= embed UI::RatingPreview, :fractions %>
+
+### Color
+
+<%= embed UI::RatingPreview, :color %>
+
+### Read only
+
+<%= embed UI::RatingPreview, :read_only %>
+
+### Controlled with labels
+
+<%= embed UI::RatingPreview, :feedback %>
+
+```js
+element.addEventListener("ui--rating:change", ({ detail }) => save(detail.value))
+element.addEventListener("ui--rating:hover-change", ({ detail }) => preview(detail.value)) // null on leave
+// set it from outside: element.setAttribute("data-ui--rating-value-value", 4)
+```
+
+### In a form
+
+<%= embed UI::RatingPreview, :form %>
+
+### RTL
+
+<%= embed UI::RatingPreview, :rtl %>
+
+## API reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value:` / `default_value:` | `Numeric` | - / `0` | The rating (0 = unrated). |
+| `count:` | `Integer` | `5` | Number of items. |
+| `step:` | `Numeric` | `1` | Smallest selectable fraction (`0.5` for halves). A finer value renders exactly. |
+| `icon:` | `Symbol`, `{ empty:, filled: }` | `:star` | Icon pair. |
+| `variant:` | `:filled`, `:outline` | `:filled` | Unrated items as muted solid icons, or line icons in the accent. |
+| `orientation:` | `:horizontal`, `:vertical` | `:horizontal` | A vertical rating fills from the top down. |
+| `size:` | `Integer` (px), `String` | `24` | Icon size; any CSS length (`"1em"` follows the text). Padding is a sixth of it. |
+| `hoverable:` | `Boolean` | `true` | Preview the rating under the pointer. |
+| `clearable:` | `Boolean` | `false` | Selecting the current rating again resets it to 0. |
+| `disabled:` | `Boolean` | `false` | Blocks interaction and dims the control. |
+| `read_only:` | `Boolean` | `false` | A non-interactive display, exposed as one labelled image. |
+| `name:` | `String` | - | Hidden input submitted with a form. |
+
+Attributes like `aria_label:` / `aria_labelledby:` go to the root; `class:` is merged (set the accent there).
+Events: `ui--rating:change` and `ui--rating:hover-change`, both with `{ value }`.
+
+## Accessibility
+
+- Interactive: `role="radiogroup"` with a `role="radio"` button per item, named "3 of 5" (translated); name the
+  group with `aria_label:` or `aria_labelledby:` (it's "Rating" otherwise).
+- Fractional values are announced at item granularity; `read_only:` exposes the exact average as one image
+  ("4.3 out of 5", in the current locale).
+- The hover sweep, lift and press animations are skipped under `prefers-reduced-motion`.

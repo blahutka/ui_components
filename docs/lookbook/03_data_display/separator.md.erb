@@ -1,0 +1,63 @@
+---
+id: separator
+title: Separator
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A thin horizontal or vertical line that separates content.
+[Appica docs](https://appica.dev/ui/components/react/separator)
+
+<%= embed UI::SeparatorPreview, :default %>
+
+## Usage
+
+```ruby
+Separator()
+Separator(orientation: :vertical)
+Separator(variant: :wave, class: "text-primary my-4")
+```
+
+Horizontal by default - a full-width rule - and a vertical divider with `orientation: :vertical`, stretching to the
+height of its flex row. The line is drawn with `currentColor` (`text-border` by default), so any `text-*` class recolors it.
+
+## Examples
+
+### Variants
+
+`solid`, `dashed`, `double` and `gradient` are CSS; `dotted`, `wave` and `zigzag` are a repeating SVG pattern that
+scales with the available width.
+
+<%= embed UI::SeparatorPreview, :variants %>
+
+### Colors
+
+<%= embed UI::SeparatorPreview, :colors %>
+
+### Vertical orientation
+
+<%= embed UI::SeparatorPreview, :vertical %>
+
+### In context
+
+<%= embed UI::SeparatorPreview, :in_context %>
+
+### RTL
+
+<%= embed UI::SeparatorPreview, :rtl %>
+
+## API reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `orientation:` | `:horizontal`, `:vertical` | `:horizontal` | Direction of the line; vertical stretches to its flex parent. |
+| `variant:` | `:solid`, `:dashed`, `:dotted`, `:double`, `:gradient`, `:wave`, `:zigzag` | `:solid` | Line style. |
+| `class:` | `String` | - | Extra classes, merged via tailwind_merge. Set `text-*` to recolor, `my-*` / `mx-*` for spacing. |
+
+The line weight follows the theme's `--border-width` (1px). Exposes `data-orientation` and `data-variant`.
+
+## Accessibility
+
+- Renders `role="separator"` with `aria-orientation`, so assistive tech announces the boundary.
+- The default `text-border` is intentionally low-emphasis - use `text-border-strong` / `-intense` where it must stay visible.
+- A separator is not interactive and is skipped by keyboard navigation.

@@ -11,6 +11,7 @@ import DrawerController from "ui/drawer/drawer_controller"
 import MenubarController from "ui/menubar/menubar_controller"
 import MeterController from "ui/meter/meter_controller"
 import ProgressController from "ui/progress/progress_controller"
+import RatingController from "ui/rating/rating_controller"
 import ToasterController from "ui/toast/toaster_controller"
 import "ui/toast/toast"
 import SparklineController from "ui/sparkline/sparkline_controller"
@@ -24,5 +25,6 @@ application.register("ui--drawer", DrawerController)
 application.register("ui--menubar", MenubarController)
 application.register("ui--meter", MeterController)
 application.register("ui--progress", ProgressController)
+application.register("ui--rating", RatingController)
 application.register("ui--toaster", ToasterController)
 application.register("ui--sparkline", SparklineController)

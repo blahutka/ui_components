@@ -35,6 +35,8 @@ From ERB: `<%= render FrameworkPicker.new %>`.
 | Loader | `Loader` (`:bar`, `:dots`; SVG SMIL, no JS) | [loader](https://appica.dev/ui/components/react/loader) |
 | Meter | `Meter`, `MeterLabel`, `MeterValue`, `MeterProgress` (`low:`/`high:`/`optimum:` status colors) | [meter](https://appica.dev/ui/components/react/meter) |
 | Progress | `Progress`, `ProgressLabel`, `ProgressValue` (`:bar`, `:circular`) | [progress](https://appica.dev/ui/components/react/progress) |
+| Rating | `Rating` (stars or any icon pair, fractions, read-only, form input) | [rating](https://appica.dev/ui/components/react/rating) |
+| Separator | `Separator` (`:solid`, `:dashed`, `:dotted`, `:double`, `:gradient`, `:wave`, `:zigzag`) | [separator](https://appica.dev/ui/components/react/separator) |
 | Sparkline | `Sparkline`, `SparklineChart`, `SparklineValue`, `SparklineLabel` | [sparkline](https://appica.dev/ui/components/react/sparkline) |
 | Spinner | `Spinner` (`:circular`, `:dots`, `:sparkle`; SVG SMIL, no JS) | [spinner](https://appica.dev/ui/components/react/spinner) |
 
@@ -48,6 +50,7 @@ Higher-level compositions of the primitives live in `app/components/blocks/` (th
 | Chat assistant | `ChatAssistant`, `ChatHeader`, `ChatMessages`, `ChatMessage`, `ChatStatus`, `ChatSuggestions`, `ChatSuggestion`, `ChatComposer` |
 | Revenue summary | `RevenueSummary`, `RevenueMarkets`, `RevenueMarket`, `RevenueChart`, `RevenueStats`, `RevenueStat`, `CountryFlag` |
 | Team members | `TeamMembers`, `TeamMemberList`, `TeamMember`, `TeamInvite` |
+| Review summary | `ReviewSummary`, `ReviewBreakdown`, `ReviewHighlight` |
 
 ### Render props
 

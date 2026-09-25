@@ -1,5 +1,5 @@
 # A team card: the member list with roles and presence, a seat count and an invite-by-email
-# form - composed from Avatar, Badge, Button, Icon and Separator styles.
+# form - composed from Avatar, Badge, Button, Icon and Separator.
 #
 #   TeamMembers(seats: 5, used: members.size, action: invitations_path) do
 #     TeamMemberList do

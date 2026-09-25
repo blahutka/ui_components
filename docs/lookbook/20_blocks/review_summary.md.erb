@@ -1,0 +1,70 @@
+---
+id: review_summary
+title: Review summary
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A product-reviews card: the average score with stars and a review count, the share of reviews per star and a
+social-proof footer. A **block** composed from [Rating](<%= page_path(:rating) %>), [Meter](<%= page_path(:meter) %>),
+[Separator](<%= page_path(:separator) %>) and AvatarGroup, as on the [Appica homepage](https://appica.dev/ui).
+
+<%= embed Blocks::ReviewSummaryPreview, :default %>
+
+## Usage
+
+```ruby
+ReviewSummary(rating: product.average_rating, reviews: product.reviews.count) do
+  ReviewBreakdown(counts: product.reviews.group(:stars).count, href: ->(stars) { product_reviews_path(product, stars:) })
+  ReviewHighlight(avatars: recent_reviewers.map { |user| { src: user.avatar_url, alt: user.name } }) { "Loved by 12,000+ shoppers" }
+end
+```
+
+- The stars show the exact average (a read-only Rating with `step: 0.1`), in the warning accent.
+- `counts:` maps stars to review counts; the percentages are computed from them, highest star first.
+- `href:` turns each breakdown row into a link to the filtered reviews.
+
+## Localization
+
+`review_summary.locales.yml` holds the strings: the review count is pluralized per language ("1 verified review",
+"4 ověřené recenze", "1.284 ověřených recenzí", Arabic's zero/one/two/few/many forms) and the score, count and
+percentages use the locale's number format. `verified: false` drops "verified"; `label:` replaces the line. Switch the
+**Locale** display option to try it.
+
+## Examples
+
+### Linked rows
+
+<%= embed Blocks::ReviewSummaryPreview, :linked %>
+
+### Few reviews
+
+<%= embed Blocks::ReviewSummaryPreview, :few %>
+
+### RTL
+
+<%= embed Blocks::ReviewSummaryPreview, :rtl %>
+
+## API reference
+
+### ReviewSummary
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `rating:` | `Numeric` | - | Required. The average score. |
+| `reviews:` | `Integer` | - | Number of reviews, shown pluralized under the stars. |
+| `max:` | `Integer` | `5` | Stars in the scale (and breakdown rows). |
+| `verified:` | `Boolean` | `true` | Say "verified reviews". |
+| `label:` | `String` | translated | Replace the review-count line. |
+
+### Parts
+
+| Part | Description |
+|------|-------------|
+| `ReviewBreakdown(counts:, href:)` | One row per star: the star, a Meter, the share in %. |
+| `ReviewHighlight(avatars:) { text }` | A separator, an AvatarGroup of `{ src:, alt: }` and a line of text. |
+
+## Accessibility
+
+- The stars are one labelled image ("4.8 out of 5"); each breakdown meter is labelled "5 star reviews".
+- Linked rows are regular links with the star, the meter and the percentage as their content.

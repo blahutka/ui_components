@@ -24,6 +24,7 @@
   --focus-ring-secondary: #3080ff4d; --focus-ring-error: #fb2c364d; --focus-ring-success: #00bb7f4d;
   --focus-ring-warning: #fe6e004d; --focus-ring-info: #00a5ef4d; --focus-ring-light: #ffffff40;
   --radius: .875rem;
+  --border-width: 1px;
   --shadow-color: #6a72822e; --selection-color: #0307121a;
   --opacity-disabled: .65;
 }
