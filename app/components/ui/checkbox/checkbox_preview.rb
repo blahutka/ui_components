@@ -57,6 +57,14 @@ class UI::CheckboxPreview < UI::BasePreview
           span(class: "text-foreground-muted text-sm") { "Receive emails about new activity on your account. You can turn this off any time." }
         end
       end
+
+      label(class: "flex max-w-sm items-start gap-2.5 select-none") do
+        Checkbox(checked: false, class: "mt-1")
+        span(class: "flex flex-col") do
+          span(class: "text-foreground-intense font-medium") { "Second label" }
+          span(class: "text-foreground-muted text-sm") { "Receive emails about new activity on your account. You can turn this off any time." }
+        end
+      end
     end
   end
 
@@ -66,9 +74,10 @@ class UI::CheckboxPreview < UI::BasePreview
     phlex do
       CheckboxGroup(name: "toppings[]", default_value: %w[ cheese olives ], aria_labelledby: "toppings-label") do
         span(id: "toppings-label", class: "text-foreground mb-1 text-sm font-medium") { "Toppings" }
-        { cheese: "Extra cheese", mushrooms: "Mushrooms", olives: "Olives", onions: "Onions" }.each do |value, text|
-          label(class: "flex items-center gap-2 text-sm select-none") { Checkbox(value:); plain text }
-        end
+        label(class: "flex items-center gap-2 text-sm select-none") { Checkbox(value: :cheese); plain 'Extra cheese' }
+        label(class: "flex items-center gap-2 text-sm select-none") { Checkbox(value: :mushrooms); plain 'Mushrooms' }
+        label(class: "flex items-center gap-2 text-sm select-none") { Checkbox(value: :olives); plain 'Olives' }
+        label(class: "flex items-center gap-2 text-sm select-none") { Checkbox(value: :onions); plain 'Onions' }
       end
     end
   end
