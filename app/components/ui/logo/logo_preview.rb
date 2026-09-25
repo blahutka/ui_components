@@ -34,7 +34,7 @@ class UI::LogoPreview < UI::BasePreview
   # `variant: :wordmark` for text-only placements.
   def variants
     phlex do
-      div(class: "flex flex-wrap items-center gap-10") do
+      div(class: "flex flex-col items-start gap-10") do
         Logo(size: :lg)
         Logo(size: :lg, variant: :mark)
         Logo(size: :lg, variant: :wordmark)
