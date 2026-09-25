@@ -1,9 +1,5 @@
 # Names the task; the root points aria-labelledby at it.
 class UI::ProgressLabel < UI::Base
-  def initialize(**attributes)
-    @attributes = attributes
-  end
-
   def view_template(&)
     progress = consume(:progress, component: "UI::Progress")
 

@@ -16,22 +16,25 @@ class UI::Progress < UI::Base
 
   VARIANTS = %i[ bar circular ].freeze
 
-  attr_reader :value, :label_id
+  prop :value
+  prop :variant,         one_of(VARIANTS, :bar), default: -> { :bar }
+  prop :min,             default: -> { 0 }
+  prop :max,             default: -> { 100 }
+  prop :size,            default: -> { 56 }
+  prop :thickness,       default: -> { nil }
+  prop :indicator_color, default: -> { nil }
+  prop :format,          default: -> { nil }
+  prop :locale,          default: -> { nil }
 
-  def initialize(value:, variant: :bar, min: 0, max: 100, size: 56, thickness: nil, indicator_color: nil, format: nil, locale: nil, **attributes)
-    @variant = VARIANTS.include?(variant.to_sym) ? variant.to_sym : :bar
-    @value, @min, @max = value, min, max
-    @size = size
-    @thickness = thickness || (@variant == :circular ? 4 : 6)
-    @indicator_color = indicator_color || "var(--primary)"
-    @format, @locale = format, locale
-    @attributes = attributes
-    @label_id = "progress-label-#{SecureRandom.hex(4)}"
+  attr_reader :value
+
+  def label_id
+    @label_id ||= "progress-label-#{SecureRandom.hex(4)}"
   end
 
   def view_template(&)
     provide(:progress, self) do
-      div(**mix(defaults(**root_attributes), @attributes.except(:class, :style)), style: "--progress-color: #{@indicator_color}; #{@attributes[:style]}".strip, class: cn(
+      div(**mix(defaults(**root_attributes), @attributes.except(:class, :style)), style: "--progress-color: #{@indicator_color || "var(--primary)"}; #{@attributes[:style]}".strip, class: cn(
         "grid w-full gap-x-2 gap-y-1.5",
         "data-[variant=bar]:grid-cols-[1fr_auto]",
         "data-[variant=bar]:**:data-[slot=progress-label]:col-start-1 data-[variant=bar]:**:data-[slot=progress-label]:row-start-1",
@@ -78,11 +81,16 @@ class UI::Progress < UI::Base
   end
 
   private
+    # 6px for the bar, 4px for the ring unless `thickness:` says otherwise
+    def track_thickness
+      @thickness || (@variant == :circular ? 4 : 6)
+    end
+
     def root_attributes
       {
         role: "progressbar", aria_valuemin: @min, aria_valuemax: @max,
         aria_valuenow: @value&.clamp(@min, @max), aria_valuetext: (formatted_value unless @value.nil?),
-        aria_labelledby: (@label_id unless @attributes.key?(:aria_label)),
+        aria_labelledby: (label_id unless @attributes.key?(:aria_label)),
         data: {
           slot: "progress", variant: @variant, state => "", controller: "ui--progress",
           "ui--progress-value-value": @value, "ui--progress-min-value": @min, "ui--progress-max-value": @max,
@@ -92,7 +100,7 @@ class UI::Progress < UI::Base
     end
 
     def track
-      div(data: { slot: "progress-track", state => "" }, style: "height: #{@thickness}px", class: "bg-background-strong relative w-full overflow-hidden rounded-full") do
+      div(data: { slot: "progress-track", state => "" }, style: "height: #{track_thickness}px", class: "bg-background-strong relative w-full overflow-hidden rounded-full") do
         div(
           data: { slot: "progress-indicator", state => "", "ui--progress-target": "indicator" },
           style: ("inset-inline-start: 0; height: inherit; width: #{percentage.round(4)}%" unless @value.nil?),
@@ -103,14 +111,14 @@ class UI::Progress < UI::Base
 
     def ring
       center = @size / 2.0
-      radius = (@size - @thickness) / 2.0
+      radius = (@size - track_thickness) / 2.0
       circumference = 2 * Math::PI * radius
 
       svg(data: { slot: "progress-circular" }, width: @size, height: @size, viewBox: "0 0 #{@size} #{@size}", aria_hidden: "true", class: "overflow-visible") do |s|
-        s.circle(data: { slot: "progress-track" }, cx: center, cy: center, r: radius, fill: "none", stroke_width: @thickness, class: "stroke-background-strong")
+        s.circle(data: { slot: "progress-track" }, cx: center, cy: center, r: radius, fill: "none", stroke_width: track_thickness, class: "stroke-background-strong")
         s.circle(
           data: { slot: "progress-indicator", "ui--progress-target": "ring" }, cx: center, cy: center, r: radius, fill: "none",
-          stroke_width: @thickness, stroke_linecap: "round", stroke_dasharray: circumference.round(4),
+          stroke_width: track_thickness, stroke_linecap: "round", stroke_dasharray: circumference.round(4),
           stroke_dashoffset: (circumference - percentage / 100 * circumference).round(4), transform: "rotate(-90 #{center} #{center})",
           style: "stroke: var(--progress-color)", class: "transition-[stroke-dashoffset] duration-300 motion-reduce:transition-none"
         )

@@ -19,11 +19,8 @@ class UI::CarouselPagination < UI::Base
     light: "absolute start-0 top-0 hidden rounded-full bg-white in-data-autoplay:in-data-active:block"
   }.freeze
 
-  def initialize(orientation: :horizontal, light: nil, **attributes)
-    @orientation = orientation.to_sym == :vertical ? :vertical : :horizontal
-    @light = light
-    @attributes = attributes
-  end
+  prop :orientation, one_of(%i[ horizontal vertical ], :horizontal), default: -> { :horizontal }
+  prop :light,       default: -> { nil }
 
   def view_template
     div(**mix({

@@ -61,11 +61,10 @@ class UI::DrawerContent < UI::Base
     left: "overflow-hidden [&>:not([data-slot=drawer-close-button])]:-me-4"
   }.freeze
 
-  def initialize(close_button: true, close_label: "Close", backdrop: nil, frame: true, **attributes)
-    @close_button, @close_label = close_button, close_label
-    @backdrop, @frame = backdrop, frame
-    @attributes = attributes
-  end
+  prop :close_button, default: -> { true }
+  prop :close_label,  default: -> { "Close" }
+  prop :backdrop,     default: -> { nil }
+  prop :frame,        default: -> { true }
 
   def view_template(&)
     dialog(**viewport_attributes) do

@@ -1,9 +1,7 @@
 # The item that opens a submenu, with a trailing chevron. Opens on hover, click or →.
 class UI::MenubarSubTrigger < UI::Base
-  def initialize(disabled: false, label: nil, **attributes)
-    @disabled, @label = disabled, label
-    @attributes = attributes
-  end
+  prop :disabled, default: -> { false }
+  prop :label,    default: -> { nil }
 
   def view_template(&)
     div(**mix({

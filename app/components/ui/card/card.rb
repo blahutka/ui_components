@@ -26,17 +26,11 @@ class UI::Card < UI::Base
 
   TAGS = %i[ div article section li form a ].freeze
 
-  def initialize(frame: false, inset: true, as: :div, content: {}, **attributes)
-    @frame = case frame
-    when true then :solid
-    when false, nil then :none
-    else FRAMES.key?(frame.to_sym) ? frame.to_sym : :none
-    end
-    @inset = inset
-    @tag = TAGS.include?(as.to_sym) ? as.to_sym : :div
-    @content = content
-    @attributes = attributes
-  end
+  # frame: true is the solid frame, false/nil none
+  prop :frame, ->(value) { value == true ? :solid : (value && FRAMES.key?(value.to_sym) ? value.to_sym : :none) }, default: -> { :none }
+  prop :inset,   default: -> { true }
+  prop :as,      one_of(TAGS, :div), as: :tag, default: -> { :div }
+  prop :content, default: -> { {} }
 
   def view_template(&)
     send(@tag, **mix(root_attributes, @attributes.except(:class)), class: cn(root_classes, override: @attributes[:class])) do

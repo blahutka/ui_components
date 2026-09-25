@@ -1,9 +1,5 @@
 # The track and its fill; the fill's color comes from the root's status.
 class UI::MeterProgress < UI::Base
-  def initialize(**attributes)
-    @attributes = attributes
-  end
-
   def view_template
     meter = consume(:meter, component: "UI::Meter")
 

@@ -1,10 +1,10 @@
 # A toggleable item with a check indicator. Keeps the menu open and dispatches
 # `ui--menubar:checked-change` with { checked, item }.
 class UI::MenubarCheckboxItem < UI::Base
-  def initialize(checked: false, disabled: false, close_on_click: false, label: nil, **attributes)
-    @checked, @disabled, @close_on_click, @label = checked, disabled, close_on_click, label
-    @attributes = attributes
-  end
+  prop :checked,        default: -> { false }
+  prop :disabled,       default: -> { false }
+  prop :close_on_click, default: -> { false }
+  prop :label,          default: -> { nil }
 
   def view_template(&)
     div(**mix({

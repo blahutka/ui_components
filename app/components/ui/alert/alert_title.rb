@@ -2,10 +2,7 @@
 class UI::AlertTitle < UI::Base
   TAGS = %i[ h1 h2 h3 h4 h5 h6 div ].freeze
 
-  def initialize(as: :h5, **attributes)
-    @tag = TAGS.include?(as.to_sym) ? as.to_sym : :h5
-    @attributes = attributes
-  end
+  prop :as, one_of(TAGS, :h5), as: :tag, default: -> { :h5 }
 
   def view_template(&)
     send(@tag, **mix({ data: { slot: "alert-title" } }, @attributes.except(:class)), class: cn(

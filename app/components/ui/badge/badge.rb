@@ -47,18 +47,15 @@ class UI::Badge < UI::Base
     icon_lg: "h-7 w-7 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='stroke-'])]:stroke-[1.75]"
   }.freeze
 
-  def initialize(variant: :primary, size: :md, as: nil, **attributes)
-    @variant = VARIANTS.key?(variant.to_sym) ? variant.to_sym : :primary
-    @size = SIZES.key?(size.to_sym) ? size.to_sym : :md
-    @as = (as || (attributes[:href] ? :a : :span)).to_sym
-    @attributes = attributes
-  end
+  prop :variant, one_of(VARIANTS, :primary), default: -> { :primary }
+  prop :size,    one_of(SIZES, :md), default: -> { :md }
+  prop :as,      default: -> { nil }
 
   def view_template(&)
     attributes = mix(badge_attributes, @attributes.except(:class))
     classes = cn(BASE, VARIANTS[@variant], SIZES[@size], override: @attributes[:class])
 
-    case @as
+    case element_tag
     when :a then a(**attributes, class: classes, &)
     when :button then button(**{ type: "button" }.merge(attributes), class: classes, &)
     else span(**attributes, class: classes, &)
@@ -66,6 +63,11 @@ class UI::Badge < UI::Base
   end
 
   private
+    # :a with an href, else a span - unless `as:` says otherwise
+    def element_tag
+      (@as || (@attributes[:href] ? :a : :span)).to_sym
+    end
+
     def badge_attributes
       { data: { slot: "badge", variant: @variant.to_s.dasherize, size: @size.to_s.dasherize } }
     end

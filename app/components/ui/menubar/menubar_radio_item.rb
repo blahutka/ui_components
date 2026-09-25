@@ -1,9 +1,9 @@
 # One option in a MenubarRadioGroup. Keeps the menu open when chosen.
 class UI::MenubarRadioItem < UI::Base
-  def initialize(value:, disabled: false, close_on_click: false, label: nil, **attributes)
-    @value, @disabled, @close_on_click, @label = value.to_s, disabled, close_on_click, label
-    @attributes = attributes
-  end
+  prop :value,          proc(&:to_s)
+  prop :disabled,       default: -> { false }
+  prop :close_on_click, default: -> { false }
+  prop :label,          default: -> { nil }
 
   def view_template(&)
     checked = group&.value == @value

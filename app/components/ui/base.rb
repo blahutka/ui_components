@@ -1,4 +1,6 @@
 class UI::Base < Phlex::HTML
+  include UI::Props
+
   MERGER = TailwindMerge::Merger.new
 
   private

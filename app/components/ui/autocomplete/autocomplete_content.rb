@@ -10,10 +10,8 @@ class UI::AutocompleteContent < UI::Base
 
   SIZES = { sm: "rounded-md", md: "rounded-lg", lg: "rounded-xl" }.freeze
 
-  def initialize(side: :bottom, side_offset: 6, **attributes)
-    @side, @side_offset = side, side_offset
-    @attributes = attributes
-  end
+  prop :side,        default: -> { :bottom }
+  prop :side_offset, default: -> { 6 }
 
   def view_template(&)
     div(**mix({

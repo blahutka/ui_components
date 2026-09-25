@@ -1,12 +1,13 @@
 # A set of mutually exclusive MenubarRadioItems. Choosing one dispatches
 # `ui--menubar:value-change` with { value, group }.
 class UI::MenubarRadioGroup < UI::Base
-  attr_reader :value, :label_id
+  prop :value, ->(value) { value&.to_s }, default: -> { nil }
+  prop :name,  default: -> { nil }
 
-  def initialize(value: nil, name: nil, **attributes)
-    @value, @name = value&.to_s, name
-    @attributes = attributes
-    @label_id = "menubar-group-#{SecureRandom.hex(4)}"
+  attr_reader :value
+
+  def label_id
+    @label_id ||= "menubar-group-#{SecureRandom.hex(4)}"
   end
 
   def view_template(&)

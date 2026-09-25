@@ -21,10 +21,8 @@ class UI::ToastIcon < UI::Base
     bell: %i[ bell bell ]
   }.freeze
 
-  def initialize(kind:, thumbnail: false)
-    @kind = KINDS.include?(kind.to_sym) ? kind.to_sym : :info
-    @thumbnail = thumbnail
-  end
+  prop :kind,      one_of(KINDS, :info)
+  prop :thumbnail, default: -> { false }
 
   def view_template
     if @thumbnail

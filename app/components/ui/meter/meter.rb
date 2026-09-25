@@ -17,16 +17,20 @@ class UI::Meter < UI::Base
     optimum: "bg-success-emphasis", suboptimum: "bg-warning-emphasis", invalid: "bg-error-emphasis", default: "bg-primary"
   }.freeze
 
-  attr_reader :value, :label_id
+  prop :value
+  prop :min,            default: -> { 0 }
+  prop :max,            default: -> { 100 }
+  prop :low,            default: -> { nil }
+  prop :high,           default: -> { nil }
+  prop :optimum,        default: -> { nil }
+  prop :format,         default: -> { nil }
+  prop :locale,         default: -> { nil }
+  prop :status_classes, ->(classes) { STATUS_CLASSES.merge(classes.to_h.transform_keys(&:to_sym)) }, default: -> { STATUS_CLASSES }
 
-  def initialize(value:, min: 0, max: 100, low: nil, high: nil, optimum: nil, format: nil, locale: nil, status_classes: {}, **attributes)
-    @min, @max = min, max
-    @value = value
-    @low, @high, @optimum = low, high, optimum
-    @format, @locale = format, locale
-    @status_classes = STATUS_CLASSES.merge(status_classes.to_h.transform_keys(&:to_sym))
-    @attributes = attributes
-    @label_id = "meter-label-#{SecureRandom.hex(4)}"
+  attr_reader :value
+
+  def label_id
+    @label_id ||= "meter-label-#{SecureRandom.hex(4)}"
   end
 
   def view_template(&)
@@ -75,7 +79,7 @@ class UI::Meter < UI::Base
     def root_attributes
       {
         role: "meter", aria_valuemin: @min, aria_valuemax: @max, aria_valuenow: @value.clamp(@min, @max), aria_valuetext: formatted_value,
-        aria_labelledby: (@label_id unless @attributes.key?(:aria_label)),
+        aria_labelledby: (label_id unless @attributes.key?(:aria_label)),
         data: {
           slot: "meter", status:, controller: "ui--meter",
           "ui--meter-value-value": @value, "ui--meter-min-value": @min, "ui--meter-max-value": @max,

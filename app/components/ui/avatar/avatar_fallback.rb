@@ -6,10 +6,7 @@
 class UI::AvatarFallback < UI::Base
   BASE = "flex size-full items-center justify-center rounded-[inherit] text-[0.4em] leading-none uppercase has-[svg]:text-[1em] group-data-[status=loaded]/avatar:hidden"
 
-  def initialize(delay: nil, **attributes)
-    @delay = delay
-    @attributes = attributes
-  end
+  prop :delay, default: -> { nil }
 
   def view_template(&)
     span(**mix({

@@ -34,15 +34,13 @@ class UI::Alert < UI::Base
 
   attr_reader :variant
 
-  def initialize(variant: :default, layout: :block, dismissible: false, open: true, persist_key: nil, persist_storage: :local, close_label: "Dismiss", **attributes)
-    @variant = VARIANTS.key?(variant.to_sym) ? variant.to_sym : :default
-    @layout = layout.to_sym == :inline ? :inline : :block
-    @dismissible = dismissible
-    @open = open
-    @persist_key, @persist_storage = persist_key, persist_storage
-    @close_label = close_label
-    @attributes = attributes
-  end
+  prop :variant,         one_of(VARIANTS, :default), default: -> { :default }
+  prop :layout,          one_of(%i[ block inline ], :block), default: -> { :block }
+  prop :dismissible,     default: -> { false }
+  prop :open,            default: -> { true }
+  prop :persist_key,     default: -> { nil }
+  prop :persist_storage, default: -> { :local }
+  prop :close_label,     default: -> { "Dismiss" }
 
   def icon_class
     VARIANTS[@variant].last

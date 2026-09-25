@@ -2,10 +2,9 @@
 # the menu; `close_on_click: false` keeps it open. Tag a leading icon `data: { icon: "start" }`
 # and push a trailing Kbd to the edge with `class: "ms-auto"`.
 class UI::MenubarItem < UI::Base
-  def initialize(disabled: false, close_on_click: true, label: nil, **attributes)
-    @disabled, @close_on_click, @label = disabled, close_on_click, label
-    @attributes = attributes
-  end
+  prop :disabled,       default: -> { false }
+  prop :close_on_click, default: -> { true }
+  prop :label,          default: -> { nil }
 
   def view_template(&)
     div(**mix(item_attributes, @attributes.except(:class)), class: cn(bar.item_classes, override: @attributes[:class]), &)

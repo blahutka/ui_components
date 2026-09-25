@@ -13,11 +13,8 @@ class UI::AutocompleteItem < UI::Base
     lg: "gap-1.5 rounded-md py-2.5 px-3.5 text-base has-data-[icon=end]:pe-2.5 has-data-[icon=start]:ps-2.5 [&_svg:not([class*='size-'])]:size-5 [&_svg:not([class*='stroke-'])]:stroke-[1.65]"
   }.freeze
 
-  def initialize(value:, disabled: false, **attributes)
-    @value = value
-    @disabled = disabled
-    @attributes = attributes
-  end
+  prop :value
+  prop :disabled, default: -> { false }
 
   def view_template(&)
     div(**mix(item_attributes, @attributes.except(:class)), class: cn(BASE, SIZES[root.size], override: @attributes[:class])) do

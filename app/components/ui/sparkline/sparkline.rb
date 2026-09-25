@@ -6,16 +6,16 @@
 #     SparklineChart(fill: true, tooltip: true, aria_label: "Weekly revenue")
 #   end
 class UI::Sparkline < UI::Base
-  attr_reader :data, :labels, :formatted_values
+  prop :data,   ->(values) { Array(values).map { |value| value.is_a?(Numeric) ? value : Float(value) } }
+  prop :labels, ->(labels) { labels&.map(&:to_s) }, default: -> { nil }
+  prop :color,  default: -> { "var(--primary)" }
+  prop :format, ->(format) { (format || {}).to_h.symbolize_keys }, default: -> { {} }
+  prop :locale, default: -> { nil }
 
-  def initialize(data:, labels: nil, color: "var(--primary)", format: nil, locale: nil, **attributes)
-    @data = Array(data).map { |value| value.is_a?(Numeric) ? value : Float(value) }
-    @labels = labels&.map(&:to_s)
-    @color = color
-    @format = (format || {}).to_h.symbolize_keys
-    @locale = locale
-    @attributes = attributes
-    @formatted_values = @data.map { |value| format_number(value) }
+  attr_reader :data, :labels
+
+  def formatted_values
+    @formatted_values ||= data.map { |value| format_number(value) }
   end
 
   def view_template(&)

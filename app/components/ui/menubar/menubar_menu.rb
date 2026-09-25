@@ -1,12 +1,9 @@
 # Wraps one menu in the bar: a trigger and its popup
 class UI::MenubarMenu < UI::Base
-  attr_reader :id
+  prop :disabled, default: -> { false }
+  prop :id,       default: -> { "menubar-menu-#{SecureRandom.hex(4)}" }
 
-  def initialize(disabled: false, **attributes)
-    @disabled = disabled
-    @attributes = attributes
-    @id = attributes.delete(:id) || "menubar-menu-#{SecureRandom.hex(4)}"
-  end
+  attr_reader :id
 
   def view_template(&)
     provide(:ui_menubar_menu, self) do

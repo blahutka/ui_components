@@ -14,19 +14,23 @@ class UI::Autocomplete < UI::Base
   SIZES = %i[ sm md lg ].freeze
   VARIANTS = %i[ outline soft ].freeze
 
-  attr_reader :id, :items, :size, :variant, :value, :name
+  prop :items,                default: -> { [] }
+  prop :size,                 one_of(SIZES, :md), default: -> { :md }
+  prop :variant,              one_of(VARIANTS, :outline), default: -> { :outline }
+  prop :clearable,            default: -> { false }
+  prop :icon,                 default: -> { false }
+  prop :grid,                 default: -> { false }
+  prop :value,                default: -> { nil }
+  prop :default_value,        default: -> { nil }
+  prop :name,                 default: -> { nil }
+  prop :disabled,             default: -> { false }
+  prop :item_to_string_value, default: -> { nil }
+  prop :id,                   default: -> { "autocomplete-#{SecureRandom.hex(4)}" }
 
-  def initialize(items: [], size: :md, variant: :outline, clearable: false, icon: false, grid: false,
-                 value: nil, default_value: nil, name: nil, disabled: false, item_to_string_value: nil, **attributes)
-    @items = items
-    @size = SIZES.include?(size.to_sym) ? size.to_sym : :md
-    @variant = VARIANTS.include?(variant.to_sym) ? variant.to_sym : :outline
-    @clearable, @icon, @grid, @disabled = clearable, icon, grid, disabled
-    @value = value || default_value
-    @name = name
-    @item_to_string_value = item_to_string_value
-    @attributes = attributes
-    @id = attributes.delete(:id) || "autocomplete-#{SecureRandom.hex(4)}"
+  attr_reader :id, :items, :size, :variant, :name
+
+  def value
+    @value || @default_value
   end
 
   def view_template(&)

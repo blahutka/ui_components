@@ -2,10 +2,6 @@
 #
 #   DrawerClose { |close| Button(**close) { "Save" } }
 class UI::DrawerClose < UI::Base
-  def initialize(**attributes)
-    @attributes = attributes
-  end
-
   def before_template(&content)
     @render_prop = content&.arity == 1
     super

@@ -34,12 +34,9 @@ class UI::Button < UI::Base
     lg: "size-12 rounded-lg [&_svg:not([class*='size-'])]:size-5"
   }.freeze
 
-  def initialize(variant: :primary, size: :md, icon: false, **attributes)
-    @variant = VARIANTS.key?(variant.to_sym) ? variant.to_sym : :primary
-    @size = SIZES.key?(size.to_sym) ? size.to_sym : :md
-    @icon = icon
-    @attributes = attributes
-  end
+  prop :variant, one_of(VARIANTS, :primary), default: -> { :primary }
+  prop :size,    one_of(SIZES, :md), default: -> { :md }
+  prop :icon,    default: -> { false }
 
   def view_template(&)
     classes = cn(BASE, VARIANTS[@variant], (@icon ? ICON_SIZES : SIZES)[@size], override: @attributes[:class])

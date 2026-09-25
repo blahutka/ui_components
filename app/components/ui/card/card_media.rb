@@ -6,10 +6,6 @@ class UI::CardMedia < UI::Base
   BASE = "relative shrink-0 overflow-hidden group-data-inset/card:rounded-[calc(var(--card-radius)*3/4)] " \
     "[&>img]:size-full [&>img]:object-cover [&>video]:size-full [&>video]:object-cover"
 
-  def initialize(**attributes)
-    @attributes = attributes
-  end
-
   def view_template(&)
     div(**mix({ data: { slot: "card-media" } }, @attributes.except(:class)), class: cn(BASE, override: @attributes[:class]), &)
   end

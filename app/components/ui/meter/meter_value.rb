@@ -5,10 +5,7 @@
 #   MeterValue { |formatted, _value| "#{formatted} of 8 GB" }
 #   MeterValue(labels: %w[ Weak Fair Strong ])
 class UI::MeterValue < UI::Base
-  def initialize(labels: nil, **attributes)
-    @labels = labels
-    @attributes = attributes
-  end
+  prop :labels, default: -> { nil }
 
   def view_template(&block)
     meter = consume(:meter, component: "UI::Meter")

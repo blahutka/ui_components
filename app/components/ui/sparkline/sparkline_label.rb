@@ -1,9 +1,5 @@
 # Displays the active point's label, or the final label while idle.
 class UI::SparklineLabel < UI::Base
-  def initialize(**attributes)
-    @attributes = attributes
-  end
-
   def before_template(&content)
     @render_function = content&.arity&.positive?
     super

@@ -18,10 +18,7 @@ class UI::CarouselThumb < UI::Base
     light: "relative block aspect-square w-full overflow-hidden rounded-md bg-white/10"
   }.freeze
 
-  def initialize(index: nil, **attributes)
-    @index = index
-    @attributes = attributes
-  end
+  prop :index, default: -> { nil }
 
   def view_template(&)
     tone = thumbs.light? ? :light : :default

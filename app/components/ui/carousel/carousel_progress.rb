@@ -3,13 +3,10 @@
 class UI::CarouselProgress < UI::Base
   SOURCES = %i[ auto autoplay scroll ].freeze
 
-  def initialize(variant: :bar, source: :auto, orientation: :horizontal, light: nil, **attributes)
-    @variant = variant.to_sym == :circular ? :circular : :bar
-    @source = SOURCES.include?(source.to_sym) ? source.to_sym : :auto
-    @orientation = orientation.to_sym == :vertical ? :vertical : :horizontal
-    @light = light
-    @attributes = attributes
-  end
+  prop :variant,     one_of(%i[ bar circular ], :bar), default: -> { :bar }
+  prop :source,      one_of(SOURCES, :auto), default: -> { :auto }
+  prop :orientation, one_of(%i[ horizontal vertical ], :horizontal), default: -> { :horizontal }
+  prop :light,       default: -> { nil }
 
   def view_template
     if @variant == :circular

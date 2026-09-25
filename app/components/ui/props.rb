@@ -7,7 +7,7 @@
 #
 #   prop :value
 #   prop :title, default: -> { "Revenue" }
-#   prop :variant, ->(value) { value.to_sym }, default: -> { :default }
+#   prop :variant, one_of(VARIANTS, :primary), default: -> { :primary }
 #   param :code, ->(value) { value.to_s.downcase.to_sym }   # positional
 #
 # Classes that still define their own `initialize` are left untouched.
@@ -24,6 +24,12 @@ module UI::Props
 
     def param(name, type = nil, **options)
       super(name, *type, reader: false, **options)
+    end
+
+    # A coercer for enum-like props: the value as a symbol when it's one of `choices` (an
+    # Array, or a Hash's keys), otherwise `fallback`
+    def one_of(choices, fallback)
+      ->(value) { choices.include?(value.to_sym) ? value.to_sym : fallback }
     end
 
     # Phlex::SGML.new keeps the content block; only the keywords are split first

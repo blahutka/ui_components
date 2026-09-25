@@ -3,10 +3,6 @@ class UI::MenubarSubContent < UI::Base
   PLACEMENT = "start-full top-0 -mt-2.25 ms-2.5 origin-top-left rtl:origin-top-right " \
     "data-[side=inline-start]:start-auto data-[side=inline-start]:end-full data-[side=inline-start]:ms-0 data-[side=inline-start]:me-2.5"
 
-  def initialize(**attributes)
-    @attributes = attributes
-  end
-
   def view_template(&)
     div(**mix({
       id: sub.content_id,

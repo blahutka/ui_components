@@ -6,10 +6,6 @@ class UI::MenubarContent < UI::Base
     vertical: "start-full top-0 ms-1.5 origin-top-left rtl:origin-top-right data-[side=bottom]:top-full data-[side=bottom]:start-0 data-[side=bottom]:ms-0 data-[side=bottom]:mt-1.5"
   }.freeze
 
-  def initialize(**attributes)
-    @attributes = attributes
-  end
-
   def view_template(&)
     div(**mix({
       id: menu.content_id,

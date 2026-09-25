@@ -4,10 +4,6 @@
 #   DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { "Open" } }
 #   DrawerTrigger(class: "underline") { "Open" }   # plain <button>
 class UI::DrawerTrigger < UI::Base
-  def initialize(**attributes)
-    @attributes = attributes
-  end
-
   def before_template(&content)
     @render_prop = content&.arity == 1
     super

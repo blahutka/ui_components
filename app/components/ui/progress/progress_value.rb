@@ -2,10 +2,6 @@
 #
 #   ProgressValue { |formatted, _value| "#{formatted} done" }
 class UI::ProgressValue < UI::Base
-  def initialize(**attributes)
-    @attributes = attributes
-  end
-
   def view_template(&block)
     progress = consume(:progress, component: "UI::Progress")
 

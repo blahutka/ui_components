@@ -4,10 +4,7 @@
 #
 #   ToastTrigger(toast: { title: "Changes saved" }) { |trigger| Button(**trigger) { "Save" } }
 class UI::ToastTrigger < UI::Base
-  def initialize(toast:, **attributes)
-    @toast = toast
-    @attributes = attributes
-  end
+  prop :toast
 
   def before_template(&content)
     @render_prop = content&.arity == 1

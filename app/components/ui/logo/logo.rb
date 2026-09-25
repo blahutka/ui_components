@@ -25,14 +25,13 @@ class UI::Logo < UI::Base
 
   VARIANTS = %i[ full mark wordmark ].freeze
 
-  def initialize(prefix: "Be", name: "humble", suffix: ".com", size: :md, accent: :blue, variant: :full, href: nil, **attributes)
-    @prefix, @name, @suffix = prefix.to_s, name.to_s, suffix.to_s
-    @size = SIZES.key?(size.to_sym) ? size.to_sym : :md
-    @accent = ACCENTS.key?(accent.to_sym) ? accent.to_sym : :blue
-    @variant = VARIANTS.include?(variant.to_sym) ? variant.to_sym : :full
-    @href = href
-    @attributes = attributes
-  end
+  prop :prefix,  proc(&:to_s), default: -> { "Be" }
+  prop :name,    proc(&:to_s), default: -> { "humble" }
+  prop :suffix,  proc(&:to_s), default: -> { ".com" }
+  prop :size,    one_of(SIZES, :md), default: -> { :md }
+  prop :accent,  one_of(ACCENTS, :blue), default: -> { :blue }
+  prop :variant, one_of(VARIANTS, :full), default: -> { :full }
+  prop :href,    default: -> { nil }
 
   def view_template
     attributes = mix(root_attributes, @attributes.except(:class))

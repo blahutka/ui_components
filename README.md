@@ -75,6 +75,29 @@ Without an argument (`DrawerTrigger { "Open" }`) the part renders a plain `<butt
 without a portal. Nest a `Drawer` inside `DrawerBody` for stacked drawers; `snap_points:` works
 on top/bottom drawers. JS events: `ui--drawer:open-change` and `ui--drawer:snap-point-change`.
 
+### Props
+
+Components declare their props with `UI::Props` ([dry-initializer](https://hanakai.org/learn/dry/dry-initializer/v3.2)),
+included in `UI::Base`. Declared props become instance variables (no public readers, so a prop called `title` or
+`label` never hides a Phlex element); every other keyword - `class:`, `id:`, `data:`, `aria_*` - is collected in
+`@attributes` for the root element.
+
+```ruby
+class UI::Badge < UI::Base
+  prop :variant, one_of(VARIANTS, :primary), default: -> { :primary }  # enum with a fallback
+  prop :size,    one_of(SIZES, :md), default: -> { :md }
+  prop :as,      default: -> { nil }
+
+  def view_template(&)
+    span(**mix({ data: { slot: "badge", variant: @variant } }, @attributes.except(:class)), class: cn(…), &)
+  end
+end
+```
+
+`param` declares positional arguments (`Icon(:star)` → `param :name`), a proc after the name coerces the value, and
+`as:` renames the ivar (`prop :as, as: :tag`). Defaults apply only when the keyword is missing, so values where an
+explicit `nil` means "default" are resolved in a reader instead.
+
 ## Layout
 
 Each component lives in its own folder with everything it needs:

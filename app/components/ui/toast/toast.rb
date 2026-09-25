@@ -40,16 +40,18 @@ class UI::Toast < UI::Base
   CLOSE = "text-foreground-muted -me-1 -mt-1 cursor-pointer self-start rounded-md p-1 outline-none [grid-area:close] motion-safe:transition-colors hover:text-foreground-intense focus-visible:ring-ring focus-visible:ring-2"
   PROGRESS_INDICATOR = "bg-primary absolute inset-x-0 bottom-0 h-1 origin-left rtl:origin-right animate-[toast-progress_linear_forwards] group-data-expanded/toast:[animation-play-state:paused] motion-reduce:animate-none"
 
-  def initialize(title:, description: nil, icon: nil, thumbnail: false, action: nil, timeout: nil, type: nil,
-                 priority: :low, dismissible: true, progress: nil, close_label: "Dismiss", **attributes)
-    @title, @description = title, description
-    @icon, @thumbnail = icon, thumbnail
-    @action = action
-    @timeout, @type, @priority = timeout, type, priority.to_sym
-    @dismissible, @progress, @close_label = dismissible, progress, close_label
-    @attributes = attributes
-    @id = attributes.delete(:id) || "toast-#{SecureRandom.hex(4)}"
-  end
+  prop :title
+  prop :description, default: -> { nil }
+  prop :icon,        default: -> { nil }
+  prop :thumbnail,   default: -> { false }
+  prop :action,      default: -> { nil }
+  prop :timeout,     default: -> { nil }
+  prop :type,        default: -> { nil }
+  prop :priority,    ->(value) { value.to_sym }, default: -> { :low }
+  prop :dismissible, default: -> { true }
+  prop :progress,    default: -> { nil }
+  prop :close_label, default: -> { "Dismiss" }
+  prop :id,          default: -> { "toast-#{SecureRandom.hex(4)}" }
 
   def view_template(&icon)
     div(**mix(toast_attributes, @attributes.except(:class)), class: cn(BASE, SIDES, TRANSFORMS, override: @attributes[:class])) do

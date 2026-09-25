@@ -1,9 +1,5 @@
 # A leading icon slot; the icon takes the variant's accent color.
 class UI::AlertIcon < UI::Base
-  def initialize(**attributes)
-    @attributes = attributes
-  end
-
   def view_template(&)
     alert = consume(:alert, component: "UI::Alert")
 

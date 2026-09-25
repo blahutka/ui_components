@@ -1,10 +1,7 @@
 # The top-level label that opens its menu. Once a menu is open, hovering a sibling trigger
 # switches to it; arrow keys move along the bar.
 class UI::MenubarTrigger < UI::Base
-  def initialize(disabled: false, **attributes)
-    @disabled = disabled
-    @attributes = attributes
-  end
+  prop :disabled, default: -> { false }
 
   def view_template(&)
     disabled = @disabled || menu.disabled?

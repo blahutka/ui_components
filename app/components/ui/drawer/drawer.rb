@@ -19,15 +19,14 @@
 class UI::Drawer < UI::Base
   SIDES = %i[ top right bottom left ].freeze
 
-  attr_reader :id, :side
+  prop :side,                      one_of(SIDES, :bottom), default: -> { :bottom }
+  prop :default_open,              default: -> { false }
+  prop :modal,                     default: -> { true }
+  prop :disable_pointer_dismissal, default: -> { false }
+  prop :snap_points,               default: -> { nil }
+  prop :id,                        default: -> { "drawer-#{SecureRandom.hex(4)}" }
 
-  def initialize(side: :bottom, default_open: false, modal: true, disable_pointer_dismissal: false, snap_points: nil, **attributes)
-    @side = SIDES.include?(side.to_sym) ? side.to_sym : :bottom
-    @default_open, @modal, @disable_pointer_dismissal = default_open, modal, disable_pointer_dismissal
-    @snap_points = snap_points
-    @attributes = attributes
-    @id = attributes.delete(:id) || "drawer-#{SecureRandom.hex(4)}"
-  end
+  attr_reader :id, :side
 
   def view_template(&)
     @parent = context[:ui_drawer]

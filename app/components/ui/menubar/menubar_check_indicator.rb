@@ -4,9 +4,8 @@ class UI::MenubarCheckIndicator < UI::Base
     "motion-safe:transition-[opacity,stroke-dashoffset] motion-safe:ease-out motion-safe:delay-[0ms,150ms] motion-safe:duration-[150ms,0ms] " \
     "motion-safe:group-data-checked/check:delay-[0ms] motion-safe:group-data-checked/check:duration-[0ms,300ms]"
 
-  def initialize(checked:, slot:)
-    @checked, @slot = checked, slot
-  end
+  prop :checked
+  prop :slot
 
   def view_template
     span(aria_hidden: "true", class: "group/check text-foreground-intense shrink-0", data: { slot: @slot, checked: (@checked ? "" : nil), unchecked: (@checked ? nil : "") }) do

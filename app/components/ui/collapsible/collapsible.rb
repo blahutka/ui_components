@@ -9,14 +9,12 @@
 # ship almost unstyled. State is rendered on the server (data-open / data-closed on the root,
 # data-panel-open on the trigger) and the `ui--collapsible` controller toggles and animates it.
 class UI::Collapsible < UI::Base
-  attr_reader :id
+  prop :open,         default: -> { false }
+  prop :default_open, default: -> { nil }
+  prop :disabled,     default: -> { false }
+  prop :id,           default: -> { "collapsible-#{SecureRandom.hex(4)}" }
 
-  def initialize(open: false, default_open: nil, disabled: false, **attributes)
-    @open = default_open.nil? ? open : default_open
-    @disabled = disabled
-    @attributes = attributes
-    @id = attributes.delete(:id) || "collapsible-#{SecureRandom.hex(4)}"
-  end
+  attr_reader :id
 
   def view_template(&)
     provide(:ui_collapsible, self) do
@@ -35,7 +33,7 @@ class UI::Collapsible < UI::Base
     end
   end
 
-  def open? = @open
+  def open? = @default_open.nil? ? @open : @default_open
   def disabled? = @disabled
   def content_id = "#{id}-content"
 end

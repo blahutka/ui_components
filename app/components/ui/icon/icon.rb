@@ -9,16 +9,13 @@
 # names work too (:arrow_back_up, "ArrowBackUp"). Filled icons end in -filled. Icons are
 # decorative (aria-hidden) unless given an aria_label.
 class UI::Icon < UI::Base
-  def initialize(name, size: 24, stroke_width: nil, color: nil, **attributes)
-    @icon = UI::IconLibrary.fetch(name)
-    @size = size
-    @stroke_width = stroke_width
-    @color = color
-    @attributes = attributes
-  end
+  param :name
+  prop :size,         default: -> { 24 }
+  prop :stroke_width, default: -> { nil }
+  prop :color,        default: -> { nil }
 
   def view_template
-    content = @icon[:content]
+    content = icon[:content]
 
     svg(**mix(defaults(**svg_attributes), @attributes.except(:class)), class: cn("appica-icon", override: @attributes[:class])) do |s|
       s.raw(s.safe(content))
@@ -26,15 +23,19 @@ class UI::Icon < UI::Base
   end
 
   private
+    def icon
+      @icon ||= UI::IconLibrary.fetch(@name)
+    end
+
     def svg_attributes
       labelled = @attributes.key?(:aria_label)
-      attrs = @icon[:attrs]
+      attrs = icon[:attrs]
 
       {
-        xmlns: "http://www.w3.org/2000/svg", viewBox: @icon[:view_box], width: @size, height: @size,
+        xmlns: "http://www.w3.org/2000/svg", viewBox: icon[:view_box], width: @size, height: @size,
         **attrs, stroke_width: (@stroke_width || attrs[:stroke_width] if attrs[:stroke]),
         color: @color, aria_hidden: ("true" unless labelled), role: ("img" if labelled),
-        data: { slot: "icon", name: @icon[:name] }
+        data: { slot: "icon", name: icon[:name] }
       }
     end
 end

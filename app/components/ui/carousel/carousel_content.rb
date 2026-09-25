@@ -7,10 +7,7 @@ class UI::CarouselContent < UI::Base
     vertical: "flex -mt-4 touch-pan-x touch-pinch-zoom flex-col"
   }.freeze
 
-  def initialize(viewport: {}, **attributes)
-    @viewport = viewport
-    @attributes = attributes
-  end
+  prop :viewport, default: -> { {} }
 
   def view_template(&)
     div(**mix({

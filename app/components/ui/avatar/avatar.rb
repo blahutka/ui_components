@@ -28,10 +28,8 @@ class UI::Avatar < UI::Base
     rounded: "rounded-[calc(tan(atan2(var(--radius-md),2.5rem))*100%)]"
   }.freeze
 
-  def initialize(size: nil, shape: nil, **attributes)
-    @size, @shape = size, shape
-    @attributes = attributes
-  end
+  prop :size,  default: -> { nil }
+  prop :shape, default: -> { nil }
 
   def view_template(&)
     span(**mix(root_attributes, @attributes.except(:class)), class: cn(BASE, size_class, SHAPES.fetch(shape, SHAPES[:circle]), override: @attributes[:class]), &)

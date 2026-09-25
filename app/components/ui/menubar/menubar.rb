@@ -69,15 +69,13 @@ class UI::Menubar < UI::Base
   VARIANTS = %i[ pill line ].freeze
   SIZES = %i[ sm md lg ].freeze
 
-  attr_reader :variant, :size, :orientation
+  prop :variant,     one_of(VARIANTS, :pill), default: -> { :pill }
+  prop :size,        one_of(SIZES, :md), default: -> { :md }
+  prop :orientation, one_of(%i[ horizontal vertical ], :horizontal), default: -> { :horizontal }
+  prop :loop_focus,  default: -> { true }
+  prop :disabled,    default: -> { false }
 
-  def initialize(variant: :pill, size: :md, orientation: :horizontal, loop_focus: true, disabled: false, **attributes)
-    @variant = VARIANTS.include?(variant.to_sym) ? variant.to_sym : :pill
-    @size = SIZES.include?(size.to_sym) ? size.to_sym : :md
-    @orientation = orientation.to_sym == :vertical ? :vertical : :horizontal
-    @loop_focus, @disabled = loop_focus, disabled
-    @attributes = attributes
-  end
+  attr_reader :variant, :size, :orientation
 
   def view_template(&)
     provide(:ui_menubar, self) do

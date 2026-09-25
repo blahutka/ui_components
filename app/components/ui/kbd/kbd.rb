@@ -9,10 +9,7 @@ class UI::Kbd < UI::Base
     lg: "h-7 min-w-7 text-sm px-2 rounded-sm"
   }.freeze
 
-  def initialize(size: :md, **attributes)
-    @size = SIZES.key?(size.to_sym) ? size.to_sym : :md
-    @attributes = attributes
-  end
+  prop :size, one_of(SIZES, :md), default: -> { :md }
 
   def view_template(&)
     kbd(**mix({ data: { slot: "kbd" } }, @attributes.except(:class)), class: cn(BASE, SIZES[@size], override: @attributes[:class]), &)

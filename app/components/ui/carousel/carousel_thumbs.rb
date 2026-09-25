@@ -10,11 +10,8 @@ class UI::CarouselThumbs < UI::Base
 
   attr_reader :orientation
 
-  def initialize(orientation: :horizontal, light: nil, **attributes)
-    @orientation = orientation.to_sym == :vertical ? :vertical : :horizontal
-    @light = light
-    @attributes = attributes
-  end
+  prop :orientation, one_of(%i[ horizontal vertical ], :horizontal), default: -> { :horizontal }
+  prop :light,       default: -> { nil }
 
   def view_template(&)
     provide(:ui_carousel_thumbs, self) do

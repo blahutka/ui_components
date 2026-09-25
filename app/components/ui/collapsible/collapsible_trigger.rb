@@ -7,10 +7,6 @@
 class UI::CollapsibleTrigger < UI::Base
   BASE = "outline-ring cursor-pointer select-none data-disabled:opacity-disabled data-disabled:pointer-events-none"
 
-  def initialize(**attributes)
-    @attributes = attributes
-  end
-
   def before_template(&content)
     @render_prop = content&.arity == 1
     super

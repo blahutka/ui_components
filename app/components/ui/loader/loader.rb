@@ -22,11 +22,8 @@ class UI::Loader < UI::Base
     [ "-88;47.08;47.08", "88;0.44;0.44", "0.165 0.84 0.44 1", "1.15s" ]
   ].freeze
 
-  def initialize(variant: :bar, current_color: false, **attributes)
-    @variant = VARIANTS.include?(variant.to_sym) ? variant.to_sym : :bar
-    @colors = COLORS[current_color ? :current : :accent]
-    @attributes = attributes
-  end
+  prop :variant,       one_of(VARIANTS, :bar), default: -> { :bar }
+  prop :current_color, default: -> { false }
 
   def view_template
     span(**mix(defaults(role: "status", aria_label: "Loading", data: { slot: "loader", variant: @variant }), @attributes.except(:class)),
@@ -36,12 +33,16 @@ class UI::Loader < UI::Base
   end
 
   private
+    def colors
+      COLORS[@current_color ? :current : :accent]
+    end
+
     def bar
       clip_id = "loader-clip-#{SecureRandom.hex(4)}"
 
-      svg(width: "1.4em", height: "0.2em", viewBox: "0 0 44 6", fill: "currentColor", aria_hidden: "true", class: cn("size-[1em] h-[0.2em]! w-[1.4em]!", @colors[:indicator])) do |s|
+      svg(width: "1.4em", height: "0.2em", viewBox: "0 0 44 6", fill: "currentColor", aria_hidden: "true", class: cn("size-[1em] h-[0.2em]! w-[1.4em]!", colors[:indicator])) do |s|
         s.defs { s.clipPath(id: clip_id) { s.rect(x: "0", y: "0", width: "44", height: "6", rx: "3") } }
-        s.rect(x: "0", y: "0", width: "44", height: "6", rx: "3", class: @colors[:track])
+        s.rect(x: "0", y: "0", width: "44", height: "6", rx: "3", class: colors[:track])
         s.g(clip_path: "url(##{clip_id})", class: ANIMATED) do
           SWEEPS.each do |xs, widths, ease, start|
             s.rect(x: xs.split(";").first, y: "0", width: widths.split(";").first, height: "6", rx: "3") do
@@ -56,7 +57,7 @@ class UI::Loader < UI::Base
 
     # Three dots grow in from the right, peak in the middle and shrink away on the left
     def dots
-      svg(width: "0.8em", height: "0.35em", viewBox: "0 0 28 12", fill: "currentColor", aria_hidden: "true", class: cn("size-[1em] h-[0.35em]! w-[0.8em]!", @colors[:indicator])) do |s|
+      svg(width: "0.8em", height: "0.35em", viewBox: "0 0 28 12", fill: "currentColor", aria_hidden: "true", class: cn("size-[1em] h-[0.35em]! w-[0.8em]!", colors[:indicator])) do |s|
         s.g(class: ANIMATED) do
           3.times do |index|
             start = seconds(-1.6 * (0.85 + index))

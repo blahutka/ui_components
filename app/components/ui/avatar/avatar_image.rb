@@ -1,10 +1,8 @@
 # The photo. Hidden until it has loaded, so a slow or broken image never flashes;
 # the controller then swaps it in for the AvatarFallback.
 class UI::AvatarImage < UI::Base
-  def initialize(src: nil, alt: "", **attributes)
-    @src, @alt = src, alt
-    @attributes = attributes
-  end
+  prop :src, default: -> { nil }
+  prop :alt, default: -> { "" }
 
   def view_template
     img(**mix({

@@ -1,11 +1,8 @@
 # A nested submenu: MenubarSubTrigger plus MenubarSubContent
 class UI::MenubarSub < UI::Base
-  attr_reader :id
+  prop :id, default: -> { "menubar-sub-#{SecureRandom.hex(4)}" }
 
-  def initialize(**attributes)
-    @attributes = attributes
-    @id = attributes.delete(:id) || "menubar-sub-#{SecureRandom.hex(4)}"
-  end
+  attr_reader :id
 
   def view_template(&)
     provide(:ui_menubar_sub, self) do

@@ -5,18 +5,14 @@ class UI::SparklineChart < UI::Base
   POINTER_ACTIONS = "pointerdown->ui--sparkline#activate pointermove->ui--sparkline#activate " \
     "pointerleave->ui--sparkline#clear pointerup->ui--sparkline#release pointercancel->ui--sparkline#release"
 
-  def initialize(variant: :line, curve: 0.5, fill: false, baseline: 0, height: 48, stroke_width: 2,
-                 indicator: true, tooltip: false, **attributes)
-    @variant = VARIANTS.include?(variant.to_sym) ? variant.to_sym : :line
-    @curve = curve.to_f.clamp(0, 1)
-    @fill = fill
-    @baseline = baseline.to_f
-    @height = height.to_f
-    @stroke_width = stroke_width.to_f
-    @indicator = indicator
-    @tooltip = tooltip
-    @attributes = attributes
-  end
+  prop :variant,      one_of(VARIANTS, :line), default: -> { :line }
+  prop :curve,        ->(value) { value.to_f.clamp(0, 1) }, default: -> { 0.5 }
+  prop :fill,         default: -> { false }
+  prop :baseline,     ->(value) { value.to_f }, default: -> { 0.0 }
+  prop :height,       ->(value) { value.to_f }, default: -> { 48.0 }
+  prop :stroke_width, ->(value) { value.to_f }, default: -> { 2.0 }
+  prop :indicator,    default: -> { true }
+  prop :tooltip,      default: -> { false }
 
   def before_template(&content)
     @custom_tooltip = content&.arity == 1

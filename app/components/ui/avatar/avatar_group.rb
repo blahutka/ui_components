@@ -8,11 +8,9 @@ class UI::AvatarGroup < UI::Base
 
   attr_reader :size, :shape
 
-  def initialize(size: nil, shape: nil, orientation: :horizontal, **attributes)
-    @size, @shape = size, shape
-    @orientation = ORIENTATIONS.key?(orientation.to_sym) ? orientation.to_sym : :horizontal
-    @attributes = attributes
-  end
+  prop :size,        default: -> { nil }
+  prop :shape,       default: -> { nil }
+  prop :orientation, one_of(ORIENTATIONS, :horizontal), default: -> { :horizontal }
 
   def view_template(&)
     provide(:ui_avatar_group, self) do

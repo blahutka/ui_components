@@ -1,10 +1,7 @@
 # One labelled section of a menu; give it a MenubarGroupLabel
 class UI::MenubarGroup < UI::Base
-  attr_reader :label_id
-
-  def initialize(**attributes)
-    @attributes = attributes
-    @label_id = "menubar-group-#{SecureRandom.hex(4)}"
+  def label_id
+    @label_id ||= "menubar-group-#{SecureRandom.hex(4)}"
   end
 
   def view_template(&)

@@ -6,10 +6,7 @@
 class UI::AutocompleteList < UI::Base
   BASE = "gap-0.5 px-2 min-h-0 flex-1 overflow-y-auto overscroll-contain"
 
-  def initialize(cols: nil, **attributes)
-    @cols = cols
-    @attributes = attributes
-  end
+  prop :cols, default: -> { nil }
 
   def before_template(&content)
     @render_function = content&.arity == 1

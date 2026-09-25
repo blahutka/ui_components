@@ -1,9 +1,5 @@
 # Displays the active point's formatted value, or the final value while idle.
 class UI::SparklineValue < UI::Base
-  def initialize(**attributes)
-    @attributes = attributes
-  end
-
   def before_template(&content)
     @render_function = content&.arity&.positive?
     super

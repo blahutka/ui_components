@@ -26,11 +26,9 @@ class UI::AutocompleteInput < UI::Base
   CLEAR = "text-foreground-subtle hover:text-foreground shrink-0 cursor-pointer transition-colors duration-200 outline-none data-disabled:pointer-events-none data-disabled:cursor-not-allowed motion-reduce:transition-none"
   TOGGLE = "group/autocomplete-icon text-foreground -me-1 shrink-0 cursor-pointer outline-none disabled:cursor-not-allowed data-disabled:pointer-events-none data-disabled:cursor-not-allowed"
 
-  def initialize(placeholder: " ", start_slot: nil, end_slot: nil, **attributes)
-    @placeholder = placeholder
-    @start_slot, @end_slot = start_slot, end_slot
-    @attributes = attributes
-  end
+  prop :placeholder, default: -> { " " }
+  prop :start_slot,  default: -> { nil }
+  prop :end_slot,    default: -> { nil }
 
   def view_template
     div(

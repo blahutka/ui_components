@@ -7,10 +7,8 @@ class UI::CollapsibleContent < UI::Base
   BASE = "overflow-hidden h-(--collapsible-panel-height) data-ending-style:h-0 data-starting-style:h-0 " \
     "transition-[height] duration-400 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none"
 
-  def initialize(hidden_until_found: false, keep_mounted: nil, **attributes)
-    @hidden_until_found = hidden_until_found
-    @attributes = attributes
-  end
+  prop :hidden_until_found, default: -> { false }
+  prop :keep_mounted,       default: -> { nil } # accepted for Base UI parity; the panel always stays in the DOM
 
   def view_template(&)
     open = collapsible.open?

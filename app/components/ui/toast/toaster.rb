@@ -22,13 +22,12 @@ class UI::Toaster < UI::Base
 
   attr_reader :id, :timeout
 
-  def initialize(position: :bottom_right, progress: false, timeout: 5000, limit: 3, toasts: [], id: "toaster", **attributes)
-    @position = POSITIONS.include?(position.to_sym) ? position.to_sym : :bottom_right
-    @progress, @timeout, @limit = progress, timeout, limit
-    @toasts = toasts
-    @id = id
-    @attributes = attributes
-  end
+  prop :position, one_of(POSITIONS, :bottom_right), default: -> { :bottom_right }
+  prop :progress, default: -> { false }
+  prop :timeout,  default: -> { 5000 }
+  prop :limit,    default: -> { 3 }
+  prop :toasts,   default: -> { [] }
+  prop :id,       default: -> { "toaster" }
 
   def view_template(&)
     div(**mix({

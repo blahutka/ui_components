@@ -7,12 +7,12 @@
 #     end
 #   end
 class UI::AutocompleteGroup < UI::Base
-  attr_reader :items, :label_id
+  prop :items
 
-  def initialize(items:, **attributes)
-    @items = items
-    @attributes = attributes
-    @label_id = "autocomplete-group-#{SecureRandom.hex(4)}"
+  attr_reader :items
+
+  def label_id
+    @label_id ||= "autocomplete-group-#{SecureRandom.hex(4)}"
   end
 
   def view_template(&)

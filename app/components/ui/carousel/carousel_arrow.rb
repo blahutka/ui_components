@@ -6,12 +6,9 @@
 class UI::CarouselArrow < UI::Base
   POSITIONS = %i[ inside outside outside_half none ].freeze
 
-  def initialize(position: :inside, disabled: false, **attributes)
-    @position = POSITIONS.include?(position.to_sym) ? position.to_sym : :inside
-    @disabled = disabled
-    @label = attributes.delete(:aria_label)
-    @attributes = attributes
-  end
+  prop :position,   one_of(POSITIONS, :inside), default: -> { :inside }
+  prop :disabled,   default: -> { false }
+  prop :aria_label, as: :label, default: -> { nil }
 
   def before_template(&content)
     @render_prop = content&.arity == 1

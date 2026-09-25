@@ -2,10 +2,6 @@
 class UI::CarouselSlide < UI::Base
   GUTTER = { horizontal: "ps-4", vertical: "pt-4" }.freeze
 
-  def initialize(**attributes)
-    @attributes = attributes
-  end
-
   def view_template(&)
     div(**mix({
       role: "group",

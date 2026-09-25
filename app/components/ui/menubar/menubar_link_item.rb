@@ -1,9 +1,8 @@
 # An item that renders an <a> for navigation
 class UI::MenubarLinkItem < UI::Base
-  def initialize(href:, close_on_click: true, label: nil, **attributes)
-    @href, @close_on_click, @label = href, close_on_click, label
-    @attributes = attributes
-  end
+  prop :href
+  prop :close_on_click, default: -> { true }
+  prop :label,          default: -> { nil }
 
   def view_template(&)
     a(**mix({
