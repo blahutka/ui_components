@@ -1,0 +1,82 @@
+---
+id: thumbnail
+title: Thumbnail
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A compact preview tile - the small square beside a file, a list row or a media item.
+[Appica docs](https://appica.dev/ui/components/react/thumbnail)
+
+<%= embed UI::ThumbnailPreview, :default %>
+
+## Usage
+
+```ruby
+Thumbnail(src: "/photos/summit.jpg", alt: "Mountain peak")
+
+Thumbnail(variant: :icon_primary) { Icon(:bolt) }
+```
+
+One component covers two jobs:
+
+- **Image** (`variant: :image`, the default) shows `src:` cropped to fill. Like an
+  [Avatar](<%= page_path(:avatar) %>) it preloads the image and shows a placeholder icon until it
+  loads, and keeps it when the image is missing or fails.
+- **Icon** (`variant: :icon_*`) is a colored tile around the icon you pass as the block.
+
+Everything is sized in `em` from `size:` - a preset (`:"2xs"` to `:"2xl"`) or a pixel number - so
+the tile and its icon scale together. `shape: :circle` makes a full circle.
+
+## Examples
+
+### Sizes
+
+<%= embed UI::ThumbnailPreview, :sizes %>
+
+### Custom size
+
+<%= embed UI::ThumbnailPreview, :custom_size %>
+
+### Shape
+
+<%= embed UI::ThumbnailPreview, :shape %>
+
+### Icon variants
+
+`:icon_soft` and `:icon_outline` for neutral tiles, `:icon_primary` and `:icon_primary_outline` for
+the brand color, `:icon_secondary`, `:icon_error`, `:icon_success`, `:icon_warning` and `:icon_info`
+for the accents.
+
+<%= embed UI::ThumbnailPreview, :icon_variants %>
+
+### Fallback
+
+<%= embed UI::ThumbnailPreview, :fallback %>
+
+### Media list
+
+<%= embed UI::ThumbnailPreview, :media_list %>
+
+### RTL
+
+<%= embed UI::ThumbnailPreview, :rtl %>
+
+## API reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` | `:image`, `:icon_soft`, `:icon_outline`, `:icon_primary`, `:icon_primary_outline`, `:icon_secondary`, `:icon_error`, `:icon_success`, `:icon_warning`, `:icon_info` | `:image` | An image tile or a colored icon tile. |
+| `size:` | `:"2xs"`, `:xs`, `:sm`, `:md`, `:lg`, `:xl`, `:"2xl"` or pixels | `:md` | A preset, or an exact pixel size. |
+| `shape:` | `:rounded`, `:circle` | `:rounded` | Rounded square or full circle. |
+| `src:` | `String` | - | Image URL (image variant). |
+| `alt:` | `String` | `""` | Describes the image; empty for a decorative one. |
+
+The image loader is Avatar's `ui--avatar` controller: the tile's `data-status` moves through
+`loading`, `loaded` and `error`, and `ui--avatar:loading-status-change` fires with `{ status }`.
+
+## Accessibility
+
+- Give a meaningful image an `alt:`; leave it empty when the thumbnail is decorative.
+- Icon tiles carry no name of their own - let the surrounding text (a filename, a title) name them.
+- The placeholder icon is `aria-hidden`.

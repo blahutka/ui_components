@@ -102,6 +102,7 @@ to the dummy app's SQLite database.
 | Tabs | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent` (`:pill`/`:line`, vertical, sliding indicator, icon tabs) | [tabs](https://appica.dev/ui/components/react/tabs) |
 | Table of Contents | `Toc`, `TocList`, `TocItem`, `TocLink` (scroll-spy, `depth:`, `root_margin:`, `container:`) | [toc](https://appica.dev/ui/components/react/toc) |
 | Textarea | `Textarea` (`rows:`, Input's variants, sizes, slots and `clearable:`) | [textarea](https://appica.dev/ui/components/react/textarea) |
+| Thumbnail | `Thumbnail` (image with placeholder fallback, `:icon_*` tiles, sizes in em, `:circle`) | [thumbnail](https://appica.dev/ui/components/react/thumbnail) |
 | Toggle | `Toggle`, `ToggleGroup` (render-prop onto a Button, single/multiple, roving focus, `name:`) | [toggle](https://appica.dev/ui/components/react/toggle) |
 | Tooltip | `TooltipProvider`, `Tooltip` (`track_cursor_axis:`), `TooltipTrigger`, `TooltipContent` | [tooltip](https://appica.dev/ui/components/react/tooltip) |
 | Toolbar | `Toolbar`, `ToolbarButton`, `ToolbarLink`, `ToolbarInput`, `ToolbarGroup`, `ToolbarSeparator` (roving focus, render props) | [toolbar](https://appica.dev/ui/components/react/toolbar) |
