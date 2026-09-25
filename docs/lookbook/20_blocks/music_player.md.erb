@@ -1,0 +1,65 @@
+---
+id: music_player
+title: Music player
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A now-playing card: cover art, the title and artist with a favorite toggle, a seek bar with elapsed and remaining
+time, and shuffle / previous / play-pause / next / repeat controls. A **block** composed from
+[Toggle](<%= page_path(:toggle) %>), [Button](<%= page_path(:button) %>), [Slider](<%= page_path(:slider) %>) and
+Icon, as on the [Appica homepage](https://appica.dev/ui).
+
+<%= embed Blocks::MusicPlayerPreview, :default %>
+
+## Usage
+
+```ruby
+MusicPlayer(title: track.title, artist: track.artist, album: track.album, cover: track.cover_url,
+  duration: track.duration, src: track.audio_url)
+```
+
+- With `src:` the block plays the audio: play / pause drive it, the seek bar jumps in it and follows its time.
+- Without `src:` the demo advances the time once a second while playing.
+- At the end of the track it starts over while **Repeat** is pressed, otherwise it stops.
+- Previous and next restart the track and emit `blocks--music-player:previous` / `:next` - load the other track
+  there (e.g. with a Turbo Frame).
+
+```js
+document.addEventListener("blocks--music-player:next", () => Turbo.visit("/player/next", { frame: "player" }))
+```
+
+## Events
+
+| Event | Detail | When |
+|-------|--------|------|
+| `blocks--music-player:play` / `:pause` | - | The play button is toggled. |
+| `blocks--music-player:seek` | `{ position }` | The seek bar moves (seconds). |
+| `blocks--music-player:previous` / `:next` | - | The skip buttons are pressed. |
+| `ui--toggle:change` | `{ pressed }` | Favorite, shuffle or repeat is toggled. |
+
+## Localization
+
+`music_player.locales.yml` holds the button and slider labels (English, Czech, German, Arabic); the play button's
+label switches between "Play" and "Pause".
+
+## Examples
+
+### Without cover art
+
+<%= embed Blocks::MusicPlayerPreview, :no_cover %>
+
+### RTL
+
+<%= embed Blocks::MusicPlayerPreview, :rtl %>
+
+## API reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title:` / `artist:` / `album:` | `String` | - | Track title and the "artist - album" line. |
+| `cover:` / `cover_alt:` | `String` | - / "Album cover" | Cover art; a music tile without one. |
+| `duration:` / `position:` | `Integer` | - / `0` | Track length and starting position, in seconds. |
+| `playing:` | `Boolean` | `false` | Start playing. |
+| `favorite:` / `shuffle:` / `repeat:` | `Boolean` | `false` | Starting state of the toggles. |
+| `src:` | `String` | - | Audio URL; without it the block runs a demo clock. |

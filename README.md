@@ -121,6 +121,7 @@ Higher-level compositions of the primitives live in `app/components/blocks/` (th
 | Order tracker | `OrderTracker`, `OrderTimeline`, `OrderStep`, `OrderCourier` |
 | Transactions | `Transactions`, `Transaction` |
 | Product card | `ProductCard`, `ProductOptions`, `ProductAddToCart` |
+| Music player | `MusicPlayer` |
 
 ### Render props
 
