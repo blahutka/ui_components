@@ -1,0 +1,47 @@
+# Blocks::Transactions strings - t(".key") in any of its parts looks here.
+# Every language in one file; add a locale as another top-level key with the same keys
+# (test/components/locales_test.rb checks that they match).
+en:
+  ui_components:
+    blocks:
+      transactions:
+        title: Recent transactions
+        filter: Filter transactions
+        all: All
+        income: Income
+        spending: Spending
+        empty: No transactions yet.
+        date_format: "%b %-d"
+cs:
+  ui_components:
+    blocks:
+      transactions:
+        title: Poslední transakce
+        filter: Filtrovat transakce
+        all: Vše
+        income: Příjmy
+        spending: Výdaje
+        empty: Zatím žádné transakce.
+        date_format: "%-d. %-m."
+de:
+  ui_components:
+    blocks:
+      transactions:
+        title: Letzte Transaktionen
+        filter: Transaktionen filtern
+        all: Alle
+        income: Einnahmen
+        spending: Ausgaben
+        empty: Noch keine Transaktionen.
+        date_format: "%-d. %b"
+ar:
+  ui_components:
+    blocks:
+      transactions:
+        title: المعاملات الأخيرة
+        filter: تصفية المعاملات
+        all: الكل
+        income: الدخل
+        spending: الإنفاق
+        empty: لا توجد معاملات بعد.
+        date_format: "%-d %B"

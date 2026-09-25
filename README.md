@@ -119,6 +119,7 @@ Higher-level compositions of the primitives live in `app/components/blocks/` (th
 | Team members | `TeamMembers`, `TeamMemberList`, `TeamMember`, `TeamInvite` |
 | Review summary | `ReviewSummary`, `ReviewBreakdown`, `ReviewHighlight` |
 | Order tracker | `OrderTracker`, `OrderTimeline`, `OrderStep`, `OrderCourier` |
+| Transactions | `Transactions`, `Transaction` |
 
 ### Render props
 

@@ -1,0 +1,69 @@
+---
+id: transactions
+title: Transactions
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A recent-transactions card: All / Income / Spending filter tabs over rows of icon tiles, counterparties, categories,
+dates and signed amounts. A **block** composed from [Tabs](<%= page_path(:tabs) %>),
+[Thumbnail](<%= page_path(:thumbnail) %>) and Icon, as on the [Appica homepage](https://appica.dev/ui).
+
+<%= embed Blocks::TransactionsPreview, :default %>
+
+## Usage
+
+```ruby
+Transactions(currency: account.currency) do
+  account.transactions.recent.each do |transaction|
+    Transaction(title: transaction.counterparty, category: transaction.category, date: transaction.booked_on,
+      amount: transaction.amount, icon: transaction.icon)
+  end
+end
+```
+
+- A positive `amount:` is income (a `+` in the success color), a negative one spending (`-`); both use the
+  block's `currency:` and the locale's number format.
+- The tabs filter the rows in the browser by that kind (`blocks--transactions`); a filter with no rows shows
+  "No transactions yet". `filters: false` drops the tabs.
+- The meta line joins `category:` and `date:` (formatted per locale).
+
+## Localization
+
+`transactions.locales.yml` holds the title, the tab labels, the empty message and the date format for English,
+Czech, German and Arabic. Switch the **Locale** display option to try it.
+
+## Examples
+
+### Empty filter
+
+<%= embed Blocks::TransactionsPreview, :spending_only %>
+
+### RTL
+
+<%= embed Blocks::TransactionsPreview, :rtl %>
+
+## API reference
+
+### Transactions
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title:` | `String` | translated | Heading ("Recent transactions"). |
+| `currency:` | `String` | `"USD"` | Currency of every amount. |
+| `filters:` | `Boolean` | `true` | Show the All / Income / Spending tabs. |
+
+### Transaction
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title:` | `String` | - | Counterparty or description. |
+| `amount:` | `Numeric` | - | Positive for income, negative for spending. |
+| `category:` | `String` | - | Shown before the date. |
+| `date:` | `Date` | - | Formatted with the locale's `date_format`. |
+| `icon:` | `Symbol` | `:receipt` | Icon in the outline tile. |
+
+## Accessibility
+
+- The rows are a list named by the title; the tabs are a labelled tablist ("Filter transactions").
+- The sign and color both mark income, so the amount doesn't rely on color alone.

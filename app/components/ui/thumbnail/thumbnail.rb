@@ -40,7 +40,7 @@ class UI::Thumbnail < UI::Base
 
   def view_template(&)
     div(**mix(defaults(
-      data: { slot: "thumbnail", variant: @variant, controller: ("ui--avatar" if image?) },
+      data: { slot: "thumbnail", variant: @variant.to_s, controller: ("ui--avatar" if image?) },
       style: ("font-size: #{@size}px" if @size.is_a?(Numeric))
     ), @attributes.except(:class)), class: cn(BASE, SIZES[@size], SHAPES[@shape], VARIANTS[@variant], override: @attributes[:class])) do
       if image?
