@@ -75,17 +75,26 @@ class UI::BreadcrumbPreview < UI::BasePreview
   end
 
   # @label Collapsed trail
-  # BreadcrumbEllipsis stands in for crumbs collapsed out of a long trail (it becomes a menu
-  # trigger once DropdownMenu lands); a disabled crumb is dimmed and skipped by Tab.
+  # The middle crumbs collapse into a DropdownMenu whose trigger is a BreadcrumbEllipsis; a
+  # disabled crumb is dimmed and skipped by Tab.
   def collapsed
     phlex do
       Breadcrumb do
         BreadcrumbList do
           BreadcrumbItem { BreadcrumbLink(href: "#!") { "Home" } }
           BreadcrumbSeparator()
-          BreadcrumbItem { BreadcrumbEllipsis(class: "size-6") }
+          BreadcrumbItem do
+            DropdownMenu do
+              DropdownMenuTrigger(aria_label: "Show more", class: "text-foreground-muted hover:text-foreground-intense outline-ring hover:bg-background-muted data-popup-open:bg-background-muted data-popup-open:text-foreground-intense rounded-2xs flex size-6 cursor-pointer items-center justify-center transition-colors") do
+                BreadcrumbEllipsis()
+              end
+              DropdownMenuContent do
+                %w[ Documentation Components Themes ].each { |label| DropdownMenuLinkItem(href: "#!") { label } }
+              end
+            end
+          end
           BreadcrumbSeparator()
-          BreadcrumbItem { BreadcrumbLink(disabled: true) { "Archive" } }
+          BreadcrumbItem { BreadcrumbLink(disabled: true) { "Breadcrumb" } }
           BreadcrumbSeparator()
           BreadcrumbItem { BreadcrumbLink(active: true) { "Collapsed" } }
         end

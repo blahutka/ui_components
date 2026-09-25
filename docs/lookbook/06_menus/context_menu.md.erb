@@ -1,0 +1,57 @@
+---
+id: context_menu
+title: Context Menu
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A menu of actions for an object, opened by right-clicking it.
+[Appica docs](https://appica.dev/ui/components/react/context-menu)
+
+<%= embed UI::ContextMenuPreview, :default %>
+
+## Usage
+
+```ruby
+ContextMenu do
+  ContextMenuTrigger(class: "flex h-40 w-72 items-center justify-center rounded-xl border border-dashed") { "Right-click here" }
+  ContextMenuContent do
+    ContextMenuItem { "Copy" }
+    ContextMenuSeparator()
+    ContextMenuItem { "Delete" }
+  end
+end
+```
+
+`ContextMenuTrigger` is the target area (a `<div>`, or your own element with a block that takes an argument). A
+right-click, a long press on touch, or Shift+F10 / the context-menu key while it has focus opens the menu at the
+pointer. Everything inside is [Dropdown Menu](<%= page_path(:dropdown_menu) %>)'s parts under `ContextMenu*` names -
+items, checkbox and radio items, groups, link items and submenus - with the same keyboard support. Offer the same
+actions from a visible button too, for discoverability.
+
+## Examples
+
+### On a card
+
+<%= embed UI::ContextMenuPreview, :card %>
+
+### Checkbox & radio items
+
+<%= embed UI::ContextMenuPreview, :stateful %>
+
+### RTL
+
+<%= embed UI::ContextMenuPreview, :rtl %>
+
+## API reference
+
+`ContextMenu(size:)`, `ContextMenuTrigger`, `ContextMenuContent(side_offset: 2, …)`, `ContextMenuItem`,
+`ContextMenuCheckboxItem`, `ContextMenuRadioGroup`, `ContextMenuRadioItem`, `ContextMenuLinkItem`, `ContextMenuGroup`,
+`ContextMenuGroupLabel`, `ContextMenuSeparator`, `ContextMenuSub`, `ContextMenuSubTrigger`, `ContextMenuSubContent` - see
+[Dropdown Menu](<%= page_path(:dropdown_menu) %>) for their props. Events are prefixed `ui--context-menu:`.
+
+## Accessibility
+
+- The popup is a `role="menu"`; make the trigger focusable (`tabindex: "0"`) so keyboard users can open it with
+  Shift+F10 or the context-menu key.
+- Focus moves into the menu and returns to where it was when it closes.

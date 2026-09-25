@@ -14,7 +14,9 @@ import ToggleController from "ui/toggle/toggle_controller"
 import ToggleGroupController from "ui/toggle/toggle_group_controller"
 import ComboboxController from "ui/combobox/combobox_controller"
 import CollapsibleController from "ui/collapsible/collapsible_controller"
+import ContextMenuController from "ui/context_menu/context_menu_controller"
 import CopyButtonController from "ui/copy_button/copy_button_controller"
+import DropdownMenuController from "ui/dropdown_menu/dropdown_menu_controller"
 import DrawerController from "ui/drawer/drawer_controller"
 import FieldController from "ui/field/field_controller"
 import InputController from "ui/input/input_controller"
@@ -46,7 +48,9 @@ application.register("ui--toggle", ToggleController)
 application.register("ui--toggle-group", ToggleGroupController)
 application.register("ui--combobox", ComboboxController)
 application.register("ui--collapsible", CollapsibleController)
+application.register("ui--context-menu", ContextMenuController)
 application.register("ui--copy-button", CopyButtonController)
+application.register("ui--dropdown-menu", DropdownMenuController)
 application.register("ui--drawer", DrawerController)
 application.register("ui--field", FieldController)
 application.register("ui--input", InputController)

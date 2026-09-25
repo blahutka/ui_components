@@ -1,0 +1,127 @@
+---
+id: dropdown_menu
+title: Dropdown Menu
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A menu of actions opened from a button.
+[Appica docs](https://appica.dev/ui/components/react/dropdown-menu)
+
+<%= embed UI::DropdownMenuPreview, :default %>
+
+## Usage
+
+```ruby
+DropdownMenu do
+  DropdownMenuTrigger { |trigger| Button(**trigger, variant: :outline) { "Open" } }
+  DropdownMenuContent do
+    DropdownMenuGroup do
+      DropdownMenuGroupLabel { "My Account" }
+      DropdownMenuItem { "Profile" }
+      DropdownMenuItem { "Billing" }
+    end
+    DropdownMenuSeparator()
+    DropdownMenuLinkItem(href: settings_path) { "Settings" }
+  end
+end
+```
+
+- `DropdownMenuTrigger` - toggles the menu; a block with an argument receives its attributes for your own Button.
+- `DropdownMenuContent` - the popup, opened in the browser's top layer (so no `overflow` clips it) and placed by
+  `side:` / `align:`, flipping at the viewport edge.
+- `DropdownMenuItem` - an action; `DropdownMenuLinkItem` - a link.
+- `DropdownMenuCheckboxItem`, `DropdownMenuRadioGroup` + `DropdownMenuRadioItem` - stateful options.
+- `DropdownMenuGroup` / `DropdownMenuGroupLabel` / `DropdownMenuSeparator` - structure.
+- `DropdownMenuSub` / `DropdownMenuSubTrigger` / `DropdownMenuSubContent` - nested submenus.
+
+Tag a leading icon `data: { icon: "start" }`; push a trailing Kbd or Badge to the edge with `class: "ms-auto"`. Items
+emit `ui--dropdown-menu:select`; wire an action with Stimulus, or use a link item or `button_to` inside the menu. To
+pick a value use a [Select](<%= page_path(:select) %>); for right-click use a
+[Context Menu](<%= page_path(:context_menu) %>); for an app command bar a [Menubar](<%= page_path(:menubar) %>).
+
+## Examples
+
+### Account menu
+
+<%= embed UI::DropdownMenuPreview, :account %>
+
+### Icons, shortcuts & animated chevron
+
+<%= embed UI::DropdownMenuPreview, :shortcuts %>
+
+### Scrollable
+
+<%= embed UI::DropdownMenuPreview, :scrollable %>
+
+### Checkbox items
+
+<%= embed UI::DropdownMenuPreview, :checkboxes %>
+
+### Radio items
+
+<%= embed UI::DropdownMenuPreview, :radios %>
+
+### Submenus
+
+<%= embed UI::DropdownMenuPreview, :submenus %>
+
+### Open on hover
+
+<%= embed UI::DropdownMenuPreview, :hover %>
+
+### Link items
+
+<%= embed UI::DropdownMenuPreview, :links %>
+
+### Sizes
+
+<%= embed UI::DropdownMenuPreview, :sizes %>
+
+### Side & alignment
+
+<%= embed UI::DropdownMenuPreview, :placement %>
+
+### RTL
+
+<%= embed UI::DropdownMenuPreview, :rtl %>
+
+## API reference
+
+### DropdownMenu
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size:` | `:sm`, `:md`, `:lg` | `:md` | Rows, labels and popup radius. |
+| `open_on_hover:` | `Boolean` | `false` | Open when the pointer rests on the trigger. |
+| `delay:` / `close_delay:` | `Integer` | `100` | Hover open / close delays in ms. |
+
+Events (prefix `ui--dropdown-menu:`): `select` { item, label }, `checked-change` { item, checked }, `value-change`
+{ group, value }, `open-change` { open }.
+
+### DropdownMenuContent
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `side:` | `:bottom`, `:top`, `:inline_end`, `:inline_start` | `:bottom` | Preferred side (flips when there's no room). |
+| `align:` | `:start`, `:center`, `:end` | `:start` | Alignment along that side. |
+| `side_offset:` / `align_offset:` | `Integer` | `6` / `0` | Gaps in px. |
+
+### Items
+
+| Part | Props | Description |
+|------|-------|-------------|
+| `DropdownMenuItem` | `disabled:`, `close_on_click:` (`true`), `label:` | An action; `label:` is what typeahead matches. |
+| `DropdownMenuCheckboxItem` | `checked:`, `disabled:` | Toggles; keeps the menu open. |
+| `DropdownMenuRadioGroup` | `value:`, `name:` | Holds the radio items. |
+| `DropdownMenuRadioItem` | `value:`, `disabled:` | One option. |
+| `DropdownMenuLinkItem` | `href:` + anchor attributes | A link. |
+| `DropdownMenuSubContent` | `side_offset:` (`12`) | A submenu popup beside its trigger. |
+
+## Accessibility
+
+- The trigger has `aria-haspopup="menu"` / `aria-expanded`; the popup is a `role="menu"` of `menuitem`,
+  `menuitemcheckbox` and `menuitemradio` rows.
+- ↓ / Enter / Space open it on the first item, ↑ on the last; arrows, Home / End and typeahead move; → / ← open and
+  close submenus (mirrored in RTL); Escape closes a level and returns focus; Tab closes.
+- Enter and exit transitions honor `prefers-reduced-motion`.
