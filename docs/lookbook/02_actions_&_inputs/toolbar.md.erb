@@ -1,0 +1,60 @@
+---
+id: toolbar
+title: Toolbar
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A strip of controls with a single tab stop - the arrow keys move between them.
+[Appica docs](https://appica.dev/ui/components/react/toolbar)
+
+<%= embed UI::ToolbarPreview, :default %>
+
+## Usage
+
+```ruby
+Toolbar(aria_label: "Formatting") do
+  ToolbarGroup(aria_label: "Text style") do
+    ToolbarButton { |item| Button(**item, variant: :ghost) { "Bold" } }
+    ToolbarButton { |item| Button(**item, variant: :ghost) { "Italic" } }
+  end
+  ToolbarSeparator()
+  ToolbarLink(href: "#help") { "Help" }
+end
+```
+
+Items are composed, not styled: `ToolbarButton`, `ToolbarLink` and `ToolbarInput` hand their attributes to the
+control you give them - a [Button](<%= page_path(:button) %>), a [Toggle](<%= page_path(:toggle) %>), a
+[SelectTrigger](<%= page_path(:select) %>), an [Input](<%= page_path(:input) %>) - so it keeps its look and joins the
+roving focus. A toolbar never wraps: when there's no room it scrolls along its axis (scrollbar hidden).
+
+## Examples
+
+### With a toggle group
+
+<%= embed UI::ToolbarPreview, :with_toggle_group %>
+
+### Vertical orientation
+
+<%= embed UI::ToolbarPreview, :vertical %>
+
+### RTL
+
+<%= embed UI::ToolbarPreview, :rtl %>
+
+## API reference
+
+| Part | Props | Description |
+|------|-------|-------------|
+| `Toolbar` | `orientation:` (`:horizontal`), `loop_focus:` (`true`), `disabled:` | The `role="toolbar"` strip. |
+| `ToolbarButton` | `disabled:`; block `{ \|item\| … }` | A button item (a plain `<button>` without a block argument). |
+| `ToolbarLink` | `href:`; block `{ \|item\| … }` | A link item. |
+| `ToolbarInput` | `disabled:`; block `{ \|item\| … }` | An input item - ←/→ leave it only at the text's edges. |
+| `ToolbarGroup` | `disabled:`, `aria_label:` | A `role="group"` of items. |
+| `ToolbarSeparator` | `orientation:` | A divider across the toolbar's axis. |
+
+## Accessibility
+
+- `role="toolbar"`, one tab stop; ←/→ (or ↑/↓ when vertical) move focus, Home / End jump to the ends.
+- Disabled items stay reachable (`aria-disabled`) so keyboard users can still read them.
+- Name the toolbar and each group with `aria_label:`.

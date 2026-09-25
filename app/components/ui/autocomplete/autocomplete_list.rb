@@ -39,7 +39,7 @@ class UI::AutocompleteList < UI::Base
         tabindex: "-1",
         aria: { orientation: grid? ? "horizontal" : "vertical" },
         style: ("grid-template-columns: repeat(#{@cols.to_i}, minmax(0, 1fr))" if grid?),
-        data: { slot: "autocomplete-list", "ui--autocomplete-target": "list", cols: (@cols || 1 if grid?) }
+        data: { slot: "#{root.slot}-list", "#{root.identifier}-target": "list", cols: (@cols || 1 if grid?) }
       }
     end
 end

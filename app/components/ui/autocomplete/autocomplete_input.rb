@@ -34,7 +34,7 @@ class UI::AutocompleteInput < UI::Base
     div(
       role: "group",
       class: cn(BASE, VARIANTS[root.variant], SIZES[root.size], override: @attributes[:class]),
-      data: { slot: "autocomplete-input", "ui--autocomplete-target": "anchor" }
+      data: { slot: "#{root.slot}-input", "#{root.identifier}-target": "anchor" }
     ) do
       slot(@start_slot, :start)
       field
@@ -49,9 +49,9 @@ class UI::AutocompleteInput < UI::Base
 
     def slot(content, position)
       if content == :selected_icon
-        span(class: "contents", data: { slot: "autocomplete-#{position}-slot", "ui--autocomplete-target": "selectedIcon" })
+        span(class: "contents", data: { slot: "#{root.slot}-#{position}-slot", "#{root.identifier}-target": "selectedIcon" })
       elsif content
-        span(class: "flex shrink-0 items-center", data: { slot: "autocomplete-#{position}-slot" }) { render content }
+        span(class: "flex shrink-0 items-center", data: { slot: "#{root.slot}-#{position}-slot" }) { render content }
       end
     end
 
@@ -68,9 +68,9 @@ class UI::AutocompleteInput < UI::Base
         aria: { expanded: "false", haspopup: "listbox", autocomplete: "list", controls: root.list_id },
         class: FIELD,
         data: {
-          slot: "autocomplete-input-field",
-          "ui--autocomplete-target": "input",
-          action: "input->ui--autocomplete#filter keydown->ui--autocomplete#navigate focus->ui--autocomplete#focus click->ui--autocomplete#focus"
+          slot: "#{root.slot}-input-field",
+          "#{root.identifier}-target": "input",
+          action: "input->#{root.identifier}#filter keydown->#{root.identifier}#navigate focus->#{root.identifier}#focus click->#{root.identifier}#focus"
         }
       }, @attributes.except(:class)))
     end
@@ -78,7 +78,7 @@ class UI::AutocompleteInput < UI::Base
     def clear_button
       button(
         type: "button", tabindex: "-1", hidden: root.value.blank?, aria: { label: "Clear selection" }, class: CLEAR,
-        data: { slot: "autocomplete-clear", "ui--autocomplete-target": "clear", action: "ui--autocomplete#clear" }
+        data: { slot: "#{root.slot}-clear", "#{root.identifier}-target": "clear", action: "#{root.identifier}#clear" }
       ) do
         render UI::Icon.new(:x, stroke_width: 2, class: "size-[1em]")
       end
@@ -88,7 +88,7 @@ class UI::AutocompleteInput < UI::Base
       button(
         type: "button", tabindex: "-1", disabled: root.disabled?,
         aria: { label: "Toggle popup", expanded: "false", haspopup: "listbox" }, class: TOGGLE,
-        data: { slot: "autocomplete-icon", "ui--autocomplete-target": "toggle", action: "ui--autocomplete#toggle" }
+        data: { slot: "#{root.slot}-icon", "#{root.identifier}-target": "toggle", action: "#{root.identifier}#toggle" }
       ) do
         render UI::Icon.new(:chevron_down, stroke_width: 2, class: "size-4.5 motion-safe:transition-transform motion-safe:duration-200 group-data-popup-open/autocomplete-icon:rotate-180")
       end

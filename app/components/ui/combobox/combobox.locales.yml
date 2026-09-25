@@ -1,0 +1,32 @@
+en:
+  ui_components:
+    ui:
+      combobox:
+        clear: Clear selection
+        toggle: Toggle popup
+        remove: Remove
+        create: Create "%{query}"
+cs:
+  ui_components:
+    ui:
+      combobox:
+        clear: Zrušit výběr
+        toggle: Přepnout nabídku
+        remove: Odebrat
+        create: Vytvořit „%{query}“
+de:
+  ui_components:
+    ui:
+      combobox:
+        clear: Auswahl löschen
+        toggle: Liste umschalten
+        remove: Entfernen
+        create: "„%{query}“ erstellen"
+ar:
+  ui_components:
+    ui:
+      combobox:
+        clear: مسح الاختيار
+        toggle: تبديل القائمة
+        remove: إزالة
+        create: إنشاء "%{query}"

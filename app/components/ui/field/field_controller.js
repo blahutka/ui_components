@@ -6,7 +6,7 @@ import { Controller } from "@hotwired/stimulus"
 // `messages` ({ valueMissing: "…" }) replace the browser's text per failure. Toggles
 // data-invalid on the field, its control and the control's wrapper, and aria-invalid.
 export default class extends Controller {
-  static targets = [ "control", "error", "message" ]
+  static targets = [ "control", "mirror", "error", "message" ]
   static values = { mode: { type: String, default: "submit" }, messages: Object }
 
   static failures = [ "valueMissing", "typeMismatch", "patternMismatch", "tooShort", "tooLong", "rangeUnderflow", "rangeOverflow", "stepMismatch", "badInput", "customError" ]
@@ -69,10 +69,10 @@ export default class extends Controller {
     ids.length ? this.controlTarget.setAttribute("aria-describedby", ids.join(" ")) : this.controlTarget.removeAttribute("aria-describedby")
   }
 
-  // A radio group has several controls; they all show the state
+  // A radio group has several controls, a Select shows the state on its trigger (a mirror)
   setInvalid(invalid) {
     this.element.toggleAttribute("data-invalid", invalid)
-    this.controlTargets.forEach(control => {
+    ;[ ...this.controlTargets, ...this.mirrorTargets ].forEach(control => {
       const wrapper = control.closest("[data-slot$=-wrapper]")
       ;[ control, wrapper ].filter(Boolean).forEach(element => element.toggleAttribute("data-invalid", invalid))
       control.toggleAttribute("aria-invalid", invalid)

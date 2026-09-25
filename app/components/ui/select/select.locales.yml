@@ -1,0 +1,20 @@
+en:
+  ui_components:
+    ui:
+      select:
+        summary: "%{count} selected"
+cs:
+  ui_components:
+    ui:
+      select:
+        summary: "Vybráno: %{count}"
+de:
+  ui_components:
+    ui:
+      select:
+        summary: "%{count} ausgewählt"
+ar:
+  ui_components:
+    ui:
+      select:
+        summary: "%{count} محدد"

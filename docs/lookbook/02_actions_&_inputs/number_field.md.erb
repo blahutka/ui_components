@@ -1,0 +1,77 @@
+---
+id: number_field
+title: Number Field
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A numeric input between − and + steppers that formats its value.
+[Appica docs](https://appica.dev/ui/components/react/number-field)
+
+<%= embed UI::NumberFieldPreview, :default %>
+
+## Usage
+
+```ruby
+NumberField(default_value: 1, min: 0, max: 10, name: "quantity", aria_label: "Quantity")
+NumberField(default_value: 19.99, step: 0.5, format: { style: "currency", currency: "USD" }, name: "price")
+```
+
+The visible input is a text field (`role="spinbutton"`) that shows the formatted value; a hidden input submits the
+plain number under `name:`. It accepts typed numbers in the current locale's format and re-formats them on commit
+(blur, Enter, a step). The steppers repeat while held and disable at a bound. Label it with a `<label for>` pointing
+at its `id:`, a Field, or `aria_label:`.
+
+## Examples
+
+### Variants
+
+<%= embed UI::NumberFieldPreview, :variants %>
+
+### Sizes
+
+<%= embed UI::NumberFieldPreview, :sizes %>
+
+### Min, max & step
+
+<%= embed UI::NumberFieldPreview, :bounds %>
+
+### Formatting
+
+<%= embed UI::NumberFieldPreview, :formatting %>
+
+### Reacting to changes
+
+<%= embed UI::NumberFieldPreview, :controlled %>
+
+### Disabled & error states
+
+<%= embed UI::NumberFieldPreview, :states %>
+
+### RTL
+
+<%= embed UI::NumberFieldPreview, :rtl %>
+
+## API reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` | `:outline`, `:soft` | `:outline` | Bordered or filled; the steppers invert their fill. |
+| `size:` | `:sm`, `:md`, `:lg` | `:md` | Width, steppers and text. |
+| `default_value:` / `value:` | `Numeric` | - | Empty when missing. |
+| `min:` / `max:` | `Numeric` | - | Clamp the value and disable the stepper at the bound. |
+| `step:` | `Numeric` | `1` | Stepper and ↑/↓ increment. |
+| `large_step:` / `small_step:` | `Numeric` | `step × 10` / `step ÷ 10` | Shift / Alt increments. |
+| `format:` / `locale:` | `Hash` / `String` | - / `I18n.locale` | Intl.NumberFormat options and locale for the display. |
+| `name:` | `String` | - | Hidden input with the plain number. |
+| `allow_wheel_scrub:` | `Boolean` | `false` | Step with the mouse wheel while focused. |
+| `read_only:`, `required:`, `disabled:`, `invalid:` | `Boolean` | - | The usual states. |
+| `input:` | `Hash` | `{}` | Attributes for the visible input. |
+
+Event: `ui--number-field:change` with `{ value }` (`null` when empty).
+
+## Accessibility
+
+- A `role="spinbutton"` with `aria-valuenow`, min, max and (when formatted) `aria-valuetext`.
+- The steppers are `<button>`s named "Increase value" / "Decrease value" (translated), out of the tab order.
+- ↑/↓ step, Shift / Alt for the large / small step, Home / End jump to the bounds.

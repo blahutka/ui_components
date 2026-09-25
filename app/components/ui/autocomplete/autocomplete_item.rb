@@ -30,11 +30,11 @@ class UI::AutocompleteItem < UI::Base
         role: "option",
         aria: { selected: "false", disabled: (@disabled ? "true" : nil) },
         data: {
-          slot: "autocomplete-item",
+          slot: "#{root.slot}-item",
           value: @value.is_a?(String) ? @value : root.string_value_for(@value),
           disabled: (@disabled ? "" : nil),
-          "ui--autocomplete-target": "item",
-          action: "click->ui--autocomplete#select mousemove->ui--autocomplete#hover"
+          "#{root.identifier}-target": "item",
+          action: "click->#{root.identifier}#select mousemove->#{root.identifier}#hover"
         }
       }
     end

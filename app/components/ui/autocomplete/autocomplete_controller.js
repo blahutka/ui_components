@@ -175,16 +175,21 @@ export default class extends Controller {
     const query = this.normalize(this.inputTarget.value)
 
     this.itemTargets.forEach(item => {
-      item.hidden = query.length > 0 && !this.normalize(item.dataset.value).includes(query)
+      item.hidden = query.length > 0 && !this.normalize(this.textOf(item)).includes(query)
     })
 
     this.groupTargets.forEach(group => {
-      group.hidden = !group.querySelector("[data-slot='autocomplete-item']:not([hidden])")
+      group.hidden = !group.querySelector("[role=option]:not([hidden])")
     })
 
     const empty = this.visibleItems.length === 0
     if (this.hasContentTarget) this.contentTarget.toggleAttribute("data-empty", empty)
     if (this.hasListTarget) this.listTarget.hidden = empty
+  }
+
+  // What the filter matches against
+  textOf(item) {
+    return item.dataset.value
   }
 
   normalize(text) {

@@ -1,0 +1,118 @@
+---
+id: select
+title: Select
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A button that opens a list of options - pick one, or several.
+[Appica docs](https://appica.dev/ui/components/react/select)
+
+<%= embed UI::SelectPreview, :default %>
+
+## Usage
+
+```ruby
+Select(name: "fruit", default_value: "apple") do
+  SelectTrigger(aria_label: "Fruit") { SelectValue(placeholder: "Pick a fruit") }
+  SelectContent do
+    SelectItem(value: "apple") { "Apple" }
+    SelectItem(value: "orange") { "Orange" }
+  end
+end
+```
+
+The root holds the value and the shared `size:` / `variant:`. `SelectTrigger` is styled like an
+[Input](<%= page_path(:input) %>) and shows `SelectValue`. `SelectContent` opens in the browser's top layer (the
+Popover API), so no `overflow: hidden` ancestor clips it; by default it opens over the trigger with the selected item
+aligned to it (`align_item_with_trigger: false` opens below). A visually hidden input submits the value and carries
+`required:`, so the Select validates in a [Field](<%= page_path(:field) %>). For long lists users need to search, use
+a [Combobox](<%= page_path(:combobox) %>).
+
+## Examples
+
+### Variants
+
+<%= embed UI::SelectPreview, :variants %>
+
+### Sizes
+
+<%= embed UI::SelectPreview, :sizes %>
+
+### Grouped options
+
+<%= embed UI::SelectPreview, :grouped %>
+
+### Clearable
+
+<%= embed UI::SelectPreview, :clearable %>
+
+### Disabled & error states
+
+<%= embed UI::SelectPreview, :states %>
+
+### Start & end slots
+
+<%= embed UI::SelectPreview, :slots %>
+
+### Country select
+
+<%= embed UI::SelectPreview, :countries %>
+
+### Showing a label for the value
+
+<%= embed UI::SelectPreview, :labels %>
+
+### Multiple selection
+
+<%= embed UI::SelectPreview, :multiple %>
+
+### In a form
+
+<%= embed UI::SelectPreview, :form %>
+
+### RTL
+
+<%= embed UI::SelectPreview, :rtl %>
+
+## API reference
+
+### Select
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `default_value:` / `value:` | `String`, `Array` | - | The selection (an array when `multiple`). |
+| `multiple:` | `Boolean` | `false` | Several values; submitted as `name[]`. |
+| `size:` / `variant:` | `:sm`/`:md`/`:lg` / `:outline`/`:soft` | `:md` / `:outline` | Shared by the parts. |
+| `align_item_with_trigger:` | `Boolean` | `true` | Open over the trigger with the selected item on it. Turn off with a start slot. |
+| `items:` | `Hash`, `Array` | `{}` | Value → label, so the trigger shows labels before the list is read. |
+| `name:`, `required:`, `disabled:`, `read_only:` | | | Form behaviour. |
+
+Events: `ui--select:change` (`{ value }`) and `ui--select:open-change` (`{ open }`).
+
+### SelectTrigger
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `clearable:` | `Boolean` | `false` | A ✕ once there's a value (Delete / Backspace clear too). |
+| `start_slot:` / `end_slot:` | `Symbol`, `String`, `Proc` | - | Adornments; `start_slot: :selected` mirrors the selected item's `data: { icon: "start" }` element. |
+| `invalid:` | `Boolean` | - | Error state (or `aria_invalid:`; a Field sets it). |
+
+### SelectValue
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `placeholder:` | `String` | - | Shown when empty. |
+| `summary:` | `String` | "%{count} selected" | For several values (translated). |
+
+### SelectContent, SelectItem, SelectGroup, SelectGroupLabel, SelectSeparator
+
+`SelectContent(side: :bottom | :top, side_offset: 6)`; `SelectItem(value:, label:, disabled:)` - `label:` is what the
+trigger shows and typeahead matches (the item's text by default).
+
+## Accessibility
+
+- The trigger is a `role="combobox"` for a `listbox` of `option`s; focus stays on the trigger and the highlight is
+  `aria-activedescendant`.
+- Space / Enter / ↓ open it, ↑/↓ move, Enter selects, Escape closes, typing jumps to a matching option.
+- The ✕ is decorative (`aria-hidden`); Delete / Backspace clear from the keyboard.

@@ -1,0 +1,64 @@
+---
+id: copy_button
+title: Copy Button
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A button that copies text to the clipboard and confirms with a drawn check.
+[Appica docs](https://appica.dev/ui/components/react/copy-button)
+
+<%= embed UI::CopyButtonPreview, :default %>
+
+## Usage
+
+```ruby
+CopyButton(value: "npm install @appica/ui-react")
+CopyButton(target: "#api-key", label: "Copy key")
+CopyButton(value: url, variant: :outline, copied_label: "Copied!") { "Copy link" }
+```
+
+Built on [Button](<%= page_path(:button) %>) - a small square ghost button unless you say otherwise. `value:` is the
+text; `target:` (a CSS selector) copies an element's value or text instead. It falls back to a hidden textarea +
+`execCommand` where the Clipboard API is blocked (iframes, plain http).
+
+## Examples
+
+### Variants
+
+<%= embed UI::CopyButtonPreview, :variants %>
+
+### Sizes
+
+<%= embed UI::CopyButtonPreview, :sizes %>
+
+### With a label
+
+<%= embed UI::CopyButtonPreview, :with_label %>
+
+### Custom icon
+
+<%= embed UI::CopyButtonPreview, :custom_icon %>
+
+### Copy from an element
+
+<%= embed UI::CopyButtonPreview, :from_element %>
+
+## API reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value:` | `String` | - | The text to copy. |
+| `target:` | `String` | - | A selector: copy that element's value / text. |
+| `label:` / `copied_label:` | `String` | "Copy" / "Copied" | Accessible name (and title) at rest / after copying (translated). |
+| `timeout:` | `Integer` | `2000` | Milliseconds the copied state lasts. |
+| `icon:` | `Symbol` | copy glyph | The resting icon. |
+| `variant:` / `size:` | Button's | `:ghost` / `:sm` | Square without a block; a block adds a text label. |
+
+Events: `ui--copy-button:copy` (`{ value }`) and `ui--copy-button:error`. `data-copied` is set while copied.
+
+## Accessibility
+
+- A real `<button>` named by `label:`; after copying its name and a `role="status"` message change to
+  `copied_label:`.
+- The icon cross-fade and check honor `prefers-reduced-motion`.

@@ -1,0 +1,24 @@
+en:
+  ui_components:
+    ui:
+      number_field:
+        increment: Increase value
+        decrement: Decrease value
+cs:
+  ui_components:
+    ui:
+      number_field:
+        increment: Zvýšit hodnotu
+        decrement: Snížit hodnotu
+de:
+  ui_components:
+    ui:
+      number_field:
+        increment: Wert erhöhen
+        decrement: Wert verringern
+ar:
+  ui_components:
+    ui:
+      number_field:
+        increment: زيادة القيمة
+        decrement: إنقاص القيمة

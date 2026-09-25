@@ -8,6 +8,7 @@ export default class extends Controller {
   static values = { multiple: Boolean, loop: { type: Boolean, default: true }, name: String }
 
   connect() {
+    if (this.inToolbar) return
     this.rove(this.itemTargets.find(item => this.isPressed(item) && !item.disabled) || this.enabledItems[0])
   }
 
@@ -18,12 +19,14 @@ export default class extends Controller {
     const pressed = !this.isPressed(item)
     if (pressed && !this.multipleValue) this.itemTargets.forEach(other => this.setPressed(other, false))
     this.setPressed(item, pressed)
-    this.rove(item)
+    if (!this.inToolbar) this.rove(item)
     this.syncInputs()
     this.dispatch("change", { detail: { value: this.value } })
   }
 
   navigate(event) {
+    if (this.inToolbar) return // the toolbar's roving focus covers the toggles
+
     const vertical = this.element.dataset.orientation === "vertical"
     const rtl = getComputedStyle(this.element).direction === "rtl"
     const keys = vertical ? { ArrowUp: -1, ArrowDown: 1 } : { ArrowLeft: rtl ? 1 : -1, ArrowRight: rtl ? -1 : 1 }
@@ -58,13 +61,17 @@ export default class extends Controller {
     this.inputTargets.forEach(input => input.remove())
     this.value.forEach(value => {
       const input = Object.assign(document.createElement("input"), { type: "hidden", name: `${this.nameValue}[]`, value })
-      input.dataset.uiToggleGroupTarget = "input"
+      input.setAttribute("data-ui--toggle-group-target", "input")
       this.element.append(input)
     })
   }
 
   isPressed(item) {
     return item.getAttribute("aria-pressed") === "true"
+  }
+
+  get inToolbar() {
+    return !!this.element.closest("[data-slot=toolbar]")
   }
 
   get enabledItems() {

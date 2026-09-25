@@ -33,21 +33,28 @@ From ERB: `<%= render FrameworkPicker.new %>`.
 | Button Group | `ButtonGroup` (shares `variant:`/`size:`/`icon:`/`disabled:` with its Buttons, horizontal/vertical) | [button-group](https://appica.dev/ui/components/react/button-group) |
 | Checkbox | `Checkbox`, `CheckboxGroup` (native checkbox, indeterminate, `parent:` select-all, `unchecked_value:`) | [checkbox](https://appica.dev/ui/components/react/checkbox) |
 | Chip | `Chip`, `ChipGroup` (Button palette, `dismissible:`, `href:`) | [chip](https://appica.dev/ui/components/react/chip) |
+| Combobox | `Combobox`, `ComboboxInput`, `ComboboxChips`, `ComboboxTrigger`, `ComboboxValue`, `ComboboxContent`, `ComboboxList`, `ComboboxItem`, `ComboboxEmpty`, `ComboboxGroup`, `ComboboxLabel`, `ComboboxCollection`, `ComboboxSeparator` (`multiple:` chips, `creatable:`) | [combobox](https://appica.dev/ui/components/react/combobox) |
+| Copy Button | `CopyButton` (`value:` / `target:`, clipboard fallback) | [copy-button](https://appica.dev/ui/components/react/copy-button) |
 | Drawer | `Drawer`, `DrawerTrigger`, `DrawerContent`, `DrawerHeader`, `DrawerTitle`, `DrawerDescription`, `DrawerBody`, `DrawerFooter`, `DrawerClose` | [drawer](https://appica.dev/ui/components/react/drawer) |
 | Field | `Field`, `FieldLabel`, `FieldDescription`, `FieldError`, `Fieldset`, `FieldsetLegend` (native validation on submit/blur/change, server `error:`) | [field](https://appica.dev/ui/components/react/field) |
 | Icon | `Icon(:name, size:, stroke_width:)` - the ~5,000 [Appica icons](https://appica.dev/ui/icons) by name | [icons](https://appica.dev/ui/icons) |
 | Input | `Input` (`:outline`/`:soft`, sizes, `start_slot:`/`end_slot:`, `clearable:`) | [input](https://appica.dev/ui/components/react/input) |
 | Loader | `Loader` (`:bar`, `:dots`; SVG SMIL, no JS) | [loader](https://appica.dev/ui/components/react/loader) |
 | Meter | `Meter`, `MeterLabel`, `MeterValue`, `MeterProgress` (`low:`/`high:`/`optimum:` status colors) | [meter](https://appica.dev/ui/components/react/meter) |
+| Number Field | `NumberField` (steppers, Intl `format:`, hidden plain value) | [number-field](https://appica.dev/ui/components/react/number-field) |
+| OTP Field | `OTPField`, `OTPFieldInput`, `OTPFieldSeparator` (paste / autofill, `mask:`, `auto_submit:`) | [otp-field](https://appica.dev/ui/components/react/otp-field) |
 | Progress | `Progress`, `ProgressLabel`, `ProgressValue` (`:bar`, `:circular`) | [progress](https://appica.dev/ui/components/react/progress) |
 | Radio | `RadioGroup`, `Radio` (native radios, horizontal/vertical, `required:`) | [radio](https://appica.dev/ui/components/react/radio) |
 | Rating | `Rating` (stars or any icon pair, fractions, read-only, form input) | [rating](https://appica.dev/ui/components/react/rating) |
+| Select | `Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, `SelectItem`, `SelectGroup`, `SelectGroupLabel`, `SelectSeparator` (top-layer popup, `multiple:`, `items:`) | [select](https://appica.dev/ui/components/react/select) |
 | Separator | `Separator` (`:solid`, `:dashed`, `:dotted`, `:double`, `:gradient`, `:wave`, `:zigzag`) | [separator](https://appica.dev/ui/components/react/separator) |
+| Slider | `Slider` (range, vertical, tooltip, Intl `format:`) | [slider](https://appica.dev/ui/components/react/slider) |
 | Sparkline | `Sparkline`, `SparklineChart`, `SparklineValue`, `SparklineLabel` | [sparkline](https://appica.dev/ui/components/react/sparkline) |
 | Spinner | `Spinner` (`:circular`, `:dots`, `:sparkle`; SVG SMIL, no JS) | [spinner](https://appica.dev/ui/components/react/spinner) |
 | Switch | `Switch` (native checkbox with `role="switch"`, sizes, `unchecked_value:`) | [switch](https://appica.dev/ui/components/react/switch) |
 | Textarea | `Textarea` (`rows:`, Input's variants, sizes, slots and `clearable:`) | [textarea](https://appica.dev/ui/components/react/textarea) |
 | Toggle | `Toggle`, `ToggleGroup` (render-prop onto a Button, single/multiple, roving focus, `name:`) | [toggle](https://appica.dev/ui/components/react/toggle) |
+| Toolbar | `Toolbar`, `ToolbarButton`, `ToolbarLink`, `ToolbarInput`, `ToolbarGroup`, `ToolbarSeparator` (roving focus, render props) | [toolbar](https://appica.dev/ui/components/react/toolbar) |
 
 ### Blocks
 

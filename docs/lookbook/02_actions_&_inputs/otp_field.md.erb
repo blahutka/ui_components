@@ -1,0 +1,83 @@
+---
+id: otp_field
+title: OTP Field
+label: OTP Field
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A one-time code entered one character per slot.
+[Appica docs](https://appica.dev/ui/components/react/otp-field)
+
+<%= embed UI::OTPFieldPreview, :default %>
+
+## Usage
+
+```ruby
+OTPField(length: 6, name: "code", aria_label: "Verification code") do
+  6.times { |index| OTPFieldInput(aria_label: "Digit #{index + 1} of 6") }
+end
+```
+
+Render one `OTPFieldInput` per slot. Typing fills the slots and moves on, Backspace clears and moves back, ←/→ move
+between slots, and pasting - or the OS offering an SMS code (`autocomplete="one-time-code"`) - spreads the code
+across them. A hidden input submits the joined value under `name:`.
+
+## Examples
+
+### Variants
+
+<%= embed UI::OTPFieldPreview, :variants %>
+
+### Sizes
+
+<%= embed UI::OTPFieldPreview, :sizes %>
+
+### With a separator
+
+<%= embed UI::OTPFieldPreview, :separator %>
+
+### Placeholder
+
+<%= embed UI::OTPFieldPreview, :placeholder %>
+
+### Masked
+
+<%= embed UI::OTPFieldPreview, :masked %>
+
+### Verify on complete
+
+<%= embed UI::OTPFieldPreview, :complete %>
+
+### Disabled, read-only & error states
+
+<%= embed UI::OTPFieldPreview, :states %>
+
+### RTL
+
+<%= embed UI::OTPFieldPreview, :rtl %>
+
+## API reference
+
+### OTPField
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `length:` | `Integer` | - | **Required.** Number of slots. |
+| `default_value:` / `value:` | `String` | - | Spread across the slots. |
+| `variant:` / `size:` | `:outline`/`:soft` / `:sm`/`:md`/`:lg` | `:outline` / `:md` | Every slot. |
+| `validation_type:` | `:numeric`, `:alpha`, `:alphanumeric`, `:none` | `:numeric` | Accepted characters. |
+| `mask:` | `Boolean` | `false` | Hide the characters. |
+| `auto_submit:` | `Boolean` | `false` | Submit the form when complete. |
+| `name:`, `required:`, `disabled:`, `read_only:`, `invalid:` | | | Form behaviour. |
+
+Events: `ui--otp-field:change` and `ui--otp-field:complete`, with `{ value }`.
+
+### OTPFieldInput, OTPFieldSeparator
+
+A slot (native `<input>`, give it an `aria_label:`), and a divider between groups - a dash unless given content.
+
+## Accessibility
+
+- Name the group (`aria_label:`) and each slot ("Digit 1 of 6").
+- The first slot carries `autocomplete="one-time-code"` for OS autofill.

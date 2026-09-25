@@ -57,14 +57,19 @@ class UI::Autocomplete < UI::Base
 
   def list_id = "#{id}-list"
 
+  # The Stimulus controller and data-slot prefix of the parts (Combobox reuses them)
+  def identifier = "ui--autocomplete"
+  def slot = "autocomplete"
+  def root = self
+
   private
     def root_attributes
       {
         id: id,
         data: {
-          slot: "autocomplete",
-          controller: "ui--autocomplete",
-          "ui--autocomplete-grid-value": grid?
+          slot:,
+          controller: identifier,
+          "#{identifier}-grid-value": grid?
         }
       }
     end

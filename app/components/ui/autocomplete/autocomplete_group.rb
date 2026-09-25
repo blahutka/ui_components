@@ -17,8 +17,11 @@ class UI::AutocompleteGroup < UI::Base
 
   def view_template(&)
     provide(:ui_autocomplete_group, self) do
-      div(**mix({ role: "group", aria: { labelledby: label_id }, data: { slot: "autocomplete-group", "ui--autocomplete-target": "group" } }, @attributes.except(:class)),
+      div(**mix({ role: "group", aria: { labelledby: label_id }, data: { slot: "#{root.slot}-group", "#{root.identifier}-target": "group" } }, @attributes.except(:class)),
           class: cn("flex flex-col gap-0.5", override: @attributes[:class]), &)
     end
   end
+
+  private
+    def root = consume(:ui_autocomplete, component: "Autocomplete")
 end

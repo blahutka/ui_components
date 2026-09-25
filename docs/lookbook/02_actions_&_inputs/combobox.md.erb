@@ -1,0 +1,99 @@
+---
+id: combobox
+title: Combobox
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+Pick a value from a list you can filter by typing - one, several (chips), or a new one.
+[Appica docs](https://appica.dev/ui/components/react/combobox)
+
+<%= embed UI::ComboboxPreview, :default %>
+
+## Usage
+
+```ruby
+Combobox(items: frameworks, name: "framework", default_value: "Astro") do
+  ComboboxInput(placeholder: "Search a framework")
+  ComboboxContent do
+    ComboboxEmpty { "No frameworks found." }
+    ComboboxList { |item| ComboboxItem(value: item) { item } }
+  end
+end
+```
+
+The sibling of [Autocomplete](<%= page_path(:autocomplete) %>) - it shares its parts and filtering - for **picking a
+value**: the value is always one of the items, the input shows its label and reverts to it when you leave, and
+hidden inputs submit it under `name:`. Object items are read through `item_to_string_value:` and
+`item_to_string_label:`. The chevron is on by default. For a short list without search, use a
+[Select](<%= page_path(:select) %>).
+
+## Examples
+
+### Variants
+
+<%= embed UI::ComboboxPreview, :variants %>
+
+### Clearable & chevron
+
+<%= embed UI::ComboboxPreview, :clearable %>
+
+### Country select
+
+<%= embed UI::ComboboxPreview, :countries %>
+
+### Input inside the popup
+
+<%= embed UI::ComboboxPreview, :popup_search %>
+
+### Grouped options
+
+<%= embed UI::ComboboxPreview, :grouped %>
+
+### Multiple selection
+
+<%= embed UI::ComboboxPreview, :multiple %>
+
+### Creatable
+
+```js
+element.addEventListener("ui--combobox:create", ({ detail }) => createLabel(detail.value))
+```
+
+<%= embed UI::ComboboxPreview, :creatable %>
+
+### RTL
+
+<%= embed UI::ComboboxPreview, :rtl %>
+
+## API reference
+
+### Combobox
+
+Everything [Autocomplete](<%= page_path(:autocomplete) %>) takes (`items:`, `size:`, `variant:`, `clearable:`,
+`grid:`, `item_to_string_value:`…), plus:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `default_value:` / `value:` | `String`, `Array` | - | The selection (item values). |
+| `multiple:` | `Boolean` | `false` | Several values - use ComboboxChips; submitted as `name[]`. |
+| `icon:` | `Boolean` | `true` | The chevron toggle. |
+| `item_to_string_label:` | `Symbol`, `Proc` | - | How object items show in the input. |
+| `creatable:` | `Boolean` | `false` | Offer "Create "…"" for a query with no exact match. |
+| `name:`, `required:`, `disabled:` | | | Form behaviour. |
+
+Events: `ui--combobox:change` (`{ value }`) and `ui--combobox:create` (`{ value }`).
+
+### Parts
+
+`ComboboxInput(placeholder:, start_slot:, end_slot:)` - `start_slot: :selected_icon` mirrors the selected item's
+`data: { icon: "start" }` element; inside `ComboboxContent` it's the popup's search field.
+`ComboboxChips(placeholder:)` for `multiple`. `ComboboxTrigger(start_slot:)` + `ComboboxValue(placeholder:)` for a
+select-style field. `ComboboxContent`, `ComboboxList`, `ComboboxItem(value:)`, `ComboboxEmpty`, `ComboboxGroup`,
+`ComboboxLabel`, `ComboboxCollection` and `ComboboxSeparator` work like their Autocomplete counterparts.
+
+## Accessibility
+
+- The input is a `role="combobox"` with `aria-autocomplete="list"`; options carry `aria-selected`.
+- ↑/↓ move the highlight, Enter selects, Escape closes and restores the selection's label.
+- Chips are removed with their ✕ or Backspace in the empty field.

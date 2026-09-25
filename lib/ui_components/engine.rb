@@ -6,7 +6,10 @@ module UiComponents
     # Collapsing the component folders keeps constants flat (UI::AutocompleteInput),
     # like the React exports, instead of UI::Autocomplete::AutocompleteInput.
     initializer "ui_components.autoloader", before: :setup_main_autoloader do
-      Rails.autoloaders.main.inflector.inflect("ui" => "UI")
+      Rails.autoloaders.main.inflector.inflect(
+        "ui" => "UI",
+        "otp_field" => "OTPField", "otp_field_input" => "OTPFieldInput", "otp_field_separator" => "OTPFieldSeparator", "otp_field_preview" => "OTPFieldPreview"
+      )
       Rails.autoloaders.main.collapse(COMPONENTS_PATH.join("ui/*"))
       Rails.autoloaders.main.collapse(COMPONENTS_PATH.join("blocks/*"))
 

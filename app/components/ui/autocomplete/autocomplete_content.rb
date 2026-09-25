@@ -20,10 +20,10 @@ class UI::AutocompleteContent < UI::Base
       tabindex: "-1",
       style: "margin-block: #{@side_offset}px",
       data: {
-        slot: "autocomplete-content",
+        slot: "#{root.slot}-content",
         side: @side,
-        "ui--autocomplete-target": "content",
-        action: "mousedown->ui--autocomplete#keepFocus"
+        "#{root.identifier}-target": "content",
+        action: "mousedown->#{root.identifier}#keepFocus"
       }
     }, @attributes.except(:class)), class: cn(BASE, SIZES[root.size], override: @attributes[:class]), &)
   end

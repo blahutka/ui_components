@@ -1,0 +1,88 @@
+---
+id: slider
+title: Slider
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+Pick a value - or a range - along a track, with a value tooltip.
+[Appica docs](https://appica.dev/ui/components/react/slider)
+
+<%= embed UI::SliderPreview, :default %>
+
+## Usage
+
+```ruby
+Slider(default_value: 50, thumb_aria_label: "Volume")
+Slider(default_value: [ 25, 75 ], name: "price", thumb_aria_label: %w[ Minimum Maximum ])
+```
+
+The number of thumbs follows the value: a number renders one, an array one per entry. Each thumb holds a visually
+hidden native `<input type="range">` that carries the name (`name[]` for a range), the value and the focus, so the
+slider submits with forms and is announced as a slider. The `ui--slider` controller adds dragging anywhere on the
+track and the keyboard, and keeps the fill, thumbs and tooltips in sync.
+
+## Examples
+
+### Range
+
+<%= embed UI::SliderPreview, :range %>
+
+### Steps
+
+<%= embed UI::SliderPreview, :steps %>
+
+### Tooltip visibility
+
+<%= embed UI::SliderPreview, :tooltip %>
+
+### Formatting
+
+<%= embed UI::SliderPreview, :formatted %>
+
+### Vertical
+
+<%= embed UI::SliderPreview, :vertical %>
+
+### Reacting to changes
+
+```js
+element.addEventListener("ui--slider:change", ({ detail }) => preview(detail.value))  // while moving
+element.addEventListener("ui--slider:commit", ({ detail }) => save(detail.value))     // on release
+```
+
+<%= embed UI::SliderPreview, :controlled %>
+
+### Disabled
+
+<%= embed UI::SliderPreview, :disabled %>
+
+### RTL
+
+<%= embed UI::SliderPreview, :rtl %>
+
+## API reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `default_value:` / `value:` | `Numeric`, `Array` | `min` | One value, or an array for a range. |
+| `min:` / `max:` | `Numeric` | `0` / `100` | Bounds. |
+| `step:` | `Numeric` | `1` | Granularity of dragging and the arrow keys. |
+| `large_step:` | `Numeric` | `10` | Shift + arrow, Page Up / Down. |
+| `min_steps_between_values:` | `Integer` | `0` | Minimum gap between range thumbs, in steps. |
+| `orientation:` | `:horizontal`, `:vertical` | `:horizontal` | A vertical slider fills its container's height. |
+| `tooltip:` | `:auto`, `:always`, `:never` | `:auto` | The value bubble: on hover / focus / drag, pinned, or none. |
+| `thumb_aria_label:` | `String`, `Array`, `Proc` | - | Each thumb's name (an array or `->(index)` for a range). |
+| `format:` | `Hash` | - | Intl.NumberFormat options for the tooltip and `aria-valuetext`. |
+| `name:` | `String` | - | Form field name. |
+| `disabled:` | `Boolean` | `false` | Dims it and blocks interaction. |
+
+Events: `ui--slider:change` and `ui--slider:commit`, with `{ value }`.
+
+## Accessibility
+
+- Each thumb is a native range input (`role="slider"` with `aria-valuenow` / min / max); name it with
+  `thumb_aria_label:`.
+- ←/→ (or ↑/↓) move by `step`, Shift / Page Up·Down by `large_step`, Home / End jump to the bounds; ←/→ follow the
+  reading direction.
+- The tooltip and thumb scale honor `prefers-reduced-motion`.
