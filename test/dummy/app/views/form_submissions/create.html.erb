@@ -1,0 +1,16 @@
+<div class="flex w-full max-w-md flex-col gap-4 text-sm">
+  <p class="text-foreground-intense font-medium">The controller received</p>
+  <pre class="bg-background-subtle border-border-muted overflow-x-auto rounded-lg border p-4 font-mono text-xs"><%= JSON.pretty_generate(@submitted_params.to_h) %></pre>
+  <p>
+    Valid for these fields →
+    <strong class="<%= @errors.empty? ? "text-success-emphasis" : "text-error-emphasis" %>" data-valid="<%= @errors.empty? %>"><%= @errors.empty? %></strong>
+  </p>
+  <% if @errors.any? %>
+    <ul class="text-error-emphasis list-disc ps-5">
+      <% @errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  <%= link_to "Back to the form", :back, class: "underline" %>
+</div>
