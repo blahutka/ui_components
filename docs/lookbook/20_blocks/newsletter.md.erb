@@ -1,0 +1,74 @@
+---
+id: newsletter
+title: Newsletter
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A newsletter signup: a heading, a pitch, a list of perks, an email form with a spam honeypot and a note, and social
+links. A **block** composed from [Field](<%= page_path(:field) %>), [Input](<%= page_path(:input) %>),
+[Button](<%= page_path(:button) %>) and [Thumbnail](<%= page_path(:thumbnail) %>), as on the
+[Appica homepage](https://appica.dev/ui).
+
+<%= embed Blocks::NewsletterPreview, :default %>
+
+## Usage
+
+```ruby
+Newsletter(action: subscriptions_path, socials: [
+  { href: "https://x.com/acme", icon: :brand_x, label: "X" },
+  { href: "https://github.com/acme", icon: :brand_github, label: "GitHub" }
+]) do
+  NewsletterPerk(icon: :sparkles) { "Major library updates" }
+  NewsletterPerk(icon: :template) { "Premium templates" }
+end
+```
+
+- The form posts `email` to `action:` (Turbo submits it, with the CSRF token). The browser validates the address
+  first and the Field shows "Enter your email address" / "Enter a valid email address".
+- A hidden `website` field (`honeypot:` renames it) catches bots: when it's filled the submission is dropped.
+  Check it on the server too.
+- After a successful submit the note turns into a thank-you (also announced to screen readers), the field clears
+  and `blocks--newsletter:subscribed` fires with `{ email }`.
+- Without `action:` the block runs a demo and shows the thank-you at once.
+- It has no background of its own - put it on a panel (the preview uses a `dark` one, like Appica's footer).
+
+```ruby
+# app/controllers/subscriptions_controller.rb
+def create
+  head :no_content and return if params[:website].present?
+
+  Subscriber.create_or_find_by!(email: params.require(:email))
+  head :ok
+end
+```
+
+## Localization
+
+`newsletter.locales.yml` holds the title, pitch, note, labels, validation messages and the thank-you (English,
+Czech, German, Arabic); `title:`, `description:` and `note:` replace them.
+
+## Examples
+
+### Form only
+
+<%= embed Blocks::NewsletterPreview, :minimal %>
+
+### RTL
+
+<%= embed Blocks::NewsletterPreview, :rtl %>
+
+## API reference
+
+### Newsletter
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title:` / `description:` / `note:` | `String` | translated | Heading, pitch and the line under the form (`nil` hides the pitch). |
+| `action:` / `method:` | `String` / `Symbol` | - / `:post` | Where the form posts; without `action:` a demo. |
+| `honeypot:` | `String` | `"website"` | Name of the hidden anti-spam field. |
+| `socials:` | `Array` of `{ href:, icon:, label: }` | `[]` | Icon links under the form. |
+
+### NewsletterPerk
+
+`icon:` (default `:check`) in an outline tile, and the text as the block.
