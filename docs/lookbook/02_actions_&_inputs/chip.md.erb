@@ -1,0 +1,87 @@
+---
+id: chip
+title: Chip
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A compact pill for tags, attributes, filters and removable tokens.
+[Appica docs](https://appica.dev/ui/components/react/chip)
+
+<%= embed UI::ChipPreview, :default %>
+
+## Usage
+
+```ruby
+Chip { "Design" }
+Chip(variant: :outline, dismissible: true, close_label: "Remove React") { "React" }
+Chip(href: tag_path(tag)) { "##{tag.name}" }
+```
+
+A `<button>` (an `<a>` with `href:`) in [Button](<%= page_path(:button) %>)'s palette with compact sizes.
+`dismissible: true` adds a ✕: clicking the chip plays a blur-and-scale exit, removes it and emits
+`ui--chip:dismiss` - cancel that event to handle removal yourself (e.g. a Turbo Stream `remove`).
+
+## Examples
+
+### Variants
+
+<%= embed UI::ChipPreview, :variants %>
+
+### Sizes
+
+<%= embed UI::ChipPreview, :sizes %>
+
+### With an icon
+
+<%= embed UI::ChipPreview, :with_icon %>
+
+### Dismissible
+
+<%= embed UI::ChipPreview, :dismissible %>
+
+### Selectable filters
+
+<%= embed UI::ChipPreview, :filters %>
+
+### Chip group
+
+<%= embed UI::ChipPreview, :group %>
+
+### As a link
+
+<%= embed UI::ChipPreview, :link %>
+
+### RTL
+
+<%= embed UI::ChipPreview, :rtl %>
+
+## API reference
+
+### Chip
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` | `:soft`, `:outline`, `:primary`, `:secondary`, `:destructive` | `:soft` | Style (or the group's). |
+| `size:` | `:sm`, `:md`, `:lg` | `:md` | Height, padding, text and icon (or the group's). |
+| `dismissible:` | `Boolean` | `false` | Adds a ✕ and dismisses on click. |
+| `close_label:` | `String` | "Dismiss" | The dismiss action's screen-reader text (translated). |
+| `disabled:` | `Boolean` | `false` | Disables it. |
+| `href:` | `String` | - | Render an `<a>`. |
+
+Event: `ui--chip:dismiss` (cancelable).
+
+### ChipGroup
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` / `size:` | as Chip | - | Defaults for the chips inside. |
+
+Dispatch `ui--chip-group:clear` on it to dismiss every dismissible chip.
+
+## Accessibility
+
+- A native button or link: focusable, activated with Enter / Space.
+- For a dismissible chip the whole chip is the dismiss control - make `close_label:` specific ("Remove React").
+- For selectable chips set `aria_pressed:`.
+- The exit animation becomes a plain fade under `prefers-reduced-motion`.

@@ -1,0 +1,94 @@
+---
+id: checkbox
+title: Checkbox
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A tick box for on/off choices, with a mixed state, groups and a "select all" parent.
+[Appica docs](https://appica.dev/ui/components/react/checkbox)
+
+<%= embed UI::CheckboxPreview, :default %>
+
+## Usage
+
+```ruby
+label(class: "flex items-center gap-2") do
+  Checkbox(name: "terms", checked: true)
+  plain "Accept terms and conditions"
+end
+```
+
+`Checkbox` is a native `<input type="checkbox">`, drawn with Appica's box and animated check: it submits with forms,
+toggles with Space and needs no JavaScript. It renders only the box - wrap it and its text in one `<label>`. Native
+attributes (`name`, `value`, `required`, `form`, `aria_*`) go to the input; `class:` styles the box. It's sized in
+`em`, so it follows the label's text size. `unchecked_value:` adds a hidden fallback so an unticked box still
+submits (like Rails' `check_box`).
+
+## Examples
+
+### States
+
+<%= embed UI::CheckboxPreview, :states %>
+
+### Sizing
+
+<%= embed UI::CheckboxPreview, :sizing %>
+
+### With a label and description
+
+<%= embed UI::CheckboxPreview, :with_label %>
+
+### Checkbox group
+
+`CheckboxGroup` gives its boxes one `name:` (e.g. `"toppings[]"`, so Rails receives an array) and checks those
+whose `value:` is in `default_value:`.
+
+<%= embed UI::CheckboxPreview, :group %>
+
+### Select all (parent checkbox)
+
+<%= embed UI::CheckboxPreview, :select_all %>
+
+### In a form
+
+Inside a [Field](<%= page_path(:field) %>) it takes the field's id, name and error state and is validated on submit.
+
+<%= embed UI::CheckboxPreview, :form %>
+
+### RTL
+
+<%= embed UI::CheckboxPreview, :rtl %>
+
+## API reference
+
+### Checkbox
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `checked:` | `Boolean` | - | Initial state (inside a group, derived from the group's value). |
+| `indeterminate:` | `Boolean` | `false` | The mixed state - a dash, announced as "mixed". Cleared by the first click. |
+| `value:` | `String` | - | Submitted when checked; a group's identity for the box. |
+| `unchecked_value:` | `String` | - | Submitted when unchecked (a hidden input before the box). |
+| `parent:` | `Boolean` | `false` | In a CheckboxGroup, the "select all" box driven by the others. |
+| `invalid:` | `Boolean` | - | Error state (`aria-invalid`); a Field sets it. |
+
+Other attributes go to the `<input>`; `class:` to the box.
+
+### CheckboxGroup
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name:` | `String` | - | Shared by every box inside. |
+| `default_value:` / `value:` | `Array` | `[]` | The checked boxes' values. |
+| `orientation:` | `:vertical`, `:horizontal` | `:vertical` | A column, or a wrapping row. |
+| `disabled:` | `Boolean` | `false` | Disables every box. |
+
+Event: `ui--checkbox-group:change` with `{ value }`.
+
+## Accessibility
+
+- A native checkbox: Space toggles it, the indeterminate state is announced as "mixed".
+- Wrap it in a `<label>` with its text, or give it `aria_label:`. Name a group with `aria_label:` or
+  `aria_labelledby:` - it's a `role="group"`.
+- The check and press animations are skipped under `prefers-reduced-motion`.

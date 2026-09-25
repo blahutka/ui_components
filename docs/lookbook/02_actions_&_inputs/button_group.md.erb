@@ -1,0 +1,66 @@
+---
+id: button_group
+title: Button Group
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+Buttons joined into one seamless control.
+[Appica docs](https://appica.dev/ui/components/react/button-group)
+
+<%= embed UI::ButtonGroupPreview, :default %>
+
+## Usage
+
+```ruby
+ButtonGroup(variant: :outline, aria_label: "Range") do
+  Button { "Years" }
+  Button { "Months" }
+  Button { "Days" }
+end
+```
+
+The group squares the inner corners and overlaps the shared borders of its [Buttons](<%= page_path(:button) %>), and
+gives them its `variant:`, `size:`, `icon:` and `disabled:` - set them once on the group. A button's own variant or
+size wins; the group's `disabled:` can't be undone by a button.
+
+## Examples
+
+### Variants
+
+<%= embed UI::ButtonGroupPreview, :variants %>
+
+### Sizes
+
+<%= embed UI::ButtonGroupPreview, :sizes %>
+
+### Vertical orientation
+
+<%= embed UI::ButtonGroupPreview, :vertical %>
+
+### Icon buttons
+
+<%= embed UI::ButtonGroupPreview, :icon_buttons %>
+
+### Split button
+
+<%= embed UI::ButtonGroupPreview, :split %>
+
+### RTL
+
+<%= embed UI::ButtonGroupPreview, :rtl %>
+
+## API reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` | Button variants | - | For every button (they default to `:primary`). |
+| `size:` | `:sm`, `:md`, `:lg` | - | For every button. |
+| `icon:` | `Boolean` | - | Square icon-only buttons. |
+| `orientation:` | `:horizontal`, `:vertical` | `:horizontal` | A row or a column. |
+| `disabled:` | `Boolean` | `false` | Disables every button. |
+
+## Accessibility
+
+- A `role="group"`: add `aria_label:` when its purpose isn't clear from context.
+- Each button stays a normal button in the tab order; label icon-only ones.

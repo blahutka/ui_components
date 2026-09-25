@@ -1,0 +1,20 @@
+en:
+  ui_components:
+    ui:
+      chip:
+        dismiss: Dismiss
+cs:
+  ui_components:
+    ui:
+      chip:
+        dismiss: Odebrat
+de:
+  ui_components:
+    ui:
+      chip:
+        dismiss: Entfernen
+ar:
+  ui_components:
+    ui:
+      chip:
+        dismiss: إزالة

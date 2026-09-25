@@ -48,17 +48,9 @@ class UI::Textarea < UI::Base
       @start_slot || @end_slot || @clearable
     end
 
-    def invalid?
-      @invalid || [ true, "true" ].include?(@attributes[:aria_invalid]) || field&.invalid?
-    end
-
-    def disabled?
-      @attributes[:disabled] || field&.disabled?
-    end
-
     def control(attributes)
       control_attributes({
-        rows: @rows, id: field&.control_id, name: field&.name,
+        placeholder: " ", rows: @rows, id: field&.control_id, name: field&.name,
         disabled: (true if disabled?), aria_invalid: ("true" if invalid?), aria_describedby: field&.described_by,
         data: { slot: "textarea", invalid: flag(invalid?), disabled: flag(disabled?), "ui--input-target": ("control" if @clearable), "ui--field-target": ("control" if field) }
       }, attributes)

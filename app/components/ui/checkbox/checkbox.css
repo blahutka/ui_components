@@ -1,0 +1,31 @@
+/* UI::Checkbox - the check draws in and the dash grows from the center (native :checked /
+   :indeterminate states of the input before it). */
+[data-slot="checkbox-indicator"] path {
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+  opacity: 0;
+  transition: stroke-dashoffset 200ms ease-out, opacity 100ms;
+}
+
+[data-slot="checkbox-indicator"] line {
+  transform: scaleX(0);
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+  opacity: 0;
+  transition: transform 150ms ease-out, opacity 100ms;
+}
+
+[data-slot="checkbox-input"]:checked:not(:indeterminate) + [data-slot="checkbox-indicator"] path {
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+
+[data-slot="checkbox-input"]:indeterminate + [data-slot="checkbox-indicator"] line {
+  transform: none;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="checkbox-indicator"] path,
+  [data-slot="checkbox-indicator"] line { transition: none; }
+}

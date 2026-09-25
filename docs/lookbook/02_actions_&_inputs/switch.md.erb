@@ -1,0 +1,64 @@
+---
+id: switch
+title: Switch
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+An on/off toggle for a setting that takes effect right away.
+[Appica docs](https://appica.dev/ui/components/react/switch)
+
+<%= embed UI::SwitchPreview, :default %>
+
+## Usage
+
+```ruby
+label(class: "flex items-center gap-2.5") do
+  Switch(name: "airplane_mode", checked: true)
+  plain "Airplane mode"
+end
+```
+
+A native checkbox with `role="switch"`: it submits with forms and flips with Space, no JavaScript. It renders only
+the track - wrap it with its text in a `<label>`. For a choice submitted later with a form (accepting terms), use a
+[Checkbox](<%= page_path(:checkbox) %>). Listen for `change` to react to it.
+
+## Examples
+
+### Sizes
+
+<%= embed UI::SwitchPreview, :sizes %>
+
+### States
+
+<%= embed UI::SwitchPreview, :states %>
+
+### With a label and description
+
+<%= embed UI::SwitchPreview, :with_label %>
+
+### Reacting to changes
+
+<%= embed UI::SwitchPreview, :controlled %>
+
+### RTL
+
+<%= embed UI::SwitchPreview, :rtl %>
+
+## API reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size:` | `:sm`, `:md`, `:lg` | `:md` | Scales the track and thumb. |
+| `checked:` | `Boolean` | - | Initial state. |
+| `value:` | `String` | - | Submitted when on. |
+| `unchecked_value:` | `String` | - | Submitted when off. |
+| `invalid:` | `Boolean` | - | Error state (`aria-invalid`); a Field sets it. |
+
+Other attributes go to the `<input>`, `class:` included (it's the track).
+
+## Accessibility
+
+- `role="switch"` on a checkbox: Space toggles it and it's announced as on/off.
+- Wrap it in a `<label>` with its text, or give it `aria_label:`.
+- The thumb slide and check are skipped under `prefers-reduced-motion`.

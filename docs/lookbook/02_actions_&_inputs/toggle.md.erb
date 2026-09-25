@@ -1,0 +1,59 @@
+---
+id: toggle
+title: Toggle
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A two-state button that stays pressed - bold on, bold off.
+[Appica docs](https://appica.dev/ui/components/react/toggle)
+
+<%= embed UI::TogglePreview, :default %>
+
+## Usage
+
+```ruby
+Toggle(pressed: true, aria_label: "Bold") { |toggle| Button(**toggle, variant: :outline, icon: true) { Icon(:bold) } }
+```
+
+`Toggle` is behavior only - a `<button aria-pressed>` with no styling. A block that takes an argument receives its
+attributes (Appica's `render` prop), so it becomes any [Button](<%= page_path(:button) %>), which already paints the
+pressed state through `data-pressed`. A block without an argument renders a plain `<button>` you style yourself.
+To group toggles, see [Toggle Group](<%= page_path(:toggle_group) %>).
+
+## Examples
+
+### Composing with Button
+
+<%= embed UI::TogglePreview, :composing %>
+
+### States
+
+<%= embed UI::TogglePreview, :states %>
+
+### Reacting to changes
+
+```js
+element.addEventListener("ui--toggle:change", ({ detail }) => save(detail.pressed))
+```
+
+<%= embed UI::TogglePreview, :controlled %>
+
+### RTL
+
+<%= embed UI::TogglePreview, :rtl %>
+
+## API reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `pressed:` | `Boolean` | `false` | Initial state (inside a group, from the group's value). |
+| `value:` | `String` | - | Identity inside a ToggleGroup. |
+| `disabled:` | `Boolean` | `false` | Disables the button. |
+
+Event: `ui--toggle:change` with `{ pressed }`.
+
+## Accessibility
+
+- A `<button>` with `aria-pressed`; Space or Enter toggles it.
+- Give an icon-only toggle an `aria_label:`.

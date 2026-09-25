@@ -29,7 +29,7 @@ module UI::Props
     # A coercer for enum-like props: the value as a symbol when it's one of `choices` (an
     # Array, or a Hash's keys), otherwise `fallback`
     def one_of(choices, fallback)
-      ->(value) { choices.include?(value.to_sym) ? value.to_sym : fallback }
+      ->(value) { value.nil? ? nil : (choices.include?(value.to_sym) ? value.to_sym : fallback) }
     end
 
     # Phlex::SGML.new keeps the content block; only the keywords are split first

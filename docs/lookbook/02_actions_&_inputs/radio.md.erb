@@ -1,0 +1,80 @@
+---
+id: radio
+title: Radio
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A set of mutually exclusive options - pick exactly one.
+[Appica docs](https://appica.dev/ui/components/react/radio)
+
+<%= embed UI::RadioPreview, :default %>
+
+## Usage
+
+```ruby
+RadioGroup(name: "plan", default_value: "pro", aria_label: "Plan") do
+  label(class: "flex items-center gap-2") { Radio(value: "free"); plain "Free" }
+  label(class: "flex items-center gap-2") { Radio(value: "pro"); plain "Pro" }
+end
+```
+
+Each `Radio` is a native `<input type="radio">` sharing the group's `name:`, so the browser handles the selection,
+the arrow keys (one tab stop per group) and form submission. The group picks the checked option from
+`default_value:` and passes `disabled:` / `required:` to every option. Radios are sized in `em`.
+
+## Examples
+
+### Horizontal
+
+<%= embed UI::RadioPreview, :horizontal %>
+
+### Sizing
+
+<%= embed UI::RadioPreview, :sizing %>
+
+### Disabled
+
+<%= embed UI::RadioPreview, :disabled %>
+
+### With descriptions
+
+<%= embed UI::RadioPreview, :descriptions %>
+
+### In a form
+
+Inside a [Field](<%= page_path(:field) %>) the group takes the field's name and is labelled by its `FieldLabel`;
+`required: true` is checked on submit.
+
+<%= embed UI::RadioPreview, :form %>
+
+### RTL
+
+<%= embed UI::RadioPreview, :rtl %>
+
+## API reference
+
+### RadioGroup
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name:` | `String` | the Field's, or generated | Shared by the radios. |
+| `default_value:` / `value:` | `String` | - | The checked option. |
+| `orientation:` | `:vertical`, `:horizontal` | `:vertical` | A column or a row. |
+| `disabled:` | `Boolean` | `false` | Disables every option. |
+| `required:` | `Boolean` | `false` | An option must be picked before the form submits. |
+| `invalid:` | `Boolean` | - | Error state; a Field sets it. |
+
+### Radio
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value:` | `String` | - | **Required.** What this option submits. |
+
+Other attributes (`disabled:`, `aria_*`) go to the `<input>`; `class:` to the circle.
+
+## Accessibility
+
+- The group is a `role="radiogroup"`: name it with `aria_label:` / `aria_labelledby:` (a Field does it for you).
+- Arrow keys move the selection within the group; a disabled option is skipped.
+- The dot's pop-in is skipped under `prefers-reduced-motion`.

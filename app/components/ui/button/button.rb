@@ -3,6 +3,9 @@
 #   Button { "Save" }
 #   Button(variant: :outline, size: :sm) { "Cancel" }
 #   Button(variant: :soft, icon: true, aria_label: "Bookmark") { bookmark_svg }
+#
+# Inside a ButtonGroup it takes the group's variant, size, icon and disabled state unless it sets
+# its own (a disabled group always wins).
 class UI::Button < UI::Base
   BASE = "relative isolate inline-flex shrink-0 transform-gpu cursor-pointer items-center justify-center font-medium whitespace-nowrap outline-offset-1 transition duration-250 ease-[cubic-bezier(0.175,0.885,0.32,1.5)] select-none " \
     "not-data-popup-open:active:scale-[0.97] not-data-popup-open:active:duration-100 not-data-popup-open:active:ease-in-out not-data-popup-open:active:translate-y-px " \
@@ -34,13 +37,19 @@ class UI::Button < UI::Base
     lg: "size-12 rounded-lg [&_svg:not([class*='size-'])]:size-5"
   }.freeze
 
-  prop :variant, one_of(VARIANTS, :primary), default: -> { :primary }
-  prop :size,    one_of(SIZES, :md), default: -> { :md }
-  prop :icon,    default: -> { false }
+  prop :variant, one_of(VARIANTS, :primary), default: -> { nil }
+  prop :size,    one_of(SIZES, :md), default: -> { nil }
+  prop :icon,    default: -> { nil }
 
   def view_template(&)
-    classes = cn(BASE, VARIANTS[@variant], (@icon ? ICON_SIZES : SIZES)[@size], override: @attributes[:class])
+    group = context[:ui_button_group]
+    variant = @variant || group&.variant || :primary
+    size = @size || group&.size || :md
+    icon = @icon.nil? ? group&.icon : @icon
+
+    classes = cn(BASE, VARIANTS[variant], (icon ? ICON_SIZES : SIZES)[size], override: @attributes[:class])
     attributes = @attributes.except(:class)
+    attributes = attributes.merge(disabled: true, data: { **attributes.fetch(:data, {}), disabled: "" }) if group&.disabled?
     # Keep the slot of a part projected onto the button (e.g. "drawer-trigger")
     attributes = mix({ data: { slot: "button" } }, attributes) unless attributes.dig(:data, :slot)
 

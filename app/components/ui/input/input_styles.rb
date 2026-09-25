@@ -4,6 +4,8 @@
 #
 #   input_classes(variant: :soft, size: :sm, state: :within)
 module UI::InputStyles
+  include UI::FieldControl
+
   BASE = "w-full border text-foreground outline-none transition-[background-color,border-color,box-shadow] duration-200 motion-reduce:transition-none " \
     "[&_svg]:pointer-events-none [&_svg]:shrink-0"
 
@@ -66,21 +68,5 @@ module UI::InputStyles
       button(type: "button", tabindex: "-1", aria_label: label, class: klass, data: { slot:, action: "ui--input#clear" }) do
         svg(xmlns: "http://www.w3.org/2000/svg", viewBox: "2 2 16 16", fill: "currentColor", aria_hidden: "true", class: "size-[1em]") { |s| s.path(d: CLEAR_ICON) }
       end
-    end
-
-    # The enclosing Field, if any: it owns the control's id, label, description and state
-    def field
-      context[:ui_field]
-    end
-
-    # The control's attributes: the component's (and the Field's) defaults, with the caller's
-    # own keys replacing them rather than being appended (data: still merges)
-    # (the placeholder defaults to " " so CSS can tell an empty control: :placeholder-shown)
-    def control_attributes(defaults, attributes)
-      mix({ placeholder: " " }.merge(defaults).compact.except(*(attributes.keys - [ :data ])), attributes)
-    end
-
-    def flag(value)
-      "" if value
     end
 end

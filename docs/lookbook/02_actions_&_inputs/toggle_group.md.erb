@@ -1,0 +1,68 @@
+---
+id: toggle_group
+title: Toggle Group
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A row of toggles tracking which are pressed - single-select by default, multi-select with `multiple:`.
+[Appica docs](https://appica.dev/ui/components/react/toggle-group)
+
+<%= embed UI::ToggleGroupPreview, :default %>
+
+## Usage
+
+```ruby
+ToggleGroup(default_value: [ "center" ], aria_label: "Text alignment") do
+  Toggle(value: "left", aria_label: "Align left") { |t| Button(**t, variant: :ghost, icon: true) { Icon(:align_left) } }
+  Toggle(value: "center", aria_label: "Align center") { |t| Button(**t, variant: :ghost, icon: true) { Icon(:align_center) } }
+end
+```
+
+Each [Toggle](<%= page_path(:toggle) %>) inside needs a `value:`; the group presses those in `default_value:`. It's
+one tab stop: the arrow keys move along `orientation:` (following the reading direction). `name:` submits the pressed
+values as `name[]` fields.
+
+## Examples
+
+### Single selection
+
+<%= embed UI::ToggleGroupPreview, :single %>
+
+### Multiple selection
+
+<%= embed UI::ToggleGroupPreview, :multiple %>
+
+### Vertical orientation
+
+<%= embed UI::ToggleGroupPreview, :vertical %>
+
+### Disabled
+
+<%= embed UI::ToggleGroupPreview, :disabled %>
+
+### Color swatches
+
+<%= embed UI::ToggleGroupPreview, :swatches %>
+
+### RTL
+
+<%= embed UI::ToggleGroupPreview, :rtl %>
+
+## API reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `default_value:` / `value:` | `Array` | `[]` | The pressed toggles' values. |
+| `multiple:` | `Boolean` | `false` | Allow several pressed at once. |
+| `orientation:` | `:horizontal`, `:vertical` | `:horizontal` | Layout and arrow-key axis. |
+| `loop_focus:` | `Boolean` | `true` | Wrap focus at the ends. |
+| `disabled:` | `Boolean` | `false` | Disable every toggle. |
+| `name:` | `String` | - | Submit the pressed values as `name[]`. |
+
+Event: `ui--toggle-group:change` with `{ value }`.
+
+## Accessibility
+
+- A `role="group"`: name it with `aria_label:` / `aria_labelledby:` (not a Field label).
+- One tab stop with roving focus; Space or Enter toggles the focused button (`aria-pressed`).

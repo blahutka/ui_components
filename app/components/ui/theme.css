@@ -135,4 +135,5 @@
 @layer base {
   body { @apply bg-background text-foreground; }
   ::selection { background-color: var(--selection-color); }
+  :focus-visible { outline-style: solid; outline-width: 3px; }
 }

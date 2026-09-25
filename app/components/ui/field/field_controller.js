@@ -14,11 +14,19 @@ export default class extends Controller {
   connect() {
     this.onInput = () => { if (this.modeValue === "change" || this.element.hasAttribute("data-invalid")) this.validate() }
     this.onBlur = () => { if (this.modeValue === "blur") this.validate() }
-    this.onSubmit = event => { if (!this.validate()) { event.preventDefault(); this.controlTarget?.focus() } }
+    this.onSubmit = event => { if (!this.validate()) { event.preventDefault(); this.controlTarget.focus() } }
+    // The browser checks the constraints before `submit` fires and stops there when one fails:
+    // show our message instead of its bubble, and focus the first invalid control
+    this.onInvalid = event => {
+      event.preventDefault()
+      this.validate()
+      if (!this.form?.querySelector(":focus:invalid")) this.controlTarget.focus()
+    }
 
     this.element.addEventListener("input", this.onInput)
     this.element.addEventListener("change", this.onInput)
     this.element.addEventListener("focusout", this.onBlur)
+    this.element.addEventListener("invalid", this.onInvalid, true)
     this.form = this.element.closest("form")
     this.form?.addEventListener("submit", this.onSubmit)
   }
@@ -27,6 +35,7 @@ export default class extends Controller {
     this.element.removeEventListener("input", this.onInput)
     this.element.removeEventListener("change", this.onInput)
     this.element.removeEventListener("focusout", this.onBlur)
+    this.element.removeEventListener("invalid", this.onInvalid, true)
     this.form?.removeEventListener("submit", this.onSubmit)
   }
 
@@ -60,11 +69,14 @@ export default class extends Controller {
     ids.length ? this.controlTarget.setAttribute("aria-describedby", ids.join(" ")) : this.controlTarget.removeAttribute("aria-describedby")
   }
 
+  // A radio group has several controls; they all show the state
   setInvalid(invalid) {
-    const control = this.controlTarget
-    const wrapper = control.closest("[data-slot$=-wrapper]")
-    ;[ this.element, control, wrapper ].filter(Boolean).forEach(element => element.toggleAttribute("data-invalid", invalid))
-    control.toggleAttribute("aria-invalid", invalid)
-    if (invalid) control.setAttribute("aria-invalid", "true")
+    this.element.toggleAttribute("data-invalid", invalid)
+    this.controlTargets.forEach(control => {
+      const wrapper = control.closest("[data-slot$=-wrapper]")
+      ;[ control, wrapper ].filter(Boolean).forEach(element => element.toggleAttribute("data-invalid", invalid))
+      control.toggleAttribute("aria-invalid", invalid)
+      if (invalid) control.setAttribute("aria-invalid", "true")
+    })
   }
 }
