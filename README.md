@@ -52,6 +52,7 @@ See Lookbook's **Form builder** page for the full API and a working `/users/new`
 | Component | Parts | Appica docs |
 |-----------|-------|-------------|
 | Alert | `Alert`, `AlertIcon`, `AlertTitle`, `AlertDescription`, `AlertAction` (variants, `layout: :inline`, `dismissible:`, `persist_key:`) | [alert](https://appica.dev/ui/components/react/alert) |
+| Alert Dialog | Dialog's parts as `AlertDialog*` (`role="alertdialog"`, no outside dismissal) | [alert-dialog](https://appica.dev/ui/components/react/alert-dialog) |
 | Autocomplete | `Autocomplete`, `AutocompleteInput`, `AutocompleteContent`, `AutocompleteEmpty`, `AutocompleteList`, `AutocompleteItem`, `AutocompleteGroup`, `AutocompleteLabel`, `AutocompleteCollection` | [autocomplete](https://appica.dev/ui/components/react/autocomplete) |
 | Breadcrumb | `Breadcrumb`, `BreadcrumbList`, `BreadcrumbItem`, `BreadcrumbLink` (`active:`, `disabled:`, render prop), `BreadcrumbSeparator`, `BreadcrumbEllipsis` | [breadcrumb](https://appica.dev/ui/components/react/breadcrumb) |
 | Button | `Button` (variants `primary`, `primary_outline`, `secondary`, `soft`, `outline`, `ghost`, `destructive`; sizes `sm`/`md`/`lg`; `icon: true`) | [button](https://appica.dev/ui/components/react/button) |
@@ -61,6 +62,7 @@ See Lookbook's **Form builder** page for the full API and a working `/users/new`
 | Combobox | `Combobox`, `ComboboxInput`, `ComboboxChips`, `ComboboxTrigger`, `ComboboxValue`, `ComboboxContent`, `ComboboxList`, `ComboboxItem`, `ComboboxEmpty`, `ComboboxGroup`, `ComboboxLabel`, `ComboboxCollection`, `ComboboxSeparator` (`multiple:` chips, `creatable:`) | [combobox](https://appica.dev/ui/components/react/combobox) |
 | Context Menu | `ContextMenu`, `ContextMenuTrigger` (right-click / long-press) + DropdownMenu's parts as `ContextMenu*` | [context-menu](https://appica.dev/ui/components/react/context-menu) |
 | Copy Button | `CopyButton` (`value:` / `target:`, clipboard fallback) | [copy-button](https://appica.dev/ui/components/react/copy-button) |
+| Dialog | `Dialog`, `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogBody`, `DialogFooter`, `DialogClose` (native `<dialog>`, frame, nested, `default_open:`) | [dialog](https://appica.dev/ui/components/react/dialog) |
 | Drawer | `Drawer`, `DrawerTrigger`, `DrawerContent`, `DrawerHeader`, `DrawerTitle`, `DrawerDescription`, `DrawerBody`, `DrawerFooter`, `DrawerClose` | [drawer](https://appica.dev/ui/components/react/drawer) |
 | Dropdown Menu | `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem`, `DropdownMenuCheckboxItem`, `DropdownMenuRadioGroup`, `DropdownMenuRadioItem`, `DropdownMenuLinkItem`, `DropdownMenuGroup`, `DropdownMenuGroupLabel`, `DropdownMenuSeparator`, `DropdownMenuSub`, `DropdownMenuSubTrigger`, `DropdownMenuSubContent` (top-layer, submenus, hover) | [dropdown-menu](https://appica.dev/ui/components/react/dropdown-menu) |
 | Field | `Field`, `FieldLabel`, `FieldDescription`, `FieldError`, `Fieldset`, `FieldsetLegend` (native validation on submit/blur/change, server `error:`) | [field](https://appica.dev/ui/components/react/field) |

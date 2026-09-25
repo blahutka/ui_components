@@ -1,0 +1,97 @@
+---
+id: dialog
+title: Dialog
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A focused task or piece of content that interrupts the page, in a centered modal.
+[Appica docs](https://appica.dev/ui/components/react/dialog)
+
+<%= embed UI::DialogPreview, :default %>
+
+## Usage
+
+```ruby
+Dialog do
+  DialogTrigger { |trigger| Button(**trigger, variant: :outline) { "Invite people" } }
+  DialogContent do
+    DialogHeader do
+      DialogTitle { "Invite your team" }
+      DialogDescription { "Send an invitation by email." }
+    end
+    DialogBody { … }
+    DialogFooter do
+      DialogClose { |close| Button(**close, variant: :outline) { "Cancel" } }
+      DialogClose { |close| Button(**close) { "Send invites" } }
+    end
+  end
+end
+```
+
+`DialogContent` is a native `<dialog>` opened with `showModal()`: it sits in the top layer (no portal), traps focus,
+makes the page behind inert, closes on Escape and returns focus to the trigger. On top of that the `ui--dialog`
+controller plays the enter / exit animation, closes on a click outside (unless `dismissible: false`) and steps a
+parent dialog back while a nested one is open.
+
+With Rails, a dialog is often rendered by the server: `Dialog(default_open: true)` opens on connect - a Turbo Stream
+can append one to the page, or a form can re-render inside one with its errors. Dispatch `ui--dialog:open` or
+`ui--dialog:close` on the root to drive it from a script. For a high-stakes confirmation use an
+[Alert Dialog](<%= page_path(:alert_dialog) %>); for a panel from an edge, a [Drawer](<%= page_path(:drawer) %>).
+
+## Examples
+
+### Form dialog
+
+<%= embed UI::DialogPreview, :form %>
+
+### Sizing
+
+<%= embed UI::DialogPreview, :sizing %>
+
+### Scrollable content
+
+<%= embed UI::DialogPreview, :scrollable %>
+
+### Nested dialogs
+
+<%= embed UI::DialogPreview, :nested %>
+
+### Opened by the server
+
+<%= embed UI::DialogPreview, :server_open %>
+
+### RTL
+
+<%= embed UI::DialogPreview, :rtl %>
+
+## API reference
+
+### Dialog
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `default_open:` | `Boolean` | `false` | Open on connect. |
+| `modal:` | `Boolean` | `true` | Trap focus and make the page inert (`show()` instead of `showModal()` when false). |
+| `dismissible:` | `Boolean` | `true` | Close on a click outside the card. |
+
+Events: `ui--dialog:open-change` with `{ open }`; dispatch `ui--dialog:open` / `ui--dialog:close` to drive it.
+
+### DialogContent
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `close_button:` | `Boolean` | `true` | The × in the corner. |
+| `close_label:` | `String` | "Close" | Its accessible name (translated). |
+| `backdrop:` | `Boolean` | `true` | The dimmed, blurred layer behind. |
+| `frame:` | `Boolean` | `true` | A frosted frame around the card (needs the backdrop). |
+
+`class:` styles the card - `sm:w-100`, `sm:w-200`, a fixed `h-*`. `DialogHeader`, `DialogTitle` (`<h2>`),
+`DialogDescription` (`<p>`), `DialogBody` and `DialogFooter` lay it out; `DialogTrigger` and `DialogClose` take a
+block with an argument to put their attributes on your own Button.
+
+## Accessibility
+
+- The card is a `role="dialog"` labelled by the title and described by the description; focus is trapped and
+  returns to the trigger.
+- Escape closes the frontmost dialog; the enter / exit transitions honor `prefers-reduced-motion`.

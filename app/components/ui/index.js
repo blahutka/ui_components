@@ -17,6 +17,7 @@ import CollapsibleController from "ui/collapsible/collapsible_controller"
 import ContextMenuController from "ui/context_menu/context_menu_controller"
 import CopyButtonController from "ui/copy_button/copy_button_controller"
 import DropdownMenuController from "ui/dropdown_menu/dropdown_menu_controller"
+import DialogController from "ui/dialog/dialog_controller"
 import DrawerController from "ui/drawer/drawer_controller"
 import FieldController from "ui/field/field_controller"
 import InputController from "ui/input/input_controller"
@@ -51,6 +52,7 @@ application.register("ui--collapsible", CollapsibleController)
 application.register("ui--context-menu", ContextMenuController)
 application.register("ui--copy-button", CopyButtonController)
 application.register("ui--dropdown-menu", DropdownMenuController)
+application.register("ui--dialog", DialogController)
 application.register("ui--drawer", DrawerController)
 application.register("ui--field", FieldController)
 application.register("ui--input", InputController)
