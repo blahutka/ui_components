@@ -1,0 +1,39 @@
+# Blocks::ProductCard strings - t(".key") in any of its parts looks here.
+# Every language in one file; add a locale as another top-level key with the same keys
+# (test/components/locales_test.rb checks that they match).
+en:
+  ui_components:
+    blocks:
+      product_card:
+        wishlist: Add to wishlist
+        original_price: "Original price:"
+        size: Size
+        quantity: Quantity
+        add_to_cart: Add to cart
+cs:
+  ui_components:
+    blocks:
+      product_card:
+        wishlist: Přidat do oblíbených
+        original_price: "Původní cena:"
+        size: Velikost
+        quantity: Množství
+        add_to_cart: Do košíku
+de:
+  ui_components:
+    blocks:
+      product_card:
+        wishlist: Zur Wunschliste hinzufügen
+        original_price: "Ursprünglicher Preis:"
+        size: Größe
+        quantity: Menge
+        add_to_cart: In den Warenkorb
+ar:
+  ui_components:
+    blocks:
+      product_card:
+        wishlist: أضف إلى قائمة الرغبات
+        original_price: "السعر الأصلي:"
+        size: المقاس
+        quantity: الكمية
+        add_to_cart: أضف إلى السلة

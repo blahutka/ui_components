@@ -1,0 +1,85 @@
+---
+id: product_card
+title: Product card
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A product card: a photo with a discount badge and a wishlist toggle, the name and prices, a size picker, a quantity
+field and an Add to cart button. A **block** composed from [Badge](<%= page_path(:badge) %>),
+[Toggle](<%= page_path(:toggle) %>), [Toggle Group](<%= page_path(:toggle_group) %>),
+[Number Field](<%= page_path(:number_field) %>) and [Button](<%= page_path(:button) %>), as on the
+[Appica homepage](https://appica.dev/ui).
+
+<%= embed Blocks::ProductCardPreview, :default %>
+
+## Usage
+
+```ruby
+ProductCard(name: product.name, description: product.subtitle, image: product.photo_url, image_alt: product.photo_alt,
+  price: product.price, original_price: product.list_price, action: cart_items_path, product_id: product.id) do
+  ProductOptions(sizes: product.sizes, selected: product.default_size)
+  ProductAddToCart()
+end
+```
+
+- A lower `price:` than `original_price:` shows the struck-through original and a discount badge ("−20%");
+  `badge:` replaces the badge text, `badge: nil` hides it.
+- The heart is a Toggle (`wishlisted:` starts it pressed; `wishlist: false` drops it).
+- `ProductOptions` renders the size ToggleGroup (sizes past `compact:` hide on small screens) and a quantity
+  NumberField (1 to `max:`).
+- With `action:` the card is a `<form>`: Add to cart posts `product_id`, `size` and `quantity`.
+
+```ruby
+# app/controllers/cart_items_controller.rb
+def create
+  Current.cart.items.create!(product_id: params[:product_id], size: params[:size], quantity: params[:quantity])
+  redirect_to cart_path
+end
+```
+
+## Localization
+
+`product_card.locales.yml` holds the wishlist, size, quantity and button labels; the prices and badge use the locale's
+number format. Switch the **Locale** display option to try it.
+
+## Examples
+
+### Add to cart form
+
+<%= embed Blocks::ProductCardPreview, :form %>
+
+### Full price, no photo
+
+<%= embed Blocks::ProductCardPreview, :simple %>
+
+### RTL
+
+<%= embed Blocks::ProductCardPreview, :rtl %>
+
+## API reference
+
+### ProductCard
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name:` / `description:` | `String` | - | Title and subtitle. |
+| `price:` / `original_price:` | `Numeric` | - | Current and struck-through price. |
+| `currency:` | `String` | `"USD"` | Currency of both prices. |
+| `image:` / `image_alt:` | `String` | - | Photo URL and its description; a placeholder without one. |
+| `badge:` | `String` | the discount | Text of the corner badge. |
+| `wishlist:` / `wishlisted:` | `Boolean` | `true` / `false` | Show the heart toggle; start it pressed. |
+| `action:` / `method:` | `String` / `Symbol` | - / `:post` | Make the card a form posting there. |
+| `product_id:` | any | - | Submitted as a hidden `product_id`. |
+
+### ProductOptions
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `sizes:` / `selected:` | `Array` / `String` | `[]` / - | Size choices (submitted as `size`). |
+| `quantity:` / `max:` | `Integer` | `1` / `9` | Starting and maximum quantity (submitted as `quantity`). |
+| `compact:` | `Integer` | `3` | Sizes shown on small screens. |
+
+### ProductAddToCart
+
+`label:` replaces "Add to cart"; other attributes go to the Button.
