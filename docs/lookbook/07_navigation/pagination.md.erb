@@ -1,0 +1,98 @@
+---
+id: pagination
+title: Pagination
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+Page links for a long list, with the current page highlighted.
+[Appica docs](https://appica.dev/ui/components/react/pagination)
+
+<%= embed UI::PaginationPreview, :default %>
+
+## Usage
+
+```ruby
+Pagination do
+  PaginationPages(page: @page, pages: @pages) { |page| posts_path(page:) }
+end
+```
+
+`PaginationPages` builds the usual row for page `page:` of `pages:`: previous, the first and last pages, a `window:`
+of pages around the current one with ellipses for the gaps, and next - disabled at the ends. It works with any
+paginator (Pagy, Kaminari, `limit`/`offset`), since you only pass numbers and a URL block. The parts are Appica's
+primitives, so you can also lay a row out yourself:
+
+```ruby
+Pagination do
+  PaginationList do
+    PaginationItem { PaginationLink(href: "?page=1", active: true) { "1" } }
+    PaginationItem { PaginationLink(href: "?page=2") { "2" } }
+    PaginationItem { PaginationEllipsis() }
+    PaginationItem { PaginationLink(href: "?page=10") { "10" } }
+  end
+end
+```
+
+## Examples
+
+### Composed by hand
+
+<%= embed UI::PaginationPreview, :manual %>
+
+### Variants
+
+<%= embed UI::PaginationPreview, :variants %>
+
+### Sizes
+
+<%= embed UI::PaginationPreview, :sizes %>
+
+### With first & last
+
+<%= embed UI::PaginationPreview, :edges %>
+
+### Buttons instead of links
+
+<%= embed UI::PaginationPreview, :controlled %>
+
+### RTL
+
+<%= embed UI::PaginationPreview, :rtl %>
+
+## API reference
+
+### Pagination
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant:` | `:outline`, `:soft` | `:outline` | Link style for every link. |
+| `size:` | `:sm`, `:md`, `:lg` | `:md` | Link size for every link. |
+| `aria_label:` | `String` | "Pagination" | The landmark's name (translated). |
+
+### PaginationPages
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `page:` / `pages:` | `Integer` | - | The current page and the page count. |
+| `window:` | `Integer` | `1` | Pages shown on each side of the current one. |
+| `edges:` | `Boolean` | `false` | First / last jumps. |
+| block | `\|page\| url` | - | The URL of a page. |
+
+### PaginationLink
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `active:` | `Boolean` | `false` | The current page: filled, `aria-current="page"`, not clickable. |
+| `disabled:` | `Boolean` | `false` | Dimmed and out of the tab order (out-of-range previous / next). |
+| `icon:` | `Boolean` | `false` | Square around a lone icon - add an `aria_label:`. |
+
+A block that takes an argument receives the attributes for your own element. `PaginationList` is the `<ul>`,
+`PaginationItem` an `<li>`, `PaginationEllipsis` the "…" (with a screen-reader-only "More pages").
+
+## Accessibility
+
+- A `<nav>` landmark named "Pagination"; the current page is `aria-current="page"`.
+- Page links are labelled "Go to page N", previous / next / first / last are named (translated) and disabled at the
+  ends with `aria-disabled`.
+- The ellipsis is hidden from assistive tech apart from its "More pages" text.

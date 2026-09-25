@@ -69,6 +69,7 @@ See Lookbook's **Form builder** page for the full API and a working `/users/new`
 | Navigation | `Navigation`, `NavigationList`, `NavigationItem`, `NavigationLink` (`:pill`/`:line`/`:indicator`, `active_link:`, render prop) | [navigation](https://appica.dev/ui/components/react/navigation) |
 | Number Field | `NumberField` (steppers, Intl `format:`, hidden plain value) | [number-field](https://appica.dev/ui/components/react/number-field) |
 | OTP Field | `OTPField`, `OTPFieldInput`, `OTPFieldSeparator` (paste / autofill, `mask:`, `auto_submit:`) | [otp-field](https://appica.dev/ui/components/react/otp-field) |
+| Pagination | `Pagination`, `PaginationList`, `PaginationItem`, `PaginationLink`, `PaginationEllipsis`, `PaginationPages` (truncated range from `page:`/`pages:`) | [pagination](https://appica.dev/ui/components/react/pagination) |
 | Progress | `Progress`, `ProgressLabel`, `ProgressValue` (`:bar`, `:circular`) | [progress](https://appica.dev/ui/components/react/progress) |
 | Radio | `RadioGroup`, `Radio` (native radios, horizontal/vertical, `required:`) | [radio](https://appica.dev/ui/components/react/radio) |
 | Rating | `Rating` (stars or any icon pair, fractions, read-only, form input) | [rating](https://appica.dev/ui/components/react/rating) |

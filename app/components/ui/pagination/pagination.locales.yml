@@ -1,0 +1,44 @@
+en:
+  ui_components:
+    ui:
+      pagination:
+        label: Pagination
+        more: More pages
+        page: Go to page %{page}
+        first: Go to first page
+        previous: Go to previous page
+        next: Go to next page
+        last: Go to last page
+cs:
+  ui_components:
+    ui:
+      pagination:
+        label: Stránkování
+        more: Další stránky
+        page: Přejít na stránku %{page}
+        first: Přejít na první stránku
+        previous: Přejít na předchozí stránku
+        next: Přejít na další stránku
+        last: Přejít na poslední stránku
+de:
+  ui_components:
+    ui:
+      pagination:
+        label: Seitennavigation
+        more: Weitere Seiten
+        page: Zu Seite %{page}
+        first: Zur ersten Seite
+        previous: Zur vorherigen Seite
+        next: Zur nächsten Seite
+        last: Zur letzten Seite
+ar:
+  ui_components:
+    ui:
+      pagination:
+        label: ترقيم الصفحات
+        more: صفحات أخرى
+        page: الانتقال إلى الصفحة %{page}
+        first: الانتقال إلى الصفحة الأولى
+        previous: الانتقال إلى الصفحة السابقة
+        next: الانتقال إلى الصفحة التالية
+        last: الانتقال إلى الصفحة الأخيرة
