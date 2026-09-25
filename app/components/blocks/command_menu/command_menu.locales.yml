@@ -1,0 +1,43 @@
+# Blocks::CommandMenu strings - t(".key") in any of its parts looks here.
+# Every language in one file; add a locale as another top-level key with the same keys
+# (test/components/locales_test.rb checks that they match).
+en:
+  ui_components:
+    blocks:
+      command_menu:
+        placeholder: Search or jump to…
+        search: Search commands
+        results: Command results
+        empty: No matching commands.
+        navigate: navigate
+        select: select
+cs:
+  ui_components:
+    blocks:
+      command_menu:
+        placeholder: Hledat nebo přejít na…
+        search: Hledat příkazy
+        results: Nalezené příkazy
+        empty: Žádný příkaz neodpovídá.
+        navigate: pohyb
+        select: vybrat
+de:
+  ui_components:
+    blocks:
+      command_menu:
+        placeholder: Suchen oder springen zu…
+        search: Befehle durchsuchen
+        results: Befehlsergebnisse
+        empty: Keine passenden Befehle.
+        navigate: navigieren
+        select: auswählen
+ar:
+  ui_components:
+    blocks:
+      command_menu:
+        placeholder: ابحث أو انتقل إلى…
+        search: البحث في الأوامر
+        results: نتائج الأوامر
+        empty: لا توجد أوامر مطابقة.
+        navigate: تنقل
+        select: اختيار

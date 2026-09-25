@@ -1,0 +1,88 @@
+---
+id: command_menu
+title: Command menu
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A command palette card: a search field with a ⌘K hint, grouped commands with icons and keyboard shortcuts, and a
+footer of key hints. A **block** composed from [Input](<%= page_path(:input) %>), Kbd,
+[Navigation](<%= page_path(:navigation) %>) and Icon, as on the [Appica homepage](https://appica.dev/ui).
+
+<%= embed Blocks::CommandMenuPreview, :default %>
+
+## Usage
+
+```ruby
+CommandMenu do
+  CommandGroup(label: "Suggestions") do
+    CommandItem(icon: :layout_dashboard, shortcut: %w[G D], href: dashboard_path) { "Open dashboard" }
+    CommandItem(icon: :user_plus, shortcut: %w[⌘ I], value: "invite") { "Invite teammates" }
+  end
+  CommandGroup(label: "Actions") do
+    CommandItem(icon: :rocket, shortcut: %w[⇧ D], value: "deploy") { "Deploy to production" }
+  end
+end
+```
+
+- Typing filters the commands by their label (ignoring case and accents); groups with no match hide, and
+  "No matching commands" shows when nothing is left.
+- ↑ / ↓ move the highlight (wrapping around), ↵ runs the highlighted command, Escape clears the search. Hovering
+  highlights too.
+- ⌘K / Ctrl+K focuses the search from anywhere on the page (`hotkey:` changes the key, `hotkey: nil` turns it off;
+  `hotkey_hint:` is the Kbd shown in the field).
+- A command with `href:` is a link; one without is a button. Running either emits
+  `blocks--command-menu:select` with `{ value, label }` - cancel it to keep a link from being followed.
+
+```js
+document.addEventListener("blocks--command-menu:select", ({ detail }) => {
+  if (detail.value === "dark-mode") document.documentElement.classList.toggle("dark")
+})
+```
+
+`shortcut:` only displays the keys - bind them in your app if they should work globally.
+
+## Localization
+
+`command_menu.locales.yml` holds the placeholder, labels, empty message and key hints (English, Czech, German,
+Arabic).
+
+## Examples
+
+### Links
+
+<%= embed Blocks::CommandMenuPreview, :links %>
+
+### RTL
+
+<%= embed Blocks::CommandMenuPreview, :rtl %>
+
+## API reference
+
+### CommandMenu
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `placeholder:` | `String` | translated | The search field's placeholder. |
+| `hotkey:` | `String` | `"k"` | ⌘ / Ctrl + this key focuses the search; `nil` turns it off. |
+| `hotkey_hint:` | `String` | `"⌘K"` | Kbd at the end of the field; `nil` hides it. |
+| `hints:` | `Boolean` | `true` | Show the ↑ ↓ / ↵ footer. |
+
+### CommandGroup
+
+`label:` - the group heading (optional).
+
+### CommandItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `icon:` | `Symbol` | - | Leading icon. |
+| `shortcut:` | `Array` / `String` | `[]` | Keys shown as Kbds. |
+| `href:` | `String` | - | Makes it a link. |
+| `value:` | `String` | the label | Sent with `blocks--command-menu:select`. |
+
+## Accessibility
+
+- The search is a labelled field ("Search commands"); the results are a `<nav>` of links and buttons, so they're
+  also reachable with Tab.
+- The highlight is visual (`data-active`); ↵ activates the highlighted command, which is also a real button or link.

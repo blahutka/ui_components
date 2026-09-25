@@ -122,6 +122,7 @@ Higher-level compositions of the primitives live in `app/components/blocks/` (th
 | Transactions | `Transactions`, `Transaction` |
 | Product card | `ProductCard`, `ProductOptions`, `ProductAddToCart` |
 | Music player | `MusicPlayer` |
+| Command menu | `CommandMenu`, `CommandGroup`, `CommandItem` |
 
 ### Render props
 
