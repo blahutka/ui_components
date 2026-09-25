@@ -1,0 +1,70 @@
+---
+id: skeleton
+title: Skeleton
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A placeholder block shown while content loads.
+[Appica docs](https://appica.dev/ui/components/react/skeleton)
+
+<%= embed UI::SkeletonPreview, :default %>
+
+## Usage
+
+```ruby
+Skeleton(class: "h-4 w-40")
+```
+
+A low-level block with no size of its own - give it dimensions with utility classes (`h-*` / `w-*` / `size-*`) and
+reshape it with `rounded-*` (it's `rounded-md` by default; `rounded-full` for a dot, `rounded-[inherit]` to match a
+parent). Its surface and shimmer both come from `currentColor`, so a single `text-*` class recolors it, and
+`effect:` picks the animation. Compose skeletons in the shape of the content they stand in for - a Turbo Frame's
+placeholder, a lazy-loaded card - so nothing shifts when it arrives.
+
+## Examples
+
+### Effects
+
+<%= embed UI::SkeletonPreview, :effects %>
+
+### Composing shapes
+
+<%= embed UI::SkeletonPreview, :shapes %>
+
+### Text lines
+
+<%= embed UI::SkeletonPreview, :text %>
+
+### Card
+
+<%= embed UI::SkeletonPreview, :card %>
+
+### Recoloring
+
+For a shimmer independent of the surface, set `--skeleton-highlight` (e.g. `class: "[--skeleton-highlight:var(--primary)]"`).
+
+<%= embed UI::SkeletonPreview, :colors %>
+
+### Swapping in content
+
+<%= embed UI::SkeletonPreview, :swapping %>
+
+### RTL
+
+<%= embed UI::SkeletonPreview, :rtl %>
+
+## API reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `effect:` | `:shimmer`, `:pulse`, `:none` | `:shimmer` | The animation; all stop under `prefers-reduced-motion`. |
+
+`class:` shapes, rounds and tints it; other attributes go to the `<div>`.
+
+## Accessibility
+
+- It's `aria-hidden` - screen readers skip the placeholder geometry.
+- Announce the loading state on the container instead: `aria-busy="true"` while it loads (and a polite
+  `role="status"` region if the arrival should be announced).
+- Keep the skeleton's footprint close to the real content's, so swapping it in causes no layout shift.

@@ -82,6 +82,7 @@ See Lookbook's **Form builder** page for the full API and a working `/users/new`
 | Rating | `Rating` (stars or any icon pair, fractions, read-only, form input) | [rating](https://appica.dev/ui/components/react/rating) |
 | Select | `Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, `SelectItem`, `SelectGroup`, `SelectGroupLabel`, `SelectSeparator` (top-layer popup, `multiple:`, `items:`) | [select](https://appica.dev/ui/components/react/select) |
 | Separator | `Separator` (`:solid`, `:dashed`, `:dotted`, `:double`, `:gradient`, `:wave`, `:zigzag`) | [separator](https://appica.dev/ui/components/react/separator) |
+| Skeleton | `Skeleton` (`:shimmer`, `:pulse`, `:none`; shaped and tinted by class) | [skeleton](https://appica.dev/ui/components/react/skeleton) |
 | Slider | `Slider` (range, vertical, tooltip, Intl `format:`) | [slider](https://appica.dev/ui/components/react/slider) |
 | Sparkline | `Sparkline`, `SparklineChart`, `SparklineValue`, `SparklineLabel` | [sparkline](https://appica.dev/ui/components/react/sparkline) |
 | Spinner | `Spinner` (`:circular`, `:dots`, `:sparkle`; SVG SMIL, no JS) | [spinner](https://appica.dev/ui/components/react/spinner) |

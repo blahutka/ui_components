@@ -1,0 +1,25 @@
+/* UI::Skeleton's shimmer: a highlight derived from the text color glides across the block
+   (backwards in RTL). --skeleton-highlight overrides the highlight color. */
+@utility skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, var(--skeleton-highlight, color-mix(in oklab, currentColor 12%, transparent)), transparent);
+    animation: skeleton-shimmer 1.6s ease-in-out infinite;
+  }
+
+  [dir="rtl"] &::after { animation-direction: reverse; }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::after { animation: none; }
+  }
+}
+
+@keyframes skeleton-shimmer {
+  100% { transform: translateX(100%); }
+}
