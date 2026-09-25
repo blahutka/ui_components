@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { placeFloating } from "ui/floating"
 
 // UI::DropdownMenu: a menu popup (and submenus) in the top layer.
 //
@@ -277,50 +278,15 @@ export default class extends Controller {
     this.openSubTriggersIn(this.contentTarget).forEach(trigger => this.place(this.subContentOf(trigger), trigger))
   }
 
-  // Place against an element or a rect: data-side (bottom / top / inline_end / inline_start /
-  // left / right), data-align (start / center / end), offsets; flip and clamp to the viewport
+  // Against the trigger (or a pointer rect) by the popup's data-side / data-align / offsets
   place(popup, anchor) {
     if (!anchor) return
-    const rect = anchor.getBoundingClientRect ? anchor.getBoundingClientRect() : { ...anchor, width: 0, height: 0 }
-    const rtl = getComputedStyle(this.element).direction === "rtl"
-    const margin = 8
-    const offset = Number(popup.dataset.sideOffset || 6)
-    const alignOffset = Number(popup.dataset.alignOffset || 0)
-    const width = popup.offsetWidth
-    const height = popup.offsetHeight
-    let side = popup.dataset.side || "bottom"
-    if (side === "inline_end") side = rtl ? "left" : "right"
-    if (side === "inline_start") side = rtl ? "right" : "left"
-    const align = popup.dataset.align || "start"
-
-    const fits = {
-      bottom: rect.bottom + offset + height <= window.innerHeight - margin,
-      top: rect.top - offset - height >= margin,
-      right: rect.right + offset + width <= window.innerWidth - margin,
-      left: rect.left - offset - width >= margin
-    }
-    const opposite = { bottom: "top", top: "bottom", left: "right", right: "left" }
-    if (!fits[side] && fits[opposite[side]]) side = opposite[side]
-
-    let top
-    let left
-    if (side === "bottom" || side === "top") {
-      top = side === "bottom" ? rect.bottom + offset : rect.top - offset - height
-      const start = rtl ? rect.right - width : rect.left
-      left = align === "center" ? rect.left + (rect.width - width) / 2 : align === "end" ? (rtl ? rect.left : rect.right - width) : start
-      left += rtl ? -alignOffset : alignOffset
-    } else {
-      left = side === "right" ? rect.right + offset : rect.left - offset - width
-      top = align === "center" ? rect.top + (rect.height - height) / 2 : align === "end" ? rect.bottom - height : rect.top
-      top += alignOffset
-    }
-
-    left = Math.max(margin, Math.min(left, window.innerWidth - width - margin))
-    top = Math.max(margin, Math.min(top, window.innerHeight - height - margin))
-    Object.assign(popup.style, { top: `${top}px`, left: `${left}px` })
-    popup.style.setProperty("--available-height", `${window.innerHeight - margin * 2}px`)
-    popup.style.transformOrigin = { bottom: "top", top: "bottom", right: rtl ? "right top" : "left top", left: rtl ? "left top" : "right top" }[side]
-    popup.dataset.currentSide = side
+    popup.dataset.side ||= "bottom"
+    popup.dataset.preferredSide ||= popup.dataset.side
+    placeFloating(popup, anchor, {
+      side: popup.dataset.preferredSide, align: popup.dataset.align || "start",
+      sideOffset: Number(popup.dataset.sideOffset || 6), alignOffset: Number(popup.dataset.alignOffset || 0)
+    })
   }
 
   // Helpers

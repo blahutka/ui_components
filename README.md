@@ -75,6 +75,8 @@ See Lookbook's **Form builder** page for the full API and a working `/users/new`
 | Number Field | `NumberField` (steppers, Intl `format:`, hidden plain value) | [number-field](https://appica.dev/ui/components/react/number-field) |
 | OTP Field | `OTPField`, `OTPFieldInput`, `OTPFieldSeparator` (paste / autofill, `mask:`, `auto_submit:`) | [otp-field](https://appica.dev/ui/components/react/otp-field) |
 | Pagination | `Pagination`, `PaginationList`, `PaginationItem`, `PaginationLink`, `PaginationEllipsis`, `PaginationPages` (truncated range from `page:`/`pages:`) | [pagination](https://appica.dev/ui/components/react/pagination) |
+| Popover | `Popover`, `PopoverTrigger` (`open_on_hover:`), `PopoverContent` (side / align / arrow), `PopoverTitle`, `PopoverDescription`, `PopoverClose` | [popover](https://appica.dev/ui/components/react/popover) |
+| Preview Card | `PreviewCard`, `PreviewCardTrigger` (a link), `PreviewCardContent` (safe inside a paragraph) | [preview-card](https://appica.dev/ui/components/react/preview-card) |
 | Progress | `Progress`, `ProgressLabel`, `ProgressValue` (`:bar`, `:circular`) | [progress](https://appica.dev/ui/components/react/progress) |
 | Radio | `RadioGroup`, `Radio` (native radios, horizontal/vertical, `required:`) | [radio](https://appica.dev/ui/components/react/radio) |
 | Rating | `Rating` (stars or any icon pair, fractions, read-only, form input) | [rating](https://appica.dev/ui/components/react/rating) |
@@ -88,6 +90,7 @@ See Lookbook's **Form builder** page for the full API and a working `/users/new`
 | Table of Contents | `Toc`, `TocList`, `TocItem`, `TocLink` (scroll-spy, `depth:`, `root_margin:`, `container:`) | [toc](https://appica.dev/ui/components/react/toc) |
 | Textarea | `Textarea` (`rows:`, Input's variants, sizes, slots and `clearable:`) | [textarea](https://appica.dev/ui/components/react/textarea) |
 | Toggle | `Toggle`, `ToggleGroup` (render-prop onto a Button, single/multiple, roving focus, `name:`) | [toggle](https://appica.dev/ui/components/react/toggle) |
+| Tooltip | `TooltipProvider`, `Tooltip` (`track_cursor_axis:`), `TooltipTrigger`, `TooltipContent` | [tooltip](https://appica.dev/ui/components/react/tooltip) |
 | Toolbar | `Toolbar`, `ToolbarButton`, `ToolbarLink`, `ToolbarInput`, `ToolbarGroup`, `ToolbarSeparator` (roving focus, render props) | [toolbar](https://appica.dev/ui/components/react/toolbar) |
 
 ### Blocks

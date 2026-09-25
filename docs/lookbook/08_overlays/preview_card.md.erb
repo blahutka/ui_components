@@ -1,0 +1,50 @@
+---
+id: preview_card
+title: Preview Card
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A rich preview of a link, shown while it's hovered or focused.
+[Appica docs](https://appica.dev/ui/components/react/preview-card)
+
+<%= embed UI::PreviewCardPreview, :default %>
+
+## Usage
+
+```ruby
+p do
+  plain "Built by "
+  PreviewCard do
+    PreviewCardTrigger(href: user_path(@user), class: "text-primary font-medium") { "@#{@user.handle}" }
+    PreviewCardContent(class: "w-72") { render UserCardComponent.new(@user) }
+  end
+end
+```
+
+The trigger stays a real `<a>` - a click navigates. The card opens after 600 ms on hover or keyboard focus and closes
+300 ms after the pointer leaves the link and the card (`delay:` / `close_delay:` on the root). It sits inside a
+paragraph without breaking it: the root is a `<span>` and the card is kept in a `<template>` until the controller
+connects. It's invisible on touch and to screen readers, so keep it supplementary.
+
+## Examples
+
+### Media preview
+
+<%= embed UI::PreviewCardPreview, :media %>
+
+### Side & alignment
+
+<%= embed UI::PreviewCardPreview, :placement %>
+
+### RTL
+
+<%= embed UI::PreviewCardPreview, :rtl %>
+
+## API reference
+
+| Part | Props | Description |
+|------|-------|-------------|
+| `PreviewCard` | `delay:` (600), `close_delay:` (300), `default_open:` | The root. |
+| `PreviewCardTrigger` | `href:` + anchor attributes; block `{ \|link\| … }` | The link. |
+| `PreviewCardContent` | `side:`, `align:`, `side_offset:`, `align_offset:`, `arrow:` | The card (Popover's). |

@@ -1,0 +1,70 @@
+---
+id: popover
+title: Popover
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+Rich, interactive content floating beside a control - a form, settings, a share sheet.
+[Appica docs](https://appica.dev/ui/components/react/popover)
+
+<%= embed UI::PopoverPreview, :default %>
+
+## Usage
+
+```ruby
+Popover do
+  PopoverTrigger { |trigger| Button(**trigger, variant: :outline) { "Share" } }
+  PopoverContent do
+    PopoverTitle { "Share this page" }
+    PopoverDescription { "Anyone with the link can view this document." }
+  end
+end
+```
+
+The popup opens in the browser's top layer (no `overflow` clips it) on click, placed by `side:` / `align:` on
+PopoverContent with an arrow pointing at the trigger, and flips or shifts to stay in view. Focus moves into it; Escape,
+a click outside or a `PopoverClose` dismiss it and return focus. `PopoverTrigger(open_on_hover: true)` also opens it
+on pointer rest. For a list of actions use a [Dropdown Menu](<%= page_path(:dropdown_menu) %>); for a short hint, a
+[Tooltip](<%= page_path(:tooltip) %>).
+
+## Examples
+
+### Form in a popover
+
+<%= embed UI::PopoverPreview, :form %>
+
+### Status picker
+
+<%= embed UI::PopoverPreview, :status %>
+
+### Open on hover
+
+<%= embed UI::PopoverPreview, :hover %>
+
+### Without an arrow
+
+<%= embed UI::PopoverPreview, :no_arrow %>
+
+### Side & alignment
+
+<%= embed UI::PopoverPreview, :placement %>
+
+### RTL
+
+<%= embed UI::PopoverPreview, :rtl %>
+
+## API reference
+
+| Part | Props | Description |
+|------|-------|-------------|
+| `Popover` | `default_open:` | The root; emits `ui--popover:open-change` with `{ open }`. |
+| `PopoverTrigger` | `open_on_hover:`, `delay:` (300), `close_delay:` (0); block `{ \|trigger\| … }` | Toggles the popover. |
+| `PopoverContent` | `side:` (`:bottom`), `align:` (`:center`), `side_offset:` (10, or 6 without an arrow), `align_offset:`, `arrow:` (`true`) | The card. |
+| `PopoverTitle` / `PopoverDescription` | - | Label and describe the popup (`<h2>` / `<p>`). |
+| `PopoverClose` | block `{ \|close\| … }` | Closes it. |
+
+## Accessibility
+
+- The trigger has `aria-haspopup="dialog"` / `aria-expanded`; the popup is a `role="dialog"` labelled by its title.
+- Hover opening isn't available on touch or to keyboard users alone - the trigger still opens on click and Enter.

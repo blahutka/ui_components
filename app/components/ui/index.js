@@ -28,6 +28,7 @@ import NumberFieldController from "ui/number_field/number_field_controller"
 import SelectController from "ui/select/select_controller"
 import SliderController from "ui/slider/slider_controller"
 import OTPFieldController from "ui/otp_field/otp_field_controller"
+import PopoverController from "ui/popover/popover_controller"
 import ProgressController from "ui/progress/progress_controller"
 import RatingController from "ui/rating/rating_controller"
 import TabsController from "ui/tabs/tabs_controller"
@@ -63,6 +64,7 @@ application.register("ui--number-field", NumberFieldController)
 application.register("ui--select", SelectController)
 application.register("ui--slider", SliderController)
 application.register("ui--otp-field", OTPFieldController)
+application.register("ui--popover", PopoverController)
 application.register("ui--progress", ProgressController)
 application.register("ui--rating", RatingController)
 application.register("ui--tabs", TabsController)

@@ -1,0 +1,58 @@
+---
+id: tooltip
+title: Tooltip
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+A short, non-interactive hint for a control, shown on hover or keyboard focus.
+[Appica docs](https://appica.dev/ui/components/react/tooltip)
+
+<%= embed UI::TooltipPreview, :default %>
+
+## Usage
+
+```ruby
+TooltipProvider do # once, high in the layout
+  Tooltip do
+    TooltipTrigger { |trigger| Button(**trigger, variant: :outline, icon: true, aria_label: "Add to favorites") { Icon(:heart) } }
+    TooltipContent { "Add to favorites" }
+  end
+end
+```
+
+The bubble opens after the delay on hover and at once on keyboard focus, and closes on leave, blur, Escape or a click
+on the trigger. A `TooltipProvider` shares the `delay:` and lets a neighbour open instantly while one is open or just
+closed. The trigger is described by the bubble (`aria-describedby`) - it is not its name, so icon-only triggers still
+need an `aria_label:`. For content everyone must reach use a [Popover](<%= page_path(:popover) %>).
+
+## Examples
+
+### Side & alignment
+
+<%= embed UI::TooltipPreview, :sides %>
+
+### Shared provider
+
+<%= embed UI::TooltipPreview, :provider %>
+
+### Rich content
+
+<%= embed UI::TooltipPreview, :rich %>
+
+### Follow the cursor
+
+<%= embed UI::TooltipPreview, :follow %>
+
+### RTL
+
+<%= embed UI::TooltipPreview, :rtl %>
+
+## API reference
+
+| Part | Props | Description |
+|------|-------|-------------|
+| `TooltipProvider` | `delay:` (200), `close_delay:` (0), `timeout:` (400) | Shared timing for the tooltips inside. |
+| `Tooltip` | `delay:` / `close_delay:` (override), `track_cursor_axis:` (`:x`, `:y`, `:both`), `disabled:`, `default_open:` | One tooltip. |
+| `TooltipTrigger` | block `{ \|trigger\| … }` | The described element (a `<span>` without a block argument). |
+| `TooltipContent` | `side:` (`:top`), `align:`, `side_offset:` (8), `align_offset:`, `arrow:` | The bubble (`role="tooltip"`). |
