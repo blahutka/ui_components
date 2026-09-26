@@ -1,0 +1,175 @@
+{
+  "name": "Tabs",
+  "kit": "UI",
+  "description": "Several panels sharing one region, one shown at a time.\n\n  Tabs(default_value: \"overview\") do\n    TabsList do\n      TabsTrigger(value: \"overview\") { \"Overview\" }\n      TabsTrigger(value: \"activity\") { \"Activity\" }\n    end\n    TabsContent(value: \"overview\") { \"A snapshot of your workspace.\" }\n    TabsContent(value: \"activity\") { \"Every change, newest first.\" }\n  end\n\nEach trigger is matched to the panel with the same `value:`. The root shares `variant:` (:pill, :line), `size:` and `orientation:`; the selected tab is rendered on the server, and the `ui--tabs` controller switches panels, slides the indicator and handles the arrow keys. Emits `ui--tabs:change` with { value }.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `Tabs(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/07_navigation/tabs.md.erb",
+  "appica": "https://appica.dev/ui/components/react/tabs",
+  "components": {
+    "Tabs": {
+      "constant": "UI::Tabs",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "default": null
+          },
+          "default_value": {
+            "default": null
+          },
+          "variant": {
+            "enum": [
+              "pill",
+              "line"
+            ],
+            "default": "pill"
+          },
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": "md"
+          },
+          "orientation": {
+            "enum": [
+              "horizontal",
+              "vertical"
+            ],
+            "default": "horizontal"
+          },
+          "id": {}
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "UI::TabsContent",
+        "UI::TabsList",
+        "UI::TabsTrigger"
+      ]
+    },
+    "TabsContent": {
+      "constant": "UI::TabsContent",
+      "description": "The panel for the TabsTrigger with the same `value:` - hidden unless its tab is selected.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {}
+        },
+        "required": [
+          "value"
+        ],
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Tabs"
+      ]
+    },
+    "TabsList": {
+      "constant": "UI::TabsList",
+      "description": "The row (or column) of TabsTriggers, with the sliding active indicator. `variant:` / `size:` override the root's; `activate_on_focus: true` switches panels as the arrow keys move focus; `loop_focus: false` stops at the ends.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "default": null
+          },
+          "size": {
+            "default": null
+          },
+          "activate_on_focus": {
+            "default": false,
+            "type": "boolean"
+          },
+          "loop_focus": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Tabs"
+      ]
+    },
+    "TabsTrigger": {
+      "constant": "UI::TabsTrigger",
+      "description": "One tab (`<button role=\"tab\">`) for the TabsContent with the same `value:`. `disabled: true` skips it; `icon: true` makes a square, label-less tab (give it an aria_label:).",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {},
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "icon": {
+            "default": false,
+            "type": "boolean"
+          },
+          "variant": {
+            "default": null
+          },
+          "size": {
+            "default": null
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Tabs"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  Tabs(default_value: \"overview\", variant:, size:, orientation:, class: \"w-full max-w-md\") do\n    TabsList { PANELS.each { |value, (label, _)| TabsTrigger(value:) { label } } }\n    PANELS.each { |value, (_, text)| TabsContent(value:, class: \"text-foreground-muted text-sm\") { text } }\n  end\nend"
+    },
+    {
+      "name": "Variants",
+      "notes": "`:pill` rides a filled track; `:line` slides an underline under the active tab.",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-md flex-col gap-8\") do\n    %i[ pill line ].each do |variant|\n      Tabs(default_value: \"overview\", variant:) { TabsList { PANELS.each { |value, (label, _)| TabsTrigger(value:) { label } } } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Sizes",
+      "code": "phlex do\n  div(class: \"flex flex-col items-center gap-6\") do\n    %i[ sm md lg ].each do |size|\n      Tabs(default_value: \"overview\", size:) { TabsList { PANELS.each { |value, (label, _)| TabsTrigger(value:) { label } } } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Vertical",
+      "notes": "Triggers stack beside their panels; ↑/↓ move between them.",
+      "code": "phlex do\n  Tabs(default_value: \"general\", orientation: :vertical, class: \"w-full max-w-md\") do\n    TabsList do\n      TabsTrigger(value: \"general\") { \"General\" }\n      TabsTrigger(value: \"members\") { \"Members\" }\n      TabsTrigger(value: \"billing\") { \"Billing\" }\n    end\n    TabsContent(value: \"general\", class: \"text-foreground-muted text-sm\") { \"Workspace name, URL slug, and default language.\" }\n    TabsContent(value: \"members\", class: \"text-foreground-muted text-sm\") { \"Invite teammates and manage their roles and permissions.\" }\n    TabsContent(value: \"billing\", class: \"text-foreground-muted text-sm\") { \"Your current plan, invoices, and payment method.\" }\n  end\nend"
+    },
+    {
+      "name": "With icons & badges",
+      "code": "phlex do\n  Tabs(default_value: \"overview\", class: \"w-full max-w-md\") do\n    div(class: \"overflow-x-auto [scrollbar-width:none]\") do\n      TabsList do\n        TabsTrigger(value: \"overview\") { Icon(:layout_grid, data: { icon: \"start\" }); plain \"Overview\" }\n        TabsTrigger(value: \"activity\") { Icon(:activity, data: { icon: \"start\" }); plain \"Activity\"; Badge(variant: :outline, size: :sm) { \"12\" } }\n        TabsTrigger(value: \"settings\") { Icon(:settings, data: { icon: \"start\" }); plain \"Settings\" }\n      end\n    end\n    PANELS.each { |value, (_, text)| TabsContent(value:, class: \"text-foreground-muted text-sm\") { text } }\n  end\nend"
+    },
+    {
+      "name": "Icon-only",
+      "notes": "`icon: true` makes square tabs - label each one.",
+      "code": "phlex do\n  Tabs(default_value: \"grid\") do\n    TabsList do\n      TabsTrigger(value: \"grid\", icon: true, aria_label: \"Grid view\") { Icon(:layout_grid) }\n      TabsTrigger(value: \"list\", icon: true, aria_label: \"List view\") { Icon(:list) }\n      TabsTrigger(value: \"chart\", icon: true, aria_label: \"Chart view\") { Icon(:chart_bar) }\n    end\n  end\nend"
+    },
+    {
+      "name": "Controlled",
+      "notes": "Dispatch `ui--tabs:select` with { value } to switch from elsewhere; `ui--tabs:change` reports it.",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-sm flex-col gap-5\", data: { demo: \"wizard\" }) do\n    Tabs(default_value: \"account\", id: \"wizard-tabs\") do\n      TabsList do\n        TabsTrigger(value: \"account\") { \"Account\" }\n        TabsTrigger(value: \"profile\") { \"Profile\" }\n        TabsTrigger(value: \"review\") { \"Review\" }\n      end\n      TabsContent(value: \"account\", class: \"text-foreground-muted text-sm\") { \"Step 1 - choose a username and password.\" }\n      TabsContent(value: \"profile\", class: \"text-foreground-muted text-sm\") { \"Step 2 - tell us a little about yourself.\" }\n      TabsContent(value: \"review\", class: \"text-foreground-muted text-sm\") { \"Step 3 - review everything and submit.\" }\n    end\n    div(class: \"flex gap-2\") do\n      Button(variant: :outline, size: :sm, disabled: true, data: { step: \"-1\" }) { \"Back\" }\n      Button(size: :sm, data: { step: \"1\" }) { \"Next\" }\n    end\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const demo = document.querySelector(\"[data-demo=wizard]\")\n      const tabs = document.getElementById(\"wizard-tabs\")\n      const steps = [ \"account\", \"profile\", \"review\" ]\n      let index = 0\n      const buttons = demo.querySelectorAll(\"[data-step]\")\n      const sync = () => { buttons[0].disabled = index === 0; buttons[1].disabled = index === steps.length - 1 }\n      buttons.forEach(button => button.addEventListener(\"click\", () => {\n        index = Math.max(0, Math.min(steps.length - 1, index + Number(button.dataset.step)))\n        tabs.dispatchEvent(new CustomEvent(\"ui--tabs:select\", { detail: { value: steps[index] } }))\n      }))\n      tabs.addEventListener(\"ui--tabs:change\", ({ detail: { value } }) => { index = steps.indexOf(value); sync() })\n    JS\n  end\nend"
+    },
+    {
+      "name": "Disabled",
+      "notes": "A disabled tab is skipped by the arrow keys.",
+      "code": "phlex do\n  Tabs(default_value: \"overview\", class: \"w-full max-w-md\") do\n    TabsList do\n      TabsTrigger(value: \"overview\") { \"Overview\" }\n      TabsTrigger(value: \"activity\") { \"Activity\" }\n      TabsTrigger(value: \"billing\", disabled: true) { \"Billing\" }\n    end\n    TabsContent(value: \"overview\", class: \"text-foreground-muted text-sm\") { \"The billing tab is disabled until you upgrade to a paid plan.\" }\n    TabsContent(value: \"activity\", class: \"text-foreground-muted text-sm\") { \"Every change across the team, newest first.\" }\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "The indicator and ←/→ follow the reading direction.",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"flex w-full max-w-md flex-col gap-8\") do\n    %i[ pill line ].each do |variant|\n      Tabs(default_value: \"overview\", variant:) do\n        TabsList do\n          TabsTrigger(value: \"overview\") { \"نظرة عامة\" }\n          TabsTrigger(value: \"activity\") { \"النشاط\" }\n          TabsTrigger(value: \"settings\") { \"الإعدادات\" }\n        end\n      end\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "PANELS": "PANELS = {\n  overview: [ \"Overview\", \"A snapshot of your workspace - recent files, members, and usage.\" ],\n  activity: [ \"Activity\", \"Every change, comment, and deploy across the team, newest first.\" ],\n  settings: [ \"Settings\", \"Manage the workspace name, visibility, and connected integrations.\" ]\n}.freeze"
+  }
+}

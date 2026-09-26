@@ -1,0 +1,72 @@
+{
+  "name": "Spinner",
+  "kit": "UI",
+  "description": "A small spinning indicator for compact, in-place waits (a button, an icon button, an overlay).\n\n  Spinner()\n  Spinner(variant: :dots, current_color: true, class: \"text-[1.2em]\")\n\nSized by font-size - set a text-* class, or inherit 1em. `current_color: true` takes the surrounding text color instead of the primary accent. The shapes animate with SVG SMIL (no JavaScript); under prefers-reduced-motion a static frame is shown instead.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `Spinner(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/09_status_&_feedback/spinner.md.erb",
+  "appica": "https://appica.dev/ui/components/react/spinner",
+  "components": {
+    "Spinner": {
+      "constant": "UI::Spinner",
+      "props": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "enum": [
+              "circular",
+              "dots",
+              "sparkle"
+            ],
+            "default": "circular"
+          },
+          "current_color": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  span(class: \"text-violet-500\") { Spinner(variant:, current_color:, class: size.to_s) }\nend"
+    },
+    {
+      "name": "Variants",
+      "notes": "Three shapes: circular, dots and sparkle. Under prefers-reduced-motion each holds a\nstatic frame instead of spinning.",
+      "code": "phlex do\n  div(class: \"flex items-center gap-10\") do\n    %i[ circular dots sparkle ].each do |variant|\n      div(class: \"flex flex-col items-center gap-3\") do\n        Spinner(variant:)\n        span(class: \"text-foreground-muted text-xs\") { variant.to_s }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Sizing",
+      "notes": "Sized by font-size, so a text-* utility scales it - there's no size prop.",
+      "code": "phlex do\n  div(class: \"flex items-end gap-8\") do\n    %w[ text-xl text-3xl text-5xl text-7xl ].each { |size| Spinner(class: size) }\n  end\nend"
+    },
+    {
+      "name": "Color",
+      "notes": "The primary accent by default; `current_color: true` inherits the surrounding text color.",
+      "code": "phlex do\n  div(class: \"flex items-center gap-8 text-4xl\") do\n    Spinner()\n    %w[ text-violet-500 text-success-emphasis text-error-emphasis ].each do |color|\n      span(class: color) { Spinner(current_color: true) }\n    end\n  end\nend"
+    },
+    {
+      "name": "In a button",
+      "notes": "A submit button shows a spinner while the action runs - `current_color:` matches the\nlabel and `text-[1.2em]` scales with the button. The second pairs the sparkle variant\nwith an \"Ask AI\" affordance.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center justify-center gap-4\") do\n    Button(class: \"min-w-34\", data: { demo: \"save\" }) do\n      Spinner(current_color: true, class: \"text-[1.2em]\", hidden: true)\n      span { \"Save changes\" }\n    end\n    Button(variant: :outline, class: \"rounded-full\", data: { demo: \"ask\" }) do\n      Spinner(variant: :sparkle, current_color: true, class: \"text-lg\", hidden: true, data: { icon: \"start\" })\n      Icon(:sparkle, stroke_width: 1.75, data: { icon: \"start\" })\n      span { \"Ask AI\" }\n    end\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const busy = (button, label, ms) => {\n        const [spinner, ...rest] = button.children\n        const text = button.querySelector(\"span:last-child\")\n        const idle = text.textContent\n        button.disabled = true\n        spinner.hidden = false\n        rest.filter(el => el.tagName === \"svg\").forEach(el => el.toggleAttribute(\"hidden\", true))\n        text.textContent = label\n        setTimeout(() => {\n          button.disabled = false\n          spinner.hidden = true\n          rest.forEach(el => el.toggleAttribute(\"hidden\", false))\n          text.textContent = idle\n        }, ms)\n      }\n      document.querySelector(\"[data-demo=save]\").addEventListener(\"click\", ({ currentTarget }) => busy(currentTarget, \"Saving…\", 1800))\n      document.querySelector(\"[data-demo=ask]\").addEventListener(\"click\", ({ currentTarget }) => busy(currentTarget, \"Thinking…\", 5000))\n    JS\n  end\nend"
+    },
+    {
+      "name": "Refresh button",
+      "notes": "In an icon button, swap the icon for a spinner while the action is in flight - the button\nkeeps its size, so the layout never jumps.",
+      "code": "phlex do\n  Button(variant: :outline, icon: true, aria_label: \"Refresh data\", data: { demo: \"refresh\" }) do\n    Icon(:refresh, stroke_width: 1.75)\n    Spinner(variant: :dots, current_color: true, class: \"text-[1.25em]\", hidden: true)\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      document.querySelector(\"[data-demo=refresh]\").addEventListener(\"click\", ({ currentTarget: button }) => {\n        const [icon, spinner] = button.children\n        button.disabled = true\n        icon.toggleAttribute(\"hidden\", true)\n        spinner.hidden = false\n        setTimeout(() => {\n          button.disabled = false\n          icon.toggleAttribute(\"hidden\", false)\n          spinner.hidden = true\n        }, 1500)\n      })\n    JS\n  end\nend"
+    },
+    {
+      "name": "Loading a panel",
+      "notes": "Show a centered spinner while a region fetches, then swap in the content.",
+      "code": "phlex do\n  div(class: \"border-border bg-background w-72 rounded-xl border p-5\", data: { demo: \"panel\" }) do\n    div(class: \"flex h-28 items-center justify-center\", data: { state: \"loading\" }) { Spinner(class: \"text-4xl\") }\n    div(class: \"flex h-28 flex-col justify-between\", data: { state: \"ready\" }, hidden: true) do\n      div do\n        p(class: \"text-foreground-intense font-semibold\") { \"Production\" }\n        p(class: \"text-success-emphasis text-sm\") { \"All systems operational\" }\n        p(class: \"text-foreground-muted mt-1 text-xs\") { \"Synced just now\" }\n      end\n      Button(variant: :soft, size: :sm, class: \"self-start\") do\n        Icon(:refresh, stroke_width: 1.75, data: { icon: \"start\" })\n        plain \"Reload\"\n      end\n    end\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const panel = document.querySelector(\"[data-demo=panel]\")\n      const [loading, ready] = panel.children\n      const reload = () => {\n        loading.hidden = false\n        ready.hidden = true\n        setTimeout(() => { loading.hidden = true; ready.hidden = false }, 1600)\n      }\n      ready.querySelector(\"button\").addEventListener(\"click\", reload)\n      reload()\n    JS\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "Direction-agnostic; inside a button the spinner leads the label on the correct side.",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"flex justify-center\") do\n    Button(disabled: true, class: \"min-w-34\") do\n      Spinner(current_color: true, class: \"text-[1.2em]\")\n      plain \"حفظ التغييرات\"\n    end\n  end\nend"
+    }
+  ]
+}

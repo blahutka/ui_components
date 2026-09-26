@@ -1,0 +1,125 @@
+{
+  "name": "OrderTracker",
+  "kit": "Blocks",
+  "description": "A shipment card: the order number and total, a status badge, the delivery progress, a timeline of steps and the courier - composed from Badge, Progress, Icon, Separator, Avatar and Button.\n\n  OrderTracker(number: \"10482\", items: 2, total: 148, status: :in_transit, progress: 75) do\n    OrderTimeline do\n      OrderStep(title: :confirmed, at: order.confirmed_at, state: :done)\n      OrderStep(title: :out_for_delivery, at: Time.current, state: :current)\n      OrderStep(title: :delivered, at: order.eta, state: :upcoming)\n    end\n    OrderCourier(name: \"Marcus\", avatar: courier.avatar_url, stops: 3, href: tracking_url)\n  end\n\nLocalized (order_tracker.locales.yml): statuses, step titles given as symbols, item and stop counts (pluralized), money and times (\"Today, 11:05 AM\", \"ETA 2:15 PM\").",
+  "usage": "Call the kit method inside a Phlex view that includes Blocks (e.g. `OrderTracker(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/20_blocks/order_tracker.md.erb",
+  "components": {
+    "OrderCourier": {
+      "constant": "Blocks::OrderCourier",
+      "description": "The courier row under a separator: avatar, \"Marcus is on the way\", stops left and a button to the live map.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "name": {},
+          "avatar": {
+            "default": null
+          },
+          "stops": {
+            "default": null
+          },
+          "href": {
+            "default": null
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "OrderStep": {
+      "constant": "Blocks::OrderStep",
+      "description": "One step: :done (a check), :current (a ringed dot) or :upcoming (a hollow dot, its time shown as an ETA). `title:` may be a translation key (:confirmed, :shipped, :sorting_hub, :local_facility, :out_for_delivery, :delivered) or any string; `at:` a Time.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "title": {},
+          "at": {
+            "default": null
+          },
+          "state": {
+            "enum": [
+              "done",
+              "current",
+              "upcoming"
+            ],
+            "default": "done"
+          }
+        },
+        "required": [
+          "title"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "OrderTimeline": {
+      "constant": "Blocks::OrderTimeline",
+      "description": "The list of shipment steps, joined by a line.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "OrderTracker": {
+      "constant": "Blocks::OrderTracker",
+      "props": {
+        "type": "object",
+        "properties": {
+          "number": {},
+          "items": {
+            "default": null
+          },
+          "total": {
+            "default": null
+          },
+          "currency": {
+            "default": "USD",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "processing",
+              "shipped",
+              "in_transit",
+              "out_for_delivery",
+              "delivered",
+              "delayed"
+            ],
+            "default": "processing"
+          },
+          "progress": {
+            "default": null
+          }
+        },
+        "required": [
+          "number"
+        ],
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "notes": "The Appica homepage card - the order is out for delivery today.",
+      "code": "today = Time.current.beginning_of_day\n\nphlex do\n  OrderTracker(number: \"10482\", items: 2, total: 148, status:, progress: progress.to_f, class: \"w-100 max-w-full\") do\n    OrderTimeline do\n      OrderStep(title: :confirmed, at: today - 2.days + 9.hours + 41.minutes)\n      OrderStep(title: :shipped, at: today - 1.day + 18.hours + 12.minutes)\n      OrderStep(title: :sorting_hub, at: today + 7.hours + 48.minutes)\n      OrderStep(title: :local_facility, at: today + 8.hours + 30.minutes)\n      OrderStep(title: :out_for_delivery, at: today + 11.hours + 5.minutes, state: :current)\n      OrderStep(title: :delivered, at: today + 14.hours + 15.minutes, state: :upcoming)\n    end\n    OrderCourier(name: \"Marcus\", avatar: \"/avatars/02.png\", stops: 3, href: \"#map\")\n  end\nend"
+    },
+    {
+      "name": "Delivered",
+      "notes": "All steps done, the courier row dropped.",
+      "code": "today = Time.current.beginning_of_day\n\nphlex do\n  OrderTracker(number: \"10377\", items: 1, total: 59.9, currency: \"EUR\", status: :delivered, progress: 100, class: \"w-100 max-w-full\") do\n    OrderTimeline do\n      OrderStep(title: :confirmed, at: today - 5.days + 10.hours)\n      OrderStep(title: :shipped, at: today - 4.days + 16.hours + 20.minutes)\n      OrderStep(title: :out_for_delivery, at: today - 1.day + 8.hours + 45.minutes)\n      OrderStep(title: :delivered, at: today - 1.day + 13.hours + 2.minutes)\n    end\n  end\nend"
+    },
+    {
+      "name": "Custom steps",
+      "notes": "Step titles take any string; a timeline works without the progress bar.",
+      "code": "phlex do\n  OrderTracker(number: \"A-2291\", items: 5, status: :delayed, class: \"w-100 max-w-full\") do\n    OrderTimeline do\n      OrderStep(title: \"Customs cleared\", at: Time.current - 3.hours)\n      OrderStep(title: \"Held at border - weather\", at: Time.current - 20.minutes, state: :current)\n      OrderStep(title: \"Next attempt\", at: Time.current + 1.day, state: :upcoming)\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "Rendered in Arabic whatever the toolbar says: the timeline line and markers sit on the right.",
+      "code": "today = Time.current.beginning_of_day\n\nphlex do\n  I18n.with_locale(:ar) do\n    div(dir: \"rtl\") do\n      OrderTracker(number: \"10482\", items: 2, total: 148, status: :in_transit, progress: 75, class: \"w-100 max-w-full\") do\n        OrderTimeline do\n          OrderStep(title: :confirmed, at: today - 2.days + 9.hours + 41.minutes)\n          OrderStep(title: :out_for_delivery, at: today + 11.hours + 5.minutes, state: :current)\n          OrderStep(title: :delivered, at: today + 14.hours + 15.minutes, state: :upcoming)\n        end\n        OrderCourier(name: \"Marcus\", avatar: \"/avatars/02.png\", stops: 3, href: \"#map\")\n      end\n    end\n  end\nend"
+    }
+  ]
+}

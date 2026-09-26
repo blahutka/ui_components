@@ -1,0 +1,69 @@
+{
+  "name": "Icon",
+  "kit": "UI",
+  "description": "One of the ~5,000 Appica icons (https://appica.dev/ui/icons), by its canonical name.\n\n  Icon(:star)                                              # outline, 24px, 1.5 stroke\n  Icon(:star_filled, size: 20, class: \"text-warning-emphasis\")\n  Icon(\"arrow-back-up\", stroke_width: 2, aria_label: \"Undo\")   # labelled => role=\"img\"\n  Button { Icon(:download, data: { icon: \"start\" }); plain \"Export\" }\n\nNames are the catalog's kebab-case names; symbols with underscores and the React PascalCase names work too (:arrow_back_up, \"ArrowBackUp\"). Filled icons end in -filled. Icons are decorative (aria-hidden) unless given an aria_label.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `Icon(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "components": {
+    "Icon": {
+      "constant": "UI::Icon",
+      "props": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "default": 24,
+            "type": "integer"
+          },
+          "stroke_width": {
+            "default": null
+          },
+          "color": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "notes": "Any catalog name - kebab-case, a symbol with underscores, or the React PascalCase name.",
+      "code": "phlex do\n  if UI::IconLibrary.index.key?(UI::IconLibrary.normalize(name))\n    Icon(name, size: size.to_i, stroke_width: stroke_width.to_f, class: color.to_s)\n  else\n    p(class: \"text-error-emphasis text-sm\") { \"No icon named “#{name}” - try the Gallery.\" }\n  end\nend"
+    },
+    {
+      "name": "Gallery",
+      "notes": "Browse and search every icon. Click one to copy its `Icon(...)` call.",
+      "code": "phlex { render UI::IconPreview::Gallery.new }"
+    },
+    {
+      "name": "Sizes",
+      "notes": "`size:` sets width and height in pixels (24 by default) - or size it with a `size-*` class.",
+      "code": "phlex do\n  div(class: \"text-foreground-intense flex items-end gap-6\") do\n    [ 16, 20, 24, 32, 48 ].each do |size|\n      div(class: \"flex flex-col items-center gap-2\") do\n        Icon(:photo, size:)\n        span(class: \"text-foreground-muted text-xs\") { size.to_s }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Stroke width",
+      "notes": "Outline icons take `stroke_width:` (1.5 by default); filled icons ignore it.",
+      "code": "phlex do\n  div(class: \"text-foreground-intense flex items-end gap-6\") do\n    [ 1, 1.5, 2, 2.5 ].each do |stroke_width|\n      div(class: \"flex flex-col items-center gap-2\") do\n        Icon(:settings, size: 32, stroke_width:)\n        span(class: \"text-foreground-muted text-xs\") { stroke_width.to_s }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Outline & filled",
+      "notes": "Filled variants are separate icons with a `-filled` suffix.",
+      "code": "phlex do\n  div(class: \"text-foreground-intense grid grid-cols-5 gap-6\") do\n    %i[ heart star bell bookmark circle_check ].each do |name|\n      div(class: \"flex flex-col items-center gap-3\") do\n        Icon(name, size: 28)\n        Icon(:\"#{name}_filled\", size: 28)\n        span(class: \"text-foreground-muted text-xs\") { name.to_s }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Color",
+      "notes": "Icons draw with currentColor - color them with a `text-*` class (or `color:`).",
+      "code": "phlex do\n  div(class: \"flex items-center gap-5\") do\n    %w[ text-primary text-secondary-emphasis text-info-emphasis text-success-emphasis text-warning-emphasis text-error-emphasis ].each do |color|\n      Icon(:circle_check_filled, size: 28, class: color)\n    end\n    Icon(:heart_filled, size: 28, color: \"#ec4899\")\n  end\nend"
+    },
+    {
+      "name": "In a button",
+      "notes": "Buttons size their icons; `data: { icon: \"start\" }` (or \"end\") tightens the padding on that side.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center gap-3\") do\n    Button do\n      Icon(:download, data: { icon: \"start\" })\n      plain \"Export\"\n    end\n    Button(variant: :outline) do\n      plain \"Next\"\n      Icon(:arrow_right, data: { icon: \"end\" }, class: \"rtl:rotate-180\")\n    end\n    Button(variant: :soft, icon: true, aria_label: \"Settings\") { Icon(:settings) }\n  end\nend"
+    },
+    {
+      "name": "Accessible icon",
+      "notes": "Icons are aria-hidden by default. A standalone meaningful icon gets `aria_label:`, which\nrenders it as role=\"img\" instead.",
+      "code": "phlex do\n  div(class: \"text-foreground-intense flex items-center gap-2 text-sm\") do\n    Icon(:alert_triangle_filled, size: 20, class: \"text-warning-emphasis\", aria_label: \"Warning\")\n    span { \"Storage almost full\" }\n  end\nend"
+    }
+  ]
+}

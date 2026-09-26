@@ -1,0 +1,152 @@
+{
+  "name": "Tooltip",
+  "kit": "UI",
+  "description": "A short, non-interactive hint shown while its trigger is hovered or focused.\n\n  Tooltip do\n    TooltipTrigger { |trigger| Button(**trigger, variant: :outline, icon: true, aria_label: \"Add to favorites\") { Icon(:heart) } }\n    TooltipContent { \"Add to favorites\" }\n  end\n\nOpens after the delay (600 ms, or a TooltipProvider's), instantly on keyboard focus; closes on leave, blur, Escape or a click on the trigger. `track_cursor_axis:` (:x, :y, :both) makes it follow the pointer; `disabled: true` suppresses it. A tooltip isn't reachable on touch or by screen readers as a name - give icon-only triggers an aria_label.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `Tooltip(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/08_overlays/tooltip.md.erb",
+  "appica": "https://appica.dev/ui/components/react/tooltip",
+  "components": {
+    "Tooltip": {
+      "constant": "UI::Tooltip",
+      "props": {
+        "type": "object",
+        "properties": {
+          "default_open": {
+            "default": false,
+            "type": "boolean"
+          },
+          "id": {},
+          "track_cursor_axis": {
+            "enum": [
+              "none",
+              "x",
+              "y",
+              "both"
+            ],
+            "default": "none"
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "delay": {
+            "default": null
+          },
+          "close_delay": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "UI::TooltipContent",
+        "UI::TooltipTrigger"
+      ]
+    },
+    "TooltipContent": {
+      "constant": "UI::TooltipContent",
+      "description": "The tooltip bubble: `side:` (:top by default), `align:`, offsets and an `arrow:`.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "side": {
+            "enum": [
+              "top",
+              "bottom",
+              "left",
+              "right",
+              "inline_end",
+              "inline_start"
+            ],
+            "default": "top"
+          },
+          "align": {
+            "enum": [
+              "start",
+              "center",
+              "end"
+            ],
+            "default": "center"
+          },
+          "side_offset": {
+            "default": null
+          },
+          "align_offset": {
+            "default": 0,
+            "type": "integer"
+          },
+          "arrow": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Tooltip"
+      ]
+    },
+    "TooltipProvider": {
+      "constant": "UI::TooltipProvider",
+      "description": "Wraps a group of tooltips: they share the hover `delay:` (200 ms) and, once one has shown, a neighbour opens instantly within `timeout:` (400 ms) of it closing. Put one high in your layout.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "delay": {
+            "default": 200,
+            "type": "integer"
+          },
+          "close_delay": {
+            "default": 0,
+            "type": "integer"
+          },
+          "timeout": {
+            "default": 400,
+            "type": "integer"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "TooltipTrigger": {
+      "constant": "UI::TooltipTrigger",
+      "description": "The element the tooltip describes. A block taking an argument receives its attributes for your own control (a Button, a ToolbarButton…); otherwise it renders a <span> around the content.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Tooltip"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  TooltipProvider do\n    Tooltip do\n      TooltipTrigger { |trigger| Button(**trigger, variant: :outline, icon: true, aria_label: \"Add to favorites\") { Icon(:heart) } }\n      TooltipContent(side:, arrow:) { \"Add to favorites\" }\n    end\n  end\nend"
+    },
+    {
+      "name": "Side & alignment",
+      "code": "phlex do\n  TooltipProvider do\n    div(class: \"flex flex-wrap items-center justify-center gap-3\") do\n      %i[ top right bottom left ].each do |side|\n        Tooltip do\n          TooltipTrigger { |trigger| Button(**trigger, variant: :outline) { side.to_s } }\n          TooltipContent(side:) { \"Opens on the #{side}\" }\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Shared provider",
+      "notes": "The first tooltip waits out the delay; sweeping to a neighbour shows it at once.",
+      "code": "actions = { bold: \"Bold\", italic: \"Italic\", underline: \"Underline\", strikethrough: \"Strikethrough\", link: \"Link\" }\nphlex do\n  TooltipProvider(delay: 400) do\n    Toolbar(aria_label: \"Text formatting\") do\n      actions.each_with_index do |(icon, label), index|\n        ToolbarSeparator() if index == actions.size - 1\n        Tooltip do\n          TooltipTrigger do |trigger|\n            ToolbarButton(**trigger) { |item| Button(**item, variant: :ghost, icon: true, aria_label: label) { Icon(icon) } }\n          end\n          TooltipContent { label }\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Rich content",
+      "code": "phlex do\n  TooltipProvider do\n    Tooltip do\n      TooltipTrigger { |trigger| Button(**trigger, variant: :outline, icon: true, aria_label: \"Save\") { Icon(:bookmark) } }\n      TooltipContent(class: \"flex items-center gap-2\") { plain \"Save\"; Kbd(size: :sm) { \"⌘ S\" } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Follow the cursor",
+      "notes": "`track_cursor_axis: :x` keeps the bubble over the pointer.",
+      "code": "phlex do\n  TooltipProvider do\n    Tooltip(track_cursor_axis: :x) do\n      TooltipTrigger(class: \"bg-background-subtle border-border-strong flex h-32 w-72 items-center justify-center rounded-xl border border-dashed text-sm select-none\") { \"Hover and move across\" }\n      TooltipContent { \"Following the cursor\" }\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "code": "phlex do\n  div(dir: \"rtl\") do\n    TooltipProvider do\n      Tooltip do\n        TooltipTrigger { |trigger| Button(**trigger, variant: :outline) { \"حفظ\" } }\n        TooltipContent(side: :inline_end) { \"احفظ التغييرات\" }\n      end\n    end\n  end\nend"
+    }
+  ]
+}

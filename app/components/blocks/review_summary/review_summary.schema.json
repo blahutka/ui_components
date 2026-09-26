@@ -1,0 +1,99 @@
+{
+  "name": "ReviewSummary",
+  "kit": "Blocks",
+  "description": "A product-reviews card: the average score with stars and a review count, the breakdown by stars and a social-proof footer - composed from Rating, Meter, Separator and AvatarGroup.\n\n  ReviewSummary(rating: 4.8, reviews: 1_284) do\n    ReviewBreakdown(counts: product.reviews.group(:stars).count)\n    ReviewHighlight(avatars: recent_reviewers) { \"Loved by 12,000+ shoppers\" }\n  end\n\nLocalized (review_summary.locales.yml): the review count is pluralized and every number uses the current locale's format.",
+  "usage": "Call the kit method inside a Phlex view that includes Blocks (e.g. `ReviewSummary(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/20_blocks/review_summary.md.erb",
+  "components": {
+    "ReviewBreakdown": {
+      "constant": "Blocks::ReviewBreakdown",
+      "description": "The share of reviews per star, highest first, as meters. `counts:` maps stars to review counts (e.g. `reviews.group(:stars).count`); pass `href:` (a proc of the star) to link each row to the filtered reviews.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "counts": {},
+          "href": {
+            "default": null
+          }
+        },
+        "required": [
+          "counts"
+        ],
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "Blocks::ReviewSummary"
+      ]
+    },
+    "ReviewHighlight": {
+      "constant": "Blocks::ReviewHighlight",
+      "description": "The social-proof footer under a separator: a few reviewer avatars and a line of text.\n\n  ReviewHighlight(avatars: [ { src: \"/avatars/02.png\", alt: \"Liam Hudson\" } ]) { \"Loved by 12,000+ shoppers\" }",
+      "props": {
+        "type": "object",
+        "properties": {
+          "avatars": {
+            "default": [],
+            "type": "array"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "ReviewSummary": {
+      "constant": "Blocks::ReviewSummary",
+      "props": {
+        "type": "object",
+        "properties": {
+          "rating": {},
+          "reviews": {
+            "default": null
+          },
+          "max": {
+            "default": 5,
+            "type": "integer"
+          },
+          "verified": {
+            "default": true,
+            "type": "boolean"
+          },
+          "label": {
+            "default": null
+          }
+        },
+        "required": [
+          "rating"
+        ],
+        "additionalProperties": true
+      },
+      "parts": [
+        "Blocks::ReviewBreakdown"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "notes": "The Appica homepage card. The stars show the exact average (4.8 fills four and four-fifths).",
+      "code": "phlex do\n  ReviewSummary(rating: rating.to_f, reviews: COUNTS.values.sum, class: \"w-100 max-w-full\") do\n    ReviewBreakdown(counts: COUNTS)\n    ReviewHighlight(avatars: REVIEWERS) { \"Loved by 12,000+ shoppers\" }\n  end\nend"
+    },
+    {
+      "name": "Linked rows",
+      "notes": "With `href:` each row links to the reviews filtered by that star.",
+      "code": "phlex do\n  ReviewSummary(rating: 4.8, reviews: COUNTS.values.sum, class: \"w-100 max-w-full\") do\n    ReviewBreakdown(counts: COUNTS, href: ->(stars) { \"#reviews-#{stars}-stars\" })\n  end\nend"
+    },
+    {
+      "name": "Few reviews",
+      "notes": "The count is pluralized per language (\"1 verified review\", \"3 ověřené recenze\").",
+      "code": "phlex do\n  div(class: \"flex flex-col gap-4\") do\n    ReviewSummary(rating: 5, reviews: 1, class: \"w-100 max-w-full\") { ReviewBreakdown(counts: { 5 => 1 }) }\n    ReviewSummary(rating: 3.7, reviews: 3, verified: false, class: \"w-100 max-w-full\") { ReviewBreakdown(counts: { 5 => 1, 4 => 1, 2 => 1 }) }\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "Rendered in Arabic whatever the toolbar says: stars and meters fill from the right.",
+      "code": "phlex do\n  I18n.with_locale(:ar) do\n    div(dir: \"rtl\") do\n      ReviewSummary(rating: 4.8, reviews: COUNTS.values.sum, class: \"w-100 max-w-full\") do\n        ReviewBreakdown(counts: COUNTS)\n        ReviewHighlight(avatars: REVIEWERS) { \"أحبه أكثر من 12,000 متسوق\" }\n      end\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "COUNTS": "COUNTS = { 5 => 1_002, 4 => 180, 3 => 64, 2 => 26, 1 => 12 }.freeze",
+    "REVIEWERS": "REVIEWERS = [\n  { src: \"/avatars/02.png\", alt: \"Liam Hudson\" },\n  { src: \"/avatars/04.png\", alt: \"Ava Thompson\" },\n  { src: \"/avatars/09.png\", alt: \"Emma Garcia\" }\n].freeze"
+  }
+}

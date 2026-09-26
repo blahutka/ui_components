@@ -1,0 +1,109 @@
+{
+  "name": "Checkbox",
+  "kit": "UI",
+  "description": "A tick box on a native <input type=\"checkbox\">, sized in em so it follows the text size.\n\n  label(class: \"flex items-center gap-2\") do\n    Checkbox(name: \"terms\", checked: true)\n    plain \"Accept terms and conditions\"\n  end\n  Checkbox(indeterminate: true, aria_label: \"Select all\")\n  Checkbox(name: \"newsletter\", value: \"1\", unchecked_value: \"0\")   # always submits\n\nIt renders only the box - wrap it and its text in a <label>. Native attributes (name, value, required, form, aria_*) go to the <input>, `class:` to the box. Inside a CheckboxGroup it takes the group's name and is checked when the group's value includes its `value:`; `parent: true` makes it the group's \"select all\" box. Inside a Field it takes the field's id and state.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `Checkbox(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/02_actions_&_inputs/checkbox.md.erb",
+  "appica": "https://appica.dev/ui/components/react/checkbox",
+  "components": {
+    "Checkbox": {
+      "constant": "UI::Checkbox",
+      "props": {
+        "type": "object",
+        "properties": {
+          "checked": {
+            "default": null
+          },
+          "indeterminate": {
+            "default": false,
+            "type": "boolean"
+          },
+          "parent": {
+            "default": false,
+            "type": "boolean"
+          },
+          "invalid": {
+            "default": null
+          },
+          "value": {
+            "default": null
+          },
+          "unchecked_value": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "CheckboxGroup": {
+      "constant": "UI::CheckboxGroup",
+      "description": "Several checkboxes sharing one value: an array of the checked boxes' values.\n\n  CheckboxGroup(name: \"toppings[]\", default_value: %w[ cheese olives ], aria_labelledby: \"toppings-label\") do\n    span(id: \"toppings-label\") { \"Toppings\" }\n    label { Checkbox(value: \"cheese\"); plain \"Extra cheese\" }\n    label { Checkbox(value: \"olives\"); plain \"Olives\" }\n  end\n\nEvery checkbox inside submits under the group's `name:` and starts checked when `default_value:` includes its value. One `Checkbox(parent: true)` becomes \"select all\": it turns indeterminate while only some are checked and checks or clears them all. Emits `ui--checkbox-group:change` with { value } (the checked values). It's a `role=\"group\"` - name it with aria_label(ledby).",
+      "props": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "default": null
+          },
+          "value": {
+            "default": null
+          },
+          "default_value": {
+            "default": [],
+            "type": "array"
+          },
+          "orientation": {
+            "enum": [
+              "vertical",
+              "horizontal"
+            ],
+            "default": "vertical"
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  label(class: \"flex items-center gap-2 text-sm select-none\") do\n    Checkbox(checked:, indeterminate:, disabled:, invalid:)\n    plain \"Accept terms and conditions\"\n  end\nend"
+    },
+    {
+      "name": "States",
+      "notes": "Unchecked, checked, indeterminate (a dash, announced as \"mixed\"), disabled and error.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center gap-6 text-sm select-none\") do\n    label(class: \"flex items-center gap-2\") { Checkbox(); plain \"Unchecked\" }\n    label(class: \"flex items-center gap-2\") { Checkbox(checked: true); plain \"Checked\" }\n    label(class: \"flex items-center gap-2\") { Checkbox(indeterminate: true); plain \"Indeterminate\" }\n    label(class: \"text-foreground-muted flex items-center gap-2\") { Checkbox(disabled: true); plain \"Disabled\" }\n    label(class: \"text-foreground-muted flex items-center gap-2\") { Checkbox(disabled: true, checked: true); plain \"Disabled checked\" }\n    label(class: \"flex items-center gap-2\") { Checkbox(aria_invalid: true); plain \"Error\" }\n  end\nend"
+    },
+    {
+      "name": "Sizing",
+      "notes": "The box is sized in em - set a text size on the label and both grow (never below 16px).",
+      "code": "phlex do\n  div(class: \"flex flex-col items-start gap-4 select-none\") do\n    label(class: \"flex items-center gap-2 text-base\") { Checkbox(checked: true); plain \"text-base\" }\n    label(class: \"flex items-center gap-2.5 text-lg\") { Checkbox(checked: true); plain \"text-lg\" }\n    label(class: \"flex items-center gap-3 text-xl\") { Checkbox(checked: true); plain \"text-xl\" }\n  end\nend"
+    },
+    {
+      "name": "With a label and description",
+      "code": "phlex do\n  label(class: \"flex max-w-sm items-start gap-2.5 select-none\") do\n    Checkbox(checked: true, class: \"mt-1\")\n    span(class: \"flex flex-col\") do\n      span(class: \"text-foreground-intense font-medium\") { \"Enable notifications\" }\n      span(class: \"text-foreground-muted text-sm\") { \"Receive emails about new activity on your account. You can turn this off any time.\" }\n    end\n  end\n\n  label(class: \"flex max-w-sm items-start gap-2.5 select-none\") do\n    Checkbox(checked: false, class: \"mt-1\")\n    span(class: \"flex flex-col\") do\n      span(class: \"text-foreground-intense font-medium\") { \"Second label\" }\n      span(class: \"text-foreground-muted text-sm\") { \"Receive emails about new activity on your account. You can turn this off any time.\" }\n    end\n  end\nend"
+    },
+    {
+      "name": "Checkbox group",
+      "notes": "Every box submits under the group's `name:`; `default_value:` lists the checked values.",
+      "code": "phlex do\n  CheckboxGroup(name: \"toppings[]\", default_value: %w[ cheese olives ], aria_labelledby: \"toppings-label\") do\n    span(id: \"toppings-label\", class: \"text-foreground mb-1 text-sm font-medium\") { \"Toppings\" }\n    label(class: \"flex items-center gap-2 text-sm select-none\") { Checkbox(value: :cheese); plain 'Extra cheese' }\n    label(class: \"flex items-center gap-2 text-sm select-none\") { Checkbox(value: :mushrooms); plain 'Mushrooms' }\n    label(class: \"flex items-center gap-2 text-sm select-none\") { Checkbox(value: :olives); plain 'Olives' }\n    label(class: \"flex items-center gap-2 text-sm select-none\") { Checkbox(value: :onions); plain 'Onions' }\n  end\nend"
+    },
+    {
+      "name": "Select all (parent checkbox)",
+      "notes": "`Checkbox(parent: true)` follows the others - indeterminate while only some are checked -\nand checks or clears them all.",
+      "code": "phlex do\n  CheckboxGroup(name: \"permissions[]\", default_value: %w[ read ], aria_labelledby: \"permissions-label\") do\n    label(class: \"flex items-center gap-2 text-sm font-medium select-none\") do\n      Checkbox(parent: true)\n      span(id: \"permissions-label\") { \"Permissions\" }\n    end\n    div(class: \"flex flex-col gap-2 ps-6\") do\n      { read: \"Read\", write: \"Write\", delete: \"Delete\" }.each do |value, text|\n        label(class: \"flex items-center gap-2 text-sm select-none\") { Checkbox(value:); plain text }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "In a form",
+      "notes": "Inside a Field the box is validated like any control: submit without ticking it.\n`unchecked_value:` makes an unticked box still submit a value (like Rails' check_box).",
+      "code": "phlex do\n  form(class: \"flex flex-col items-start gap-4\", data: { demo: \"form\" }) do\n    Field(name: \"terms\", messages: { value_missing: \"You must accept the terms to continue.\" }) do\n      label(class: \"flex items-center gap-2 text-sm select-none\") { Checkbox(required: true); plain \"I accept the terms\" }\n      FieldError()\n    end\n    label(class: \"flex items-center gap-2 text-sm select-none\") { Checkbox(name: \"newsletter\", value: \"1\", unchecked_value: \"0\"); plain \"Send me the newsletter\" }\n    Button(type: \"submit\", size: :sm) { \"Continue\" }\n  end\n  script(type: \"module\") do\n    raw safe(%(document.querySelector(\"[data-demo=form]\").addEventListener(\"submit\", event => event.preventDefault())))\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "code": "phlex do\n  CheckboxGroup(dir: \"rtl\", name: \"toppings[]\", default_value: %w[ cheese ], aria_label: \"الإضافات\") do\n    { cheese: \"جبن إضافي\", mushrooms: \"فطر\", olives: \"زيتون\" }.each do |value, text|\n      label(class: \"flex items-center gap-2 text-sm select-none\") { Checkbox(value:); plain text }\n    end\n  end\nend"
+    }
+  ]
+}

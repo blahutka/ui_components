@@ -1,0 +1,141 @@
+{
+  "name": "Avatar",
+  "kit": "UI",
+  "description": "A user image with a text or icon fallback when it's missing.\n\n  Avatar(size: :lg) do\n    AvatarImage(src: user.avatar_url, alt: user.name)\n    AvatarFallback { user.initials }\n    AvatarBadge(animate: true)\n  end\n\nSized in em: `size:` sets the root's font-size, so the image, fallback text and badge scale together. The `ui--avatar` controller shows the image once it has loaded and keeps the fallback when it's missing or fails.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `Avatar(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/03_data_display/avatar.md.erb",
+  "appica": "https://appica.dev/ui/components/react/avatar",
+  "components": {
+    "Avatar": {
+      "constant": "UI::Avatar",
+      "props": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "default": null
+          },
+          "shape": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "AvatarBadge": {
+      "constant": "UI::AvatarBadge",
+      "description": "A status dot in the corner. Recolor it with a text-* class; `animate: true` adds a pulsing ping (skipped when the user prefers reduced motion).",
+      "props": {
+        "type": "object",
+        "properties": {
+          "animate": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "AvatarFallback": {
+      "constant": "UI::AvatarFallback",
+      "description": "Shown until (or unless) the image loads: initials or an icon. Text renders at 0.4em of the avatar; an svg fills it.\n\n  AvatarFallback { \"SJ\" }\n  AvatarFallback(delay: 600) { \"SJ\" }   # wait before showing, avoids a flash on fast loads",
+      "props": {
+        "type": "object",
+        "properties": {
+          "delay": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "AvatarGroup": {
+      "constant": "UI::AvatarGroup",
+      "description": "Overlaps a row (or column) of avatars and rings each one with the background color. `size:` / `shape:` are defaults for child avatars that don't set their own.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "default": null
+          },
+          "shape": {
+            "default": null
+          },
+          "orientation": {
+            "enum": [
+              "horizontal",
+              "vertical"
+            ],
+            "default": "horizontal"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "AvatarImage": {
+      "constant": "UI::AvatarImage",
+      "description": "The photo. Hidden until it has loaded, so a slow or broken image never flashes; the controller then swaps it in for the AvatarFallback.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "src": {
+            "default": null
+          },
+          "alt": {
+            "default": "",
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  Avatar(size:, shape:) do\n    AvatarImage(src: \"/avatars/01.png\", alt: \"Sarah Jenkins\") if image\n    AvatarFallback { \"SJ\" }\n    AvatarBadge() if badge\n  end\nend"
+    },
+    {
+      "name": "Fallback",
+      "notes": "When the image is missing, still loading, or fails to load, AvatarFallback renders\ninstead. Use initials for people, or an icon for a generic placeholder.",
+      "code": "phlex do\n  div(class: \"flex items-center gap-4\") do\n    Avatar(size: :lg) do\n      AvatarImage(src: \"/avatars/does-not-exist.png\", alt: \"Sarah Jenkins\")\n      AvatarFallback { \"SJ\" }\n    end\n    Avatar(size: :lg) { AvatarFallback { \"MR\" } }\n    Avatar(size: :lg) do\n      AvatarFallback do\n        Icon(:user_filled)\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Sizes",
+      "notes": "Seven presets from 2xs to 2xl. The fallback text and badge scale with the image.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center justify-center gap-4\") do\n    UI::Avatar::SIZES.each_key do |size|\n      Avatar(size:) do\n        AvatarImage(src: \"/avatars/05.png\", alt: \"Daniel Reyes\")\n        AvatarFallback { \"DR\" }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Custom size",
+      "notes": "Pass a number for an exact pixel size; it drives the root's font-size, so everything\ninside still scales proportionally.",
+      "code": "phlex do\n  div(class: \"flex items-center gap-4\") do\n    [ 28, 44, 72 ].each do |size|\n      Avatar(size:) do\n        AvatarImage(src: \"/avatars/04.png\", alt: \"Ava Thompson\")\n        AvatarFallback { \"AT\" }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Shape",
+      "notes": "`shape: :circle` (the default) or `shape: :rounded`, a squircle-style rounded square.",
+      "code": "phlex do\n  div(class: \"flex items-center gap-4\") do\n    [ :circle, :rounded ].each do |shape|\n      Avatar(size: :lg, shape:) do\n        AvatarImage(src: \"/avatars/03.png\", alt: \"Mateo Rossi\")\n        AvatarFallback { \"MR\" }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Status badge",
+      "notes": "AvatarBadge adds a corner status dot. `animate: true` adds a pulsing ping;\nrecolor it with a text-* class.",
+      "code": "phlex do\n  div(class: \"flex items-center gap-4\") do\n    Avatar(size: :lg) do\n      AvatarImage(src: \"/avatars/02.png\", alt: \"Liam Hudson\")\n      AvatarFallback { \"LH\" }\n      AvatarBadge()\n    end\n    Avatar(size: :lg) do\n      AvatarImage(src: \"/avatars/08.png\", alt: \"Emma Garcia\")\n      AvatarFallback { \"EG\" }\n      AvatarBadge(animate: true)\n    end\n    Avatar(size: :lg) do\n      AvatarImage(src: \"/avatars/06.png\", alt: \"Lucas Müller\")\n      AvatarFallback { \"LM\" }\n      AvatarBadge(class: \"text-foreground-subtle\")\n    end\n  end\nend"
+    },
+    {
+      "name": "Avatar group",
+      "notes": "AvatarGroup overlaps a row of avatars and rings each one with the background color.\nIt forwards a shared size/shape; a +N counter sits in the same rhythm.",
+      "code": "phlex do\n  AvatarGroup(size: :md, orientation:, aria_label: \"Project members\") do\n    PEOPLE.each do |person|\n      Avatar do\n        AvatarImage(src: person[:src], alt: person[:alt])\n        AvatarFallback { person[:initials] }\n      end\n    end\n    Avatar { AvatarFallback(class: \"text-foreground-muted text-sm\") { \"+5\" } }\n  end\nend"
+    },
+    {
+      "name": "Loading animation",
+      "notes": "AvatarFallback shows until the image has loaded, so a pulsing placeholder inside it\nis swapped for the photo automatically. This image is served with a 2.5s delay;\nuse Lookbook's refresh button to watch it again.",
+      "code": "phlex do\n  Avatar(size: :xl, class: \"bg-transparent\") do\n    AvatarImage(src: \"/demo/images/8?delay=2.5&t=#{Time.now.to_f}\", alt: \"Emma Garcia\")\n    AvatarFallback do\n      span(class: \"bg-background-strong size-full animate-pulse rounded-[inherit]\")\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "The badge moves to the start corner and the group stacks from the right, because\nboth use logical properties.",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"flex items-center gap-6\") do\n    Avatar(size: :lg) do\n      AvatarFallback { \"NP\" }\n      AvatarBadge()\n    end\n    AvatarGroup(size: :md) do\n      PEOPLE.first(3).each do |person|\n        Avatar do\n          AvatarImage(src: person[:src], alt: person[:alt])\n          AvatarFallback { person[:initials] }\n        end\n      end\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "PEOPLE": "PEOPLE = [\n  { src: \"/avatars/01.png\", alt: \"Sarah Jenkins\", initials: \"SJ\" },\n  { src: \"/avatars/02.png\", alt: \"Liam Hudson\", initials: \"LH\" },\n  { src: \"/avatars/03.png\", alt: \"Mateo Rossi\", initials: \"MR\" },\n  { src: \"/avatars/04.png\", alt: \"Ava Thompson\", initials: \"AT\" }\n].freeze"
+  }
+}

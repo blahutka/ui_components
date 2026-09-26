@@ -1,0 +1,95 @@
+{
+  "name": "Badge",
+  "kit": "UI",
+  "description": "A small label that highlights a status, count, or category.\n\n  Badge(variant: :success) { \"Active\" }\n  Badge(variant: :soft, href: \"#design\") { \"Design\" }        # interactive link\n  Badge(variant: :primary_outline, as: :button) { \"Follow\" } # interactive button\n\nRenders a <span>; `href:` makes it an <a> and `as: :button` a <button>, which also turns on the hover/press affordances (Appica's `render` prop). Tag an icon with `data: { icon: \"start\" }` / `data: { icon: \"end\" }` to tighten the padding on that side.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `Badge(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/03_data_display/badge.md.erb",
+  "appica": "https://appica.dev/ui/components/react/badge",
+  "components": {
+    "Badge": {
+      "constant": "UI::Badge",
+      "props": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "enum": [
+              "primary",
+              "primary_outline",
+              "secondary",
+              "soft",
+              "outline",
+              "error",
+              "success",
+              "warning",
+              "info",
+              "light"
+            ],
+            "default": "primary"
+          },
+          "size": {
+            "enum": [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "icon_sm",
+              "icon_md",
+              "icon_lg"
+            ],
+            "default": "md"
+          },
+          "as": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  Badge(variant:, size:) { label }\nend"
+    },
+    {
+      "name": "Variants",
+      "notes": "Each variant carries a semantic color. Solid primary/secondary and tinted\nerror/success/warning/info draw attention to a status; soft, outline and\nprimary_outline stay quieter for neutral metadata.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center justify-center gap-2\") do\n    (UI::Badge::VARIANTS.keys - [ :light ]).each do |variant|\n      Badge(variant:) { variant.to_s.humanize }\n    end\n  end\nend"
+    },
+    {
+      "name": "On dark backgrounds",
+      "notes": "The light variant is built for dark or photographic backgrounds: a translucent\nwhite fill that reads against the surface beneath it.",
+      "code": "phlex do\n  div(class: \"relative flex h-44 w-full max-w-66 items-end justify-start overflow-hidden rounded-xl bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500\") do\n    div(class: \"absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-transparent\")\n    Badge(variant: :light, class: \"relative m-3\") do\n      Icon(:crown, stroke_width: 2, data: { icon: \"start\" })\n      plain \"Premium\"\n    end\n  end\nend"
+    },
+    {
+      "name": "Sizes",
+      "notes": "Four sizes from xs to lg; text and icons scale together.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center justify-center gap-2\") do\n    { xs: \"Extra small\", sm: \"Small\", md: \"Medium\", lg: \"Large\" }.each do |size, label|\n      Badge(size:) { label }\n    end\n  end\nend"
+    },
+    {
+      "name": "With an icon",
+      "notes": "Tag the icon with `data: { icon: \"start\" }` or `\"end\"`; the badge tightens the\npadding on that edge so the icon sits snug.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center justify-center gap-2\") do\n    Badge(variant: :success) do\n      Icon(:check, stroke_width: 2, data: { icon: \"start\" })\n      plain \"Verified\"\n    end\n    Badge(variant: :warning) do\n      Icon(:flame, stroke_width: 2, data: { icon: \"start\" })\n      plain \"Hot\"\n    end\n    Badge(variant: :soft) do\n      plain \"Notification\"\n      Icon(:bell_ringing, stroke_width: 2, data: { icon: \"end\" })\n    end\n  end\nend"
+    },
+    {
+      "name": "Icon only",
+      "notes": "`size: :icon_sm`, `:icon_md` and `:icon_lg` render a square badge for a lone icon.\nGive it an `aria_label:` so the meaning is announced.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center justify-center gap-2\") do\n    Badge(variant: :success, size: :icon_sm, aria_label: \"Verified\") { Icon(:check, stroke_width: 2) }\n    Badge(variant: :primary_outline, size: :icon_md, aria_label: \"Featured\") { Icon(:star, stroke_width: 2) }\n    Badge(variant: :warning, size: :icon_lg, aria_label: \"Boosted\") { Icon(:bolt, stroke_width: 2) }\n  end\nend"
+    },
+    {
+      "name": "Notification count",
+      "notes": "Position a small badge against an icon button for an unread count. Keep the number\nin the badge and the full meaning in its `aria_label:`.",
+      "code": "phlex do\n  div(class: \"relative inline-flex self-center\") do\n    Button(variant: :outline, icon: true, aria_label: \"Notifications\") { Icon(:bell, stroke_width: 2) }\n    Badge(variant: :secondary, size: :xs, class: \"absolute -inset-e-1.5 -top-1.5 min-w-4 px-1 font-medium\", aria_label: \"3 unread notifications\") { \"3\" }\n  end\nend"
+    },
+    {
+      "name": "Interactive (link or button)",
+      "notes": "`href:` renders an <a>, `as: :button` a <button>. The badge becomes focusable and\nanimates on hover and press.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center justify-center gap-2\") do\n    Badge(variant: :soft, href: \"#design\") { \"Design\" }\n    Badge(variant: :outline, href: \"#trending\") { \"Trending\" }\n    Badge(variant: :primary_outline, as: :button) { \"Follow\" }\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "The icon moves to the start (right) edge and the tightened padding follows, because\nboth use logical properties.",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"flex flex-wrap items-center justify-center gap-2\") do\n    Badge(variant: :success) do\n      Icon(:check, stroke_width: 2, data: { icon: \"start\" })\n      plain \"موثّق\"\n    end\n    Badge(href: \"#upgrade\") { \"ترقية\" }\n  end\nend"
+    }
+  ]
+}

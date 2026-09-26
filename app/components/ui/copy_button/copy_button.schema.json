@@ -1,0 +1,77 @@
+{
+  "name": "CopyButton",
+  "kit": "UI",
+  "description": "A Button that copies text to the clipboard, then swaps its icon for a drawn check.\n\n  CopyButton(value: \"npm install @appica/ui-react\")\n  CopyButton(target: \"#install-command\", label: \"Copy command\")     # an element's value / text\n  CopyButton(value: url, variant: :outline, size: :sm, copied_label: \"Copied!\") { \"Copy\" }\n\nTakes every Button prop (ghost, small and square by default). A text label swaps to `copied_label:` while copied; the accessible name and a status message change too. `icon:` replaces the resting copy glyph. Emits `ui--copy-button:copy` with { value } (or `:error`), and sets data-copied for `timeout:` ms.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `CopyButton(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/02_actions_&_inputs/copy_button.md.erb",
+  "appica": "https://appica.dev/ui/components/react/copy-button",
+  "components": {
+    "CopyButton": {
+      "constant": "UI::CopyButton",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "default": null
+          },
+          "target": {
+            "default": null
+          },
+          "label": {
+            "default": "Copy",
+            "type": "string"
+          },
+          "copied_label": {
+            "default": "Copied",
+            "type": "string"
+          },
+          "timeout": {
+            "default": 2000,
+            "type": "integer"
+          },
+          "icon": {
+            "default": null
+          },
+          "variant": {
+            "default": "ghost",
+            "type": "string"
+          },
+          "size": {
+            "default": "sm",
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex { CopyButton(value:, variant:) }"
+    },
+    {
+      "name": "Variants",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center gap-3\") do\n    %i[ ghost soft outline primary_outline primary secondary ].each { |variant| CopyButton(value: variant.to_s, variant:) }\n  end\nend"
+    },
+    {
+      "name": "Sizes",
+      "notes": "Square icon sizes by default; give it a block for a text label (then `sm` / `md` / `lg`).",
+      "code": "phlex do\n  div(class: \"flex items-center gap-3\") do\n    %i[ sm md lg ].each { |size| CopyButton(value: size.to_s, variant: :outline, size:) }\n  end\nend"
+    },
+    {
+      "name": "With a label",
+      "notes": "A text label swaps to `copied_label:` while copied.",
+      "code": "phlex { CopyButton(value: \"npm install @appica/ui-react\", variant: :outline, copied_label: \"Copied!\") { \"Copy\" } }"
+    },
+    {
+      "name": "Custom icon",
+      "code": "phlex { CopyButton(value: \"https://appica.dev/ui\", icon: :link, label: \"Copy link\", copied_label: \"Link copied\", variant: :outline, size: :md) }"
+    },
+    {
+      "name": "Copy from an element",
+      "notes": "`target:` copies another element's text (or an input's value).",
+      "code": "phlex do\n  div(class: \"border-border-muted bg-background-subtle relative w-full max-w-90 rounded-lg border py-3 ps-4 pe-12\") do\n    code(id: \"install-command\", class: \"text-foreground font-mono text-sm\") { \"npm install @appica/ui-react\" }\n    div(class: \"absolute inset-e-2 top-1/2 -translate-y-1/2\") { CopyButton(target: \"#install-command\", label: \"Copy command\") }\n  end\nend"
+    }
+  ]
+}

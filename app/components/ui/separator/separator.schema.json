@@ -1,0 +1,69 @@
+{
+  "name": "Separator",
+  "kit": "UI",
+  "description": "A thin horizontal or vertical line between sections of related content.\n\n  Separator()\n  Separator(orientation: :vertical)\n  Separator(variant: :wave, class: \"text-primary my-4\")\n\nDrawn with currentColor (text-border by default) - recolor it with any text-* class. solid, dashed, double and gradient are CSS; dotted, wave and zigzag are a repeating SVG pattern.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `Separator(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/03_data_display/separator.md.erb",
+  "appica": "https://appica.dev/ui/components/react/separator",
+  "components": {
+    "Separator": {
+      "constant": "UI::Separator",
+      "props": {
+        "type": "object",
+        "properties": {
+          "orientation": {
+            "enum": [
+              "horizontal",
+              "vertical"
+            ],
+            "default": "horizontal"
+          },
+          "variant": {
+            "enum": [
+              "solid",
+              "dashed",
+              "double",
+              "gradient",
+              "dotted",
+              "wave",
+              "zigzag"
+            ],
+            "default": "solid"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  if orientation.to_sym == :vertical\n    div(class: \"text-foreground flex h-12 items-center gap-4 text-sm\") do\n      span { \"Left\" }\n      Separator(variant:, orientation:)\n      span { \"Right\" }\n    end\n  else\n    div(class: \"text-foreground flex w-full max-w-xs flex-col gap-4 text-sm\") do\n      span { \"Above the line\" }\n      Separator(variant:)\n      span { \"Below the line\" }\n    end\n  end\nend"
+    },
+    {
+      "name": "Variants",
+      "notes": "solid, dashed, double and gradient are CSS borders; dotted, wave and zigzag a repeating SVG\npattern that scales with the width.",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-xs flex-col gap-5\") do\n    UI::Separator::VARIANTS.each_key do |variant|\n      div(class: \"flex flex-col gap-2\") do\n        span(class: \"text-sm capitalize\") { variant.to_s }\n        Separator(variant:)\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Colors",
+      "notes": "The line uses currentColor: text-border by default, any text-* class to recolor it.",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-xs flex-col gap-5\") do\n    %w[ text-border text-border-strong text-border-intense text-primary text-secondary text-error text-success text-warning text-info ].each do |color|\n      div(class: \"flex flex-col gap-2\") do\n        span(class: \"text-sm\") { color }\n        Separator(class: color)\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Vertical orientation",
+      "notes": "Vertical separators divide inline items and stretch to the row's height.",
+      "code": "phlex do\n  div(class: \"text-foreground flex h-5 items-center gap-4 text-sm\") do\n    span { \"Profile\" }\n    Separator(orientation: :vertical)\n    span { \"Settings\" }\n    Separator(orientation: :vertical)\n    span { \"Sign out\" }\n  end\nend"
+    },
+    {
+      "name": "In context",
+      "notes": "A horizontal rule between stacked sections and vertical rules between inline stats.",
+      "code": "phlex do\n  div(class: \"border-border w-full max-w-sm rounded-xl border p-5\") do\n    div(class: \"flex flex-col gap-1\") do\n      h3(class: \"text-foreground-intense font-medium\") { \"Mia Carter\" }\n      p(class: \"text-foreground-muted text-sm\") { \"Product designer based in Lisbon.\" }\n    end\n    Separator(class: \"my-4\")\n    div(class: \"flex justify-between text-sm\") do\n      [ %w[ 248 posts ], %w[ 12.4k followers ], %w[ 312 following ] ].each_with_index do |(count, label), index|\n        Separator(orientation: :vertical, class: \"mx-2.5\") if index.positive?\n        div do\n          span(class: \"font-semibold\") { count }\n          plain \" #{label}\"\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "The items around a vertical separator follow the reading direction.",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"text-foreground flex h-5 items-center gap-4 text-sm\") do\n    span { \"الملف الشخصي\" }\n    Separator(orientation: :vertical)\n    span { \"الإعدادات\" }\n    Separator(orientation: :vertical)\n    span { \"تسجيل الخروج\" }\n  end\nend"
+    }
+  ]
+}

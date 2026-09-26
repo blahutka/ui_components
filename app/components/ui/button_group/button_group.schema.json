@@ -1,0 +1,88 @@
+{
+  "name": "ButtonGroup",
+  "kit": "UI",
+  "description": "Buttons joined into one control: inner corners squared, shared borders overlapped.\n\n  ButtonGroup(variant: :outline, aria_label: \"Range\") do\n    Button { \"Years\" }\n    Button { \"Months\" }\n    Button { \"Days\" }\n  end\n\n`variant:`, `size:`, `icon:` and `disabled:` apply to every Button inside (a button's own variant / size wins; the group's `disabled:` can't be undone). Outlined variants overlap their borders into one hairline; filled ones keep a hairline gap.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `ButtonGroup(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/02_actions_&_inputs/button_group.md.erb",
+  "appica": "https://appica.dev/ui/components/react/button-group",
+  "components": {
+    "ButtonGroup": {
+      "constant": "UI::ButtonGroup",
+      "props": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "enum": [
+              "primary",
+              "primary_outline",
+              "secondary",
+              "soft",
+              "outline",
+              "ghost",
+              "destructive",
+              "light"
+            ],
+            "default": null
+          },
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": null
+          },
+          "icon": {
+            "default": null
+          },
+          "orientation": {
+            "enum": [
+              "horizontal",
+              "vertical"
+            ],
+            "default": "horizontal"
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  ButtonGroup(variant:, size:, orientation:, disabled:, aria_label: \"Range\") do\n    Button { \"Years\" }\n    Button { \"Months\" }\n    Button { \"Days\" }\n  end\nend"
+    },
+    {
+      "name": "Variants",
+      "notes": "Outlined variants overlap their borders into one hairline; filled ones keep a hairline gap.",
+      "code": "phlex do\n  div(class: \"flex flex-col items-center gap-4\") do\n    %i[ primary primary_outline secondary soft outline destructive ].each do |variant|\n      ButtonGroup(variant:) do\n        Button { \"Years\" }\n        Button { \"Months\" }\n        Button { \"Days\" }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Sizes",
+      "code": "phlex do\n  div(class: \"flex flex-col items-center gap-4\") do\n    %i[ sm md lg ].each do |size|\n      ButtonGroup(size:, variant: :outline) do\n        Button { \"Left\" }\n        Button { \"Center\" }\n        Button { \"Right\" }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Vertical orientation",
+      "code": "phlex do\n  ButtonGroup(orientation: :vertical, variant: :outline) do\n    Button { \"Profile\" }\n    Button { \"Billing\" }\n    Button { \"Settings\" }\n  end\nend"
+    },
+    {
+      "name": "Icon buttons",
+      "notes": "`icon: true` on the group makes every button square; label each one.",
+      "code": "phlex do\n  ButtonGroup(variant: :outline, icon: true, aria_label: \"Text formatting\") do\n    Button(aria_label: \"Bold\") { Icon(:bold) }\n    Button(aria_label: \"Italic\") { Icon(:italic) }\n    Button(aria_label: \"Underline\") { Icon(:underline) }\n  end\nend"
+    },
+    {
+      "name": "Split button",
+      "notes": "A primary action joined to a secondary one (a menu trigger once DropdownMenu lands).",
+      "code": "phlex do\n  ButtonGroup(variant: :outline) do\n    Button { \"Save\" }\n    Button(icon: true, aria_label: \"More save options\") { Icon(:chevron_down) }\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "The squared corners follow the reading direction.",
+      "code": "phlex do\n  ButtonGroup(dir: \"rtl\", variant: :outline) do\n    Button { \"سنوات\" }\n    Button { \"أشهر\" }\n    Button { \"أيام\" }\n  end\nend"
+    }
+  ]
+}

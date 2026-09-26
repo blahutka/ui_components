@@ -212,6 +212,27 @@ The folders are collapsed for Zeitwerk (no extra namespace), served by Propshaft
 by the engine's importmap (`ui/...`). `app/components/ui/index.js` registers the controllers,
 `app/components/ui/index.css` imports the Appica tokens (`theme.css`) and each component's CSS.
 
+## Schemas for LLMs and MCP servers
+
+Every component folder has a generated `<folder>.schema.json` next to its code, and
+`app/components/schema.json` indexes them (name, kit, one-line summary, parts, schema path).
+An agent reads the index first, then the one schema it needs:
+
+- `components` - the root and each part with `props` (JSON-Schema-shaped: `enum` from `one_of`,
+  `default`, inferred `type`, `required`, `description` from `prop … desc:`), `parts` and
+  `render_inside` (which part goes in which root);
+- `description`, `docs` and `appica` - the class comment and links;
+- `examples` + `example_helpers` - every Lookbook scenario's code and notes, with the preview
+  constants it uses.
+
+Nothing in them is written by hand: props come from the `prop` declarations, nesting is
+recorded while rendering every Lookbook scenario, examples are the scenarios' source. After
+changing props, class comments or previews, regenerate them (a test fails when they're stale):
+
+```bash
+cd test/dummy && bin/rails ui_components:schema
+```
+
 ## Docs pages
 
 Next to the previews, Lookbook shows a docs page per component under **Pages**, laid out like

@@ -36,6 +36,8 @@ class UI::Base < Phlex::HTML
     end
 
     def consume(key, component:)
-      context[key] || raise(ArgumentError, "#{self.class.name} must be rendered inside #{component}")
+      parent = context[key] || raise(ArgumentError, "#{self.class.name} must be rendered inside #{component}")
+      UiComponents::Schema.record_part(parent.class, self.class) if UiComponents::Schema.recording?
+      parent
     end
 end

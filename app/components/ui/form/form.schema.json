@@ -1,0 +1,260 @@
+{
+  "name": "FormBuilderAutocomplete",
+  "kit": "UI",
+  "description": "An Autocomplete (free text with suggestions) with its input and list, as UI::FormBuilder renders it.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `FormBuilderAutocomplete(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "components": {
+    "FormBuilderAutocomplete": {
+      "constant": "UI::FormBuilderAutocomplete",
+      "props": {
+        "type": "object",
+        "properties": {
+          "autocomplete": {},
+          "placeholder": {
+            "default": null
+          },
+          "input": {
+            "default": {},
+            "type": "object"
+          }
+        },
+        "required": [
+          "autocomplete"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "FormBuilderChoices": {
+      "constant": "UI::FormBuilderChoices",
+      "description": "A RadioGroup, CheckboxGroup or ChipGroup with one labelled Radio / Checkbox / ChipCheckbox per choice, as UI::FormBuilder renders it. Like Rails' collection helpers, an empty hidden input goes first so a group with nothing chosen still submits its key.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "radio",
+              "checkbox",
+              "chip"
+            ]
+          },
+          "group": {},
+          "items": {},
+          "id": {},
+          "hidden_name": {
+            "default": null
+          }
+        },
+        "required": [
+          "type",
+          "group",
+          "items",
+          "id"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "FormBuilderCombobox": {
+      "constant": "UI::FormBuilderCombobox",
+      "description": "A Combobox with an input (or chips, when `multiple`) and one item per choice, as UI::FormBuilder renders it.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "combobox": {},
+          "input": {},
+          "items": {},
+          "placeholder": {
+            "default": null
+          }
+        },
+        "required": [
+          "combobox",
+          "input",
+          "items"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "FormBuilderField": {
+      "constant": "UI::FormBuilderField",
+      "description": "A labelled Field around one control, as UI::FormBuilder renders it: the label above the control (`layout: :stacked`), beside it (`:inline`, for a check box or switch) or shown by the control itself (`:control`, a toggle button's text).",
+      "props": {
+        "type": "object",
+        "properties": {
+          "field": {},
+          "label": {},
+          "description": {
+            "default": null
+          },
+          "control": {},
+          "layout": {
+            "enum": [
+              "stacked",
+              "inline",
+              "control"
+            ],
+            "default": "stacked"
+          }
+        },
+        "required": [
+          "field",
+          "label",
+          "control"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "FormBuilderOTP": {
+      "constant": "UI::FormBuilderOTP",
+      "description": "An OTPField with one input per character, as UI::FormBuilder renders it. The first input carries the Field's control id so the label focuses it.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "otp": {},
+          "id": {
+            "default": null
+          }
+        },
+        "required": [
+          "otp"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "FormBuilderSelect": {
+      "constant": "UI::FormBuilderSelect",
+      "description": "A Select with a trigger, value and one item per choice, as UI::FormBuilder renders it.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "select": {},
+          "trigger": {},
+          "placeholder": {
+            "default": null
+          },
+          "items": {}
+        },
+        "required": [
+          "select",
+          "trigger",
+          "items"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "FormBuilderToggle": {
+      "constant": "UI::FormBuilderToggle",
+      "description": "A Toggle painted as an outline Button, as UI::FormBuilder renders it: the button shows the label, the Field around it the description and error.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "toggle": {},
+          "text": {},
+          "button": {
+            "default": {},
+            "type": "object"
+          }
+        },
+        "required": [
+          "toggle",
+          "text"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "FormBuilderToggleGroup": {
+      "constant": "UI::FormBuilderToggleGroup",
+      "description": "A ToggleGroup with one outline Button Toggle per choice, as UI::FormBuilder renders it.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "group": {},
+          "items": {},
+          "id": {}
+        },
+        "required": [
+          "group",
+          "items",
+          "id"
+        ],
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Text field",
+      "code": "user = demo_user(errors, name: \"\", email: \"ada@\", website: \"example.com\")\n\nphlex do\n  form_with(model: user, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.ui.text_field :name, description: \"As it appears on your profile\"\n    form.ui.email_field :email, placeholder: \"ada@example.com\"\n    form.ui.url_field :website, placeholder: \"https://\"\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    },
+    {
+      "name": "Number field",
+      "code": "user = demo_user(errors, age: \"abc\")\n\nphlex do\n  form_with(model: user, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.ui.number_field :age, description: \"Between 18 and 120 - read from the model's validators\"\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    },
+    {
+      "name": "Textarea",
+      "code": "user = demo_user(errors, bio: \"Too long. \" * 30)\n\nphlex do\n  form_with(model: user, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.ui.text_area :bio, rows: 4, description: \"Up to 280 characters\"\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    },
+    {
+      "name": "Select",
+      "notes": "Rails' signature: `select(method, choices, options, html_options)`; `multiple: true` submits `name[]`.",
+      "code": "user = demo_user(errors, plan: \"\", locations: [])\n\nphlex do\n  form_with(model: user, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.ui.select :plan, User::PLANS, prompt: \"Pick a plan\"\n    form.ui.select :locations, User::LOCATIONS, { prompt: \"Pick cities\" }, { multiple: true }\n    form.ui.collection_select :language, User::LANGUAGES, :last, :first, { prompt: \"Pick a language\" }\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    },
+    {
+      "name": "Combobox",
+      "code": "user = demo_user(errors, language: \"xx\")\n\nphlex do\n  form_with(model: user, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.ui.combobox :language, User::LANGUAGES, placeholder: \"Search a language\"\n    form.ui.combobox :skills, User::SKILLS, multiple: true, placeholder: \"Add skills\", clearable: true\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    },
+    {
+      "name": "Checkbox",
+      "notes": "Rails' signature: `check_box(method, options, checked_value = \"1\", unchecked_value = \"0\")`.",
+      "code": "user = demo_user(errors, terms_of_service: \"0\")\n\nphlex do\n  form_with(model: user, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.ui.check_box :terms_of_service, label: \"I accept the terms of service\"\n    form.ui.check_box :plan, { label: \"Upgrade to the team plan\", description: \"Submits \\\"team\\\" or \\\"free\\\"\" }, \"team\", \"free\"\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    },
+    {
+      "name": "Checkbox group",
+      "code": "user = demo_user(errors, interests: [])\n\nphlex do\n  form_with(model: user, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.ui.checkbox_group :interests, User::INTERESTS, orientation: :horizontal\n    form.ui.collection_check_boxes :skills, User::SKILLS, :itself, :itself, { label: \"Skills\" }, { orientation: :horizontal }\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    },
+    {
+      "name": "Chip",
+      "notes": "Selectable chips for an array attribute - submits `user[tags][]` like a checkbox group.",
+      "code": "user = demo_user(errors, tags: [])\n\nphlex do\n  form_with(model: user, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.ui.chip_group :tags, User::TAGS, description: \"Pick all that apply\"\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    },
+    {
+      "name": "Radio",
+      "code": "user = demo_user(errors, plan: \"\")\n\nphlex do\n  form_with(model: user, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.ui.radio_group :plan, User::PLANS, orientation: :horizontal\n    form.ui.collection_radio_buttons :language, User::LANGUAGES.first(3), :last, :first, { label: \"Language\" }\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    },
+    {
+      "name": "Switch",
+      "code": "phlex do\n  form_with(model: User.new, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.ui.switch :newsletter, description: \"A monthly summary, no spam\"\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    },
+    {
+      "name": "Slider",
+      "code": "user = demo_user(errors, experience: 40)\n\nphlex do\n  form_with(model: user, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.ui.range_field :experience, label: \"Years of experience\"\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    },
+    {
+      "name": "OTP field",
+      "code": "user = demo_user(errors, pin: \"12\")\n\nphlex do\n  form_with(model: user, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.ui.otp_field :pin, length: 4, label: \"PIN\", required: true, description: \"4 digits\"\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    },
+    {
+      "name": "Autocomplete",
+      "notes": "Free text with suggestions: submits whatever is typed or picked.",
+      "code": "user = demo_user(errors, city: \"\")\n\nphlex do\n  form_with(model: user, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.ui.autocomplete :city, User::CITIES, placeholder: \"Search a city\"\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    },
+    {
+      "name": "Rating",
+      "code": "user = demo_user(errors, score: nil)\n\nphlex do\n  form_with(model: user, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.ui.rating :score, label: \"How do you like it?\", clearable: true\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    },
+    {
+      "name": "Toggle",
+      "notes": "check_box's signature and params, as a pressable button showing the label.",
+      "code": "phlex do\n  form_with(model: User.new, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.ui.toggle :featured, label: \"Feature my profile\", description: \"Pinned to the top of the directory\"\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    },
+    {
+      "name": "Toggle group",
+      "notes": "One value, or `multiple: true` for `name[]`.",
+      "code": "user = demo_user(errors, alignment: \"\")\n\nphlex do\n  form_with(model: user, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.ui.toggle_group :alignment, User::ALIGNMENTS\n    form.ui.toggle_group :formats, User::FORMATS, multiple: true\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    },
+    {
+      "name": "Nested fields",
+      "notes": "`fields_for` builders have `ui` too: Rails supplies the `_attributes` names and row indices.",
+      "code": "user = demo_user(errors, address: Address.new(city: \"\"), phones: [ Phone.new(number: \"bad\", kind: \"mobile\"), Phone.new(kind: \"work\") ])\n\nphlex do\n  form_with(model: user, url: main_app.form_submissions_path, class: \"flex w-full max-w-md flex-col gap-5\") do |form|\n    form.fields_for :address do |address|\n      address.ui.text_field :city\n      address.ui.select :country, Address::COUNTRIES, prompt: \"Pick a country\"\n    end\n    form.fields_for :phones do |phone|\n      div(class: \"grid min-w-0 grid-cols-1 items-start gap-3 sm:grid-cols-[minmax(0,1fr)_8rem]\") do\n        phone.ui.telephone_field :number, placeholder: \"+420 123 456 789\"\n        phone.ui.select :kind, Phone::KINDS, label: \"Kind\"\n      end\n    end\n    Button(type: \"submit\", class: \"self-start\") { \"Submit\" }\n  end\nend"
+    }
+  ]
+}

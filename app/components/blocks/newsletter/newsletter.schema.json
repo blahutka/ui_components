@@ -1,0 +1,79 @@
+{
+  "name": "Newsletter",
+  "kit": "Blocks",
+  "description": "A newsletter signup: a heading, a pitch, a list of perks, an email form with a spam honeypot and a note, and social links - composed from Field, Input, Button, Thumbnail and Icon.\n\n  Newsletter(action: subscriptions_path, socials: [ { href: \"https://github.com/acme\", icon: :brand_github, label: \"GitHub\" } ]) do\n    NewsletterPerk(icon: :sparkles) { \"Major library updates\" }\n    NewsletterPerk(icon: :template) { \"Premium templates\" }\n  end\n\nThe form posts `email` to `action:` (Turbo submits it) once the browser has validated it; a bot filling the hidden `website` field is dropped. On success the note turns into a thank-you and `blocks--newsletter:subscribed` fires with { email }. Without an `action:` it runs a demo. Strings: newsletter.locales.yml.",
+  "usage": "Call the kit method inside a Phlex view that includes Blocks (e.g. `Newsletter(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/20_blocks/newsletter.md.erb",
+  "components": {
+    "Newsletter": {
+      "constant": "Blocks::Newsletter",
+      "props": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Stay connected. Stay updated.",
+            "type": "string"
+          },
+          "description": {
+            "default": "Subscribe for occasional updates, product insights, and early news from our team.",
+            "type": "string"
+          },
+          "note": {
+            "default": "No spam. Just updates.",
+            "type": "string"
+          },
+          "action": {
+            "default": null
+          },
+          "method": {
+            "default": "post",
+            "type": "string"
+          },
+          "honeypot": {
+            "default": "website",
+            "type": "string"
+          },
+          "socials": {
+            "default": [],
+            "type": "array"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "NewsletterPerk": {
+      "constant": "Blocks::NewsletterPerk",
+      "description": "One Newsletter perk: an outline icon tile and a line of text.\n\n  NewsletterPerk(icon: :template) { \"Premium templates\" }",
+      "props": {
+        "type": "object",
+        "properties": {
+          "icon": {
+            "default": "check",
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "notes": "The Appica homepage section, on its dark panel. Without `action:` it's a demo: submit a\nvalid address to see the thank-you; an empty or invalid one shows the field's error.",
+      "code": "phlex do\n  div(class: [ (\"dark\" if dark), \"bg-background w-full max-w-2xl rounded-2xl p-8 md:p-12\" ].compact.join(\" \")) do\n    Newsletter(description: \"Subscribe for occasional updates, product insights, and early news from our team - or follow along on X and GitHub.\",\n      socials: SOCIALS) do\n      NewsletterPerk(icon: :sparkles) { \"Major library updates\" }\n      NewsletterPerk(icon: :template) { \"Premium templates\" }\n      NewsletterPerk(icon: :components) { \"New component releases\" }\n    end\n  end\nend"
+    },
+    {
+      "name": "Form only",
+      "notes": "No perks or social links - just the pitch and the form.",
+      "code": "phlex do\n  Newsletter(title: \"Get the changelog\", description: \"One email a month with everything we shipped.\", class: \"w-full max-w-md\")\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "Rendered in Arabic whatever the toolbar says; the arrow mirrors.",
+      "code": "phlex do\n  I18n.with_locale(:ar) do\n    div(dir: \"rtl\", class: \"w-full max-w-2xl\") do\n      Newsletter(socials: SOCIALS) do\n        NewsletterPerk(icon: :sparkles) { \"تحديثات رئيسية للمكتبة\" }\n        NewsletterPerk(icon: :template) { \"قوالب مميزة\" }\n      end\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "SOCIALS": "SOCIALS = [\n  { href: \"https://x.com/Appica_dev\", icon: :brand_x, label: \"X\" },\n  { href: \"https://github.com/appica-dev/appica-ui\", icon: :brand_github, label: \"GitHub\" }\n].freeze"
+  }
+}

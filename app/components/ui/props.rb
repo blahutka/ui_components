@@ -27,9 +27,17 @@ module UI::Props
     end
 
     # A coercer for enum-like props: the value as a symbol when it's one of `choices` (an
-    # Array, or a Hash's keys), otherwise `fallback`
+    # Array, or a Hash's keys), otherwise `fallback`. It keeps the choices for `to_schema`.
     def one_of(choices, fallback)
-      ->(value) { value.nil? ? nil : (choices.include?(value.to_sym) ? value.to_sym : fallback) }
+      coercer = ->(value) { value.nil? ? nil : (choices.include?(value.to_sym) ? value.to_sym : fallback) }
+      names = (choices.respond_to?(:keys) ? choices.keys : Array(choices)).map(&:to_s)
+      coercer.define_singleton_method(:schema) { { "enum" => names } }
+      coercer
+    end
+
+    # The declared props as a JSON-Schema-shaped Hash (see UiComponents::Schema)
+    def to_schema
+      UiComponents::Schema.props_schema(self)
     end
 
     # Phlex::SGML.new keeps the content block; only the keywords are split first

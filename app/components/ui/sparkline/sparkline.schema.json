@@ -1,0 +1,172 @@
+{
+  "name": "Sparkline",
+  "kit": "UI",
+  "description": "Root of the sparkline compound component. Owns the series, labels and number formatting; the Stimulus controller keeps every part on the same active point.\n\n  Sparkline(data: values, labels: dates) do\n    SparklineValue()\n    SparklineChart(fill: true, tooltip: true, aria_label: \"Weekly revenue\")\n  end",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `Sparkline(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/03_data_display/sparkline.md.erb",
+  "appica": "https://appica.dev/ui/components/react/sparkline",
+  "components": {
+    "Sparkline": {
+      "constant": "UI::Sparkline",
+      "props": {
+        "type": "object",
+        "properties": {
+          "data": {},
+          "labels": {
+            "default": null
+          },
+          "color": {
+            "default": "var(--primary)",
+            "type": "string"
+          },
+          "format": {
+            "default": {},
+            "type": "object"
+          },
+          "locale": {
+            "default": null
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "parts": [
+        "UI::SparklineChart",
+        "UI::SparklineLabel",
+        "UI::SparklineValue"
+      ]
+    },
+    "SparklineChart": {
+      "constant": "UI::SparklineChart",
+      "description": "The visualization inside Sparkline. Line and area variants are server-rendered SVG; columns use positioned divs. Stimulus adds only pointer state and overlays.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "enum": [
+              "line",
+              "area",
+              "column"
+            ],
+            "default": "line"
+          },
+          "curve": {
+            "default": 0.5,
+            "type": "number"
+          },
+          "fill": {
+            "default": false,
+            "type": "boolean"
+          },
+          "baseline": {
+            "default": 0.0,
+            "type": "number"
+          },
+          "height": {
+            "default": 48.0,
+            "type": "number"
+          },
+          "stroke_width": {
+            "default": 2.0,
+            "type": "number"
+          },
+          "indicator": {
+            "default": true,
+            "type": "boolean"
+          },
+          "tooltip": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Sparkline"
+      ]
+    },
+    "SparklineLabel": {
+      "constant": "UI::SparklineLabel",
+      "description": "Displays the active point's label, or the final label while idle.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Sparkline"
+      ]
+    },
+    "SparklineValue": {
+      "constant": "UI::SparklineValue",
+      "description": "Displays the active point's formatted value, or the final value while idle.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Sparkline"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "notes": "A stroke-only line by default. Hover or touch to reveal the nearest point.",
+      "code": "phlex do\n  Sparkline(data: [8, 15, 11, 20, 16, 26, 49.1], labels: %w[Mon Tue Wed Thu Fri Sat Sun],\n            color: COLOR_OPTIONS.fetch(color.to_sym, COLOR_OPTIONS[:primary]), class: \"w-72 max-w-full\") do\n    SparklineLabel() if label\n    SparklineValue(class: \"text-2xl\") if value_preview\n    SparklineChart(variant:, fill:, curve:, tooltip:, height:, aria_label: \"Trend over the last 10 periods\")\n  end\nend"
+    },
+    {
+      "name": "Area",
+      "notes": "Area fills to a real baseline. The second series crosses zero, so positive\nand negative magnitudes occupy opposite sides of the reference line.",
+      "code": "phlex do\n  div(class: \"flex w-72 max-w-full flex-col gap-6\") do\n    Sparkline(data: [6, 11, 8, 16, 13, 22, 18, 27]) do\n      SparklineChart(variant: :area, height: 56, aria_label: \"Signups over 8 weeks\")\n    end\n    Sparkline(data: [3, -4, 2, 6, -2, -6, 4, 1]) do\n      SparklineChart(variant: :area, height: 56, aria_label: \"Net change over 8 weeks\")\n    end\n  end\nend"
+    },
+    {
+      "name": "Filled line",
+      "notes": "A line fill fades to the chart edge instead of expressing a semantic baseline.",
+      "code": "phlex do\n  div(class: \"flex w-72 max-w-full flex-col gap-6\") do\n    Sparkline(data: DATA) { SparklineChart(height: 56, aria_label: \"Line\") }\n    Sparkline(data: DATA) { SparklineChart(fill: true, height: 56, aria_label: \"Gradient-filled line\") }\n  end\nend"
+    },
+    {
+      "name": "Columns",
+      "notes": "Columns pivot on the baseline. Hovering highlights the active bucket and\nfloats its label and value.",
+      "code": "phlex do\n  div(class: \"flex w-72 max-w-full flex-col gap-6\") do\n    Sparkline(data: [4, 9, 6, 12, 8, 15, 11, 18], labels: DAYS) do\n      SparklineChart(variant: :column, height: 56, tooltip: true, aria_label: \"Daily visits\")\n    end\n    Sparkline(data: [6, -7, 9, -4, 8, -9, 5, -6], labels: DAYS) do\n      SparklineChart(variant: :column, height: 56, tooltip: true, aria_label: \"Net change per day\")\n    end\n  end\nend"
+    },
+    {
+      "name": "Smoothing",
+      "notes": "`curve:` runs from straight segments at 0 to fully rounded peaks at 1.",
+      "code": "phlex do\n  div(class: \"flex w-72 max-w-full flex-col gap-6\") do\n    Sparkline(data: DATA) { SparklineChart(curve: 0, aria_label: \"Straight segments\") }\n    Sparkline(data: DATA) { SparklineChart(curve: 1, aria_label: \"Fully smoothed\") }\n  end\nend"
+    },
+    {
+      "name": "Line Weight",
+      "notes": "`stroke_width:` stays crisp at any chart width because the SVG stroke does\nnot scale with its view box.",
+      "code": "phlex do\n  div(class: \"flex w-72 max-w-full flex-col gap-6\") do\n    Sparkline(data: DATA) { SparklineChart(stroke_width: 1, aria_label: \"Thin line\") }\n    Sparkline(data: DATA) { SparklineChart(stroke_width: 3, aria_label: \"Thick line\") }\n  end\nend"
+    },
+    {
+      "name": "Tooltip",
+      "notes": "Labels and formatted values are shown in the tooltip at the hovered point.",
+      "code": "phlex do\n  Sparkline(data: [8, 15, 11, 20, 16, 26, 22], labels: %w[Mon Tue Wed Thu Fri Sat Sun],\n            class: \"w-72 max-w-full\") do\n    SparklineChart(variant: :area, height: 56, tooltip: true, aria_label: \"Weekly requests\")\n  end\nend"
+    },
+    {
+      "name": "Value headline",
+      "notes": "Value and label show the last reading at rest and follow the chart on hover.",
+      "code": "phlex do\n  Sparkline(data: [198_120, 201_540, 199_880, 205_300, 208_770, 214_260, 222_240],\n            labels: [\"Nov 11\", \"Nov 12\", \"Nov 13\", \"Nov 14\", \"Nov 15\", \"Nov 16\", \"Nov 17\"],\n            class: \"w-72 max-w-full\") do\n    SparklineLabel()\n    SparklineValue(class: \"text-2xl\")\n    SparklineChart(fill: true, height: 56, tooltip: true, aria_label: \"Active users this week\")\n  end\nend"
+    },
+    {
+      "name": "Colors",
+      "notes": "Theme tokens or any CSS color drive the line, fill, marker, columns and swatch.",
+      "code": "phlex do\n  div(class: \"flex w-72 max-w-full flex-col gap-5\") do\n    Sparkline(data: [6, 12, 9, 16, 14, 22, 20, 28], color: \"var(--success-emphasis)\") do\n      SparklineChart(variant: :area, aria_label: \"Revenue\")\n    end\n    Sparkline(data: [28, 22, 25, 16, 19, 12, 14, 8], color: \"var(--error-emphasis)\") do\n      SparklineChart(variant: :area, aria_label: \"Churn\")\n    end\n    Sparkline(data: [10, 14, 11, 15, 13, 18, 15, 19], color: \"var(--warning-emphasis)\") do\n      SparklineChart(variant: :line, aria_label: \"Latency\")\n    end\n    Sparkline(data: [8, 16, 12, 22, 18, 26, 24, 32], color: \"#a855f7\") do\n      SparklineChart(variant: :line, fill: true, aria_label: \"Engagement\")\n    end\n    Sparkline(data: [5, 11, 8, 14, 10, 18, 13, 21], color: \"var(--info-emphasis)\") do\n      SparklineChart(variant: :column, aria_label: \"Orders\")\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "The series and pointer mapping mirror, while labels and values retain their\nnatural reading direction.",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"flex w-72 max-w-full flex-col gap-6\") do\n    Sparkline(data: [8, 14, 11, 20, 16, 26, 22], labels: %w[السبت الأحد الاثنين الثلاثاء الأربعاء الخميس الجمعة]) do\n      SparklineLabel()\n      SparklineValue(class: \"text-2xl\")\n      SparklineChart(variant: :area, height: 56, tooltip: true, aria_label: \"الاتجاه الأسبوعي\")\n    end\n    Sparkline(data: [4, 9, 6, 12, 8, 15, 11]) do\n      SparklineChart(variant: :column, height: 56, aria_label: \"الأعمدة الأسبوعية\")\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "DATA": "DATA = [8, 14, 10, 18, 15, 22, 19, 27, 24, 31].freeze",
+    "DAYS": "DAYS = %w[Mon Tue Wed Thu Fri Sat Sun Mon].freeze",
+    "COLOR_OPTIONS": "COLOR_OPTIONS = {\n  primary: \"var(--primary)\",\n  success: \"var(--success-emphasis)\",\n  error: \"var(--error-emphasis)\",\n  warning: \"var(--warning-emphasis)\",\n  info: \"var(--info-emphasis)\",\n  purple: \"#a855f7\"\n}.freeze"
+  }
+}

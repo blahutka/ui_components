@@ -1,0 +1,350 @@
+{
+  "name": "ContextMenu",
+  "kit": "UI",
+  "description": "A menu of actions for an object, opened by right-clicking (or long-pressing) it.\n\n  ContextMenu do\n    ContextMenuTrigger(class: \"flex h-40 w-72 items-center justify-center rounded-xl border border-dashed\") { \"Right-click here\" }\n    ContextMenuContent do\n      ContextMenuItem { \"Copy\" }\n      ContextMenuSeparator()\n      ContextMenuItem { \"Delete\" }\n    end\n  end\n\nThe parts are DropdownMenu's (items, checkbox / radio items, groups, submenus, keyboard); the popup opens at the pointer. Emits the same events under `ui--context-menu:`.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `ContextMenu(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/06_menus/context_menu.md.erb",
+  "appica": "https://appica.dev/ui/components/react/context-menu",
+  "components": {
+    "ContextMenu": {
+      "constant": "UI::ContextMenu",
+      "props": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": "md"
+          },
+          "open_on_hover": {
+            "default": false,
+            "type": "boolean"
+          },
+          "delay": {
+            "default": 100,
+            "type": "integer"
+          },
+          "close_delay": {
+            "default": 100,
+            "type": "integer"
+          },
+          "id": {}
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "UI::ContextMenuCheckboxItem",
+        "UI::ContextMenuContent",
+        "UI::ContextMenuGroup",
+        "UI::ContextMenuGroupLabel",
+        "UI::ContextMenuItem",
+        "UI::ContextMenuRadioGroup",
+        "UI::ContextMenuRadioItem",
+        "UI::ContextMenuSeparator",
+        "UI::ContextMenuSub",
+        "UI::ContextMenuSubContent",
+        "UI::ContextMenuSubTrigger",
+        "UI::ContextMenuTrigger"
+      ]
+    },
+    "ContextMenuCheckboxItem": {
+      "constant": "UI::ContextMenuCheckboxItem",
+      "description": "ContextMenuCheckboxItem: see UI::DropdownMenuCheckboxItem.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "close_on_click": {
+            "default": false,
+            "type": "boolean"
+          },
+          "label": {
+            "default": null
+          },
+          "checked": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::ContextMenu"
+      ]
+    },
+    "ContextMenuContent": {
+      "constant": "UI::ContextMenuContent",
+      "description": "The context menu's popup, opened at the pointer (start-aligned, 2px away).",
+      "props": {
+        "type": "object",
+        "properties": {
+          "side": {
+            "enum": [
+              "bottom",
+              "top",
+              "inline_end",
+              "inline_start",
+              "left",
+              "right"
+            ],
+            "default": "bottom"
+          },
+          "align": {
+            "enum": [
+              "start",
+              "center",
+              "end"
+            ],
+            "default": "start"
+          },
+          "side_offset": {
+            "default": 2,
+            "type": "integer"
+          },
+          "align_offset": {
+            "default": 0,
+            "type": "integer"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::ContextMenu"
+      ]
+    },
+    "ContextMenuGroup": {
+      "constant": "UI::ContextMenuGroup",
+      "description": "ContextMenuGroup: see UI::DropdownMenuGroup.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::ContextMenu"
+      ]
+    },
+    "ContextMenuGroupLabel": {
+      "constant": "UI::ContextMenuGroupLabel",
+      "description": "ContextMenuGroupLabel: see UI::DropdownMenuGroupLabel.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::ContextMenu"
+      ]
+    },
+    "ContextMenuItem": {
+      "constant": "UI::ContextMenuItem",
+      "description": "ContextMenuItem: see UI::DropdownMenuItem.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "close_on_click": {
+            "default": true,
+            "type": "boolean"
+          },
+          "label": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::ContextMenu"
+      ]
+    },
+    "ContextMenuLinkItem": {
+      "constant": "UI::ContextMenuLinkItem",
+      "description": "ContextMenuLinkItem: see UI::DropdownMenuLinkItem.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "close_on_click": {
+            "default": true,
+            "type": "boolean"
+          },
+          "label": {
+            "default": null
+          },
+          "href": {}
+        },
+        "required": [
+          "href"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "ContextMenuRadioGroup": {
+      "constant": "UI::ContextMenuRadioGroup",
+      "description": "ContextMenuRadioGroup: see UI::DropdownMenuRadioGroup.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "default": null
+          },
+          "name": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::ContextMenu"
+      ]
+    },
+    "ContextMenuRadioItem": {
+      "constant": "UI::ContextMenuRadioItem",
+      "description": "ContextMenuRadioItem: see UI::DropdownMenuRadioItem.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "close_on_click": {
+            "default": false,
+            "type": "boolean"
+          },
+          "label": {
+            "default": null
+          },
+          "value": {}
+        },
+        "required": [
+          "value"
+        ],
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::ContextMenu"
+      ]
+    },
+    "ContextMenuSeparator": {
+      "constant": "UI::ContextMenuSeparator",
+      "description": "ContextMenuSeparator: see UI::DropdownMenuSeparator.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::ContextMenu"
+      ]
+    },
+    "ContextMenuSub": {
+      "constant": "UI::ContextMenuSub",
+      "description": "ContextMenuSub: see UI::DropdownMenuSub.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "id": {}
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "UI::ContextMenuSubContent",
+        "UI::ContextMenuSubTrigger"
+      ],
+      "render_inside": [
+        "UI::ContextMenu"
+      ]
+    },
+    "ContextMenuSubContent": {
+      "constant": "UI::ContextMenuSubContent",
+      "description": "ContextMenuSubContent: see UI::DropdownMenuSubContent.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "side_offset": {
+            "default": 12,
+            "type": "integer"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::ContextMenu",
+        "UI::ContextMenuSub"
+      ]
+    },
+    "ContextMenuSubTrigger": {
+      "constant": "UI::ContextMenuSubTrigger",
+      "description": "ContextMenuSubTrigger: see UI::DropdownMenuSubTrigger.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "close_on_click": {
+            "default": true,
+            "type": "boolean"
+          },
+          "label": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::ContextMenu",
+        "UI::ContextMenuSub"
+      ]
+    },
+    "ContextMenuTrigger": {
+      "constant": "UI::ContextMenuTrigger",
+      "description": "The area that opens the menu on right-click, long-press or Shift+F10 / the context-menu key. Renders a <div>; a block taking an argument receives the attributes for your own element.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::ContextMenu"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Basic",
+      "notes": "Right-click the area (long-press on touch, Shift+F10 when focused).",
+      "code": "phlex do\n  ContextMenu(size:) do\n    ContextMenuTrigger(class: AREA, tabindex: \"0\") { \"Right-click here\" }\n    ContextMenuContent do\n      ContextMenuGroup do\n        ContextMenuGroupLabel { \"Edit\" }\n        { copy: [ \"Copy\", \"⌘C\" ], scissors: [ \"Cut\", \"⌘X\" ], clipboard: [ \"Paste\", \"⌘V\" ] }.each do |icon, (label, keys)|\n          ContextMenuItem { Icon(icon, data: { icon: \"start\" }); plain label; Kbd(size: :sm, class: \"ms-auto\") { keys } }\n        end\n      end\n      ContextMenuSeparator()\n      ContextMenuItem(class: \"text-error-emphasis\") { Icon(:trash, data: { icon: \"start\" }); plain \"Delete\" }\n    end\n  end\nend"
+    },
+    {
+      "name": "On a card",
+      "notes": "The trigger wraps any content - here a file card with a \"Move to\" submenu.",
+      "code": "phlex do\n  ContextMenu do\n    ContextMenuTrigger(tabindex: \"0\", class: \"border-border bg-background flex w-72 max-w-full items-center gap-3 rounded-xl border p-4 outline-ring\") do\n      span(class: \"bg-background-muted text-foreground-muted flex size-10 items-center justify-center rounded-lg\") { Icon(:file) }\n      span(class: \"flex min-w-0 flex-col\") do\n        span(class: \"text-foreground-intense truncate text-sm font-medium\") { \"Q3-roadmap.pdf\" }\n        span(class: \"text-foreground-muted text-xs\") { \"2.4 MB · Edited yesterday\" }\n      end\n    end\n    ContextMenuContent do\n      ContextMenuItem { Icon(:external_link, data: { icon: \"start\" }); plain \"Open\" }\n      ContextMenuItem { Icon(:pencil, data: { icon: \"start\" }); plain \"Rename\" }\n      ContextMenuItem { Icon(:share, data: { icon: \"start\" }); plain \"Share\" }\n      ContextMenuSub do\n        ContextMenuSubTrigger { Icon(:folder, data: { icon: \"start\" }); plain \"Move to\" }\n        ContextMenuSubContent do\n          %w[ Documents Projects Archive ].each { |folder| ContextMenuItem { folder } }\n        end\n      end\n      ContextMenuSeparator()\n      ContextMenuItem(class: \"text-error-emphasis\") { Icon(:trash, data: { icon: \"start\" }); plain \"Delete\" }\n    end\n  end\nend"
+    },
+    {
+      "name": "Checkbox & radio items",
+      "code": "phlex do\n  ContextMenu do\n    ContextMenuTrigger(class: AREA, tabindex: \"0\") { \"Right-click for view options\" }\n    ContextMenuContent do\n      ContextMenuGroup do\n        ContextMenuGroupLabel { \"Show\" }\n        ContextMenuCheckboxItem(checked: true) { \"Grid lines\" }\n        ContextMenuCheckboxItem { \"Rulers\" }\n      end\n      ContextMenuSeparator()\n      ContextMenuRadioGroup(value: \"fit\") do\n        ContextMenuGroupLabel { \"Zoom\" }\n        ContextMenuRadioItem(value: \"fit\") { \"Fit to screen\" }\n        ContextMenuRadioItem(value: \"100\") { \"100%\" }\n        ContextMenuRadioItem(value: \"200\") { \"200%\" }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "code": "phlex do\n  div(dir: \"rtl\") do\n    ContextMenu do\n      ContextMenuTrigger(class: AREA, tabindex: \"0\") { \"انقر بزر الفأرة الأيمن هنا\" }\n      ContextMenuContent do\n        ContextMenuItem { \"نسخ\" }\n        ContextMenuSub do\n          ContextMenuSubTrigger { \"نقل إلى\" }\n          ContextMenuSubContent { ContextMenuItem { \"المستندات\" }; ContextMenuItem { \"الأرشيف\" } }\n        end\n        ContextMenuItem { \"حذف\" }\n      end\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "AREA": "AREA = \"border-border-strong text-foreground-muted flex h-40 w-72 max-w-full items-center justify-center rounded-xl border border-dashed text-sm\""
+  }
+}

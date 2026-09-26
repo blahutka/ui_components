@@ -1,0 +1,152 @@
+{
+  "name": "Pagination",
+  "kit": "UI",
+  "description": "Page links for a long list: a `<nav>` landmark around a row of links you lay out yourself - or let PaginationPages build the truncated range for you.\n\n  Pagination do\n    PaginationList do\n      PaginationItem { PaginationLink(href: \"?page=1\", active: true) { \"1\" } }\n      PaginationItem { PaginationLink(href: \"?page=2\") { \"2\" } }\n      PaginationItem { PaginationEllipsis() }\n    end\n  end\n\n  Pagination { PaginationPages(page: @page, pages: @pages) { |page| posts_path(page:) } }\n\n`variant:` (:outline, :soft) and `size:` flow to every link.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `Pagination(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/07_navigation/pagination.md.erb",
+  "appica": "https://appica.dev/ui/components/react/pagination",
+  "components": {
+    "Pagination": {
+      "constant": "UI::Pagination",
+      "props": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "enum": [
+              "outline",
+              "soft"
+            ],
+            "default": "outline"
+          },
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": "md"
+          },
+          "aria_label": {
+            "default": "Pagination",
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "UI::PaginationLink"
+      ]
+    },
+    "PaginationEllipsis": {
+      "constant": "UI::PaginationEllipsis",
+      "description": "\"…\" for the pages collapsed out of a long range. Decorative, with a screen-reader-only \"More pages\" (translated).",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "PaginationItem": {
+      "constant": "UI::PaginationItem",
+      "description": "One <li>: a PaginationLink or a PaginationEllipsis.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "PaginationLink": {
+      "constant": "UI::PaginationLink",
+      "description": "A page link (Button-styled). `active: true` is the current page - filled, aria-current=\"page\" and not clickable; `disabled: true` dims an out-of-range control and removes it from the tab order. `icon: true` squares it around a lone icon (label it). A block taking an argument receives the attributes for your own element (a `button_to`, a Turbo frame link…).",
+      "props": {
+        "type": "object",
+        "properties": {
+          "active": {
+            "default": false,
+            "type": "boolean"
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "icon": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Pagination"
+      ]
+    },
+    "PaginationList": {
+      "constant": "UI::PaginationList",
+      "description": "The <ul> laying the pagination items out in a row.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "PaginationPages": {
+      "constant": "UI::PaginationPages",
+      "description": "The whole row for page `page:` of `pages:` - previous, the first and last pages, a `window:` of pages around the current one with ellipses for the gaps, and next. The block turns a page number into its URL. `edges: true` adds first / last jumps.\n\n  Pagination { PaginationPages(page: @page, pages: @pages) { |page| posts_path(page:) } }",
+      "props": {
+        "type": "object",
+        "properties": {
+          "page": {},
+          "pages": {},
+          "window": {
+            "default": 1,
+            "type": "integer"
+          },
+          "edges": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "page",
+          "pages"
+        ],
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "notes": "PaginationPages renders the truncated range for `page:` of `pages:`; the block builds URLs.",
+      "code": "phlex do\n  div(class: \"max-w-full overflow-x-auto [scrollbar-width:none]\") do\n    Pagination(variant:, size:) { PaginationPages(page:, pages:, window: window.to_i, edges:) { |number| \"?page=#{number}\" } }\n  end\nend"
+    },
+    {
+      "name": "Composed by hand",
+      "notes": "The parts on their own: an icon previous control (disabled on page 1), the current page,\nan ellipsis for the gap and the last page.",
+      "code": "phlex do\n  Pagination do\n    PaginationList do\n      PaginationItem { PaginationLink(href: \"#!\", icon: true, disabled: true, aria_label: \"Go to previous page\") { Icon(:chevron_left) } }\n      PaginationItem { PaginationLink(href: \"#!\", active: true) { \"1\" } }\n      PaginationItem { PaginationLink(href: \"#!\") { \"2\" } }\n      PaginationItem { PaginationLink(href: \"#!\") { \"3\" } }\n      PaginationItem { PaginationEllipsis() }\n      PaginationItem { PaginationLink(href: \"#!\") { \"10\" } }\n      PaginationItem { PaginationLink(href: \"#!\", icon: true, aria_label: \"Go to next page\") { Icon(:chevron_right) } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Variants",
+      "notes": "`:outline` draws bordered buttons; `:soft` fills on hover. The current page is filled in both.",
+      "code": "phlex do\n  div(class: \"flex flex-col items-center gap-6\") do\n    %i[ outline soft ].each { |variant| Pagination(variant:) { PaginationPages(page: 1, pages: 4) { |number| \"?page=#{number}\" } } }\n  end\nend"
+    },
+    {
+      "name": "Sizes",
+      "code": "phlex do\n  div(class: \"flex flex-col items-center gap-6\") do\n    %i[ sm md lg ].each { |size| Pagination(size:) { PaginationPages(page: 2, pages: 3) { |number| \"?page=#{number}\" } } }\n  end\nend"
+    },
+    {
+      "name": "With first & last",
+      "code": "phlex do\n  div(class: \"max-w-full overflow-x-auto [scrollbar-width:none]\") do\n    Pagination { PaginationPages(page: 3, pages: 5, edges: true) { |number| \"?page=#{number}\" } }\n  end\nend"
+    },
+    {
+      "name": "Buttons instead of links",
+      "notes": "A block with an argument puts a link's attributes on your own element - here buttons that\nupdate the page in place.",
+      "code": "phlex do\n  div(class: \"flex flex-col items-center gap-3\", data: { demo: \"pages\" }) do\n    p(class: \"text-foreground-muted text-sm\", data: { demo: \"status\" }) { \"Page 1 of 5\" }\n    Pagination do\n      PaginationList do\n        1.upto(5) do |number|\n          PaginationItem do\n            PaginationLink(active: number == 1, aria_label: \"Go to page #{number}\") { |link| button(**link, type: \"button\", data: { **link[:data], page: number }) { number.to_s } }\n          end\n        end\n      end\n    end\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const demo = document.querySelector(\"[data-demo=pages]\")\n      const current = #{UI::PaginationLink::CURRENT.to_json}.split(\" \")\n      demo.addEventListener(\"click\", ({ target }) => {\n        const chosen = target.closest(\"[data-page]\")\n        if (!chosen) return\n        demo.querySelectorAll(\"[data-page]\").forEach(link => {\n          const active = link === chosen\n          link.classList.toggle(\"text-primary-foreground\", active)\n          current.forEach(name => link.classList.toggle(name, active))\n          active ? link.setAttribute(\"aria-current\", \"page\") : link.removeAttribute(\"aria-current\")\n        })\n        demo.querySelector(\"[data-demo=status]\").textContent = `Page ${chosen.dataset.page} of 5`\n      })\n    JS\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "The chevrons flip with the reading direction.",
+      "code": "phlex { div(dir: \"rtl\") { Pagination { PaginationPages(page: 4, pages: 9) { |number| \"?page=#{number}\" } } } }"
+    }
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "name": "Popover",
+  "kit": "UI",
+  "description": "Rich, interactive content floating beside a control - a form, settings, a share sheet.\n\n  Popover do\n    PopoverTrigger { |trigger| Button(**trigger, variant: :outline) { \"Share\" } }\n    PopoverContent do\n      PopoverTitle { \"Share this page\" }\n      PopoverDescription { \"Anyone with the link can view this document.\" }\n    end\n  end\n\nThe popup opens in the top layer on click (or on hover with `open_on_hover: true` on the trigger), placed by `side:` / `align:` on PopoverContent with an arrow, flipping to stay in view. Escape, a click outside or a PopoverClose dismiss it. Emits `ui--popover:open-change`.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `Popover(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/08_overlays/popover.md.erb",
+  "appica": "https://appica.dev/ui/components/react/popover",
+  "components": {
+    "Popover": {
+      "constant": "UI::Popover",
+      "props": {
+        "type": "object",
+        "properties": {
+          "default_open": {
+            "default": false,
+            "type": "boolean"
+          },
+          "id": {}
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "UI::PopoverContent",
+        "UI::PopoverDescription",
+        "UI::PopoverTitle",
+        "UI::PopoverTrigger"
+      ]
+    },
+    "PopoverClose": {
+      "constant": "UI::PopoverClose",
+      "description": "A button that closes the popover; a block taking an argument receives its attributes.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "PopoverContent": {
+      "constant": "UI::PopoverContent",
+      "description": "The popover's card, floating beside the trigger: `side:` (:bottom, :top, :left, :right, :inline_end, :inline_start), `align:` (:start, :center, :end), offsets, and an `arrow:` with a thicker border on its edge (on by default).",
+      "props": {
+        "type": "object",
+        "properties": {
+          "side": {
+            "enum": [
+              "bottom",
+              "top",
+              "left",
+              "right",
+              "inline_end",
+              "inline_start"
+            ],
+            "default": "bottom"
+          },
+          "align": {
+            "enum": [
+              "start",
+              "center",
+              "end"
+            ],
+            "default": "center"
+          },
+          "side_offset": {
+            "default": null
+          },
+          "align_offset": {
+            "default": 0,
+            "type": "integer"
+          },
+          "arrow": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Popover"
+      ]
+    },
+    "PopoverDescription": {
+      "constant": "UI::PopoverDescription",
+      "description": "The <p> that describes the popover.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Popover"
+      ]
+    },
+    "PopoverTitle": {
+      "constant": "UI::PopoverTitle",
+      "description": "The <h2> that labels the popover.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Popover"
+      ]
+    },
+    "PopoverTrigger": {
+      "constant": "UI::PopoverTrigger",
+      "description": "The button that toggles the popover. A block taking an argument receives its attributes for your own Button. `open_on_hover: true` also opens it on pointer rest (`delay:` / `close_delay:`).",
+      "props": {
+        "type": "object",
+        "properties": {
+          "open_on_hover": {
+            "default": false,
+            "type": "boolean"
+          },
+          "delay": {
+            "default": null
+          },
+          "close_delay": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Popover"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  Popover do\n    PopoverTrigger { |trigger| Button(**trigger, variant: :outline) { \"Share\" } }\n    PopoverContent(side:, align:, arrow:) do\n      PopoverTitle { \"Share this page\" }\n      PopoverDescription { \"Anyone with the link can view this document.\" }\n      div(class: \"mt-1 flex items-center gap-2\") do\n        Input(value: \"https://appica.dev/docs\", readonly: true, size: :sm, aria_label: \"Link\", class: \"flex-1\")\n        CopyButton(value: \"https://appica.dev/docs\", variant: :outline)\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Form in a popover",
+      "notes": "Focus moves into the popup; PopoverClose on the actions dismisses it.",
+      "code": "phlex do\n  Popover do\n    PopoverTrigger { |trigger| Button(**trigger, variant: :outline) { Icon(:adjustments, data: { icon: \"start\" }); plain \"Dimensions\" } }\n    PopoverContent(class: \"w-72\") do\n      PopoverTitle { \"Dimensions\" }\n      PopoverDescription { \"Set the size of the selected layer.\" }\n      div(class: \"mt-1 grid grid-cols-2 gap-3\") do\n        Field { FieldLabel { \"Width\" }; Input(value: \"320\", inputmode: \"numeric\") }\n        Field { FieldLabel { \"Height\" }; Input(value: \"180\", inputmode: \"numeric\") }\n      end\n      div(class: \"mt-2 flex justify-end gap-2\") do\n        PopoverClose { |close| Button(**close, variant: :ghost, size: :sm) { \"Cancel\" } }\n        PopoverClose { |close| Button(**close, size: :sm) { \"Apply\" } }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Status picker",
+      "notes": "Navigation links as rows; choosing one closes the popover and updates the trigger.",
+      "code": "presets = { \"🟢\" => \"Active\", \"🗓️\" => \"In a meeting\", \"🎧\" => \"Focusing\", \"🌴\" => \"On vacation\", \"🤒\" => \"Out sick\" }\nphlex do\n  Popover(data: { demo: \"status\" }) do\n    PopoverTrigger { |trigger| Button(**trigger, variant: :outline) { span(aria_hidden: \"true\", data: { demo: \"emoji\" }) { \"🟢\" }; span(data: { demo: \"label\" }) { \"Active\" } } }\n    PopoverContent(align: :start, class: \"w-60 gap-0.5 p-1.5\") do\n      PopoverTitle(class: \"text-foreground-muted px-2 pt-1 pb-1.5 text-xs font-medium\") { \"Set a status\" }\n      Navigation(orientation: :vertical, active_link: \"Active\") do\n        presets.each do |emoji, label|\n          NavigationLink(value: label, class: \"w-full\") do |link|\n            button(**link, type: \"button\", data: { **link[:data], emoji:, label:, action: \"ui--popover#close\" }) do\n              span(aria_hidden: \"true\") { emoji }\n              plain label\n            end\n          end\n        end\n      end\n    end\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const demo = document.querySelector(\"[data-demo=status]\")\n      demo.addEventListener(\"click\", ({ target }) => {\n        const row = target.closest(\"[data-label]\")\n        if (!row) return\n        demo.querySelectorAll(\"[data-label]\").forEach(other => {\n          other.toggleAttribute(\"data-active\", other === row)\n          other === row ? other.setAttribute(\"aria-current\", \"page\") : other.removeAttribute(\"aria-current\")\n        })\n        demo.querySelector(\"[data-demo=emoji]\").textContent = row.dataset.emoji\n        demo.querySelector(\"[data-demo=label]\").textContent = row.dataset.label\n      })\n    JS\n  end\nend"
+    },
+    {
+      "name": "Open on hover",
+      "notes": "`open_on_hover:` on the trigger reveals it on pointer rest; it still opens on click and keyboard.",
+      "code": "phlex do\n  Popover do\n    PopoverTrigger(open_on_hover: true, delay: 150) { |trigger| Button(**trigger, variant: :ghost, icon: true, aria_label: \"Plan details\") { Icon(:info_circle) } }\n    PopoverContent(class: \"w-64\") do\n      PopoverTitle { \"Pro plan\" }\n      PopoverDescription { \"Unlimited projects, priority support and 100 GB of storage.\" }\n    end\n  end\nend"
+    },
+    {
+      "name": "Without an arrow",
+      "code": "phlex do\n  Popover do\n    PopoverTrigger { |trigger| Button(**trigger, variant: :outline) { \"No arrow\" } }\n    PopoverContent(arrow: false) do\n      PopoverTitle { \"Flat card\" }\n      PopoverDescription { \"Sits closer to the trigger, without a pointer.\" }\n    end\n  end\nend"
+    },
+    {
+      "name": "Side & alignment",
+      "notes": "It flips and shifts to stay in view.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center justify-center gap-3 py-24\") do\n    %i[ top right bottom left ].each do |side|\n      Popover do\n        PopoverTrigger { |trigger| Button(**trigger, variant: :outline, size: :sm) { side.to_s } }\n        PopoverContent(side:) { PopoverDescription { \"Opens on the #{side}.\" } }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "code": "phlex do\n  div(dir: \"rtl\") do\n    Popover do\n      PopoverTrigger { |trigger| Button(**trigger, variant: :outline) { \"مشاركة\" } }\n      PopoverContent(align: :start) do\n        PopoverTitle { \"شارك هذه الصفحة\" }\n        PopoverDescription { \"يمكن لأي شخص لديه الرابط عرض هذا المستند.\" }\n      end\n    end\n  end\nend"
+    }
+  ]
+}

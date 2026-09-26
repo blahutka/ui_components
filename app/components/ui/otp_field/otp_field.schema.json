@@ -1,0 +1,148 @@
+{
+  "name": "OTPField",
+  "kit": "UI",
+  "description": "A one-time code split into single-character slots.\n\n  OTPField(length: 6, name: \"code\", aria_label: \"Verification code\") do\n    6.times { |index| OTPFieldInput(aria_label: \"Digit #{index + 1} of 6\") }\n  end\n\nTyping fills the slots and moves on, Backspace clears and moves back, ←/→ move, and pasting (or the OS one-time-code autofill) spreads a code across the slots. A hidden input submits the joined value under `name:`. `validation_type:` (:numeric, :alpha, :alphanumeric, :none) filters what's accepted; `mask:` hides the characters; `auto_submit:` submits the form when complete. Emits `ui--otp-field:change` and `ui--otp-field:complete` with { value }.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `OTPField(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/02_actions_&_inputs/otp_field.md.erb",
+  "appica": "https://appica.dev/ui/components/react/otp-field",
+  "components": {
+    "OTPField": {
+      "constant": "UI::OTPField",
+      "props": {
+        "type": "object",
+        "properties": {
+          "length": {},
+          "value": {
+            "default": null
+          },
+          "default_value": {
+            "default": null
+          },
+          "variant": {
+            "enum": [
+              "outline",
+              "soft"
+            ],
+            "default": "outline"
+          },
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": "md"
+          },
+          "validation_type": {
+            "enum": [
+              "numeric",
+              "alpha",
+              "alphanumeric",
+              "none"
+            ],
+            "default": "numeric"
+          },
+          "mask": {
+            "default": false,
+            "type": "boolean"
+          },
+          "auto_submit": {
+            "default": false,
+            "type": "boolean"
+          },
+          "name": {
+            "default": null
+          },
+          "required": {
+            "default": false,
+            "type": "boolean"
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "read_only": {
+            "default": false,
+            "type": "boolean"
+          },
+          "invalid": {
+            "default": null
+          }
+        },
+        "required": [
+          "length"
+        ],
+        "additionalProperties": true
+      },
+      "parts": [
+        "UI::OTPFieldInput"
+      ]
+    },
+    "OTPFieldInput": {
+      "constant": "UI::OTPFieldInput",
+      "description": "One slot of an OTPField: a single-character native input. Label each one (aria_label:).",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::OTPField"
+      ]
+    },
+    "OTPFieldSeparator": {
+      "constant": "UI::OTPFieldSeparator",
+      "description": "A divider between groups of OTPField slots - a dash unless given content.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex { OTPField(length: length.to_i, variant:, size:, validation_type:, name: \"code\", aria_label: \"Verification code\") { instance_exec(length.to_i, &SLOTS) } }"
+    },
+    {
+      "name": "Variants",
+      "code": "phlex do\n  div(class: \"flex flex-col gap-5\") do\n    %i[ outline soft ].each { |variant| OTPField(length: 6, variant:, aria_label: \"#{variant} code\") { instance_exec(6, &SLOTS) } }\n  end\nend"
+    },
+    {
+      "name": "Sizes",
+      "code": "phlex do\n  div(class: \"flex flex-col items-center gap-5\") do\n    %i[ sm md lg ].each { |size| OTPField(length: 4, size:, aria_label: \"#{size} code\") { instance_exec(4, &SLOTS) } }\n  end\nend"
+    },
+    {
+      "name": "With a separator",
+      "code": "phlex do\n  OTPField(length: 6, aria_label: \"Verification code\") do\n    3.times { |index| OTPFieldInput(aria_label: \"Digit #{index + 1} of 6\") }\n    OTPFieldSeparator()\n    3.upto(5) { |index| OTPFieldInput(aria_label: \"Digit #{index + 1} of 6\") }\n  end\nend"
+    },
+    {
+      "name": "Placeholder",
+      "notes": "A `placeholder:` on each slot shows while it's empty and unfocused.",
+      "code": "phlex { OTPField(length: 6, aria_label: \"Verification code\") { 6.times { |index| OTPFieldInput(placeholder: \"•\", aria_label: \"Digit #{index + 1} of 6\") } } }"
+    },
+    {
+      "name": "Masked",
+      "notes": "`mask: true` hides the characters.",
+      "code": "phlex { OTPField(length: 6, mask: true, default_value: \"135790\", aria_label: \"Masked code\") { instance_exec(6, &SLOTS) } }"
+    },
+    {
+      "name": "Verify on complete",
+      "notes": "`ui--otp-field:complete` fires once every slot is filled. Try 123456 (or paste it).",
+      "code": "phlex do\n  div(class: \"flex flex-col items-center gap-3\", data: { demo: \"otp\" }) do\n    OTPField(length: 6, aria_label: \"Verification code\") { instance_exec(6, &SLOTS) }\n    p(class: \"text-foreground-muted text-sm\", aria_live: \"polite\", data: { demo: \"status\" }) { \"Enter the 6-digit code (123456)\" }\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const demo = document.querySelector(\"[data-demo=otp]\")\n      const status = demo.querySelector(\"[data-demo=status]\")\n      demo.addEventListener(\"ui--otp-field:change\", () => status.textContent = \"Enter the 6-digit code (123456)\")\n      demo.addEventListener(\"ui--otp-field:complete\", ({ detail: { value } }) => {\n        status.textContent = value === \"123456\" ? \"✓ Code verified\" : \"✗ Incorrect code (try 123456)\"\n      })\n    JS\n  end\nend"
+    },
+    {
+      "name": "Disabled, read-only & error states",
+      "code": "phlex do\n  div(class: \"flex flex-col gap-5\") do\n    OTPField(length: 6, disabled: true, aria_label: \"Disabled code\") { instance_exec(6, \"Disabled digit\", &SLOTS) }\n    OTPField(length: 6, read_only: true, default_value: \"123456\", aria_label: \"Read-only code\") { instance_exec(6, \"Read-only digit\", &SLOTS) }\n    Field(invalid: true) { OTPField(length: 6, default_value: \"123456\", aria_label: \"Code with error\") { instance_exec(6, \"Error digit\", &SLOTS) } }\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "The code still reads left to right, as digits do.",
+      "code": "phlex { div(dir: \"rtl\") { OTPField(length: 4, dir: \"ltr\", aria_label: \"رمز التحقق\") { instance_exec(4, &SLOTS) } } }"
+    }
+  ],
+  "example_helpers": {
+    "SLOTS": "SLOTS = proc { |length, prefix = \"Digit\"| length.times { |index| OTPFieldInput(aria_label: \"#{prefix} #{index + 1} of #{length}\") } }"
+  }
+}

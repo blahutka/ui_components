@@ -1,0 +1,82 @@
+{
+  "name": "Transactions",
+  "kit": "Blocks",
+  "description": "A recent-transactions card: a title, All / Income / Spending filter tabs and a list of Transaction rows - composed from Tabs, Thumbnail and Icon.\n\n  Transactions(currency: \"USD\") do\n    account.transactions.recent.each do |transaction|\n      Transaction(title: transaction.counterparty, category: transaction.category, date: transaction.booked_on,\n        amount: transaction.amount, icon: :building_bank)\n    end\n  end\n\nA positive amount is income, a negative one spending; the tabs filter the rows in the browser (`blocks--transactions`). `filters: false` drops the tabs. Strings: transactions.locales.yml.",
+  "usage": "Call the kit method inside a Phlex view that includes Blocks (e.g. `Transactions(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/20_blocks/transactions.md.erb",
+  "components": {
+    "Transaction": {
+      "constant": "Blocks::Transaction",
+      "description": "One Transactions row: an icon tile, the counterparty, its category and date, and the signed amount (income in the success color).\n\n  Transaction(title: \"Stripe payout\", category: \"Income\", date: Date.new(2026, 7, 3), amount: 860.40, icon: :brand_stripe)",
+      "props": {
+        "type": "object",
+        "properties": {
+          "title": {},
+          "amount": {},
+          "category": {
+            "default": null
+          },
+          "date": {
+            "default": null
+          },
+          "icon": {
+            "default": "receipt",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "amount"
+        ],
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "Blocks::Transactions"
+      ]
+    },
+    "Transactions": {
+      "constant": "Blocks::Transactions",
+      "props": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Recent transactions",
+            "type": "string"
+          },
+          "currency": {
+            "default": "USD",
+            "type": "string"
+          },
+          "filters": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "Blocks::Transaction"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "notes": "The Appica homepage card. Positive amounts are income; the tabs filter the rows.",
+      "code": "phlex do\n  Transactions(currency:, filters:, class: \"w-100 max-w-full\") do\n    ROWS.each { |row| Transaction(**row) }\n  end\nend"
+    },
+    {
+      "name": "Empty filter",
+      "notes": "Only spending here - the Income tab shows the empty message.",
+      "code": "phlex do\n  Transactions(class: \"w-100 max-w-full\") do\n    ROWS.select { |row| row[:amount].negative? }.each { |row| Transaction(**row) }\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "Rendered in Arabic whatever the toolbar says.",
+      "code": "phlex do\n  I18n.with_locale(:ar) do\n    div(dir: \"rtl\") do\n      Transactions(class: \"w-100 max-w-full\") { ROWS.first(4).each { |row| Transaction(**row) } }\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "ROWS": "ROWS = [\n  { title: \"Payroll · Appica Inc.\", category: \"Income\", date: Date.new(2026, 7, 1), amount: 4_150.00, icon: :building_bank },\n  { title: \"Spotify Premium\", category: \"Subscription\", date: Date.new(2026, 7, 2), amount: -11.99, icon: :brand_spotify },\n  { title: \"Stripe payout\", category: \"Income\", date: Date.new(2026, 7, 3), amount: 860.40, icon: :brand_stripe },\n  { title: \"Whole Foods\", category: \"Groceries\", date: Date.new(2026, 7, 4), amount: -74.20, icon: :shopping_cart },\n  { title: \"Uber\", category: \"Transport\", date: Date.new(2026, 7, 5), amount: -18.40, icon: :car },\n  { title: \"Card top-up\", category: \"Transfer\", date: Date.new(2026, 7, 5), amount: -200.00, icon: :credit_card }\n].freeze"
+  }
+}

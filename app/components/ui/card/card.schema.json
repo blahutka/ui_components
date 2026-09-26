@@ -1,0 +1,170 @@
+{
+  "name": "Card",
+  "kit": "UI",
+  "description": "A flexible content container for a title, description, media and actions.\n\n  Card do\n    CardMedia(class: \"h-44\") { img(src: trip.photo_url, alt: trip.name) }\n    CardHeader do\n      CardTitle { trip.name }\n      CardDescription { trip.summary }\n    end\n    CardFooter { Button { \"Book now\" } }\n  end\n\nRenders an outer frame plus an inner content wrapper (a flex column holding the slots). One radius drives everything: set `--card-radius` (default `var(--radius-xl)`) and the frame (×4/3) and inset media (×3/4) scale with it.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `Card(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/03_data_display/card.md.erb",
+  "appica": "https://appica.dev/ui/components/react/card",
+  "components": {
+    "Card": {
+      "constant": "UI::Card",
+      "props": {
+        "type": "object",
+        "properties": {
+          "frame": {
+            "default": "none",
+            "type": "string"
+          },
+          "inset": {
+            "default": true,
+            "type": "boolean"
+          },
+          "as": {
+            "enum": [
+              "div",
+              "article",
+              "section",
+              "li",
+              "form",
+              "a"
+            ],
+            "default": "div"
+          },
+          "content": {
+            "default": {},
+            "type": "object"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "CardDescription": {
+      "constant": "UI::CardDescription",
+      "description": "The supporting text: a <p> in text-foreground-muted text-sm",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "CardFooter": {
+      "constant": "UI::CardFooter",
+      "description": "A row for actions. Below the sm breakpoint it stacks in reverse, so the primary (first) action sits on top on narrow screens.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "CardHeader": {
+      "constant": "UI::CardHeader",
+      "description": "The text column. It stretches (flex-1), which pins CardFooter to the bottom of a fixed-height card. Any content fits: it's a plain flex column.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "CardMedia": {
+      "constant": "UI::CardMedia",
+      "description": "A clipped box for an image or video, above the header or below the footer. Direct <img> / <video> children fill it (size-full, object-cover), so a height is all it needs. Inset cards round all four corners at ×3/4 of the card radius; flush cards (`inset: false`) let the content wrapper clip it edge to edge.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "CardTitle": {
+      "constant": "UI::CardTitle",
+      "description": "The headline: an <h3> by default; `as: :h2` (etc.) fits it to the page outline.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "as": {
+            "enum": [
+              "h1",
+              "h2",
+              "h3",
+              "h4",
+              "h5",
+              "h6",
+              "p",
+              "div"
+            ],
+            "default": "h3"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  Card(frame: (frame.to_sym == :none ? false : frame), inset:, class: \"mx-auto w-80 max-w-full\") do\n    CardMedia(class: \"h-40\") { img(src: \"/carousel/slide-6.jpg\", alt: \"A valley at golden hour\") } if media\n    CardHeader do\n      CardTitle { \"Golden hour in the valley\" }\n      CardDescription { \"Three nights in a timber cabin at the treeline, with meadow trails and the peaks at your door.\" }\n    end\n    CardFooter do\n      Button { \"Book now\" }\n      Button(variant: :outline) { \"Details\" }\n    end\n  end\nend"
+    },
+    {
+      "name": "Header and footer",
+      "notes": "The most basic setup - no options, just a header and a footer.",
+      "code": "phlex do\n  Card(class: \"mx-auto w-full max-w-90\") do\n    CardHeader do\n      div(class: \"text-foreground-muted mb-1 flex items-center gap-2 text-xs\") do\n        Logo(variant: :mark, size: :sm, class: \"text-base\")\n        span { \"Behumble\" }\n      end\n      CardTitle { \"Weekly digest\" }\n      CardDescription { \"A short round-up of what changed, who shipped it, and what still needs a second pair of eyes.\" }\n    end\n    CardFooter { Button { \"Read digest\" } }\n  end\nend"
+    },
+    {
+      "name": "Frame",
+      "notes": "`frame: :solid` wraps the content in a band of background-subtle and softens the inner\nhairline. Leave it off unless the card needs that extra separation from the page.",
+      "code": "phlex do\n  div(class: \"mx-auto grid w-full max-w-3xl gap-4 sm:grid-cols-2\") do\n    Card do\n      CardHeader do\n        CardTitle { \"No frame\" }\n        CardDescription { \"The card sits directly on the page, outlined by a single hairline border.\" }\n      end\n      CardFooter { Button(variant: :soft) { \"Learn more\" } }\n    end\n    Card(frame: :solid) do\n      CardHeader do\n        CardTitle { \"Solid frame\" }\n        CardDescription do\n          plain \"An 8px band of \"\n          code { \"background-subtle\" }\n          plain \" wraps the content and lifts the card off the page.\"\n        end\n      end\n      CardFooter { Button(variant: :outline) { \"Learn more\" } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Glass frame",
+      "notes": "`frame: :glass` is a translucent, blurred band without the inner border. Put it over a\nphoto, a gradient or a colored section - never on flat page background.",
+      "code": "phlex do\n  div(class: \"mx-auto w-full max-w-3xl rounded-2xl bg-[image:linear-gradient(rgb(0_0_0/0.2),rgb(0_0_0/0.2)),url('/carousel/slide-2.jpg')] bg-cover bg-center p-8\") do\n    Card(frame: :glass, class: \"mx-auto w-full max-w-90\") do\n      CardHeader do\n        div(class: \"flex items-start justify-between gap-3\") do\n          CardTitle { \"A room above the clouds\" }\n          Logo(variant: :mark, size: :md, class: \"shrink-0\")\n        end\n        CardDescription { \"The glass frame borrows the pixels behind it, so it only reads as glass over imagery or a colored surface.\" }\n      end\n      CardFooter { Button { \"Check availability\" } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Media",
+      "notes": "CardMedia clips whatever you put in it. Inset (default): media floats inside the content\nwith four rounded corners. `inset: false`: media runs edge to edge and the card clips it.",
+      "code": "phlex do\n  div(class: \"mx-auto grid w-full max-w-3xl gap-4 sm:grid-cols-2\") do\n    [ true, false ].each do |inset|\n      Card(inset:) do\n        CardMedia(class: \"h-44\") { img(src: \"/carousel/slide-1.jpg\", alt: \"Mountains at sunrise\") }\n        CardHeader do\n          CardTitle { inset ? \"Inset\" : \"Flush\" }\n          CardDescription do\n            inset ? \"The image floats 8px inside the content wrapper and keeps all four corners rounded.\" :\n                    \"The image runs edge to edge and the card clips it to its own top corners.\"\n          end\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Horizontal layout",
+      "notes": "The content wrapper is a flex column, so one class through `content:` turns the card\nsideways. `as: :article` exposes it as self-contained content; only the title is a link.",
+      "code": "phlex do\n  Card(as: :article, content: { class: \"md:flex-row md:gap-2\" }, class: \"mx-auto w-full max-w-160\") do\n    CardMedia(class: \"h-48 shrink-0 md:h-auto md:w-56\") { img(src: \"/carousel/slide-7.jpg\", alt: \"A lone peak above a still lake\") }\n    div(class: \"flex min-w-0 flex-1 flex-col\") do\n      CardHeader do\n        Badge(variant: :secondary, size: :sm, class: \"mb-1 self-start\") { \"Field notes\" }\n        CardTitle do\n          a(href: \"#\", class: \"outline-ring rounded-xs hover:underline\") { \"What eight seasons above the treeline taught us about packing light\" }\n        end\n        CardDescription { \"Every gram you carry is a decision you already made. Here is the kit that survived - and the gear that never left the tent twice.\" }\n      end\n      CardFooter(class: \"flex-row items-center justify-between\") do\n        div(class: \"flex min-w-0 items-center gap-2\") do\n          Avatar(size: :xs) do\n            AvatarImage(src: \"/avatars/01.png\", alt: \"Sarah Jenkins\")\n            AvatarFallback { \"SJ\" }\n          end\n          span(class: \"text-foreground-muted truncate text-xs\") { \"Sarah Jenkins · 12 March 2026\" }\n        end\n        Button(variant: :ghost, size: :sm, icon: true, aria_label: \"Save for later\") { Icon(:bookmark) }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Overlay",
+      "notes": "For a card that is an image, position CardMedia absolutely (inset-2 when inset, inset-0\nwhen flush) and let CardHeader stack above it, with a scrim for legible text.",
+      "code": "phlex do\n  div(class: \"mx-auto grid w-full max-w-3xl gap-4 sm:grid-cols-2\") do\n    [ true, false ].each do |inset|\n      Card(inset:, class: \"h-72\", content: { class: \"relative\" }) do\n        CardMedia(class: inset ? \"absolute inset-2\" : \"absolute inset-0\") do\n          img(src: \"/carousel/slide-4.jpg\", alt: \"Mountains at dusk\")\n          div(class: \"absolute inset-0 bg-linear-to-t from-black/80 via-black/25 to-transparent\")\n        end\n        CardHeader(class: \"relative justify-between\") do\n          Badge(variant: :light, class: \"self-start\") { inset ? \"inset\" : \"inset: false\" }\n          div(class: \"flex flex-col gap-1.5\") do\n            CardTitle(class: \"text-white\") { \"Alpenglow\" }\n            CardDescription(class: \"text-white/75\") { \"The header stacks above an absolutely-positioned media layer, so the whole card becomes the image.\" }\n          end\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Profile",
+      "notes": "CardHeader is a plain flex column - here an Avatar leads a centered profile card.",
+      "code": "phlex do\n  Card(frame: :solid, class: \"mx-auto w-full max-w-80\") do\n    CardHeader(class: \"items-center text-center\") do\n      Avatar(size: :xl, class: \"mb-2\") do\n        AvatarImage(src: \"/avatars/03.png\", alt: \"\")\n        AvatarFallback { \"MR\" }\n        AvatarBadge()\n      end\n      CardTitle { \"Mateo Rossi\" }\n      CardDescription { \"Principal designer · Bologna\" }\n    end\n    CardFooter(class: \"sm:justify-center\") do\n      Button(size: :sm) { \"Follow\" }\n      Button(variant: :outline, size: :sm) { \"Message\" }\n    end\n  end\nend"
+    },
+    {
+      "name": "Empty state",
+      "notes": "`content:` restyles the surface itself - a dashed border and a subtle fill turn a card\ninto a placeholder.",
+      "code": "phlex do\n  Card(class: \"mx-auto w-full max-w-110\", content: { class: \"bg-background-subtle items-center border-dashed border-border-strong text-center\" }) do\n    CardHeader(class: \"items-center\") do\n      span(class: \"border-border text-foreground-muted bg-background mb-2 flex size-12 items-center justify-center rounded-xl border [&_svg]:size-5\") do\n        Icon(:folder_plus)\n      end\n      CardTitle { \"No collections yet\" }\n      CardDescription(class: \"max-w-70\") { \"Collections group related boards so your team can find them without digging through search.\" }\n    end\n    CardFooter do\n      Button(size: :sm) do\n        Icon(:plus, data: { icon: \"start\" })\n        plain \"New collection\"\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Product card",
+      "notes": "Anything can live in CardHeader - a price row and size buttons here. The badge and\nwishlist button are positioned inside CardMedia, which is already relative.",
+      "code": "phlex do\n  Card(class: \"mx-auto w-full max-w-85\") do\n    CardMedia(class: \"h-44\") do\n      img(src: \"/carousel/slide-3.jpg\", alt: \"Tulip bouquet\")\n      Badge(variant: :light, size: :sm, class: \"absolute inset-s-2 top-2\") { \"-20%\" }\n      Button(variant: :light, size: :sm, icon: true, aria_label: \"Add to wishlist\", class: \"absolute inset-e-2 top-2\") { Icon(:heart) }\n    end\n    CardHeader do\n      div(class: \"flex items-start justify-between gap-3\") do\n        div do\n          CardTitle(class: \"text-base\") { \"Spring bouquet\" }\n          CardDescription(class: \"text-xs\") { \"Seasonal tulips, hand-tied\" }\n        end\n        div(class: \"text-end\") do\n          div(class: \"text-foreground-intense font-semibold tabular-nums\") { \"$36\" }\n          s(class: \"text-foreground-muted text-xs tabular-nums\") { \"$45\" }\n        end\n      end\n      div(class: \"mt-3 flex items-center gap-2\", role: \"group\", aria_label: \"Bouquet size\") do\n        [ \"S\", \"M\", \"L\", \"XL\" ].each do |size|\n          Button(variant: (size == \"M\" ? :primary : :outline), size: :sm, icon: true, aria_pressed: (size == \"M\").to_s, class: \"text-xs\") { size }\n        end\n      end\n    end\n    CardFooter do\n      Button(size: :sm, class: \"w-full\") do\n        Icon(:shopping_cart, data: { icon: \"start\" })\n        plain \"Add to cart\"\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Form in a card",
+      "notes": "`as: :form` makes the card itself the form element, so fields and the submit button\nneed no extra wrapper. The Logo mark leads the header.",
+      "code": "phlex do\n  Card(frame: :solid, as: :form, action: \"#\", class: \"mx-auto w-full max-w-90\") do\n    CardHeader do\n      Logo(variant: :mark, size: :md)\n      CardTitle(class: \"mt-1 text-xl\") { \"Sign in to Behumble\" }\n      CardDescription { \"Sign in to view order status, update billing, check past orders.\" }\n      div(class: \"mt-4 flex flex-col gap-4\") do\n        label(class: \"flex flex-col gap-2 text-sm\") do\n          span(class: \"text-foreground-intense font-medium\") { \"Email\" }\n          input(type: \"email\", name: \"email\", autocomplete: \"off\", class: INPUT)\n        end\n        label(class: \"flex flex-col gap-2 text-sm\") do\n          span(class: \"flex items-center justify-between gap-3\") do\n            span(class: \"text-foreground-intense font-medium\") { \"Password\" }\n            a(href: \"#!\", class: \"outline-ring text-foreground-intense rounded-xs text-sm underline\") { \"Forgot password?\" }\n          end\n          input(type: \"password\", name: \"password\", autocomplete: \"new-password\", class: INPUT)\n        end\n        label(class: \"flex items-center gap-2 text-sm select-none\") do\n          input(type: \"checkbox\", name: \"persist\", checked: true, class: \"accent-primary size-4\")\n          plain \"Stay signed in\"\n        end\n      end\n    end\n    CardFooter { Button(type: \"submit\", class: \"w-full\") { \"Sign in\" } }\n  end\nend"
+    },
+    {
+      "name": "Radius",
+      "notes": "Changing `--card-radius` retunes the card and its inset media together.",
+      "code": "phlex do\n  div(class: \"mx-auto grid w-full max-w-3xl gap-4 sm:grid-cols-2 md:grid-cols-3\") do\n    { \"radius-sm\" => \"[--card-radius:var(--radius-sm)]\", \"radius-xl (default)\" => nil, \"radius-3xl\" => \"[--card-radius:var(--radius-3xl)]\" }.each do |label, radius|\n      Card(class: radius) do\n        CardMedia(class: \"h-24\") { img(src: \"/carousel/slide-5.jpg\", alt: \"\") }\n        CardHeader { CardTitle(class: \"text-base\") { label } }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "Logical padding and flex ordering: the footer's actions flow from the right and text\naligns to the start edge with no direction-specific classes.",
+      "code": "phlex do\n  div(dir: \"rtl\") do\n    Card(class: \"mx-auto w-80 max-w-full\") do\n      CardMedia(class: \"h-40\") { img(src: \"/carousel/slide-6.jpg\", alt: \"\") }\n      CardHeader do\n        CardTitle { \"ساعة ذهبية في الوادي\" }\n        CardDescription { \"ثلاث ليالٍ في كوخ خشبي عند حد الأشجار، مع مسارات المروج والقمم على بابك.\" }\n      end\n      CardFooter do\n        Button { \"احجز الآن\" }\n        Button(variant: :outline) { \"التفاصيل\" }\n      end\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "INPUT": "INPUT = \"border-transparent bg-background-muted text-foreground h-10 w-full rounded-md border px-3.5 text-sm outline-none focus:bg-background focus:border-transparent focus:ring-3 focus:ring-ring-input\""
+  }
+}

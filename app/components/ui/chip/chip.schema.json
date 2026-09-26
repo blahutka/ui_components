@@ -1,0 +1,162 @@
+{
+  "name": "Chip",
+  "kit": "UI",
+  "description": "A compact pill for tags, attributes, filters and removable tokens, in Button's palette.\n\n  Chip { \"Design\" }\n  Chip(variant: :primary, size: :sm) { Icon(:circle_check, data: { icon: \"start\" }); plain \"Verified\" }\n  Chip(dismissible: true, close_label: \"Remove React\") { \"React\" }\n  Chip(href: \"/tags/design\") { \"#design\" }\n\nIt's a <button> (an <a> with `href:`). `dismissible: true` adds a ✕: clicking the chip plays an exit animation, removes it and emits `ui--chip:dismiss` (cancel it to keep the chip - e.g. to remove it with a Turbo Stream instead). Inside a ChipGroup it takes the group's variant and size.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `Chip(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/02_actions_&_inputs/chip.md.erb",
+  "appica": "https://appica.dev/ui/components/react/chip",
+  "components": {
+    "Chip": {
+      "constant": "UI::Chip",
+      "props": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "enum": [
+              "soft",
+              "outline",
+              "primary",
+              "secondary",
+              "destructive"
+            ],
+            "default": null
+          },
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": null
+          },
+          "dismissible": {
+            "default": false,
+            "type": "boolean"
+          },
+          "close_label": {
+            "default": "Dismiss",
+            "type": "string"
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "ChipCheckbox": {
+      "constant": "UI::ChipCheckbox",
+      "description": "A Chip you can select: a <label> in Chip's look around a visually hidden checkbox, so a set of them submits like check boxes. The checked chip turns primary and shows a check - pure CSS.\n\n  ChipGroup(variant: :outline, role: \"group\", aria_label: \"Tags\") do\n    ChipCheckbox(name: \"tags[]\", value: \"ruby\", checked: true) { \"Ruby\" }\n    ChipCheckbox(name: \"tags[]\", value: \"rails\") { \"Rails\" }\n  end\n\nInside a ChipGroup it takes the group's variant and size (outline by default).",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "default": null
+          },
+          "checked": {
+            "default": null
+          },
+          "invalid": {
+            "default": null
+          },
+          "variant": {
+            "enum": [
+              "soft",
+              "outline",
+              "primary",
+              "secondary",
+              "destructive"
+            ],
+            "default": null
+          },
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "ChipGroup": {
+      "constant": "UI::ChipGroup",
+      "description": "A wrapping row of Chips sharing a variant and size.\n\n  ChipGroup(variant: :outline) do\n    tags.each { |tag| Chip(dismissible: true) { tag } }\n  end\n\nDispatch `ui--chip-group:clear` on it (or call the controller's clearAll) to dismiss every dismissible chip at once; each animates out and emits its own `ui--chip:dismiss`.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "enum": [
+              "soft",
+              "outline",
+              "primary",
+              "secondary",
+              "destructive"
+            ],
+            "default": null
+          },
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex { Chip(variant:, size:, dismissible:, disabled:) { \"Label\" } }"
+    },
+    {
+      "name": "Variants",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center gap-2\") do\n    UI::Chip::VARIANTS.each_key { |variant| Chip(variant:, class: \"capitalize\") { variant.to_s } }\n  end\nend"
+    },
+    {
+      "name": "Sizes",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center gap-2\") do\n    { sm: \"Small\", md: \"Medium\", lg: \"Large\" }.each { |size, text| Chip(size:) { text } }\n  end\nend"
+    },
+    {
+      "name": "With an icon",
+      "notes": "Mark the icon `data: { icon: \"start\" }` or `\"end\"` for the tighter inner spacing.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center gap-2\") do\n    Chip(variant: :soft) { Icon(:plus, data: { icon: \"start\" }); plain \"New\" }\n    Chip(variant: :primary) { Icon(:circle_check, data: { icon: \"start\" }); plain \"Verified\" }\n    Chip(variant: :outline) { plain \"4.9\"; Icon(:star, data: { icon: \"end\" }) }\n  end\nend"
+    },
+    {
+      "name": "Dismissible",
+      "notes": "Clicking a dismissible chip animates it out and removes it; `ui--chip:dismiss` fires first\n(cancel it to remove the chip yourself, e.g. with a Turbo Stream).",
+      "code": "phlex do\n  div(class: \"flex min-h-8 flex-wrap items-center gap-2\") do\n    %w[ Design Engineering Marketing Sales ].each { |tag| Chip(dismissible: true, close_label: \"Remove #{tag}\") { tag } }\n  end\nend"
+    },
+    {
+      "name": "Selectable filters",
+      "notes": "A chip is a button: swap the variant and set aria-pressed to show the active one.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center gap-2\", data: { demo: \"filters\" }) do\n    %w[ All Active Completed Archived ].each do |option|\n      selected = option == \"Active\"\n      Chip(variant: (selected ? :primary : :outline), aria_pressed: selected.to_s) do\n        Icon(:check, data: { icon: \"start\" }, hidden: !selected)\n        plain option\n      end\n    end\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const filters = document.querySelector(\"[data-demo=filters]\")\n      const classes = { primary: #{UI::Chip::VARIANTS[:primary].to_json}, outline: #{UI::Chip::VARIANTS[:outline].to_json} }\n      filters.addEventListener(\"click\", ({ target }) => {\n        const chosen = target.closest(\"[data-slot=chip]\")\n        if (!chosen) return\n        filters.querySelectorAll(\"[data-slot=chip]\").forEach(chip => {\n          const selected = chip === chosen, from = selected ? \"outline\" : \"primary\", to = selected ? \"primary\" : \"outline\"\n          if (chip.dataset.variant !== to) {\n            chip.classList.remove(...classes[from].split(\" \"))\n            chip.classList.add(...classes[to].split(\" \"))\n            chip.dataset.variant = to\n          }\n          chip.setAttribute(\"aria-pressed\", selected)\n          chip.querySelector(\"svg\").toggleAttribute(\"hidden\", !selected)\n        })\n      })\n    JS\n  end\nend"
+    },
+    {
+      "name": "Chip group",
+      "notes": "Shares variant and size; dispatching `ui--chip-group:clear` on it dismisses them all.",
+      "code": "phlex do\n  div(class: \"flex flex-col items-start gap-3\") do\n    ChipGroup(id: \"chip-filters\", variant: :outline) do\n      %w[ React TypeScript Tailwind Motion Base\\ UI ].each { |filter| Chip(dismissible: true) { filter } }\n    end\n    Button(size: :sm, variant: :ghost, data: { demo: \"clear\" }) { \"Clear all\" }\n  end\n  script(type: \"module\") do\n    raw safe(%(document.querySelector(\"[data-demo=clear]\").addEventListener(\"click\", () => document.getElementById(\"chip-filters\").dispatchEvent(new Event(\"ui--chip-group:clear\")))))\n  end\nend"
+    },
+    {
+      "name": "Selectable (form)",
+      "notes": "ChipCheckbox: a chip around a hidden checkbox, so a set of them submits like check boxes.",
+      "code": "phlex do\n  ChipGroup(variant: :outline, role: \"group\", aria_label: \"Job type\") do\n    { remote: \"Remote\", full_time: \"Full-time\", part_time: \"Part-time\", contract: \"Contract\" }.each do |value, text|\n      ChipCheckbox(name: \"job_types[]\", value:, checked: value == :remote) { text }\n    end\n  end\nend"
+    },
+    {
+      "name": "As a link",
+      "notes": "`href:` renders an <a> with the chip styling.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center gap-2\") do\n    Chip(href: \"#design\") { \"#design\" }\n    Chip(href: \"#engineering\") { \"#engineering\" }\n    Chip(href: \"#featured\", variant: :primary) { \"#featured\" }\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"flex flex-wrap items-center gap-2\") do\n    %w[ تصميم هندسة تسويق ].each { |tag| Chip(dismissible: true) { tag } }\n  end\nend"
+    }
+  ]
+}

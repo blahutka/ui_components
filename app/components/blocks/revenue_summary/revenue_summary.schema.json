@@ -1,0 +1,198 @@
+{
+  "name": "RevenueSummary",
+  "kit": "Blocks",
+  "description": "A revenue overview card: the period's total with a trend badge against the previous period, top markets, a trend chart and a row of key stats - composed from Badge, Icon and Sparkline.\n\n  RevenueSummary(value: 48_210, previous: 42_900, period: :month) do\n    RevenueMarkets do\n      RevenueMarket(country: :us, value: 21_690, share: 45)\n    end\n    RevenueChart(data: monthly_totals, labels: month_names)\n    RevenueStats do\n      RevenueStat(label: :orders, value: 1_208)\n      RevenueStat(label: :average_order, value: 39.9, money: true)\n    end\n  end\n\nLocalized: the strings are in revenue_summary.locales.yml next to this file (t(\".key\") in any part), country names in ui/countries.locales.yml. `period:` picks the title and the \"vs … last month\" wording; `title:` / `comparison:` override them. Money, counts and the change use the current locale's number formats (rails-i18n).",
+  "usage": "Call the kit method inside a Phlex view that includes Blocks (e.g. `RevenueSummary(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/20_blocks/revenue_summary.md.erb",
+  "components": {
+    "CountryFlag": {
+      "constant": "Blocks::CountryFlag",
+      "description": "A rounded-square country flag (Appica's flag style), by ISO code. Only the flags the blocks use ship here; any other code renders its letters on a muted tile.\n\n  CountryFlag(:us, class: \"size-4\")",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "RevenueChart": {
+      "constant": "Blocks::RevenueChart",
+      "description": "The trend line under the markets - a Sparkline with a gradient fill that pins itself to the bottom of the card. Hover it to read each period (in the root's currency and the locale).",
+      "props": {
+        "type": "object",
+        "properties": {
+          "data": {},
+          "labels": {
+            "default": null
+          },
+          "height": {
+            "default": 76,
+            "type": "integer"
+          },
+          "aria_label": {
+            "default": "Revenue trend",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "Blocks::RevenueSummary"
+      ]
+    },
+    "RevenueMarket": {
+      "constant": "Blocks::RevenueMarket",
+      "description": "One market row: flag, country name, amount and share of the total.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "country": {
+            "default": null
+          },
+          "value": {},
+          "share": {
+            "default": null
+          },
+          "name": {
+            "default": null
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "Blocks::RevenueSummary"
+      ]
+    },
+    "RevenueMarkets": {
+      "constant": "Blocks::RevenueMarkets",
+      "description": "The \"Top markets\" list.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "default": "Top markets",
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "RevenueStat": {
+      "constant": "Blocks::RevenueStat",
+      "description": "One figure: a muted label over a bold value. `label:` may be a translation key (:orders, :average_order, :refunds, :conversion); `value:` is formatted as a number, or money with `money: true` - or pass the value as a block.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "label": {},
+          "value": {
+            "default": null
+          },
+          "money": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "label"
+        ],
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "Blocks::RevenueSummary"
+      ]
+    },
+    "RevenueStats": {
+      "constant": "Blocks::RevenueStats",
+      "description": "Key figures under a divider, in equal columns.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "RevenueSummary": {
+      "constant": "Blocks::RevenueSummary",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {},
+          "previous": {
+            "default": null
+          },
+          "period": {
+            "default": "other",
+            "type": "string"
+          },
+          "title": {
+            "default": {
+              "day": "Revenue today",
+              "week": "Weekly revenue",
+              "month": "Monthly revenue",
+              "year": "Yearly revenue",
+              "other": "Revenue"
+            },
+            "type": "object"
+          },
+          "comparison": {
+            "default": {
+              "day": "yesterday",
+              "week": "last week",
+              "month": "last month",
+              "year": "last year",
+              "other": "last period"
+            },
+            "type": "object"
+          },
+          "currency": {
+            "default": "USD",
+            "type": "string"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "additionalProperties": true
+      },
+      "parts": [
+        "Blocks::RevenueChart",
+        "Blocks::RevenueMarket",
+        "Blocks::RevenueStat"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "notes": "The Appica homepage card. The badge compares `value:` with `previous:`; hover the chart to\nread each month.",
+      "code": "phlex do\n  RevenueSummary(value: value.to_f, previous: previous.to_f, period:, currency: currency.to_s, class: \"w-100 max-w-full\") do\n    RevenueMarkets do\n      RevenueMarket(country: :us, value: 21_690, share: 45)\n      RevenueMarket(country: :de, value: 9_640, share: 20)\n      RevenueMarket(country: :jp, value: 7_230, share: 15)\n    end\n    RevenueChart(data: REVENUE[0...-1] + [ value.to_f ], labels: I18n.t(\"date.abbr_month_names\").compact)\n    RevenueStats do\n      RevenueStat(label: :orders, value: 1_208)\n      RevenueStat(label: :average_order, value: 39.9, money: true)\n    end\n  end\nend"
+    },
+    {
+      "name": "Down on last period",
+      "notes": "A drop flips the badge to the error color and a falling arrow.",
+      "code": "phlex do\n  RevenueSummary(value: 9_870, previous: 11_240, period: :week, class: \"w-100 max-w-full\") do\n    RevenueChart(data: [ 11_240, 10_900, 11_600, 10_300, 9_800, 10_100, 9_870 ], labels: I18n.t(\"date.abbr_day_names\").rotate)\n    RevenueStats do\n      RevenueStat(label: :orders, value: 312)\n      RevenueStat(label: :refunds, value: 14)\n      RevenueStat(label: :conversion) { ActiveSupport::NumberHelper.number_to_percentage(2.8, precision: 1, locale: I18n.locale) }\n    end\n  end\nend"
+    },
+    {
+      "name": "Compact",
+      "notes": "Every part is optional: just the total and the markets. Countries without a bundled flag\nshow their code on a tile.",
+      "code": "phlex do\n  RevenueSummary(value: 1_845.5, period: :day, currency: \"EUR\", class: \"w-80 max-w-full\") do\n    RevenueMarkets do\n      RevenueMarket(country: :de, value: 1_120, share: 61)\n      RevenueMarket(country: :fr, value: 725.5, share: 39)\n    end\n  end\nend"
+    },
+    {
+      "name": "Custom wording",
+      "notes": "`title:`, `comparison:`, market `name:` and stat labels take plain strings when the built-in\ntranslations don't fit.",
+      "code": "phlex do\n  RevenueSummary(value: 48_210, previous: 42_900, title: \"Store revenue · EU\", comparison: \"the same month last year\", class: \"w-100 max-w-full\") do\n    RevenueMarkets(title: \"Best-selling regions\") do\n      RevenueMarket(country: :de, name: \"DACH\", value: 21_690, share: 45)\n    end\n    RevenueStats { RevenueStat(label: \"New customers\", value: 342) }\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "Rendered in Arabic whatever the toolbar says: amounts and shares align to the inline end,\nand the chart runs in the reading direction.",
+      "code": "phlex do\n  I18n.with_locale(:ar) do\n    div(dir: \"rtl\") do\n      RevenueSummary(value: 48_210, previous: 42_900, period: :month, class: \"w-100 max-w-full\") do\n        RevenueMarkets do\n          RevenueMarket(country: :us, value: 21_690, share: 45)\n          RevenueMarket(country: :de, value: 9_640, share: 20)\n        end\n        RevenueChart(data: REVENUE, labels: I18n.t(\"date.abbr_month_names\").compact)\n        RevenueStats do\n          RevenueStat(label: :orders, value: 1_208)\n          RevenueStat(label: :average_order, value: 39.9, money: true)\n        end\n      end\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "REVENUE": "REVENUE = [ 33_900, 32_100, 36_800, 35_700, 32_800, 39_200, 44_700, 42_700, 40_200, 40_900, 43_600, 48_210 ].freeze"
+  }
+}

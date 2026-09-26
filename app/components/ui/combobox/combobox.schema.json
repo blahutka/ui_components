@@ -1,0 +1,341 @@
+{
+  "name": "Combobox",
+  "kit": "UI",
+  "description": "Pick a value (or several) from a list you can filter by typing - Autocomplete's sibling for selection: the value is one of the items, the input reverts to its label when you leave, and it submits under `name:` from hidden inputs.\n\n  Combobox(items: frameworks, name: \"framework\", default_value: \"Astro\", clearable: true) do\n    ComboboxInput(placeholder: \"Search a framework\")\n    ComboboxContent do\n      ComboboxEmpty { \"No frameworks found.\" }\n      ComboboxList { |item| ComboboxItem(value: item) { item } }\n    end\n  end\n\n`multiple: true` with ComboboxChips shows each value as a removable chip. ComboboxTrigger + ComboboxValue make a select-style field with the ComboboxInput inside ComboboxContent. `creatable: true` offers \"Create \"…\"\" for a query with no exact match. The chevron (`icon:`) is on by default. Emits `ui--combobox:change` with { value } (an array when multiple) and `ui--combobox:create` with { value } for a created entry.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `Combobox(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/02_actions_&_inputs/combobox.md.erb",
+  "appica": "https://appica.dev/ui/components/react/combobox",
+  "components": {
+    "Combobox": {
+      "constant": "UI::Combobox",
+      "props": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "default": [],
+            "type": "array"
+          },
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": "md"
+          },
+          "variant": {
+            "enum": [
+              "outline",
+              "soft"
+            ],
+            "default": "outline"
+          },
+          "clearable": {
+            "default": false,
+            "type": "boolean"
+          },
+          "icon": {
+            "default": true,
+            "type": "boolean"
+          },
+          "grid": {
+            "default": false,
+            "type": "boolean"
+          },
+          "value": {
+            "default": null
+          },
+          "default_value": {
+            "default": null
+          },
+          "name": {
+            "default": null
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "item_to_string_value": {
+            "default": null
+          },
+          "id": {},
+          "multiple": {
+            "default": false,
+            "type": "boolean"
+          },
+          "creatable": {
+            "default": false,
+            "type": "boolean"
+          },
+          "required": {
+            "default": false,
+            "type": "boolean"
+          },
+          "item_to_string_label": {
+            "default": null
+          },
+          "include_hidden": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "UI::ComboboxChips",
+        "UI::ComboboxContent",
+        "UI::ComboboxEmpty",
+        "UI::ComboboxGroup",
+        "UI::ComboboxInput",
+        "UI::ComboboxItem",
+        "UI::ComboboxLabel",
+        "UI::ComboboxList",
+        "UI::ComboboxTrigger",
+        "UI::ComboboxValue"
+      ]
+    },
+    "ComboboxChips": {
+      "constant": "UI::ComboboxChips",
+      "description": "The field of a `multiple` Combobox: a removable chip per selected value, then the text field for adding more. Backspace in the empty field removes the last chip.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "placeholder": {
+            "default": " ",
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Combobox"
+      ]
+    },
+    "ComboboxCollection": {
+      "constant": "UI::ComboboxCollection",
+      "description": "ComboboxCollection: see UI::AutocompleteCollection.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::ComboboxGroup"
+      ]
+    },
+    "ComboboxContent": {
+      "constant": "UI::ComboboxContent",
+      "description": "The Combobox's popup. A ComboboxInput inside it becomes the search field.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "side": {
+            "default": "bottom",
+            "type": "string"
+          },
+          "side_offset": {
+            "default": 6,
+            "type": "integer"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Combobox"
+      ]
+    },
+    "ComboboxEmpty": {
+      "constant": "UI::ComboboxEmpty",
+      "description": "ComboboxEmpty: see UI::AutocompleteEmpty.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Combobox"
+      ]
+    },
+    "ComboboxGroup": {
+      "constant": "UI::ComboboxGroup",
+      "description": "ComboboxGroup: see UI::AutocompleteGroup.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "items": {}
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": true
+      },
+      "parts": [
+        "UI::ComboboxCollection",
+        "UI::ComboboxLabel"
+      ],
+      "render_inside": [
+        "UI::Combobox"
+      ]
+    },
+    "ComboboxInput": {
+      "constant": "UI::ComboboxInput",
+      "description": "The Combobox's text field (styled like Input): typing filters the list. It shows the selected item's label; inside ComboboxContent it's the popup's search field instead. `start_slot: :selected_icon` mirrors the selected item's `data: { icon: \"start\" }` element.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "placeholder": {
+            "default": " ",
+            "type": "string"
+          },
+          "start_slot": {
+            "default": null
+          },
+          "end_slot": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Combobox"
+      ]
+    },
+    "ComboboxItem": {
+      "constant": "UI::ComboboxItem",
+      "description": "One option of a Combobox, with a check while selected. `value:` is what it submits.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {},
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Combobox"
+      ]
+    },
+    "ComboboxLabel": {
+      "constant": "UI::ComboboxLabel",
+      "description": "ComboboxLabel: see UI::AutocompleteLabel.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Combobox",
+        "UI::ComboboxGroup"
+      ]
+    },
+    "ComboboxList": {
+      "constant": "UI::ComboboxList",
+      "description": "ComboboxList: see UI::AutocompleteList.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "cols": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Combobox"
+      ]
+    },
+    "ComboboxSeparator": {
+      "constant": "UI::ComboboxSeparator",
+      "description": "A thin divider between ComboboxGroups.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "ComboboxTrigger": {
+      "constant": "UI::ComboboxTrigger",
+      "description": "A select-style field for a Combobox whose search input lives inside ComboboxContent. Put ComboboxValue in it. Set `icon: false` on the root so the popup's input has no chevron.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "start_slot": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Combobox"
+      ]
+    },
+    "ComboboxValue": {
+      "constant": "UI::ComboboxValue",
+      "description": "The selected item's label inside a ComboboxTrigger; `placeholder:` when empty.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "placeholder": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Combobox"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  Combobox(items: FRAMEWORKS, variant:, size:, clearable:, icon:, name: \"framework\", class: \"max-w-70\") do\n    ComboboxInput(placeholder: \"Search a framework\", aria_label: \"Framework\")\n    ComboboxContent do\n      ComboboxEmpty { \"No frameworks found.\" }\n      ComboboxList { |item| ComboboxItem(value: item) { item } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Variants",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-70 flex-col gap-4\") do\n    %i[ outline soft ].each do |variant|\n      Combobox(items: FRAMEWORKS, variant:) do\n        ComboboxInput(placeholder: \"Search a framework\", aria_label: \"Framework (#{variant})\")\n        ComboboxContent do\n          ComboboxEmpty { \"No frameworks found.\" }\n          ComboboxList { |item| ComboboxItem(value: item) { item } }\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Clearable & chevron",
+      "notes": "The chevron is on by default (`icon: false` to drop it); `clearable:` adds a ✕.",
+      "code": "phlex do\n  Combobox(items: FRAMEWORKS, default_value: \"Astro\", clearable: true, class: \"max-w-70\") do\n    ComboboxInput(placeholder: \"Search a framework\", aria_label: \"Framework\")\n    ComboboxContent do\n      ComboboxEmpty { \"No frameworks found.\" }\n      ComboboxList { |item| ComboboxItem(value: item) { item } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Country select",
+      "notes": "Object items read through `item_to_string_value:` / `item_to_string_label:`;\n`start_slot: :selected_icon` mirrors the chosen flag.",
+      "code": "countries = %w[ au at be br ca cz fr de in it jp mx nl pl es se ch gb us ].map { |code| { code:, name: I18n.t(\"ui_components.countries.#{code}\", default: code.upcase) } }\nphlex do\n  Combobox(items: countries, item_to_string_value: :code, item_to_string_label: :name, default_value: \"cz\", name: \"country\", class: \"max-w-70\") do\n    ComboboxInput(placeholder: \"Search a country\", start_slot: :selected_icon, aria_label: \"Country\")\n    ComboboxContent do\n      ComboboxEmpty { \"No countries found.\" }\n      ComboboxList(class: \"max-h-64\") do |country|\n        ComboboxItem(value: country[:code], data: { label: country[:name] }) do\n          CountryFlag(country[:code], class: \"size-4.5 text-base\", data: { icon: \"start\" })\n          plain country[:name]\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Input inside the popup",
+      "notes": "ComboboxTrigger + ComboboxValue make a select-style field; the search lives in the popup.",
+      "code": "languages = %w[ Arabic Bengali Chinese Czech Danish Dutch English Finnish French German Greek Hebrew Hindi Hungarian Italian Japanese Korean Polish Portuguese Spanish Swedish ]\nphlex do\n  Combobox(items: languages, icon: false, class: \"max-w-70\") do\n    ComboboxTrigger(aria_label: \"Select a language\") { ComboboxValue(placeholder: \"Select a language\") }\n    ComboboxContent do\n      div(class: \"px-2 pb-2\") { ComboboxInput(placeholder: \"Search a language\", aria_label: \"Search a language\") }\n      ComboboxEmpty { \"No languages found.\" }\n      ComboboxList(class: \"max-h-64\") { |item| ComboboxItem(value: item) { item } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Grouped options",
+      "code": "groups = [ { value: \"Fruits\", items: %w[ Apple Banana Orange ] }, { value: \"Vegetables\", items: %w[ Carrot Potato Tomato ] } ]\nphlex do\n  Combobox(items: groups, class: \"max-w-70\") do\n    ComboboxInput(placeholder: \"Search food\", aria_label: \"Food\")\n    ComboboxContent do\n      ComboboxEmpty { \"No food found.\" }\n      ComboboxList do |group|\n        ComboboxGroup(items: group[:items]) do\n          ComboboxLabel { group[:value] }\n          ComboboxCollection { |item| ComboboxItem(value: item) { item } }\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Multiple selection",
+      "notes": "ComboboxChips shows each value as a chip; Backspace in the empty field removes the last.",
+      "code": "phlex do\n  Combobox(items: FRAMEWORKS + %w[ Gatsby Vite ], multiple: true, default_value: [ \"Next.js\", \"Astro\" ], name: \"frameworks\", clearable: true, class: \"max-w-70\") do\n    ComboboxChips(placeholder: \"Add frameworks\", aria_label: \"Frameworks\")\n    ComboboxContent do\n      ComboboxEmpty { \"No frameworks found.\" }\n      ComboboxList { |item| ComboboxItem(value: item) { item } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Creatable",
+      "notes": "`creatable: true` offers the query as a new entry when nothing matches exactly\n(`ui--combobox:create` fires with it).",
+      "code": "phlex do\n  Combobox(items: [ \"bug\", \"documentation\", \"enhancement\", \"help wanted\", \"good first issue\" ], multiple: true, creatable: true, class: \"max-w-70\") do\n    ComboboxChips(placeholder: \"Add labels…\", aria_label: \"Labels\")\n    ComboboxContent do\n      ComboboxEmpty { \"No labels found.\" }\n      ComboboxList { |item| ComboboxItem(value: item) { item } }\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"w-full max-w-70\") do\n    Combobox(items: %w[ تفاح موز برتقال فراولة ], clearable: true) do\n      ComboboxInput(placeholder: \"ابحث عن فاكهة\", aria_label: \"فاكهة\")\n      ComboboxContent do\n        ComboboxEmpty { \"لا توجد نتائج.\" }\n        ComboboxList { |item| ComboboxItem(value: item) { item } }\n      end\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "FRAMEWORKS": "FRAMEWORKS = [ \"Next.js\", \"Remix\", \"Astro\", \"Nuxt.js\", \"SvelteKit\", \"SolidStart\" ].freeze"
+  }
+}

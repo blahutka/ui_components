@@ -1,0 +1,152 @@
+{
+  "name": "Alert",
+  "kit": "UI",
+  "description": "A prominent, in-page message about a status or event - a banner that lives in the layout. (For transient notifications use Toast.)\n\n  Alert(variant: :info) do\n    AlertIcon { info_svg }\n    AlertTitle { \"Scheduled maintenance\" }\n    AlertDescription { \"Some features may be unavailable Sunday night.\" }\n  end\n\nParts are placed by a grid, so include only the ones you need. `layout: :inline` flows them onto one row once the container is wide enough. `dismissible: true` adds a close button that animates the alert out; `persist_key:` remembers the dismissal in local/session storage. `open: false` renders it closed - flip `data-ui--alert-open-value` to show it again.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `Alert(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/09_status_&_feedback/alert.md.erb",
+  "appica": "https://appica.dev/ui/components/react/alert",
+  "components": {
+    "Alert": {
+      "constant": "UI::Alert",
+      "props": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "enum": [
+              "default",
+              "primary",
+              "secondary",
+              "info",
+              "success",
+              "warning",
+              "error"
+            ],
+            "default": "default"
+          },
+          "layout": {
+            "enum": [
+              "block",
+              "inline"
+            ],
+            "default": "block"
+          },
+          "dismissible": {
+            "default": false,
+            "type": "boolean"
+          },
+          "open": {
+            "default": true,
+            "type": "boolean"
+          },
+          "persist_key": {
+            "default": null
+          },
+          "persist_storage": {
+            "default": "local",
+            "type": "string"
+          },
+          "close_label": {
+            "default": "Dismiss",
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "UI::AlertIcon"
+      ]
+    },
+    "AlertAction": {
+      "constant": "UI::AlertAction",
+      "description": "A trailing row for buttons: below the text in the block layout, after it inline.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "AlertDescription": {
+      "constant": "UI::AlertDescription",
+      "description": "The supporting body text.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "AlertIcon": {
+      "constant": "UI::AlertIcon",
+      "description": "A leading icon slot; the icon takes the variant's accent color.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::Alert"
+      ]
+    },
+    "AlertTitle": {
+      "constant": "UI::AlertTitle",
+      "description": "The headline, an <h5> by default - pick the level that fits the page outline with `as:`.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "as": {
+            "enum": [
+              "h1",
+              "h2",
+              "h3",
+              "h4",
+              "h5",
+              "h6",
+              "div"
+            ],
+            "default": "h5"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "notes": "The neutral default variant with an icon, title and description. Change the variant,\nlayout and dismiss button live.",
+      "code": "icon = variant.to_sym == :default ? :info_circle : :info_circle_filled\n\nphlex do\n  div(class: \"w-full max-w-md\") do\n    Alert(variant:, layout:, dismissible:) do\n      AlertIcon { Icon(icon) }\n      AlertTitle { title }\n      AlertDescription { description }\n    end\n  end\nend"
+    },
+    {
+      "name": "Variants",
+      "notes": "Seven variants color the alert for its purpose; the AlertIcon inherits the accent.",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-md flex-col gap-3\") do\n    VARIANTS.each do |variant, icon, title, description|\n      Alert(variant:) do\n        AlertIcon { Icon(icon) }\n        AlertTitle { title }\n        AlertDescription { description }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Inline layout",
+      "notes": "`layout: :inline` flows the icon, title and description onto one row once there's room.\nThe alert is container-query aware, so it stacks again when narrow - try the mobile viewport.",
+      "code": "phlex do\n  div(class: \"w-full max-w-xl\") do\n    Alert(layout: :inline, variant: :info) do\n      AlertIcon { Icon(:info_circle_filled) }\n      AlertTitle { \"Scheduled maintenance\" }\n      AlertDescription { \"Some features may be unavailable Sunday night.\" }\n    end\n  end\nend"
+    },
+    {
+      "name": "With actions",
+      "notes": "An AlertAction row holds buttons - below the text in the block layout, trailing inline.",
+      "code": "phlex do\n  div(class: \"w-full max-w-md\") do\n    Alert(variant: :warning) do\n      AlertIcon { Icon(:alert_triangle_filled) }\n      AlertTitle { \"Your trial ends in 3 days\" }\n      AlertDescription { \"Upgrade now to keep access to your projects and team members.\" }\n      AlertAction do\n        Button(variant: :ghost, size: :sm, class: \"hover:before:bg-background\") { \"Maybe later\" }\n        Button(size: :sm) { \"Upgrade\" }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Dismissible",
+      "notes": "`dismissible: true` adds a close button; the alert animates out when closed. Give it a\n`persist_key:` to remember the dismissal across visits (localStorage, or\n`persist_storage: :session`).",
+      "code": "phlex do\n  div(class: \"w-full max-w-md\") do\n    Alert(variant: :success, dismissible: true) do\n      AlertIcon { Icon(:circle_check_filled) }\n      AlertTitle { \"Profile updated\" }\n      AlertDescription { \"Your changes have been saved. You can dismiss this message.\" }\n    end\n  end\nend"
+    },
+    {
+      "name": "Controlled",
+      "notes": "Drive visibility from outside through `data-ui--alert-open-value`, and listen for\n`ui--alert:open-change` - here to offer a button that brings a dismissed alert back.",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-md flex-col items-center gap-4\") do\n    div(class: \"w-full\") do\n      Alert(variant: :info, dismissible: true, id: \"controlled-alert\") do\n        AlertIcon { Icon(:info_circle_filled) }\n        AlertTitle { \"Good to know\" }\n        AlertDescription { \"This banner is controlled. Dismiss it and bring it back below.\" }\n      end\n    end\n    Button(variant: :outline, size: :sm, id: \"show-alert\", hidden: true) { \"Show alert\" }\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const box = document.getElementById(\"controlled-alert\").parentElement\n      const show = document.getElementById(\"show-alert\")\n\n      box.addEventListener(\"ui--alert:open-change\", ({ detail }) => show.hidden = detail.open)\n      show.addEventListener(\"click\", () => box.setAttribute(\"data-ui--alert-open-value\", \"true\"))\n    JS\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "The icon moves to the right, the dismiss button to the left and the actions align to the\nstart edge - all from logical properties.",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"w-full max-w-md\") do\n    Alert(variant: :warning, dismissible: true, close_label: \"إغلاق\") do\n      AlertIcon { Icon(:alert_triangle_filled) }\n      AlertTitle { \"تنتهي تجربتك خلال 3 أيام\" }\n      AlertDescription { \"قم بالترقية الآن للحفاظ على الوصول إلى مشاريعك وأعضاء فريقك.\" }\n      AlertAction do\n        Button(variant: :ghost, size: :sm, class: \"hover:before:bg-background\") { \"لاحقًا\" }\n        Button(size: :sm) { \"ترقية\" }\n      end\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "VARIANTS": "VARIANTS = [\n  [ :default, :bell, \"Update available\", \"Version 2.4 is ready to install.\" ],\n  [ :primary, :sparkle_filled, \"New feature\", \"You can now schedule reports to run weekly.\" ],\n  [ :secondary, :info_circle_filled, \"Did you know?\", \"Press ⌘K to search from anywhere.\" ],\n  [ :info, :info_circle_filled, \"Maintenance window\", \"We will be offline Sunday 02:00-03:00 UTC.\" ],\n  [ :success, :circle_check_filled, \"Payment received\", \"Your invoice has been settled.\" ],\n  [ :warning, :alert_triangle_filled, \"Storage almost full\", \"You have used 92% of your quota.\" ],\n  [ :error, :circle_x_filled, \"Payment failed\", \"We could not charge your card on file.\" ]\n].freeze"
+  }
+}

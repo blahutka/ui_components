@@ -1,0 +1,129 @@
+{
+  "name": "NumberField",
+  "kit": "UI",
+  "description": "A numeric input between − and + steppers, formatting its value (currency, percent, units…).\n\n  NumberField(default_value: 1, min: 0, max: 10, name: \"quantity\", aria_label: \"Quantity\")\n  NumberField(default_value: 19.99, step: 0.5, format: { style: \"currency\", currency: \"USD\" })\n\nThe visible input is a text field (role=\"spinbutton\") showing the formatted value; a hidden input carries the plain number under `name:`. ↑/↓ step (Shift: `large_step`, 10× by default; Alt: `small_step`, a tenth), Home/End jump to the bounds, the steppers repeat while held and disable at a bound. The value is parsed and re-formatted when committed (blur, Enter, a step). Emits `ui--number-field:change` with { value } (null when empty). Inside a Field it takes the field's id, name and state.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `NumberField(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/02_actions_&_inputs/number_field.md.erb",
+  "appica": "https://appica.dev/ui/components/react/number-field",
+  "components": {
+    "NumberField": {
+      "constant": "UI::NumberField",
+      "props": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "enum": [
+              "outline",
+              "soft"
+            ],
+            "default": "outline"
+          },
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": "md"
+          },
+          "value": {
+            "default": null
+          },
+          "default_value": {
+            "default": null
+          },
+          "min": {
+            "default": null
+          },
+          "max": {
+            "default": null
+          },
+          "step": {
+            "default": 1.0,
+            "type": "number"
+          },
+          "small_step": {},
+          "large_step": {},
+          "format": {
+            "default": null
+          },
+          "locale": {
+            "default": null
+          },
+          "name": {
+            "default": null
+          },
+          "invalid": {
+            "default": null
+          },
+          "read_only": {
+            "default": false,
+            "type": "boolean"
+          },
+          "required": {
+            "default": false,
+            "type": "boolean"
+          },
+          "invalid_number_message": {
+            "default": "Enter a number.",
+            "type": "string"
+          },
+          "allow_wheel_scrub": {
+            "default": false,
+            "type": "boolean"
+          },
+          "increment_label": {
+            "default": "Increase value",
+            "type": "string"
+          },
+          "decrement_label": {
+            "default": "Decrease value",
+            "type": "string"
+          },
+          "input": {
+            "default": {},
+            "type": "object"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex { NumberField(default_value: 1, min: 0, max: 10, variant:, size:, disabled:, aria_label: \"Quantity\") }"
+    },
+    {
+      "name": "Variants",
+      "notes": "The steppers invert their fill to stay legible on either variant.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center gap-6\") do\n    NumberField(variant: :outline, default_value: 3, aria_label: \"Outline quantity\")\n    NumberField(variant: :soft, default_value: 3, aria_label: \"Soft quantity\")\n  end\nend"
+    },
+    {
+      "name": "Sizes",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center gap-6\") do\n    %i[ sm md lg ].each { |size| NumberField(size:, default_value: 3, aria_label: \"#{size} quantity\") }\n  end\nend"
+    },
+    {
+      "name": "Min, max & step",
+      "notes": "The steppers disable at a bound; ↑/↓ step, Shift ×10, Alt ×0.1.",
+      "code": "phlex do\n  Field(class: \"w-fit\") do\n    FieldLabel(class: \"mb-2\") { \"Rating (0-20, step 1)\" }\n    NumberField(default_value: 5, min: 0, max: 20, name: \"rating\")\n  end\nend"
+    },
+    {
+      "name": "Formatting",
+      "notes": "`format:` takes Intl.NumberFormat options (and `locale:`); the submitted value stays a plain number.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-end gap-6\") do\n    div(class: \"flex flex-col gap-1.5\") do\n      label(for: \"nf-price\", class: \"text-foreground-intense text-sm font-medium\") { \"Price\" }\n      NumberField(id: \"nf-price\", class: \"w-40\", default_value: 19.99, step: 0.5, format: { style: \"currency\", currency: \"USD\" }, locale: \"en-US\", name: \"price\")\n    end\n    div(class: \"flex flex-col gap-1.5\") do\n      label(for: \"nf-rate\", class: \"text-foreground-intense text-sm font-medium\") { \"Rate\" }\n      NumberField(id: \"nf-rate\", class: \"w-32\", default_value: 0.15, min: 0, max: 1, step: 0.01, format: { style: \"percent\" })\n    end\n  end\nend"
+    },
+    {
+      "name": "Reacting to changes",
+      "code": "phlex do\n  div(class: \"flex flex-col items-center gap-3\", data: { demo: \"guests\" }) do\n    NumberField(default_value: 2, min: 0, aria_label: \"Guests\")\n    p(class: \"text-sm\", data: { demo: \"text\" }) { \"2 guests\" }\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const demo = document.querySelector(\"[data-demo=guests]\")\n      demo.addEventListener(\"ui--number-field:change\", ({ detail: { value } }) => {\n        const count = value ?? 0\n        demo.querySelector(\"[data-demo=text]\").textContent = `${count} ${count === 1 ? \"guest\" : \"guests\"}`\n      })\n    JS\n  end\nend"
+    },
+    {
+      "name": "Disabled & error states",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center gap-6\") do\n    NumberField(variant: :soft, default_value: 3, disabled: true, aria_label: \"Disabled quantity\")\n    NumberField(variant: :soft, default_value: 3, invalid: true, aria_label: \"Quantity with error\")\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "code": "phlex { div(dir: \"rtl\") { NumberField(default_value: 4, min: 0, aria_label: \"الكمية\") } }"
+    }
+  ]
+}

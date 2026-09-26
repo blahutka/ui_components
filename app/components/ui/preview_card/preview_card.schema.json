@@ -1,0 +1,111 @@
+{
+  "name": "PreviewCard",
+  "kit": "UI",
+  "description": "A rich preview of a link, shown while it's hovered or focused - the profile behind an\n\n  PreviewCard do\n    PreviewCardTrigger(href: \"https://appica.dev\") { \"@appica_ui\" }\n    PreviewCardContent { p { \"Appica UI\" } }\n  end\n\nThe trigger stays a real link. The card opens after `delay:` (600 ms) on hover or keyboard focus and closes `close_delay:` (300 ms) after the pointer leaves the link and the card. It's invisible on touch and to screen readers - keep it supplementary.",
+  "usage": "Call the kit method inside a Phlex view that includes UI (e.g. `PreviewCard(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/08_overlays/preview_card.md.erb",
+  "appica": "https://appica.dev/ui/components/react/preview-card",
+  "components": {
+    "PreviewCard": {
+      "constant": "UI::PreviewCard",
+      "props": {
+        "type": "object",
+        "properties": {
+          "default_open": {
+            "default": false,
+            "type": "boolean"
+          },
+          "id": {},
+          "delay": {
+            "default": 600,
+            "type": "integer"
+          },
+          "close_delay": {
+            "default": 300,
+            "type": "integer"
+          }
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "UI::PreviewCardContent",
+        "UI::PreviewCardTrigger"
+      ]
+    },
+    "PreviewCardContent": {
+      "constant": "UI::PreviewCardContent",
+      "description": "The preview card: Popover's card and arrow, beside the link.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "side": {
+            "enum": [
+              "bottom",
+              "top",
+              "left",
+              "right",
+              "inline_end",
+              "inline_start"
+            ],
+            "default": "bottom"
+          },
+          "align": {
+            "enum": [
+              "start",
+              "center",
+              "end"
+            ],
+            "default": "center"
+          },
+          "side_offset": {
+            "default": null
+          },
+          "align_offset": {
+            "default": 0,
+            "type": "integer"
+          },
+          "arrow": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::PreviewCard"
+      ]
+    },
+    "PreviewCardTrigger": {
+      "constant": "UI::PreviewCardTrigger",
+      "description": "The link that shows the preview - an <a> with `href:` (style it like any link in your prose). A block taking an argument receives the attributes for your own link (a `link_to`).",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "UI::PreviewCard"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Profile preview",
+      "notes": "Hover (or tab to) the @mention; the link still navigates on click.",
+      "code": "phlex do\n  p(class: \"text-foreground-muted text-center\") do\n    plain \"Built and maintained by the team at \"\n    PreviewCard do\n      PreviewCardTrigger(href: \"#!\", class: \"text-primary font-medium underline-offset-4 hover:underline\") { \"@appica_ui\" }\n      PreviewCardContent(class: \"w-72\") do\n        div(class: \"flex items-center justify-between\") do\n          Avatar { AvatarFallback { \"AU\" } }\n          Button(size: :sm) { \"Follow\" }\n        end\n        div do\n          p(class: \"text-foreground-intense font-semibold\") { \"Appica UI\" }\n          p(class: \"text-foreground-muted text-sm\") { \"@appica_ui\" }\n        end\n        p(class: \"text-sm\") { \"An accessible component library - here rendered with Phlex and Stimulus.\" }\n        p(class: \"text-foreground-muted text-sm\") { span(class: \"text-foreground-intense font-medium\") { \"2,481\" }; plain \" followers\" }\n      end\n    end\n    plain \" on GitHub.\"\n  end\nend"
+    },
+    {
+      "name": "Media preview",
+      "notes": "`class: \"p-0 gap-0 overflow-hidden\"` lets a cover image fill the card.",
+      "code": "phlex do\n  p(class: \"text-foreground-muted text-center\") do\n    plain \"Our next offsite is at the \"\n    PreviewCard do\n      PreviewCardTrigger(href: \"#!\", class: \"text-primary font-medium underline-offset-4 hover:underline\") { \"Coastal House\" }\n      PreviewCardContent(arrow: false, class: \"w-72 gap-0 overflow-hidden p-0\") do\n        div(class: \"h-41 w-full bg-[linear-gradient(135deg,#7dd3fc,#c4b5fd_55%,#fda4af)]\")\n        div(class: \"flex flex-col gap-1 p-4\") do\n          div(class: \"flex items-center justify-between\") do\n            p(class: \"text-foreground-intense font-semibold\") { \"Coastal House\" }\n            span(class: \"text-foreground-muted flex items-center gap-1 text-sm\") { Icon(:star_filled, class: \"text-warning-emphasis size-4\"); plain \"4.9\" }\n          end\n          p(class: \"text-sm\") { \"A bright, open workspace overlooking the bay - room for 24.\" }\n        end\n      end\n    end\n    plain \" next month.\"\n  end\nend"
+    },
+    {
+      "name": "Side & alignment",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center justify-center gap-x-6 gap-y-3 py-24\") do\n    [ %i[ top start ], %i[ right center ], %i[ bottom end ], %i[ left center ] ].each do |side, align|\n      PreviewCard do\n        PreviewCardTrigger(href: \"#!\", class: \"text-primary text-sm font-medium underline-offset-4 hover:underline\") { \"#{side} / #{align}\" }\n        PreviewCardContent(side:, align:) do\n          p(class: \"text-foreground-intense font-semibold\") { \"#{side} / #{align}\" }\n          p(class: \"text-sm\") { \"The card flips and shifts to stay in view.\" }\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "code": "phlex do\n  p(dir: \"rtl\", class: \"text-foreground-muted text-center\") do\n    plain \"اقرأ المزيد في \"\n    PreviewCard do\n      PreviewCardTrigger(href: \"#!\", class: \"text-primary font-medium underline-offset-4 hover:underline\") { \"دليل البدء\" }\n      PreviewCardContent(class: \"w-64\") do\n        p(class: \"text-foreground-intense font-semibold\") { \"البدء\" }\n        p(class: \"text-sm\") { \"ثبّت الحزمة واستورد الأنماط وضع أول مكوّن لك.\" }\n      end\n    end\n    plain \".\"\n  end\nend"
+    }
+  ]
+}
