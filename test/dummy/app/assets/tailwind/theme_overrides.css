@@ -1,0 +1,70 @@
+/* Theme overrides for the dummy app (Lookbook): only the variables that differ from
+   ui/theme.css, loaded after it. Generated with the Theme customizer - empty this file for
+   the default Appica theme. */
+
+:root,
+.light {
+    --foreground: oklch(43.5% 0.029 321.78);
+    --foreground-subtle: oklch(71.1% 0.019 323.02);
+    --foreground-muted: oklch(54.2% 0.034 322.5);
+    --foreground-strong: oklch(36.4% 0.029 323.89);
+    --foreground-emphasis: oklch(26.3% 0.024 320.12);
+    --foreground-intense: oklch(21.2% 0.019 322.12);
+    --background-subtle: oklch(98.5% 0 0);
+    --background-muted: oklch(96% 0.003 325.6);
+    --background-strong: oklch(92.2% 0.005 325.62);
+    --background-inverse: oklch(14.5% 0.008 326);
+    --border: oklch(92.2% 0.005 325.62);
+    --border-muted: oklch(96% 0.003 325.6);
+    --border-strong: oklch(86.5% 0.012 325.68);
+    --border-emphasis: oklch(71.1% 0.019 323.02);
+    --border-intense: oklch(54.2% 0.034 322.5);
+    --border-inverse: oklch(26.3% 0.024 320.12);
+    --border-overlay: oklch(96% 0.003 325.6);
+    --focus-ring: oklch(86.5% 0.012 325.68);
+    --focus-ring-input: oklch(92.2% 0.005 325.62);
+    --shadow-color: oklch(54.2% 0.034 322.5 / 18%);
+    --selection-color: oklch(14.5% 0.008 326 / 10%);
+    --primary: oklch(56.26% 0.1129 283.38);
+    --primary-subtle: oklch(56.26% 0.1129 283.38 / 10%);
+    --primary-soft: oklch(56.26% 0.1129 283.38 / 20%);
+    --primary-muted: oklch(66.27% 0.102 283.38);
+    --primary-strong: oklch(50.28% 0.1108 283.38);
+    --focus-ring-primary: oklch(56.26% 0.1129 283.38 / 30%);
+    --secondary-foreground: oklch(14.5% 0.008 326);
+    --radius: 0.5rem;
+}
+
+.dark {
+    --foreground: oklch(86.5% 0.012 325.68);
+    --foreground-subtle: oklch(54.2% 0.034 322.5);
+    --foreground-muted: oklch(71.1% 0.019 323.02);
+    --foreground-strong: oklch(92.2% 0.005 325.62);
+    --foreground-emphasis: oklch(96% 0.003 325.6);
+    --foreground-intense: oklch(1 0 0);
+    --foreground-inverse: oklch(21.2% 0.019 322.12);
+    --background: oklch(14.5% 0.008 326);
+    --background-subtle: oklch(54.2% 0.034 322.5 / 8%);
+    --background-muted: oklch(21.2% 0.019 322.12);
+    --background-strong: oklch(26.3% 0.024 320.12);
+    --background-inverse: oklch(1 0 0);
+    --border: oklch(26.3% 0.024 320.12);
+    --border-muted: oklch(21.2% 0.019 322.12);
+    --border-strong: oklch(36.4% 0.029 323.89);
+    --border-emphasis: oklch(43.5% 0.029 321.78);
+    --border-intense: oklch(54.2% 0.034 322.5);
+    --border-inverse: oklch(92.2% 0.005 325.62);
+    --border-overlay: oklch(26.3% 0.024 320.12);
+    --focus-ring: oklch(36.4% 0.029 323.89);
+    --focus-ring-input: oklch(26.3% 0.024 320.12);
+    --shadow-color: oklch(0 0 0 / 30%);
+    --selection-color: oklch(1 0 0 / 15%);
+    --primary: oklch(56.26% 0.1129 283.38);
+    --primary-subtle: oklch(56.26% 0.1129 283.38 / 10%);
+    --primary-soft: oklch(56.26% 0.1129 283.38 / 20%);
+    --primary-muted: oklch(66.27% 0.102 283.38);
+    --primary-strong: oklch(50.28% 0.1108 283.38);
+    --primary-foreground: oklch(1 0 0);
+    --focus-ring-primary: oklch(56.26% 0.1129 283.38 / 50%);
+    --secondary-foreground: oklch(14.5% 0.008 326);
+}

@@ -9,7 +9,7 @@
 <% device = devices[display[:viewport].to_s] unless framed %>
 <%# The toolbar's Locale option (applied around the request); right-to-left languages flip the page %>
 <% rtl = %w[ ar he fa ur ].include?(I18n.locale.to_s) %>
-<html lang="<%= I18n.locale %>" dir="<%= rtl ? "rtl" : "ltr" %>" class="<%= display[:theme] == "dark" ? "dark" : "" %>">
+<html lang="<%= I18n.locale %>" dir="<%= rtl ? "rtl" : "ltr" %>" class="<%= display[:theme] == "dark" ? "dark" : "" %>"<%= " data-theme-locked" if display[:theme].present? %>>
   <head>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= stylesheet_link_tag "tailwind" %>

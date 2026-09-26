@@ -1,0 +1,85 @@
+---
+id: theme_customizer
+title: Theme customizer
+---
+
+<%= UiComponents::Lookbook::TableOfContents.call(page) %>
+
+Appica's theme settings panel: mode, base / primary / secondary colors, font and radius, with "Get CSS Code",
+"Disable animations" and a reset. A **block** composed from [Toggle Group](<%= page_path(:toggle_group) %>),
+[Select](<%= page_path(:select) %>), [Input](<%= page_path(:input) %>), [Switch](<%= page_path(:switch) %>),
+[Dialog](<%= page_path(:dialog) %>) and Copy Button. Every change repaints this page **and every other Lookbook
+preview**, even in other tabs - the choice is kept in your browser until you reset it.
+
+<%= embed Blocks::ThemeCustomizerPreview, :default %>
+
+## Using the generated CSS
+
+"Get CSS Code" lists only the variables that differ from the default theme. Put them in **your** stylesheet,
+**after** the engine's CSS:
+
+```css
+/* app/assets/tailwind/application.css */
+@import "tailwindcss";
+@import "<gem path>/app/components/ui/index.css";
+
+/* ← paste the overrides here */
+:root,
+.light {
+  --primary: oklch(56.26% 0.1129 283.38);
+  --primary-subtle: oklch(56.26% 0.1129 283.38 / 10%);
+  /* … */
+}
+.dark { /* … */ }
+```
+
+Don't paste them into `ui/theme.css` or use them **instead** of it. `theme.css` holds every default token and the
+`@theme inline` block that turns each variable into its Tailwind utilities (`--primary` → `bg-primary`,
+`text-primary`, `ring-primary`…). Without it those utilities aren't generated at all, so buttons, badges and inputs
+lose their colors - which is what happens when the overrides replace it.
+
+Both blocks are plain unlayered CSS, so the later one wins: yours, because it comes after the import. Tailwind
+compiles `bg-primary` to `background-color: var(--primary)`, so changing the variable repaints every component
+without touching their classes.
+
+The output is identical to appica.dev's "Get CSS Code": the generator (`theme.js`) is a port of theirs, with the same
+Tailwind color scales, the same token → shade mapping and the same custom-color scale.
+
+## How a theme is built
+
+| Choice | Tokens | Taken from |
+|--------|--------|------------|
+| Base color | foreground, background, border, focus ring, shadow, selection | the neutral scale's shades (foreground 600, border 200… in light; 300, 800… in dark) |
+| Primary "Base" | `--primary*` | the same neutral (900 / white) |
+| Primary color | `--primary`, `-subtle`, `-soft`, `-muted`, `-strong`, `--focus-ring-primary` | the accent's 500, 500/10%, 500/20%, 400, 600 |
+| Secondary color | `--secondary*`, `--focus-ring-secondary` | the accent's 300 (400 in dark), 200, 400, 500, 600 |
+| Custom color | same as an accent | a 50-950 scale generated around your color |
+| Radius | `--radius` | None 0 … Extra Large 1.375rem (every `rounded-*` derives from it) |
+| Font | `--font-sans` | a Google Fonts family - add its `<link>` (shown in the output) to your layout |
+
+## In your app
+
+The block works outside Lookbook too - e.g. a settings page where users pick their theme:
+
+```ruby
+ThemeCustomizer()
+```
+
+```js
+// app/javascript/application.js - every page applies the stored theme and follows changes
+import { watchStoredTheme } from "blocks/theme_customizer/theme"
+watchStoredTheme()
+```
+
+`theme.js` also exports `overridesCss(theme)` (the CSS text), `applyTheme(theme)`, `loadTheme()` / `saveTheme()` and
+`customScale(color)`. The panel emits `blocks--theme-customizer:change` with `{ theme, css }` - save it on the server
+there to make it permanent.
+
+Mode: **Light** and **Dark** always apply; **System** follows the OS unless the page chose its own mode
+(`data-theme-locked` on `<html>` - Lookbook sets it when you use its Theme display option).
+
+## Examples
+
+### Panel only
+
+<%= embed Blocks::ThemeCustomizerPreview, :panel %>

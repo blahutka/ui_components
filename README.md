@@ -124,6 +124,7 @@ Higher-level compositions of the primitives live in `app/components/blocks/` (th
 | Music player | `MusicPlayer` |
 | Command menu | `CommandMenu`, `CommandGroup`, `CommandItem` |
 | Newsletter | `Newsletter`, `NewsletterPerk` |
+| Theme customizer | `ThemeCustomizer` (+ `theme.js`: `overridesCss`, `applyTheme`, `watchStoredTheme`) |
 
 ### Render props
 
@@ -252,7 +253,24 @@ import "blocks"
 @import "<gem path>/app/components/ui/index.css";
 @source "<gem path>/app/components";
 @source not "<gem path>/app/components/ui/icon/icons";
+
+/* Your theme: only the variables that differ, *after* the import above */
+:root, .light { --primary: oklch(58.5% 0.233 277.117); --radius: 0.5rem; }
+.dark { --primary: oklch(58.5% 0.233 277.117); --primary-foreground: oklch(1 0 0); }
 ```
+
+### Theming
+
+Generate the overrides with Lookbook's **Blocks → Theme customizer** (or appica.dev's "Get CSS
+Code" - same output) and paste them into your stylesheet **after** `@import ".../ui/index.css"`.
+They list only the variables you changed. Don't paste them into, or in place of,
+`ui/theme.css`: that file holds every default token plus the `@theme inline` block that turns
+`--primary` into `bg-primary`, `text-primary-foreground`…; without it those utilities aren't
+generated at all and components lose their colors.
+
+To let end users pick a theme at runtime, render `ThemeCustomizer()` and call
+`watchStoredTheme()` from `blocks/theme_customizer/theme` on every page - it re-applies the stored
+choice and follows changes made in other tabs.
 
 ## Development
 

@@ -6,3 +6,6 @@
 @import "../../../../../app/components/ui/index.css";
 @source "../../../../../app/components";
 @source not "../../../../../app/components/ui/icon/icons"; /* icon data, no classes */
+
+/* Theme overrides go after the engine's tokens (never replace ui/theme.css) */
+@import "./theme_overrides.css";
