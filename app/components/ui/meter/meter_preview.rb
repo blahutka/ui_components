@@ -10,6 +10,9 @@
 # @component UI::Meter
 # @display width wide
 class UI::MeterPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ low high optimum format locale status_classes ].freeze
+
   USAGE = { "Operations" => 32, "Marketing" => 64, "Infrastructure" => 94 }.freeze
   SKILLS = { "TypeScript" => 90, "React" => 82, "CSS" => 70, "Rust" => 38 }.freeze
   LEVELS = [ "Too weak", "Weak", "Fair", "Good", "Strong" ].freeze
@@ -19,11 +22,13 @@ class UI::MeterPreview < UI::BasePreview
   # @param value number
   # @param label text
   # @param thresholds [Boolean] toggle "low: 40, high: 75, optimum: 10"
-  def default(value: 64, label: "Storage", thresholds: false)
+  # @param min number
+  # @param max number
+  def default(value: 64, label: "Storage", thresholds: false, min: 0, max: 100)
     zones = thresholds ? { low: 40, high: 75, optimum: 10 } : {}
 
     phlex do
-      Meter(value: value.to_f, class: "w-72 max-w-full", **zones) do
+      Meter(min:, max:, value: value.to_f, class: "w-72 max-w-full", **zones) do
         MeterLabel { label }
         MeterValue()
         MeterProgress()

@@ -5,10 +5,13 @@
 # @component UI::ButtonGroup
 # @display width wide
 class UI::ButtonGroupPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ icon ].freeze
+
   # @label Usage
   # @param variant [Symbol] select { choices: [primary, primary_outline, secondary, soft, outline, ghost, destructive] }
-  # @param size [Symbol] select { choices: [sm, md, lg] }
-  # @param orientation [Symbol] select { choices: [horizontal, vertical] }
+  # @param size [Symbol] select {{ choices_for UI::ButtonGroup, :size }}
+  # @param orientation [Symbol] select {{ choices_for UI::ButtonGroup, :orientation }}
   # @param disabled [Boolean] toggle
   def default(variant: :outline, size: :md, orientation: :horizontal, disabled: false)
     phlex do

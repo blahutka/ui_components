@@ -5,15 +5,28 @@
 # @component UI::OTPField
 # @display width wide
 class UI::OTPFieldPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ invalid ].freeze
+
   SLOTS = proc { |length, prefix = "Digit"| length.times { |index| OTPFieldInput(aria_label: "#{prefix} #{index + 1} of #{length}") } }
 
   # @label Usage
   # @param length number
-  # @param variant [Symbol] select { choices: [outline, soft] }
-  # @param size [Symbol] select { choices: [sm, md, lg] }
-  # @param validation_type [Symbol] select { choices: [numeric, alpha, alphanumeric, none] }
-  def default(length: 6, variant: :outline, size: :md, validation_type: :numeric)
-    phlex { OTPField(length: length.to_i, variant:, size:, validation_type:, name: "code", aria_label: "Verification code") { instance_exec(length.to_i, &SLOTS) } }
+  # @param variant [Symbol] select {{ choices_for UI::OTPField, :variant }}
+  # @param size [Symbol] select {{ choices_for UI::OTPField, :size }}
+  # @param validation_type [Symbol] select {{ choices_for UI::OTPField, :validation_type }}
+  # @param value text
+  # @param default_value text
+  # @param mask [Boolean] toggle
+  # @param auto_submit [Boolean] toggle
+  # @param required [Boolean] toggle
+  # @param disabled [Boolean] toggle
+  # @param read_only [Boolean] toggle
+  # @param name text
+  def default(length: 6, variant: :outline, size: :md, validation_type: :numeric, value: nil, default_value: nil, mask: false, auto_submit: false, required: false, disabled: false, read_only: false, name: "code")
+    phlex do
+      OTPField(variant:, size:, validation_type:, mask:, auto_submit:, required:, disabled:, read_only:, **given(value:, default_value:), length: length.to_i, name:, aria_label: "Verification code") { instance_exec(length.to_i, &SLOTS) }
+    end
   end
 
   def variants

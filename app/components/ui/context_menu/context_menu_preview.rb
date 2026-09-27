@@ -6,14 +6,20 @@
 # @display width wide
 # @display min_height 380px
 class UI::ContextMenuPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ id ].freeze
+
   AREA = "border-border-strong text-foreground-muted flex h-40 w-72 max-w-full items-center justify-center rounded-xl border border-dashed text-sm"
 
   # @label Basic
   # Right-click the area (long-press on touch, Shift+F10 when focused).
-  # @param size [Symbol] select { choices: [sm, md, lg] }
-  def default(size: :md)
+  # @param size [Symbol] select {{ choices_for UI::ContextMenu, :size }}
+  # @param open_on_hover [Boolean] toggle
+  # @param delay number
+  # @param close_delay number
+  def default(size: :md, open_on_hover: false, delay: 100, close_delay: 100)
     phlex do
-      ContextMenu(size:) do
+      ContextMenu(size:, open_on_hover:, delay:, close_delay:) do
         ContextMenuTrigger(class: AREA, tabindex: "0") { "Right-click here" }
         ContextMenuContent do
           ContextMenuGroup do

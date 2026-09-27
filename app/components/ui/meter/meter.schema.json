@@ -101,7 +101,7 @@
     {
       "name": "Usage",
       "notes": "A label, a formatted value and a track; `value:` is read against the default 0-100 range.",
-      "code": "zones = thresholds ? { low: 40, high: 75, optimum: 10 } : {}\n\nphlex do\n  Meter(value: value.to_f, class: \"w-72 max-w-full\", **zones) do\n    MeterLabel { label }\n    MeterValue()\n    MeterProgress()\n  end\nend"
+      "code": "zones = thresholds ? { low: 40, high: 75, optimum: 10 } : {}\n\nphlex do\n  Meter(min:, max:, value: value.to_f, class: \"w-72 max-w-full\", **zones) do\n    MeterLabel { label }\n    MeterValue()\n    MeterProgress()\n  end\nend"
     },
     {
       "name": "Status thresholds",

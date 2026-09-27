@@ -103,7 +103,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex { OTPField(length: length.to_i, variant:, size:, validation_type:, name: \"code\", aria_label: \"Verification code\") { instance_exec(length.to_i, &SLOTS) } }"
+      "code": "phlex do\n  OTPField(variant:, size:, validation_type:, mask:, auto_submit:, required:, disabled:, read_only:, **given(value:, default_value:), length: length.to_i, name:, aria_label: \"Verification code\") { instance_exec(length.to_i, &SLOTS) }\nend"
     },
     {
       "name": "Variants",

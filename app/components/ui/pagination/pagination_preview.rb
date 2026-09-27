@@ -11,12 +11,13 @@ class UI::PaginationPreview < UI::BasePreview
   # @param pages number
   # @param window number
   # @param edges [Boolean] toggle
-  # @param variant [Symbol] select { choices: [outline, soft] }
-  # @param size [Symbol] select { choices: [sm, md, lg] }
-  def default(page: 5, pages: 12, window: 1, edges: false, variant: :outline, size: :md)
+  # @param variant [Symbol] select {{ choices_for UI::Pagination, :variant }}
+  # @param size [Symbol] select {{ choices_for UI::Pagination, :size }}
+  # @param aria_label text
+  def default(page: 5, pages: 12, window: 1, edges: false, variant: :outline, size: :md, aria_label: nil)
     phlex do
       div(class: "max-w-full overflow-x-auto [scrollbar-width:none]") do
-        Pagination(variant:, size:) { PaginationPages(page:, pages:, window: window.to_i, edges:) { |number| "?page=#{number}" } }
+        Pagination(variant:, size:, **given(aria_label:)) { PaginationPages(page:, pages:, window: window.to_i, edges:) { |number| "?page=#{number}" } }
       end
     end
   end

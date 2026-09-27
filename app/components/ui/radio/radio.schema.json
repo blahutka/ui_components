@@ -60,7 +60,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex do\n  RadioGroup(default_value: \"pro\", orientation:, disabled:, aria_labelledby: \"plan-label\") do\n    span(id: \"plan-label\", class: \"text-foreground mb-1 text-sm font-medium\") { \"Plan\" }\n    PLANS.each do |value, text|\n      label(class: \"flex items-center gap-2 text-sm select-none\") { Radio(value:); plain text }\n    end\n  end\nend"
+      "code": "phlex do\n  RadioGroup(orientation:, disabled:, required:, **given(name:, value:), default_value:, aria_labelledby: \"plan-label\") do\n    span(id: \"plan-label\", class: \"text-foreground mb-1 text-sm font-medium\") { \"Plan\" }\n    PLANS.each do |value, text|\n      label(class: \"flex items-center gap-2 text-sm select-none\") { Radio(value:); plain text }\n    end\n  end\nend"
     },
     {
       "name": "Horizontal",

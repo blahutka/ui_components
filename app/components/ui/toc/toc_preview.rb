@@ -28,7 +28,10 @@ class UI::TocPreview < UI::BasePreview
 
   # @label Usage
   # The link for the section in view lights up and the indicator slides to it.
-  def default
+  # @param aria_label text
+  # @param root_margin text
+  # @param container text
+  def default(aria_label: nil, root_margin: "0px", container: "#toc-demo-default")
     phlex do
       div(class: "flex w-full max-w-xl gap-4") do
         div(id: "toc-demo-default", class: "border-border h-64 flex-1 overflow-auto rounded-lg border p-4 [scrollbar-width:none]") do
@@ -39,7 +42,7 @@ class UI::TocPreview < UI::BasePreview
             end
           end
         end
-        Toc(container: "#toc-demo-default", class: "w-38 shrink-0") do
+        Toc(root_margin:, **given(aria_label:), container:, class: "w-38 shrink-0") do
           TocList { SECTIONS.each_key { |title| TocItem { TocLink(href: "#toc-default-#{title.parameterize}") { title } } } }
         end
       end

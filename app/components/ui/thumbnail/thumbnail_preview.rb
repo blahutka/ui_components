@@ -6,13 +6,20 @@
 # @component UI::Thumbnail
 # @display width wide
 class UI::ThumbnailPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ src ].freeze
+
   PHOTO = "/carousel/slide-1.jpg"
 
   # @label Usage
   # @param size [Symbol] select { choices: [2xs, xs, sm, md, lg, xl, 2xl] }
-  # @param shape [Symbol] select { choices: [rounded, circle] }
-  def default(size: :xl, shape: :rounded)
-    phlex { Thumbnail(size:, shape:, src: PHOTO, alt: "Snow-capped mountain peak at sunset") }
+  # @param shape [Symbol] select {{ choices_for UI::Thumbnail, :shape }}
+  # @param variant [Symbol] select {{ choices_for UI::Thumbnail, :variant }}
+  # @param alt text
+  def default(size: :xl, shape: :rounded, variant: :image, alt: "Snow-capped mountain peak at sunset")
+    phlex do
+      Thumbnail(size:, shape:, variant:, src: PHOTO, alt:)
+    end
   end
 
   # @label Sizes

@@ -83,7 +83,7 @@
     {
       "name": "Usage",
       "notes": "The bar layout: a label on the left, the percentage on the right, the track beneath.",
-      "code": "\")\n  phlex do\n    Progress(value: value.to_f, variant:, thickness: thickness.presence&.to_i, indicator_color: indicator_color.to_s, size: 64, class: (\"w-72 max-w-full\" if variant.to_sym == :bar)) do\n      ProgressLabel { \"Uploading\" }\n      ProgressValue()\n    end\n  end"
+      "code": "\", min: 0, max: 100, size: 64)\n  phlex do\n    Progress(variant:, min:, max:, value: value.to_f, thickness: thickness.presence&.to_i, indicator_color: indicator_color.to_s, size:, class: (\"w-72 max-w-full\" if variant.to_sym == :bar)) do\n      ProgressLabel { \"Uploading\" }\n      ProgressValue()\n    end\n  end"
     },
     {
       "name": "Circular",

@@ -5,12 +5,29 @@
 # @component UI::NumberField
 # @display width wide
 class UI::NumberFieldPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ small_step large_step format locale invalid input ].freeze
+
   # @label Usage
-  # @param variant [Symbol] select { choices: [outline, soft] }
-  # @param size [Symbol] select { choices: [sm, md, lg] }
+  # @param variant [Symbol] select {{ choices_for UI::NumberField, :variant }}
+  # @param size [Symbol] select {{ choices_for UI::NumberField, :size }}
   # @param disabled [Boolean] toggle
-  def default(variant: :outline, size: :md, disabled: false)
-    phlex { NumberField(default_value: 1, min: 0, max: 10, variant:, size:, disabled:, aria_label: "Quantity") }
+  # @param value text
+  # @param step number
+  # @param name text
+  # @param read_only [Boolean] toggle
+  # @param required [Boolean] toggle
+  # @param invalid_number_message text
+  # @param allow_wheel_scrub [Boolean] toggle
+  # @param increment_label text
+  # @param decrement_label text
+  # @param default_value text
+  # @param min number
+  # @param max number
+  def default(variant: :outline, size: :md, disabled: false, value: nil, step: 1.0, name: nil, read_only: false, required: false, invalid_number_message: nil, allow_wheel_scrub: false, increment_label: nil, decrement_label: nil, default_value: 1, min: 0, max: 10)
+    phlex do
+      NumberField(variant:, size:, disabled:, step:, read_only:, required:, allow_wheel_scrub:, **given(value:, name:, invalid_number_message:, increment_label:, decrement_label:), default_value:, min:, max:, aria_label: "Quantity")
+    end
   end
 
   # The steppers invert their fill to stay legible on either variant.

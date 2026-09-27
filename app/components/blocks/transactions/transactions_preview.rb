@@ -19,11 +19,12 @@ class Blocks::TransactionsPreview < UI::BasePreview
 
   # @label Usage
   # The Appica homepage card. Positive amounts are income; the tabs filter the rows.
-  # @param currency [Symbol] select { choices: [USD, EUR, GBP, CZK] }
+  # @param currency [Symbol] select {{ CURRENCIES }}
   # @param filters [Boolean] toggle "Show the filter tabs"
-  def default(currency: :USD, filters: true)
+  # @param title text
+  def default(currency: :USD, filters: true, title: nil)
     phlex do
-      Transactions(currency:, filters:, class: "w-100 max-w-full") do
+      Transactions(currency:, filters:, **given(title:), class: "w-100 max-w-full") do
         ROWS.each { |row| Transaction(**row) }
       end
     end

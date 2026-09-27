@@ -12,10 +12,19 @@ class Blocks::MusicPlayerPreview < UI::BasePreview
   # seek bar to jump.
   # @param position number "Seconds played"
   # @param playing [Boolean] toggle
-  def default(position: 84, playing: false)
+  # @param cover_alt text
+  # @param favorite [Boolean] toggle
+  # @param shuffle [Boolean] toggle
+  # @param repeat [Boolean] toggle
+  # @param src text
+  # @param title text
+  # @param artist text
+  # @param album text
+  # @param cover text
+  # @param duration number
+  def default(position: 84, playing: false, cover_alt: nil, favorite: false, shuffle: false, repeat: false, src: nil, title: "Midnight Drive", artist: "Neon Waves", album: "Retrograde", cover: "/landing/midnight-drive.svg", duration: 222)
     phlex do
-      MusicPlayer(title: "Midnight Drive", artist: "Neon Waves", album: "Retrograde", cover: "/landing/midnight-drive.svg",
-        duration: 222, position: position.to_i, playing:, class: "w-95 max-w-full")
+      MusicPlayer(playing:, favorite:, shuffle:, repeat:, **given(cover_alt:, src:), title:, artist:, album:, cover:, duration:, position: position.to_i, class: "w-95 max-w-full")
     end
   end
 

@@ -6,13 +6,17 @@
 # @display width wide
 # @display min_height 320px
 class UI::PopoverPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ id ].freeze
+
   # @label Usage
   # @param side [Symbol] select { choices: [bottom, top, left, right] }
   # @param align [Symbol] select { choices: [start, center, end] }
   # @param arrow [Boolean] toggle
-  def default(side: :bottom, align: :center, arrow: true)
+  # @param default_open [Boolean] toggle
+  def default(side: :bottom, align: :center, arrow: true, default_open: false)
     phlex do
-      Popover do
+      Popover(default_open:) do
         PopoverTrigger { |trigger| Button(**trigger, variant: :outline) { "Share" } }
         PopoverContent(side:, align:, arrow:) do
           PopoverTitle { "Share this page" }

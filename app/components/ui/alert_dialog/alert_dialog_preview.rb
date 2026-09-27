@@ -5,12 +5,18 @@
 # @component UI::AlertDialog
 # @display width wide
 class UI::AlertDialogPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ id ].freeze
+
   # @label Destructive confirmation
   # The confirm button uses the destructive variant; cancel comes first. Clicking outside doesn't
   # close it - Escape or a button does.
-  def default
+  # @param default_open [Boolean] toggle
+  # @param modal [Boolean] toggle
+  # @param dismissible [Boolean] toggle
+  def default(default_open: false, modal: true, dismissible: false)
     phlex do
-      AlertDialog do
+      AlertDialog(default_open:, modal:, dismissible:) do
         AlertDialogTrigger { |trigger| Button(**trigger, variant: :destructive) { "Delete project" } }
         AlertDialogContent do
           AlertDialogHeader do

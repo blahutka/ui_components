@@ -7,14 +7,18 @@
 # @component UI::Switch
 # @display width wide
 class UI::SwitchPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ invalid unchecked_value ].freeze
+
   # @label Usage
-  # @param size [Symbol] select { choices: [sm, md, lg] }
+  # @param size [Symbol] select {{ choices_for UI::Switch, :size }}
   # @param checked [Boolean] toggle
   # @param disabled [Boolean] toggle
-  def default(size: :md, checked: true, disabled: false)
+  # @param value text
+  def default(size: :md, checked: true, disabled: false, value: nil)
     phlex do
       label(class: "flex items-center gap-2.5 text-sm select-none") do
-        Switch(size:, checked:, disabled:)
+        Switch(size:, checked:, disabled:, **given(value:))
         plain "Airplane mode"
       end
     end

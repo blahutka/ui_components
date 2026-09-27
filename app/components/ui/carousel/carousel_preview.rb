@@ -11,6 +11,9 @@
 # @display width full
 # @display min_height 26rem
 class UI::CarouselPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ start_snap duration options effect sync_with id ].freeze
+
   PLACES = [
     { n: 1, title: "Sunlit summit", caption: "Aurora Range", body: "First light catches the ridgeline while the valley below stays in shadow - the clearest window for the summit push." },
     { n: 2, title: "Heather bloom", caption: "Meadowvale Heath", body: "The heath turns violet at golden hour, birches standing in a sea of flowering heather." },
@@ -32,10 +35,21 @@ class UI::CarouselPreview < UI::BasePreview
   # @param align [Symbol] select "Where slides settle" { choices: [start, center, end] }
   # @param fade [Boolean] toggle "Cross-fade instead of sliding"
   # @param autoplay [Boolean] toggle "Advance on a timer"
-  def default(loop: true, align: :start, fade: false, autoplay: false)
+  # @param orientation [Symbol] select {{ choices_for UI::Carousel, :orientation }}
+  # @param slides_to_scroll number
+  # @param contain_scroll text
+  # @param drag_free [Boolean] toggle
+  # @param active [Boolean] toggle
+  # @param draggable [Boolean] toggle
+  # @param auto_scroll [Boolean] toggle
+  # @param auto_height [Boolean] toggle
+  # @param wheel_gestures [Boolean] toggle
+  # @param light [Boolean] toggle
+  # @param aria_label text
+  def default(loop: true, align: :start, fade: false, autoplay: false, orientation: :horizontal, slides_to_scroll: 1, contain_scroll: "trim_snaps", drag_free: false, active: true, draggable: true, auto_scroll: false, auto_height: false, wheel_gestures: false, light: false, aria_label: "Carousel")
     phlex do
       div(class: "mx-auto w-full max-w-xl pb-8") do
-        Carousel(loop:, align:, fade:, autoplay:) do
+        Carousel(loop:, align:, fade:, autoplay:, orientation:, slides_to_scroll:, contain_scroll:, drag_free:, active:, draggable:, auto_scroll:, auto_height:, wheel_gestures:, light:, aria_label:) do
           CarouselContent do
             (1..5).each do |n|
               CarouselSlide { img(src: "/carousel/slide-#{n}.jpg", alt: "Slide #{n}", class: "aspect-3/2 w-full rounded-xl object-cover") }

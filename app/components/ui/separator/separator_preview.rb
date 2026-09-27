@@ -9,8 +9,8 @@
 # @display width wide
 class UI::SeparatorPreview < UI::BasePreview
   # @label Usage
-  # @param variant [Symbol] select { choices: [solid, dashed, dotted, double, gradient, wave, zigzag] }
-  # @param orientation [Symbol] select { choices: [horizontal, vertical] }
+  # @param variant [Symbol] select {{ choices_for UI::Separator, :variant }}
+  # @param orientation [Symbol] select {{ choices_for UI::Separator, :orientation }}
   def default(variant: :solid, orientation: :horizontal)
     phlex do
       if orientation.to_sym == :vertical

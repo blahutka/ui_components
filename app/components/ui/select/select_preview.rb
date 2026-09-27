@@ -6,16 +6,27 @@
 # @display width wide
 # @display min_height 360px
 class UI::SelectPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ items id ].freeze
+
   FRUITS = %w[ Apple Banana Blueberry Grapes Orange Strawberry ].freeze
   FRUIT_ITEMS = proc { FRUITS.each { |fruit| SelectItem(value: fruit) { fruit } } }
 
   # @label Usage
-  # @param variant [Symbol] select { choices: [outline, soft] }
-  # @param size [Symbol] select { choices: [sm, md, lg] }
+  # @param variant [Symbol] select {{ choices_for UI::Select, :variant }}
+  # @param size [Symbol] select {{ choices_for UI::Select, :size }}
   # @param align_item_with_trigger [Boolean] toggle
-  def default(variant: :outline, size: :md, align_item_with_trigger: true)
+  # @param value text
+  # @param default_value text
+  # @param multiple [Boolean] toggle
+  # @param disabled [Boolean] toggle
+  # @param required [Boolean] toggle
+  # @param read_only [Boolean] toggle
+  # @param include_hidden [Boolean] toggle
+  # @param name text
+  def default(variant: :outline, size: :md, align_item_with_trigger: true, value: nil, default_value: nil, multiple: false, disabled: false, required: false, read_only: false, include_hidden: true, name: "fruit")
     phlex do
-      Select(variant:, size:, align_item_with_trigger:, name: "fruit", class: "w-full max-w-70") do
+      Select(variant:, size:, align_item_with_trigger:, multiple:, disabled:, required:, read_only:, include_hidden:, **given(value:, default_value:), name:, class: "w-full max-w-70") do
         SelectTrigger(aria_label: "Pick a fruit") { SelectValue(placeholder: "Pick a fruit") }
         SelectContent { instance_exec(&FRUIT_ITEMS) }
       end

@@ -6,12 +6,17 @@
 # @display width wide
 # @display min_height 420px
 class UI::DropdownMenuPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ id ].freeze
+
   # @label Usage
-  # @param size [Symbol] select { choices: [sm, md, lg] }
+  # @param size [Symbol] select {{ choices_for UI::DropdownMenu, :size }}
   # @param open_on_hover [Boolean] toggle
-  def default(size: :md, open_on_hover: false)
+  # @param delay number
+  # @param close_delay number
+  def default(size: :md, open_on_hover: false, delay: 100, close_delay: 100)
     phlex do
-      DropdownMenu(size:, open_on_hover:) do
+      DropdownMenu(size:, open_on_hover:, delay:, close_delay:) do
         DropdownMenuTrigger { |trigger| Button(**trigger, variant: :outline) { "Open" } }
         DropdownMenuContent do
           DropdownMenuGroup do

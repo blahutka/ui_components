@@ -6,13 +6,19 @@
 # @display width wide
 # @display min_height 340px
 class UI::PreviewCardPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ id ].freeze
+
   # @label Profile preview
   # Hover (or tab to) the @mention; the link still navigates on click.
-  def default
+  # @param default_open [Boolean] toggle
+  # @param delay number
+  # @param close_delay number
+  def default(default_open: false, delay: 600, close_delay: 300)
     phlex do
       p(class: "text-foreground-muted text-center") do
         plain "Built and maintained by the team at "
-        PreviewCard do
+        PreviewCard(default_open:, delay:, close_delay:) do
           PreviewCardTrigger(href: "#!", class: "text-primary font-medium underline-offset-4 hover:underline") { "@appica_ui" }
           PreviewCardContent(class: "w-72") do
             div(class: "flex items-center justify-between") do

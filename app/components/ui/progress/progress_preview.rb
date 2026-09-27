@@ -9,15 +9,21 @@
 # @component UI::Progress
 # @display width wide
 class UI::ProgressPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ format locale ].freeze
+
   # @label Usage
   # The bar layout: a label on the left, the percentage on the right, the track beneath.
   # @param value number
-  # @param variant [Symbol] select { choices: [bar, circular] }
+  # @param variant [Symbol] select {{ choices_for UI::Progress, :variant }}
   # @param thickness number "Track weight in px (blank for the default)"
   # @param indicator_color [Symbol] select { choices: [var(--primary), var(--success-emphasis), var(--warning-emphasis), var(--secondary-emphasis)] }
-  def default(value: 60, variant: :bar, thickness: nil, indicator_color: :"var(--primary)")
+  # @param min number
+  # @param max number
+  # @param size number
+  def default(value: 60, variant: :bar, thickness: nil, indicator_color: :"var(--primary)", min: 0, max: 100, size: 64)
     phlex do
-      Progress(value: value.to_f, variant:, thickness: thickness.presence&.to_i, indicator_color: indicator_color.to_s, size: 64, class: ("w-72 max-w-full" if variant.to_sym == :bar)) do
+      Progress(variant:, min:, max:, value: value.to_f, thickness: thickness.presence&.to_i, indicator_color: indicator_color.to_s, size:, class: ("w-72 max-w-full" if variant.to_sym == :bar)) do
         ProgressLabel { "Uploading" }
         ProgressValue()
       end

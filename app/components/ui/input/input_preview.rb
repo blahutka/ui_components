@@ -9,18 +9,21 @@
 # @component UI::Input
 # @display width wide
 class UI::InputPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ start_slot end_slot invalid input ].freeze
+
   # @label Usage
   # @param placeholder text
-  # @param variant [Symbol] select { choices: [outline, soft] }
-  # @param size [Symbol] select { choices: [sm, md, lg] }
+  # @param variant [Symbol] select {{ choices_for UI::Input, :variant }}
+  # @param size [Symbol] select {{ choices_for UI::Input, :size }}
   # @param start_icon [Boolean] toggle
   # @param end_icon [Boolean] toggle
   # @param clearable [Boolean] toggle
   # @param disabled [Boolean] toggle
-  def default(placeholder: "Placeholder text", variant: :outline, size: :md, start_icon: false, end_icon: false, clearable: false, disabled: false)
+  # @param clear_label text
+  def default(placeholder: "Placeholder text", variant: :outline, size: :md, start_icon: false, end_icon: false, clearable: false, disabled: false, clear_label: nil)
     phlex do
-      Input(placeholder:, variant:, size:, clearable:, disabled:, start_slot: (:search if start_icon), end_slot: (:at if end_icon),
-        aria_label: "Playground", class: "max-w-70")
+      Input(placeholder:, variant:, size:, clearable:, disabled:, **given(clear_label:), start_slot: (:search if start_icon), end_slot: (:at if end_icon), aria_label: "Playground", class: "max-w-70")
     end
   end
 

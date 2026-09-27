@@ -203,7 +203,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex do\n  Select(variant:, size:, align_item_with_trigger:, name: \"fruit\", class: \"w-full max-w-70\") do\n    SelectTrigger(aria_label: \"Pick a fruit\") { SelectValue(placeholder: \"Pick a fruit\") }\n    SelectContent { instance_exec(&FRUIT_ITEMS) }\n  end\nend"
+      "code": "phlex do\n  Select(variant:, size:, align_item_with_trigger:, multiple:, disabled:, required:, read_only:, include_hidden:, **given(value:, default_value:), name:, class: \"w-full max-w-70\") do\n    SelectTrigger(aria_label: \"Pick a fruit\") { SelectValue(placeholder: \"Pick a fruit\") }\n    SelectContent { instance_exec(&FRUIT_ITEMS) }\n  end\nend"
     },
     {
       "name": "Variants",

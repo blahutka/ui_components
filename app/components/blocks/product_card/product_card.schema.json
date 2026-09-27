@@ -110,7 +110,7 @@
     {
       "name": "Usage",
       "notes": "The Appica homepage card. The discount badge is computed from the two prices.",
-      "code": "phlex do\n  ProductCard(name: \"Nimbus Runner\", description: \"Men's running shoes\", image: \"/landing/nimbus-runner.svg\",\n    image_alt: \"Nimbus Runner sneaker on a pastel background\", price:, original_price:, currency:, wishlisted:,\n    class: \"w-95 max-w-full\") do\n    ProductOptions(sizes: %w[ 40 41 42 43 ], selected: \"42\")\n    ProductAddToCart()\n  end\nend"
+      "code": "phlex do\n  ProductCard(price:, original_price:, currency:, wishlisted:, wishlist:, method:, name:, description:, image:, image_alt:, class: \"w-95 max-w-full\") do\n    ProductOptions(sizes: %w[ 40 41 42 43 ], selected: \"42\")\n    ProductAddToCart()\n  end\nend"
     },
     {
       "name": "Add to cart form",

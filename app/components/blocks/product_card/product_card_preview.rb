@@ -9,17 +9,24 @@
 # @component Blocks::ProductCard
 # @display width wide
 class Blocks::ProductCardPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ badge action product_id ].freeze
+
   # @label Usage
   # The Appica homepage card. The discount badge is computed from the two prices.
   # @param price number
   # @param original_price number
-  # @param currency [Symbol] select { choices: [USD, EUR, GBP, CZK] }
+  # @param currency [Symbol] select {{ CURRENCIES }}
   # @param wishlisted [Boolean] toggle
-  def default(price: 96, original_price: 120, currency: :USD, wishlisted: false)
+  # @param wishlist [Boolean] toggle
+  # @param method text
+  # @param name text
+  # @param description text
+  # @param image text
+  # @param image_alt text
+  def default(price: 96, original_price: 120, currency: :USD, wishlisted: false, wishlist: true, method: "post", name: "Nimbus Runner", description: "Men's running shoes", image: "/landing/nimbus-runner.svg", image_alt: "Nimbus Runner sneaker on a pastel background")
     phlex do
-      ProductCard(name: "Nimbus Runner", description: "Men's running shoes", image: "/landing/nimbus-runner.svg",
-        image_alt: "Nimbus Runner sneaker on a pastel background", price:, original_price:, currency:, wishlisted:,
-        class: "w-95 max-w-full") do
+      ProductCard(price:, original_price:, currency:, wishlisted:, wishlist:, method:, name:, description:, image:, image_alt:, class: "w-95 max-w-full") do
         ProductOptions(sizes: %w[ 40 41 42 43 ], selected: "42")
         ProductAddToCart()
       end

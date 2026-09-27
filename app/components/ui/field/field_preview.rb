@@ -9,11 +9,18 @@
 # @component UI::Field
 # @display width wide
 class UI::FieldPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ error invalid messages id ].freeze
+
   # @label Usage
   # A label above the control, a description below - all associated automatically.
-  def default
+  # @param name text
+  # @param disabled [Boolean] toggle
+  # @param validation_mode [Symbol] select {{ choices_for UI::Field, :validation_mode }}
+  # @param control_id text
+  def default(name: nil, disabled: false, validation_mode: :submit, control_id: "-control")
     phlex do
-      Field(class: "w-full max-w-70") do
+      Field(disabled:, validation_mode:, control_id:, **given(name:), class: "w-full max-w-70") do
         FieldLabel { "Email" }
         Input(type: "email", placeholder: "you@example.com")
         FieldDescription { "We'll send your receipt here." }

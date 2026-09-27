@@ -6,16 +6,28 @@
 # @display width wide
 # @display min_height 400px
 class UI::ComboboxPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ items item_to_string_value id item_to_string_label ].freeze
+
   FRAMEWORKS = [ "Next.js", "Remix", "Astro", "Nuxt.js", "SvelteKit", "SolidStart" ].freeze
 
   # @label Usage
-  # @param variant [Symbol] select { choices: [outline, soft] }
-  # @param size [Symbol] select { choices: [sm, md, lg] }
+  # @param variant [Symbol] select {{ choices_for UI::Combobox, :variant }}
+  # @param size [Symbol] select {{ choices_for UI::Combobox, :size }}
   # @param clearable [Boolean] toggle
   # @param icon [Boolean] toggle
-  def default(variant: :outline, size: :md, clearable: false, icon: true)
+  # @param grid [Boolean] toggle
+  # @param value text
+  # @param default_value text
+  # @param disabled [Boolean] toggle
+  # @param multiple [Boolean] toggle
+  # @param creatable [Boolean] toggle
+  # @param required [Boolean] toggle
+  # @param include_hidden [Boolean] toggle
+  # @param name text
+  def default(variant: :outline, size: :md, clearable: false, icon: true, grid: false, value: nil, default_value: nil, disabled: false, multiple: false, creatable: false, required: false, include_hidden: true, name: "framework")
     phlex do
-      Combobox(items: FRAMEWORKS, variant:, size:, clearable:, icon:, name: "framework", class: "max-w-70") do
+      Combobox(variant:, size:, clearable:, icon:, grid:, disabled:, multiple:, creatable:, required:, include_hidden:, **given(value:, default_value:), items: FRAMEWORKS, name:, class: "max-w-70") do
         ComboboxInput(placeholder: "Search a framework", aria_label: "Framework")
         ComboboxContent do
           ComboboxEmpty { "No frameworks found." }

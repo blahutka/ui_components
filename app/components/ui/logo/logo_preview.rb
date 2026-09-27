@@ -10,13 +10,14 @@ class UI::LogoPreview < UI::BasePreview
   # @param prefix text "Bold text before the name"
   # @param name text "Light part of the wordmark"
   # @param suffix text "Accent-coloured text after the name"
-  # @param size [Symbol] select "Scales the mark and the text together" { choices: [sm, md, lg, xl] }
-  # @param accent [Symbol] select "Colour of the disc and the suffix" { choices: [blue, green, violet, orange] }
-  # @param variant [Symbol] select "Mark and wordmark, or just one of them" { choices: [full, mark, wordmark] }
-  def default(prefix: "Be", name: "humble", suffix: ".com", size: :lg, accent: :blue, variant: :full)
+  # @param size [Symbol] select "Scales the mark and the text together" {{ choices_for UI::Logo, :size }}
+  # @param accent [Symbol] select "Colour of the disc and the suffix" {{ choices_for UI::Logo, :accent }}
+  # @param variant [Symbol] select "Mark and wordmark, or just one of them" {{ choices_for UI::Logo, :variant }}
+  # @param href text
+  def default(prefix: "Be", name: "humble", suffix: ".com", size: :lg, accent: :blue, variant: :full, href: nil)
     phlex do
       div(class: "flex justify-center py-6") do
-        Logo(prefix:, name:, suffix:, size:, accent:, variant:)
+        Logo(prefix:, name:, suffix:, size:, accent:, variant:, **given(href:))
       end
     end
   end

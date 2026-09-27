@@ -78,7 +78,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex do\n  Toggle(pressed:, disabled:, aria_label: \"Bold\") { |toggle| Button(**toggle, variant:, icon: true) { Icon(:bold) } }\nend"
+      "code": "phlex do\n  Toggle(pressed:, disabled:, **given(value:, name:), aria_label: \"Bold\") { |toggle| Button(**toggle, variant:, icon: true) { Icon(:bold) } }\nend"
     },
     {
       "name": "Composing with Button",
@@ -100,7 +100,7 @@
     },
     {
       "name": "Usage",
-      "code": "phlex do\n  ToggleGroup(default_value: [ \"center\" ], multiple:, orientation:, disabled:, aria_label: \"Text alignment\") do\n    instance_exec(&ALIGNMENT_TOGGLES)\n  end\nend"
+      "code": "phlex do\n  ToggleGroup(multiple:, orientation:, disabled:, loop_focus:, include_hidden:, **given(value:, name:), default_value: [ \"center\" ], aria_label: \"Text alignment\") do\n    instance_exec(&ALIGNMENT_TOGGLES)\n  end\nend"
     },
     {
       "name": "Single selection",

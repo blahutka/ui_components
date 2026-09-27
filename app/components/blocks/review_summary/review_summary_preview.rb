@@ -9,6 +9,9 @@
 # @component Blocks::ReviewSummary
 # @display width wide
 class Blocks::ReviewSummaryPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ reviews ].freeze
+
   COUNTS = { 5 => 1_002, 4 => 180, 3 => 64, 2 => 26, 1 => 12 }.freeze
   REVIEWERS = [
     { src: "/avatars/02.png", alt: "Liam Hudson" },
@@ -19,9 +22,12 @@ class Blocks::ReviewSummaryPreview < UI::BasePreview
   # @label Usage
   # The Appica homepage card. The stars show the exact average (4.8 fills four and four-fifths).
   # @param rating number
-  def default(rating: 4.8)
+  # @param max number
+  # @param verified [Boolean] toggle
+  # @param label text
+  def default(rating: 4.8, max: 5, verified: true, label: nil)
     phlex do
-      ReviewSummary(rating: rating.to_f, reviews: COUNTS.values.sum, class: "w-100 max-w-full") do
+      ReviewSummary(max:, verified:, **given(label:), rating: rating.to_f, reviews: COUNTS.values.sum, class: "w-100 max-w-full") do
         ReviewBreakdown(counts: COUNTS)
         ReviewHighlight(avatars: REVIEWERS) { "Loved by 12,000+ shoppers" }
       end

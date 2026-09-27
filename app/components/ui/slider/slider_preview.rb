@@ -5,13 +5,25 @@
 # @component UI::Slider
 # @display width wide
 class UI::SliderPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ format default_value ].freeze
+
   # @label Usage
   # @param value number
   # @param step number
-  # @param tooltip [Symbol] select { choices: [auto, always, never] }
+  # @param tooltip [Symbol] select {{ choices_for UI::Slider, :tooltip }}
   # @param disabled [Boolean] toggle
-  def default(value: 50, step: 1, tooltip: :auto, disabled: false)
-    phlex { Slider(default_value: value.to_f, step: step.to_f, tooltip:, disabled:, thumb_aria_label: "Volume", class: "max-w-70") }
+  # @param min number
+  # @param max number
+  # @param large_step number
+  # @param min_steps_between_values number
+  # @param orientation [Symbol] select {{ choices_for UI::Slider, :orientation }}
+  # @param name text
+  # @param thumb_aria_label text
+  def default(value: 50, step: 1, tooltip: :auto, disabled: false, min: 0.0, max: 100.0, large_step: 10.0, min_steps_between_values: 0, orientation: :horizontal, name: nil, thumb_aria_label: "Volume")
+    phlex do
+      Slider(tooltip:, disabled:, min:, max:, large_step:, min_steps_between_values:, orientation:, **given(name:), default_value: value.to_f, step: step.to_f, thumb_aria_label:, class: "max-w-70")
+    end
   end
 
   # An array value renders a thumb per entry; name each end with `thumb_aria_label:`.

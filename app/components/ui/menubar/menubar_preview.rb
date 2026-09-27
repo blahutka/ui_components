@@ -13,11 +13,14 @@ class UI::MenubarPreview < UI::BasePreview
   # @label Application menu
   # A desktop-style command bar: File, Edit and View menus with shortcuts, separators,
   # a nested "Open recent" submenu and a disabled item.
-  # @param variant [Symbol] select "Hover/active pill or animated underline" { choices: [pill, line] }
-  # @param size [Symbol] select "Scales triggers, popups and items" { choices: [sm, md, lg] }
-  def default(variant: :pill, size: :md)
+  # @param variant [Symbol] select "Hover/active pill or animated underline" {{ choices_for UI::Menubar, :variant }}
+  # @param size [Symbol] select "Scales triggers, popups and items" {{ choices_for UI::Menubar, :size }}
+  # @param orientation [Symbol] select {{ choices_for UI::Menubar, :orientation }}
+  # @param loop_focus [Boolean] toggle
+  # @param disabled [Boolean] toggle
+  def default(variant: :pill, size: :md, orientation: :horizontal, loop_focus: true, disabled: false)
     phlex do
-      Menubar(variant:, size:, aria_label: "Application") do
+      Menubar(variant:, size:, orientation:, loop_focus:, disabled:, aria_label: "Application") do
         MenubarMenu do
           MenubarTrigger { "File" }
           MenubarContent do

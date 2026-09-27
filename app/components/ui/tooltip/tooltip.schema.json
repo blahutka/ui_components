@@ -124,7 +124,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex do\n  TooltipProvider do\n    Tooltip do\n      TooltipTrigger { |trigger| Button(**trigger, variant: :outline, icon: true, aria_label: \"Add to favorites\") { Icon(:heart) } }\n      TooltipContent(side:, arrow:) { \"Add to favorites\" }\n    end\n  end\nend"
+      "code": "phlex do\n  TooltipProvider do\n    Tooltip(default_open:, track_cursor_axis:, disabled:) do\n      TooltipTrigger { |trigger| Button(**trigger, variant: :outline, icon: true, aria_label: \"Add to favorites\") { Icon(:heart) } }\n      TooltipContent(side:, arrow:) { \"Add to favorites\" }\n    end\n  end\nend"
     },
     {
       "name": "Side & alignment",

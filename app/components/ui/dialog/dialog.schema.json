@@ -155,7 +155,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex do\n  Dialog(dismissible:) do\n    DialogTrigger { |trigger| Button(**trigger, variant: :outline) { \"Invite people\" } }\n    DialogContent(frame:, close_button:, class: \"sm:w-110\") do\n      DialogHeader do\n        DialogTitle { \"Invite your team\" }\n        DialogDescription { \"Send an invitation by email. They'll get access as soon as they accept.\" }\n      end\n      DialogBody do\n        Field { FieldLabel { \"Email addresses\" }; Input(type: \"email\", placeholder: \"name@company.com\") }\n      end\n      DialogFooter do\n        DialogClose { |close| Button(**close, variant: :soft) { \"Cancel\" } }\n        DialogClose { |close| Button(**close) { \"Send invites\" } }\n      end\n    end\n  end\nend"
+      "code": "phlex do\n  Dialog(dismissible:, default_open:, modal:) do\n    DialogTrigger { |trigger| Button(**trigger, variant: :outline) { \"Invite people\" } }\n    DialogContent(frame:, close_button:, class: \"sm:w-110\") do\n      DialogHeader do\n        DialogTitle { \"Invite your team\" }\n        DialogDescription { \"Send an invitation by email. They'll get access as soon as they accept.\" }\n      end\n      DialogBody do\n        Field { FieldLabel { \"Email addresses\" }; Input(type: \"email\", placeholder: \"name@company.com\") }\n      end\n      DialogFooter do\n        DialogClose { |close| Button(**close, variant: :soft) { \"Cancel\" } }\n        DialogClose { |close| Button(**close) { \"Send invites\" } }\n      end\n    end\n  end\nend"
     },
     {
       "name": "Form dialog",

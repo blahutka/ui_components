@@ -8,6 +8,9 @@
 # @component UI::Collapsible
 # @display width wide
 class UI::CollapsiblePreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ default_open id ].freeze
+
   CHEVRON_CLASS = "mt-0.75 size-4.5 shrink-0 stroke-2 transition-transform duration-200 group-data-panel-open:rotate-90 motion-reduce:transition-none rtl:-scale-x-100"
   TRIGGER_CLASS = "group text-foreground-intense data-disabled:text-foreground-muted inline-flex items-start gap-2 text-start font-medium"
 

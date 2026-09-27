@@ -10,6 +10,9 @@
 # @display width wide
 # @display min_height 32rem
 class UI::DrawerPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ snap_points id ].freeze
+
   TRACKS = [
     [ "Nightcall", "Neon Drift" ], [ "Midnight City", "Violet Skies" ], [ "Resonance", "Echo Theory" ],
     [ "A Real Hero", "Pixel Horizon" ], [ "Sunset Avenue", "The Lateliners" ], [ "Turbo Killer", "Chrome Wolf" ],
@@ -32,13 +35,15 @@ class UI::DrawerPreview < UI::BasePreview
   ].freeze
 
   # @label Usage
-  # @param side [Symbol] select "Edge the drawer slides in from; the swipe direction follows" { choices: [top, right, bottom, left] }
+  # @param side [Symbol] select "Edge the drawer slides in from; the swipe direction follows" {{ choices_for UI::Drawer, :side }}
   # @param close_button [Boolean] toggle "Corner × button"
   # @param frame [Boolean] toggle "Translucent glass frame around the panel (needs the backdrop)"
   # @param disable_pointer_dismissal [Boolean] toggle "Keep the drawer open when the backdrop is clicked"
-  def default(side: :right, close_button: true, frame: true, disable_pointer_dismissal: false)
+  # @param default_open [Boolean] toggle
+  # @param modal [Boolean] toggle
+  def default(side: :right, close_button: true, frame: true, disable_pointer_dismissal: false, default_open: false, modal: true)
     phlex do
-      Drawer(side:, disable_pointer_dismissal:) do
+      Drawer(side:, disable_pointer_dismissal:, default_open:, modal:) do
         DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { "Open drawer" } }
         DrawerContent(close_button:, frame:, class: ("mx-auto max-w-2xl" if side.to_sym.in?(%i[ top bottom ]))) do
           DrawerHeader do

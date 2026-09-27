@@ -118,7 +118,7 @@
     {
       "name": "Usage",
       "notes": "PaginationPages renders the truncated range for `page:` of `pages:`; the block builds URLs.",
-      "code": "phlex do\n  div(class: \"max-w-full overflow-x-auto [scrollbar-width:none]\") do\n    Pagination(variant:, size:) { PaginationPages(page:, pages:, window: window.to_i, edges:) { |number| \"?page=#{number}\" } }\n  end\nend"
+      "code": "phlex do\n  div(class: \"max-w-full overflow-x-auto [scrollbar-width:none]\") do\n    Pagination(variant:, size:, **given(aria_label:)) { PaginationPages(page:, pages:, window: window.to_i, edges:) { |number| \"?page=#{number}\" } }\n  end\nend"
     },
     {
       "name": "Composed by hand",

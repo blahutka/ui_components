@@ -78,7 +78,7 @@
     {
       "name": "Usage",
       "notes": "Links before the last; the final crumb is `active` - plain text with aria-current=\"page\".",
-      "code": "phlex do\n  Breadcrumb do\n    BreadcrumbList do\n      BreadcrumbItem { BreadcrumbLink(href: \"#!\") { \"Home\" } }\n      BreadcrumbSeparator()\n      BreadcrumbItem { BreadcrumbLink(href: \"#!\") { \"Components\" } }\n      BreadcrumbSeparator()\n      BreadcrumbItem { BreadcrumbLink(active: true) { \"Breadcrumb\" } }\n    end\n  end\nend"
+      "code": "phlex do\n  Breadcrumb(**given(aria_label:)) do\n    BreadcrumbList do\n      BreadcrumbItem { BreadcrumbLink(href: \"#!\") { \"Home\" } }\n      BreadcrumbSeparator()\n      BreadcrumbItem { BreadcrumbLink(href: \"#!\") { \"Components\" } }\n      BreadcrumbSeparator()\n      BreadcrumbItem { BreadcrumbLink(active: true) { \"Breadcrumb\" } }\n    end\n  end\nend"
     },
     {
       "name": "With icons",

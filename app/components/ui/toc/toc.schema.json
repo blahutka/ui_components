@@ -67,7 +67,7 @@
     {
       "name": "Usage",
       "notes": "The link for the section in view lights up and the indicator slides to it.",
-      "code": "phlex do\n  div(class: \"flex w-full max-w-xl gap-4\") do\n    div(id: \"toc-demo-default\", class: \"border-border h-64 flex-1 overflow-auto rounded-lg border p-4 [scrollbar-width:none]\") do\n      SECTIONS.each do |title, body|\n        section(class: \"mb-6 last:mb-0\") do\n          h3(id: \"toc-default-#{title.parameterize}\", class: \"text-foreground-intense mb-2 scroll-mt-6 font-semibold\") { title }\n          p(class: \"text-sm leading-relaxed\") { body }\n        end\n      end\n    end\n    Toc(container: \"#toc-demo-default\", class: \"w-38 shrink-0\") do\n      TocList { SECTIONS.each_key { |title| TocItem { TocLink(href: \"#toc-default-#{title.parameterize}\") { title } } } }\n    end\n  end\nend"
+      "code": "phlex do\n  div(class: \"flex w-full max-w-xl gap-4\") do\n    div(id: \"toc-demo-default\", class: \"border-border h-64 flex-1 overflow-auto rounded-lg border p-4 [scrollbar-width:none]\") do\n      SECTIONS.each do |title, body|\n        section(class: \"mb-6 last:mb-0\") do\n          h3(id: \"toc-default-#{title.parameterize}\", class: \"text-foreground-intense mb-2 scroll-mt-6 font-semibold\") { title }\n          p(class: \"text-sm leading-relaxed\") { body }\n        end\n      end\n    end\n    Toc(root_margin:, **given(aria_label:), container:, class: \"w-38 shrink-0\") do\n      TocList { SECTIONS.each_key { |title| TocItem { TocLink(href: \"#toc-default-#{title.parameterize}\") { title } } } }\n    end\n  end\nend"
     },
     {
       "name": "Nested headings",

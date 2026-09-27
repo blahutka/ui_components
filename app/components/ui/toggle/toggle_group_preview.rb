@@ -7,6 +7,9 @@
 # @component UI::ToggleGroup
 # @display width wide
 class UI::ToggleGroupPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ default_value ].freeze
+
   ALIGNMENTS = { left: "Align left", center: "Align center", right: "Align right" }.freeze
   ALIGNMENT_TOGGLES = proc do
     ALIGNMENTS.each do |value, text|
@@ -16,11 +19,15 @@ class UI::ToggleGroupPreview < UI::BasePreview
 
   # @label Usage
   # @param multiple [Boolean] toggle
-  # @param orientation [Symbol] select { choices: [horizontal, vertical] }
+  # @param orientation [Symbol] select {{ choices_for UI::ToggleGroup, :orientation }}
   # @param disabled [Boolean] toggle
-  def default(multiple: false, orientation: :horizontal, disabled: false)
+  # @param value text
+  # @param loop_focus [Boolean] toggle
+  # @param name text
+  # @param include_hidden [Boolean] toggle
+  def default(multiple: false, orientation: :horizontal, disabled: false, value: nil, loop_focus: true, name: nil, include_hidden: false)
     phlex do
-      ToggleGroup(default_value: [ "center" ], multiple:, orientation:, disabled:, aria_label: "Text alignment") do
+      ToggleGroup(multiple:, orientation:, disabled:, loop_focus:, include_hidden:, **given(value:, name:), default_value: [ "center" ], aria_label: "Text alignment") do
         instance_exec(&ALIGNMENT_TOGGLES)
       end
     end

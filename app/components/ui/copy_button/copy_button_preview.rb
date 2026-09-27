@@ -5,11 +5,20 @@
 # @component UI::CopyButton
 # @display width wide
 class UI::CopyButtonPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ target icon ].freeze
+
   # @label Usage
   # @param value text
   # @param variant [Symbol] select { choices: [ghost, soft, outline, primary_outline, primary, secondary] }
-  def default(value: "npm install @appica/ui-react", variant: :ghost)
-    phlex { CopyButton(value:, variant:) }
+  # @param label text
+  # @param copied_label text
+  # @param timeout number
+  # @param size text
+  def default(value: "npm install @appica/ui-react", variant: :ghost, label: nil, copied_label: nil, timeout: 2000, size: "sm")
+    phlex do
+      CopyButton(value:, variant:, timeout:, size:, **given(label:, copied_label:))
+    end
   end
 
   def variants

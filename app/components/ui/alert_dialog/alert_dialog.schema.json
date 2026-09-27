@@ -152,7 +152,7 @@
     {
       "name": "Destructive confirmation",
       "notes": "The confirm button uses the destructive variant; cancel comes first. Clicking outside doesn't\nclose it - Escape or a button does.",
-      "code": "phlex do\n  AlertDialog do\n    AlertDialogTrigger { |trigger| Button(**trigger, variant: :destructive) { \"Delete project\" } }\n    AlertDialogContent do\n      AlertDialogHeader do\n        AlertDialogTitle { \"Delete this project?\" }\n        AlertDialogDescription { \"Orbit and all of its files will be permanently deleted. This can't be undone.\" }\n      end\n      AlertDialogFooter do\n        AlertDialogClose { |close| Button(**close, variant: :outline) { \"Cancel\" } }\n        AlertDialogClose { |close| Button(**close, variant: :destructive) { \"Delete\" } }\n      end\n    end\n  end\nend"
+      "code": "phlex do\n  AlertDialog(default_open:, modal:, dismissible:) do\n    AlertDialogTrigger { |trigger| Button(**trigger, variant: :destructive) { \"Delete project\" } }\n    AlertDialogContent do\n      AlertDialogHeader do\n        AlertDialogTitle { \"Delete this project?\" }\n        AlertDialogDescription { \"Orbit and all of its files will be permanently deleted. This can't be undone.\" }\n      end\n      AlertDialogFooter do\n        AlertDialogClose { |close| Button(**close, variant: :outline) { \"Cancel\" } }\n        AlertDialogClose { |close| Button(**close, variant: :destructive) { \"Delete\" } }\n      end\n    end\n  end\nend"
     },
     {
       "name": "With media",

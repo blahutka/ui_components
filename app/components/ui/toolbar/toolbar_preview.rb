@@ -8,9 +8,12 @@
 class UI::ToolbarPreview < UI::BasePreview
   # @label Usage
   # A search Input, a Filter action and an Export link, all in one focus stop.
-  def default
+  # @param orientation [Symbol] select {{ choices_for UI::Toolbar, :orientation }}
+  # @param loop_focus [Boolean] toggle
+  # @param disabled [Boolean] toggle
+  def default(orientation: :horizontal, loop_focus: true, disabled: false)
     phlex do
-      Toolbar(aria_label: "Table actions") do
+      Toolbar(orientation:, loop_focus:, disabled:, aria_label: "Table actions") do
         ToolbarInput(class: "w-44") { |item| Input(**item, start_slot: :search, placeholder: "Search tasks…", aria_label: "Search tasks", size: :sm) }
         ToolbarGroup(aria_label: "Refine") do
           ToolbarButton { |item| Button(**item, variant: :ghost, size: :sm) { Icon(:filter, data: { icon: "start" }); plain "Filter" } }

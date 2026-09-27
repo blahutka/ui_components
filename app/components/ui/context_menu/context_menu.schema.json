@@ -328,7 +328,7 @@
     {
       "name": "Basic",
       "notes": "Right-click the area (long-press on touch, Shift+F10 when focused).",
-      "code": "phlex do\n  ContextMenu(size:) do\n    ContextMenuTrigger(class: AREA, tabindex: \"0\") { \"Right-click here\" }\n    ContextMenuContent do\n      ContextMenuGroup do\n        ContextMenuGroupLabel { \"Edit\" }\n        { copy: [ \"Copy\", \"⌘C\" ], scissors: [ \"Cut\", \"⌘X\" ], clipboard: [ \"Paste\", \"⌘V\" ] }.each do |icon, (label, keys)|\n          ContextMenuItem { Icon(icon, data: { icon: \"start\" }); plain label; Kbd(size: :sm, class: \"ms-auto\") { keys } }\n        end\n      end\n      ContextMenuSeparator()\n      ContextMenuItem(class: \"text-error-emphasis\") { Icon(:trash, data: { icon: \"start\" }); plain \"Delete\" }\n    end\n  end\nend"
+      "code": "phlex do\n  ContextMenu(size:, open_on_hover:, delay:, close_delay:) do\n    ContextMenuTrigger(class: AREA, tabindex: \"0\") { \"Right-click here\" }\n    ContextMenuContent do\n      ContextMenuGroup do\n        ContextMenuGroupLabel { \"Edit\" }\n        { copy: [ \"Copy\", \"⌘C\" ], scissors: [ \"Cut\", \"⌘X\" ], clipboard: [ \"Paste\", \"⌘V\" ] }.each do |icon, (label, keys)|\n          ContextMenuItem { Icon(icon, data: { icon: \"start\" }); plain label; Kbd(size: :sm, class: \"ms-auto\") { keys } }\n        end\n      end\n      ContextMenuSeparator()\n      ContextMenuItem(class: \"text-error-emphasis\") { Icon(:trash, data: { icon: \"start\" }); plain \"Delete\" }\n    end\n  end\nend"
     },
     {
       "name": "On a card",

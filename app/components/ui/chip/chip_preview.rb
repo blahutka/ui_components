@@ -6,12 +6,13 @@
 # @display width wide
 class UI::ChipPreview < UI::BasePreview
   # @label Usage
-  # @param variant [Symbol] select { choices: [soft, outline, primary, secondary, destructive] }
-  # @param size [Symbol] select { choices: [sm, md, lg] }
+  # @param variant [Symbol] select {{ choices_for UI::Chip, :variant }}
+  # @param size [Symbol] select {{ choices_for UI::Chip, :size }}
   # @param dismissible [Boolean] toggle
   # @param disabled [Boolean] toggle
-  def default(variant: :soft, size: :md, dismissible: false, disabled: false)
-    phlex { Chip(variant:, size:, dismissible:, disabled:) { "Label" } }
+  # @param close_label text
+  def default(variant: :soft, size: :md, dismissible: false, disabled: false, close_label: nil)
+    phlex { Chip(variant:, size:, dismissible:, disabled:, **given(close_label:)) { "Label" } }
   end
 
   def variants

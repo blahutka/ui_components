@@ -10,8 +10,8 @@
 # @display width wide
 class UI::SpinnerPreview < UI::BasePreview
   # @label Usage
-  # @param variant [Symbol] select { choices: [circular, dots, sparkle] }
-  # @param size [Symbol] select "Font size" { choices: [text-xl, text-3xl, text-[2.5rem], text-5xl, text-7xl] }
+  # @param variant [Symbol] select {{ choices_for UI::Spinner, :variant }}
+  # @param size [Symbol] select "Font size" {{ FONT_SIZES }}
   # @param current_color [Boolean] toggle "Inherit the text color (violet here)"
   def default(variant: :circular, size: :"text-[2.5rem]", current_color: false)
     phlex do

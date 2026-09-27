@@ -58,7 +58,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex do\n  div(class: \"flex justify-center py-6\") do\n    Logo(prefix:, name:, suffix:, size:, accent:, variant:)\n  end\nend"
+      "code": "phlex do\n  div(class: \"flex justify-center py-6\") do\n    Logo(prefix:, name:, suffix:, size:, accent:, variant:, **given(href:))\n  end\nend"
     },
     {
       "name": "Sizes",

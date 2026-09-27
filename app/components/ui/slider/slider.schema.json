@@ -73,7 +73,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex { Slider(default_value: value.to_f, step: step.to_f, tooltip:, disabled:, thumb_aria_label: \"Volume\", class: \"max-w-70\") }"
+      "code": "phlex do\n  Slider(tooltip:, disabled:, min:, max:, large_step:, min_steps_between_values:, orientation:, **given(name:), default_value: value.to_f, step: step.to_f, thumb_aria_label:, class: \"max-w-70\")\nend"
     },
     {
       "name": "Range",

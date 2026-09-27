@@ -8,16 +8,21 @@
 # @component UI::Textarea
 # @display width wide
 class UI::TextareaPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ start_slot end_slot invalid textarea ].freeze
+
   # @label Usage
   # @param placeholder text
   # @param rows number
-  # @param variant [Symbol] select { choices: [outline, soft] }
-  # @param size [Symbol] select { choices: [sm, md, lg] }
+  # @param variant [Symbol] select {{ choices_for UI::Textarea, :variant }}
+  # @param size [Symbol] select {{ choices_for UI::Textarea, :size }}
   # @param clearable [Boolean] toggle
   # @param disabled [Boolean] toggle
-  def default(placeholder: "Write a message…", rows: 4, variant: :outline, size: :md, clearable: false, disabled: false)
+  # @param value text
+  # @param clear_label text
+  def default(placeholder: "Write a message…", rows: 4, variant: :outline, size: :md, clearable: false, disabled: false, value: nil, clear_label: nil)
     phlex do
-      Textarea(placeholder:, rows: rows.to_i, variant:, size:, clearable:, disabled:, aria_label: "Message", class: "max-w-70")
+      Textarea(placeholder:, variant:, size:, clearable:, disabled:, **given(value:, clear_label:), rows: rows.to_i, aria_label: "Message", class: "max-w-70")
     end
   end
 

@@ -125,7 +125,7 @@
     {
       "name": "Usage",
       "notes": "A label above the control, a description below - all associated automatically.",
-      "code": "phlex do\n  Field(class: \"w-full max-w-70\") do\n    FieldLabel { \"Email\" }\n    Input(type: \"email\", placeholder: \"you@example.com\")\n    FieldDescription { \"We'll send your receipt here.\" }\n  end\nend"
+      "code": "phlex do\n  Field(disabled:, validation_mode:, control_id:, **given(name:), class: \"w-full max-w-70\") do\n    FieldLabel { \"Email\" }\n    Input(type: \"email\", placeholder: \"you@example.com\")\n    FieldDescription { \"We'll send your receipt here.\" }\n  end\nend"
     },
     {
       "name": "Validation",

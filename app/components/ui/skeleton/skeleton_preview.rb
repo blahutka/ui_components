@@ -6,7 +6,7 @@
 # @display width wide
 class UI::SkeletonPreview < UI::BasePreview
   # @label Usage
-  # @param effect [Symbol] select { choices: [shimmer, pulse, none] }
+  # @param effect [Symbol] select {{ choices_for UI::Skeleton, :effect }}
   def default(effect: :shimmer)
     phlex { Skeleton(effect:, class: "h-28 w-64 rounded-xl") }
   end

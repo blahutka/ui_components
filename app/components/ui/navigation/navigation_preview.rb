@@ -10,11 +10,12 @@ class UI::NavigationPreview < UI::BasePreview
 
   # @label Usage
   # @param variant [Symbol] select { choices: [pill, line] }
-  # @param size [Symbol] select { choices: [sm, md, lg] }
+  # @param size [Symbol] select {{ choices_for UI::Navigation, :size }}
   # @param active_link [Symbol] select { choices: [dashboard, projects, team, settings] }
-  def default(variant: :pill, size: :md, active_link: :dashboard)
+  # @param orientation [Symbol] select {{ choices_for UI::Navigation, :orientation }}
+  def default(variant: :pill, size: :md, active_link: :dashboard, orientation: :horizontal)
     phlex do
-      Navigation(aria_label: "Main", variant:, size:, active_link:, class: "max-w-full") do
+      Navigation(variant:, size:, active_link:, orientation:, aria_label: "Main", class: "max-w-full") do
         NavigationList(class: "overflow-x-auto [scrollbar-width:none]") do
           ITEMS.each { |value, label| NavigationItem { NavigationLink(href: "#!", value:) { label } } }
         end

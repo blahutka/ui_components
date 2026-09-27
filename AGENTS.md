@@ -98,6 +98,13 @@ test/components/ui/select_test.rb         # Minitest
   checks parity).
 - Previews: `phlex do … end` in a `UI::BasePreview` subclass with `@label` / `@logical_path`
   tags; scenario code is what agents and the Lookbook **Source** tab show - keep it idiomatic.
+- The `default` (Usage) scenario exposes **every prop** of its component in the Lookbook
+  Params form - `bin/rails "ui_components:preview_params[UI::Select]"` (from test/dummy) prints
+  the tags, signature and call. Props that can't be a form field go in `UNLISTED_PROPS`;
+  `test/components/preview_params_test.rb` enforces both.
+- Enum params read their choices from the component: `select {{ choices_for UI::Select, :size }}` -
+  never repeat a component's choices. Optional text props pass through `**given(title:)` so a
+  blank field keeps the component's (often translated) default.
 - Style: rubocop-rails-omakase, 37signals-flavoured Ruby - expanded conditionals over guard
   clauses (except a one-line early return), no blank line after `private` with its methods
   indented under it, private methods in call order. Minitest, no RSpec.

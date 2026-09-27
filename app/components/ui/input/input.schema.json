@@ -55,7 +55,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex do\n  Input(placeholder:, variant:, size:, clearable:, disabled:, start_slot: (:search if start_icon), end_slot: (:at if end_icon),\n    aria_label: \"Playground\", class: \"max-w-70\")\nend"
+      "code": "phlex do\n  Input(placeholder:, variant:, size:, clearable:, disabled:, **given(clear_label:), start_slot: (:search if start_icon), end_slot: (:at if end_icon), aria_label: \"Playground\", class: \"max-w-70\")\nend"
     },
     {
       "name": "Variants",

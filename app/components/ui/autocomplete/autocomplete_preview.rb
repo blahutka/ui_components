@@ -10,6 +10,9 @@
 # @display width narrow
 # @display min_height 22rem
 class UI::AutocompletePreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ items item_to_string_value id ].freeze
+
   FRAMEWORKS = [ "Next.js", "Remix", "Astro", "Nuxt.js", "SvelteKit", "SolidStart", "Gatsby", "Vite" ].freeze
 
   COMMANDS = [
@@ -37,14 +40,19 @@ class UI::AutocompletePreview < UI::BasePreview
   LIBRARIES = [ "React", "Vue", "Svelte", "Angular", "Solid", "Qwik", "Preact", "Lit" ].freeze
 
   # @label Usage
-  # @param size [Symbol] select "Scales the input, popup radius and items together" { choices: [sm, md, lg] }
-  # @param variant [Symbol] select "Bordered outline or filled soft field" { choices: [outline, soft] }
+  # @param size [Symbol] select "Scales the input, popup radius and items together" {{ choices_for UI::Autocomplete, :size }}
+  # @param variant [Symbol] select "Bordered outline or filled soft field" {{ choices_for UI::Autocomplete, :variant }}
   # @param clearable [Boolean] toggle "Clear (✕) button once there's a value"
   # @param icon [Boolean] toggle "Chevron that toggles the popup"
   # @param placeholder text "Input placeholder, also used as the aria-label"
-  def default(size: :md, variant: :outline, clearable: false, icon: false, placeholder: "Search a framework")
+  # @param grid [Boolean] toggle
+  # @param value text
+  # @param default_value text
+  # @param name text
+  # @param disabled [Boolean] toggle
+  def default(size: :md, variant: :outline, clearable: false, icon: false, placeholder: "Search a framework", grid: false, value: nil, default_value: nil, name: nil, disabled: false)
     phlex do
-      Autocomplete(items: FRAMEWORKS, size:, variant:, clearable:, icon:) do
+      Autocomplete(size:, variant:, clearable:, icon:, grid:, disabled:, **given(value:, default_value:, name:), items: FRAMEWORKS) do
         AutocompleteInput(placeholder:, aria_label: placeholder)
         AutocompleteContent do
           AutocompleteEmpty { "No frameworks found." }

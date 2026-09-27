@@ -129,7 +129,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex do\n  Popover do\n    PopoverTrigger { |trigger| Button(**trigger, variant: :outline) { \"Share\" } }\n    PopoverContent(side:, align:, arrow:) do\n      PopoverTitle { \"Share this page\" }\n      PopoverDescription { \"Anyone with the link can view this document.\" }\n      div(class: \"mt-1 flex items-center gap-2\") do\n        Input(value: \"https://appica.dev/docs\", readonly: true, size: :sm, aria_label: \"Link\", class: \"flex-1\")\n        CopyButton(value: \"https://appica.dev/docs\", variant: :outline)\n      end\n    end\n  end\nend"
+      "code": "phlex do\n  Popover(default_open:) do\n    PopoverTrigger { |trigger| Button(**trigger, variant: :outline) { \"Share\" } }\n    PopoverContent(side:, align:, arrow:) do\n      PopoverTitle { \"Share this page\" }\n      PopoverDescription { \"Anyone with the link can view this document.\" }\n      div(class: \"mt-1 flex items-center gap-2\") do\n        Input(value: \"https://appica.dev/docs\", readonly: true, size: :sm, aria_label: \"Link\", class: \"flex-1\")\n        CopyButton(value: \"https://appica.dev/docs\", variant: :outline)\n      end\n    end\n  end\nend"
     },
     {
       "name": "Form in a popover",

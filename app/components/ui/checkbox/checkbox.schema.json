@@ -70,7 +70,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex do\n  label(class: \"flex items-center gap-2 text-sm select-none\") do\n    Checkbox(checked:, indeterminate:, disabled:, invalid:)\n    plain \"Accept terms and conditions\"\n  end\nend"
+      "code": "phlex do\n  label(class: \"flex items-center gap-2 text-sm select-none\") do\n    Checkbox(checked:, indeterminate:, disabled:, invalid:, parent:, **given(value:))\n    plain \"Accept terms and conditions\"\n  end\nend"
     },
     {
       "name": "States",
@@ -89,7 +89,7 @@
     {
       "name": "Checkbox group",
       "notes": "Every box submits under the group's `name:`; `default_value:` lists the checked values.",
-      "code": "phlex do\n  CheckboxGroup(name: \"toppings[]\", default_value: %w[ cheese olives ], aria_labelledby: \"toppings-label\") do\n    span(id: \"toppings-label\", class: \"text-foreground mb-1 text-sm font-medium\") { \"Toppings\" }\n    label(class: \"flex items-center gap-2 text-sm select-none\") { Checkbox(value: :cheese); plain 'Extra cheese' }\n    label(class: \"flex items-center gap-2 text-sm select-none\") { Checkbox(value: :mushrooms); plain 'Mushrooms' }\n    label(class: \"flex items-center gap-2 text-sm select-none\") { Checkbox(value: :olives); plain 'Olives' }\n    label(class: \"flex items-center gap-2 text-sm select-none\") { Checkbox(value: :onions); plain 'Onions' }\n  end\nend"
+      "code": "phlex do\n  CheckboxGroup(name: \"toppings[]\", default_value: %w[ cheese olives ], aria_labelledby: \"toppings-label\") do\n    span(id: \"toppings-label\", class: \"text-foreground mb-1 text-sm font-medium\") { \"Toppings\" }\n    label(class: \"flex items-center gap-2 text-sm select-none\") { Checkbox(value: :cheese); plain \"Extra cheese\" }\n    label(class: \"flex items-center gap-2 text-sm select-none\") { Checkbox(value: :mushrooms); plain \"Mushrooms\" }\n    label(class: \"flex items-center gap-2 text-sm select-none\") { Checkbox(value: :olives); plain \"Olives\" }\n    label(class: \"flex items-center gap-2 text-sm select-none\") { Checkbox(value: :onions); plain \"Onions\" }\n  end\nend"
     },
     {
       "name": "Select all (parent checkbox)",

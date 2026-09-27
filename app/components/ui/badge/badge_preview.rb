@@ -9,8 +9,11 @@
 # @component UI::Badge
 # @display width wide
 class UI::BadgePreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ as ].freeze
+
   # @label Usage
-  # @param variant [Symbol] select "Color scheme" { choices: [primary, primary_outline, secondary, soft, outline, error, success, warning, info, light] }
+  # @param variant [Symbol] select "Color scheme" {{ choices_for UI::Badge, :variant }}
   # @param size [Symbol] select "Scale" { choices: [xs, sm, md, lg] }
   # @param label text "Badge text"
   def default(variant: :primary, size: :md, label: "Badge")

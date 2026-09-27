@@ -7,9 +7,10 @@
 class UI::BreadcrumbPreview < UI::BasePreview
   # @label Usage
   # Links before the last; the final crumb is `active` - plain text with aria-current="page".
-  def default
+  # @param aria_label text
+  def default(aria_label: nil)
     phlex do
-      Breadcrumb do
+      Breadcrumb(**given(aria_label:)) do
         BreadcrumbList do
           BreadcrumbItem { BreadcrumbLink(href: "#!") { "Home" } }
           BreadcrumbSeparator()

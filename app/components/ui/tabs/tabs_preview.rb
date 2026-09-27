@@ -5,6 +5,9 @@
 # @component UI::Tabs
 # @display width wide
 class UI::TabsPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ id ].freeze
+
   PANELS = {
     overview: [ "Overview", "A snapshot of your workspace - recent files, members, and usage." ],
     activity: [ "Activity", "Every change, comment, and deploy across the team, newest first." ],
@@ -12,12 +15,14 @@ class UI::TabsPreview < UI::BasePreview
   }.freeze
 
   # @label Usage
-  # @param variant [Symbol] select { choices: [pill, line] }
-  # @param size [Symbol] select { choices: [sm, md, lg] }
-  # @param orientation [Symbol] select { choices: [horizontal, vertical] }
-  def default(variant: :pill, size: :md, orientation: :horizontal)
+  # @param variant [Symbol] select {{ choices_for UI::Tabs, :variant }}
+  # @param size [Symbol] select {{ choices_for UI::Tabs, :size }}
+  # @param orientation [Symbol] select {{ choices_for UI::Tabs, :orientation }}
+  # @param value text
+  # @param default_value text
+  def default(variant: :pill, size: :md, orientation: :horizontal, value: nil, default_value: "overview")
     phlex do
-      Tabs(default_value: "overview", variant:, size:, orientation:, class: "w-full max-w-md") do
+      Tabs(variant:, size:, orientation:, **given(value:), default_value:, class: "w-full max-w-md") do
         TabsList { PANELS.each { |value, (label, _)| TabsTrigger(value:) { label } } }
         PANELS.each { |value, (_, text)| TabsContent(value:, class: "text-foreground-muted text-sm") { text } }
       end

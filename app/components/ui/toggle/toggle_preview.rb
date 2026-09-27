@@ -6,13 +6,18 @@
 # @component UI::Toggle
 # @display width wide
 class UI::TogglePreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ unchecked_value ].freeze
+
   # @label Usage
   # @param pressed [Boolean] toggle
   # @param disabled [Boolean] toggle
   # @param variant [Symbol] select { choices: [outline, ghost, soft] }
-  def default(pressed: false, disabled: false, variant: :outline)
+  # @param value text
+  # @param name text
+  def default(pressed: false, disabled: false, variant: :outline, value: nil, name: nil)
     phlex do
-      Toggle(pressed:, disabled:, aria_label: "Bold") { |toggle| Button(**toggle, variant:, icon: true) { Icon(:bold) } }
+      Toggle(pressed:, disabled:, **given(value:, name:), aria_label: "Bold") { |toggle| Button(**toggle, variant:, icon: true) { Icon(:bold) } }
     end
   end
 

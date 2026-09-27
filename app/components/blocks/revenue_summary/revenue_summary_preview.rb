@@ -9,6 +9,9 @@
 # @component Blocks::RevenueSummary
 # @display width wide
 class Blocks::RevenueSummaryPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ title comparison ].freeze
+
   REVENUE = [ 33_900, 32_100, 36_800, 35_700, 32_800, 39_200, 44_700, 42_700, 40_200, 40_900, 43_600, 48_210 ].freeze
 
   # @label Usage
@@ -17,10 +20,10 @@ class Blocks::RevenueSummaryPreview < UI::BasePreview
   # @param value number
   # @param previous number
   # @param period [Symbol] select { choices: [day, week, month, year] }
-  # @param currency [Symbol] select { choices: [USD, EUR, GBP, CZK] }
+  # @param currency [Symbol] select {{ CURRENCIES }}
   def default(value: 48_210, previous: 42_900, period: :month, currency: :USD)
     phlex do
-      RevenueSummary(value: value.to_f, previous: previous.to_f, period:, currency: currency.to_s, class: "w-100 max-w-full") do
+      RevenueSummary(period:, value: value.to_f, previous: previous.to_f, currency: currency.to_s, class: "w-100 max-w-full") do
         RevenueMarkets do
           RevenueMarket(country: :us, value: 21_690, share: 45)
           RevenueMarket(country: :de, value: 9_640, share: 20)

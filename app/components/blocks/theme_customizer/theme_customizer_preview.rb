@@ -6,13 +6,17 @@
 # @component Blocks::ThemeCustomizer
 # @display width full
 class Blocks::ThemeCustomizerPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ id ].freeze
+
   # @label Usage
   # Pick colors, a font and a radius - the components on the right (and every other preview,
   # even in other tabs) follow. "Get CSS Code" shows the overrides for your stylesheet.
-  def default
+  # @param title text
+  def default(title: nil)
     phlex do
       div(class: "grid w-full items-start gap-8 lg:grid-cols-[22rem_minmax(0,1fr)]") do
-        ThemeCustomizer()
+        ThemeCustomizer(**given(title:))
         div(class: "flex min-w-0 flex-col gap-6", data: { slot: "theme-sample" }) do
           div(class: "flex flex-wrap items-center gap-2") do
             %i[ primary secondary outline soft ghost primary_outline destructive ].each do |variant|

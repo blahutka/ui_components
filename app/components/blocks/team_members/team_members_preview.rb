@@ -10,6 +10,9 @@
 # @component Blocks::TeamMembers
 # @display width wide
 class Blocks::TeamMembersPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ action list_id used ].freeze
+
   MEMBERS = [
     { name: "Sarah Jenkins", email: "sarah@appica.dev", avatar: "/avatars/01.png", role: :owner, online: true },
     { name: "Mateo Rossi", email: "mateo@appica.dev", avatar: "/avatars/03.png", role: :editor, online: true },
@@ -20,9 +23,12 @@ class Blocks::TeamMembersPreview < UI::BasePreview
   # @label Usage
   # The Appica homepage card. Invite an email to add a row; at five members the form locks.
   # @param seats number
-  def default(seats: 5)
+  # @param title text
+  # @param method text
+  # @param invite [Boolean] toggle
+  def default(seats: 5, title: nil, method: "post", invite: true)
     phlex do
-      TeamMembers(seats: seats.to_i, used: MEMBERS.size, class: "w-100 max-w-full") do
+      TeamMembers(method:, invite:, **given(title:), seats: seats.to_i, used: MEMBERS.size, class: "w-100 max-w-full") do
         TeamMemberList do
           MEMBERS.each { |member| TeamMember(**member) }
         end

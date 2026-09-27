@@ -157,7 +157,7 @@
     {
       "name": "Usage",
       "notes": "The Appica homepage card. The last request is still \"generating\" when the page loads; the\ndemo finishes it, then answers anything you send.",
-      "code": "copy = sample\n\nphlex do\n  ChatAssistant(title: title.presence || copy[:title], status: (online ? :online : :offline), demo_replies: copy[:replies], class: \"h-120 w-100 max-w-full\") do\n    ChatHeader()\n    ChatMessages do\n      copy[:conversation].each_with_index { |text, index| ChatMessage(from: index.even? ? :user : :assistant) { text } }\n      ChatStatus { copy[:status] }\n    end\n    ChatSuggestions(copy[:suggestions])\n    ChatComposer()\n  end\nend"
+      "code": "copy = sample\n\nphlex do\n  ChatAssistant(method:, title: title.presence || copy[:title], status: (online ? :online : :offline), demo_replies: copy[:replies], class: \"h-120 w-100 max-w-full\") do\n    ChatHeader()\n    ChatMessages do\n      copy[:conversation].each_with_index { |text, index| ChatMessage(from: index.even? ? :user : :assistant) { text } }\n      ChatStatus { copy[:status] }\n    end\n    ChatSuggestions(copy[:suggestions])\n    ChatComposer()\n  end\nend"
     },
     {
       "name": "Empty state",

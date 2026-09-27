@@ -92,7 +92,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex { NumberField(default_value: 1, min: 0, max: 10, variant:, size:, disabled:, aria_label: \"Quantity\") }"
+      "code": "phlex do\n  NumberField(variant:, size:, disabled:, step:, read_only:, required:, allow_wheel_scrub:, **given(value:, name:, invalid_number_message:, increment_label:, decrement_label:), default_value:, min:, max:, aria_label: \"Quantity\")\nend"
     },
     {
       "name": "Variants",

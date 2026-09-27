@@ -6,6 +6,9 @@
 # @display width wide
 # @display min_height 360px
 class UI::NavigationMenuPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ side_offset id ].freeze
+
   PRODUCTS = [
     [ "Analytics", "Track usage and conversions in real time.", :device_desktop_analytics ],
     [ "Components", "A composable library of UI primitives.", :cube ],
@@ -37,12 +40,19 @@ class UI::NavigationMenuPreview < UI::BasePreview
 
   # @label Usage
   # Two panel items and a plain link; the popup morphs between the panels. Hover, click or ↓.
-  # @param variant [Symbol] select { choices: [pill, line] }
-  # @param size [Symbol] select { choices: [sm, md, lg] }
+  # @param variant [Symbol] select {{ choices_for UI::NavigationMenu, :variant }}
+  # @param size [Symbol] select {{ choices_for UI::NavigationMenu, :size }}
   # @param icon [Symbol] select { choices: [chevron, caret, plus] }
-  def default(variant: :pill, size: :md, icon: :chevron)
+  # @param orientation [Symbol] select {{ choices_for UI::NavigationMenu, :orientation }}
+  # @param morph [Boolean] toggle
+  # @param backdrop [Boolean] toggle
+  # @param viewport [Boolean] toggle
+  # @param default_value text
+  # @param delay number
+  # @param close_delay number
+  def default(variant: :pill, size: :md, icon: :chevron, orientation: :horizontal, morph: true, backdrop: false, viewport: true, default_value: nil, delay: 50, close_delay: 50)
     phlex do
-      NavigationMenu(aria_label: "Main", variant:, size:, icon:) do
+      NavigationMenu(variant:, size:, icon:, orientation:, morph:, backdrop:, viewport:, delay:, close_delay:, **given(default_value:), aria_label: "Main") do
         NavigationMenuList do
           NavigationMenuItem do
             NavigationMenuTrigger { plain "Products"; NavigationMenuIcon() }

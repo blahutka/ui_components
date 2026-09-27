@@ -39,7 +39,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex do\n  label(class: \"flex items-center gap-2.5 text-sm select-none\") do\n    Switch(size:, checked:, disabled:)\n    plain \"Airplane mode\"\n  end\nend"
+      "code": "phlex do\n  label(class: \"flex items-center gap-2.5 text-sm select-none\") do\n    Switch(size:, checked:, disabled:, **given(value:))\n    plain \"Airplane mode\"\n  end\nend"
     },
     {
       "name": "Sizes",

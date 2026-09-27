@@ -21,10 +21,14 @@ class Blocks::CommandMenuPreview < UI::BasePreview
   # @label Usage
   # The Appica homepage card. Type to filter, ↑ / ↓ to move, ↵ to run; ⌘K / Ctrl+K focuses the
   # search. The chosen command is shown below.
-  def default
+  # @param placeholder text
+  # @param hotkey text
+  # @param hotkey_hint text
+  # @param hints [Boolean] toggle
+  def default(placeholder: nil, hotkey: "k", hotkey_hint: "⌘K", hints: true)
     phlex do
       div(class: "flex w-95 max-w-full flex-col gap-3") do
-        CommandMenu(id: "demo-command-menu") { instance_exec(&COMMANDS) }
+        CommandMenu(hotkey:, hotkey_hint:, hints:, **given(placeholder:), id: "demo-command-menu") { instance_exec(&COMMANDS) }
         p(class: "text-foreground-muted text-xs", data: { demo: "chosen" }) { "Choose a command…" }
       end
       script(type: "module") do

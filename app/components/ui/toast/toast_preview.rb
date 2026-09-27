@@ -11,6 +11,9 @@
 # @display width wide
 # @display min_height 24rem
 class UI::ToastPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ action timeout type progress id thumbnail priority dismissible close_label ].freeze
+
   # @label Usage
   # A ToastTrigger fires a toast with a title and description; it slides in, waits, and
   # dismisses itself.

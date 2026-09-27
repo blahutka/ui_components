@@ -75,7 +75,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex do\n  Rating(default_value: default_value.to_f, step: step.to_s.to_f, variant:, clearable:, disabled:, aria_label: \"Rate this product\")\nend"
+      "code": "phlex do\n  Rating(variant:, clearable:, disabled:, count:, orientation:, size:, icon:, hoverable:, read_only:, **given(value:, name:), default_value: default_value.to_f, step: step.to_s.to_f, aria_label: \"Rate this product\")\nend"
     },
     {
       "name": "Icons",

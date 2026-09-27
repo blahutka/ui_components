@@ -104,7 +104,7 @@
     {
       "name": "Usage",
       "notes": "The Appica homepage card - the order is out for delivery today.",
-      "code": "today = Time.current.beginning_of_day\n\nphlex do\n  OrderTracker(number: \"10482\", items: 2, total: 148, status:, progress: progress.to_f, class: \"w-100 max-w-full\") do\n    OrderTimeline do\n      OrderStep(title: :confirmed, at: today - 2.days + 9.hours + 41.minutes)\n      OrderStep(title: :shipped, at: today - 1.day + 18.hours + 12.minutes)\n      OrderStep(title: :sorting_hub, at: today + 7.hours + 48.minutes)\n      OrderStep(title: :local_facility, at: today + 8.hours + 30.minutes)\n      OrderStep(title: :out_for_delivery, at: today + 11.hours + 5.minutes, state: :current)\n      OrderStep(title: :delivered, at: today + 14.hours + 15.minutes, state: :upcoming)\n    end\n    OrderCourier(name: \"Marcus\", avatar: \"/avatars/02.png\", stops: 3, href: \"#map\")\n  end\nend"
+      "code": "today = Time.current.beginning_of_day\n\nphlex do\n  OrderTracker(status:, currency:, number:, items:, total:, progress: progress.to_f, class: \"w-100 max-w-full\") do\n    OrderTimeline do\n      OrderStep(title: :confirmed, at: today - 2.days + 9.hours + 41.minutes)\n      OrderStep(title: :shipped, at: today - 1.day + 18.hours + 12.minutes)\n      OrderStep(title: :sorting_hub, at: today + 7.hours + 48.minutes)\n      OrderStep(title: :local_facility, at: today + 8.hours + 30.minutes)\n      OrderStep(title: :out_for_delivery, at: today + 11.hours + 5.minutes, state: :current)\n      OrderStep(title: :delivered, at: today + 14.hours + 15.minutes, state: :upcoming)\n    end\n    OrderCourier(name: \"Marcus\", avatar: \"/avatars/02.png\", stops: 3, href: \"#map\")\n  end\nend"
     },
     {
       "name": "Delivered",

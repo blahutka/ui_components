@@ -5,13 +5,18 @@
 # @component UI::Dialog
 # @display width wide
 class UI::DialogPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ id ].freeze
+
   # @label Usage
   # @param frame [Boolean] toggle
   # @param close_button [Boolean] toggle
   # @param dismissible [Boolean] toggle
-  def default(frame: true, close_button: true, dismissible: true)
+  # @param default_open [Boolean] toggle
+  # @param modal [Boolean] toggle
+  def default(frame: true, close_button: true, dismissible: true, default_open: false, modal: true)
     phlex do
-      Dialog(dismissible:) do
+      Dialog(dismissible:, default_open:, modal:) do
         DialogTrigger { |trigger| Button(**trigger, variant: :outline) { "Invite people" } }
         DialogContent(frame:, close_button:, class: "sm:w-110") do
           DialogHeader do

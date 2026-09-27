@@ -9,15 +9,19 @@
 # @component UI::Card
 # @display width full
 class UI::CardPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ content ].freeze
+
   INPUT = "border-transparent bg-background-muted text-foreground h-10 w-full rounded-md border px-3.5 text-sm outline-none focus:bg-background focus:border-transparent focus:ring-3 focus:ring-ring-input"
 
   # @label Usage
   # @param frame [Symbol] select "Padded frame around the content" { choices: [none, solid, glass] }
   # @param inset [Boolean] toggle "Float the slots inside the content (media rounds all four corners)"
   # @param media [Boolean] toggle "Show a CardMedia above the header"
-  def default(frame: :none, inset: true, media: true)
+  # @param as [Symbol] select {{ choices_for UI::Card, :as }}
+  def default(frame: :none, inset: true, media: true, as: :div)
     phlex do
-      Card(frame: (frame.to_sym == :none ? false : frame), inset:, class: "mx-auto w-80 max-w-full") do
+      Card(inset:, as:, frame: (frame.to_sym == :none ? false : frame), class: "mx-auto w-80 max-w-full") do
         CardMedia(class: "h-40") { img(src: "/carousel/slide-6.jpg", alt: "A valley at golden hour") } if media
         CardHeader do
           CardTitle { "Golden hour in the valley" }

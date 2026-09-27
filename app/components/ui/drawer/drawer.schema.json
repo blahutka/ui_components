@@ -150,7 +150,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex do\n  Drawer(side:, disable_pointer_dismissal:) do\n    DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { \"Open drawer\" } }\n    DrawerContent(close_button:, frame:, class: (\"mx-auto max-w-2xl\" if side.to_sym.in?(%i[ top bottom ]))) do\n      DrawerHeader do\n        DrawerTitle { \"Notifications\" }\n        DrawerDescription { \"Choose what you want to be notified about.\" }\n      end\n      DrawerBody do\n        p { \"Drag the handle or swipe toward the edge to dismiss. On the #{side} edge the panel slides in from there.\" }\n      end\n      DrawerFooter do\n        DrawerClose { |close| Button(**close) { \"Save\" } }\n        DrawerClose { |close| Button(**close, variant: :outline) { \"Cancel\" } }\n      end\n    end\n  end\nend"
+      "code": "phlex do\n  Drawer(side:, disable_pointer_dismissal:, default_open:, modal:) do\n    DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { \"Open drawer\" } }\n    DrawerContent(close_button:, frame:, class: (\"mx-auto max-w-2xl\" if side.to_sym.in?(%i[ top bottom ]))) do\n      DrawerHeader do\n        DrawerTitle { \"Notifications\" }\n        DrawerDescription { \"Choose what you want to be notified about.\" }\n      end\n      DrawerBody do\n        p { \"Drag the handle or swipe toward the edge to dismiss. On the #{side} edge the panel slides in from there.\" }\n      end\n      DrawerFooter do\n        DrawerClose { |close| Button(**close) { \"Save\" } }\n        DrawerClose { |close| Button(**close, variant: :outline) { \"Cancel\" } }\n      end\n    end\n  end\nend"
     },
     {
       "name": "Sides",

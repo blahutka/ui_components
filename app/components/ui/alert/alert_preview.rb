@@ -9,6 +9,9 @@
 # @component UI::Alert
 # @display width wide
 class UI::AlertPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ persist_key ].freeze
+
   VARIANTS = [
     [ :default, :bell, "Update available", "Version 2.4 is ready to install." ],
     [ :primary, :sparkle_filled, "New feature", "You can now schedule reports to run weekly." ],
@@ -22,17 +25,20 @@ class UI::AlertPreview < UI::BasePreview
   # @label Usage
   # The neutral default variant with an icon, title and description. Change the variant,
   # layout and dismiss button live.
-  # @param variant [Symbol] select { choices: [default, primary, secondary, info, success, warning, error] }
-  # @param layout [Symbol] select { choices: [block, inline] }
+  # @param variant [Symbol] select {{ choices_for UI::Alert, :variant }}
+  # @param layout [Symbol] select {{ choices_for UI::Alert, :layout }}
   # @param dismissible [Boolean] toggle
   # @param title text
   # @param description text
-  def default(variant: :default, layout: :block, dismissible: false, title: "Heads up", description: "A new version of the dashboard is available - refresh to pick up the latest features.")
+  # @param open [Boolean] toggle
+  # @param persist_storage text
+  # @param close_label text
+  def default(variant: :default, layout: :block, dismissible: false, title: "Heads up", description: "A new version of the dashboard is available - refresh to pick up the latest features.", open: true, persist_storage: "local", close_label: "Dismiss")
     icon = variant.to_sym == :default ? :info_circle : :info_circle_filled
 
     phlex do
       div(class: "w-full max-w-md") do
-        Alert(variant:, layout:, dismissible:) do
+        Alert(variant:, layout:, dismissible:, open:, persist_storage:, close_label:) do
           AlertIcon { Icon(icon) }
           AlertTitle { title }
           AlertDescription { description }

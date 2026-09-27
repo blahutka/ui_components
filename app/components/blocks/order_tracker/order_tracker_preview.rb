@@ -11,13 +11,17 @@
 class Blocks::OrderTrackerPreview < UI::BasePreview
   # @label Usage
   # The Appica homepage card - the order is out for delivery today.
-  # @param status [Symbol] select { choices: [processing, shipped, in_transit, out_for_delivery, delivered, delayed] }
+  # @param status [Symbol] select {{ choices_for Blocks::OrderTracker, :status }}
   # @param progress number
-  def default(status: :in_transit, progress: 75)
+  # @param currency text
+  # @param number text
+  # @param items number
+  # @param total number
+  def default(status: :in_transit, progress: 75, currency: "USD", number: "10482", items: 2, total: 148)
     today = Time.current.beginning_of_day
 
     phlex do
-      OrderTracker(number: "10482", items: 2, total: 148, status:, progress: progress.to_f, class: "w-100 max-w-full") do
+      OrderTracker(status:, currency:, number:, items:, total:, progress: progress.to_f, class: "w-100 max-w-full") do
         OrderTimeline do
           OrderStep(title: :confirmed, at: today - 2.days + 9.hours + 41.minutes)
           OrderStep(title: :shipped, at: today - 1.day + 18.hours + 12.minutes)

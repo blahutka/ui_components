@@ -14,3 +14,14 @@ namespace :ui_components do
     paths.each { |path| puts "  #{Pathname.new(path).relative_path_from(root)}" }
   end
 end
+
+namespace :ui_components do
+  # The Usage scenario's @param block for a component, generated from its props:
+  #
+  #   bin/rails "ui_components:preview_params[UI::Select]"
+  desc "Print the Lookbook @param tags, signature and call for a component's Usage scenario"
+  task :preview_params, [ :component ] => :environment do |_task, args|
+    component = args[:component].to_s.safe_constantize || abort("Unknown component #{args[:component].inspect}")
+    puts UiComponents::PreviewParams.snippet(component)
+  end
+end

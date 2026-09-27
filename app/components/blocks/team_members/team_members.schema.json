@@ -108,7 +108,7 @@
     {
       "name": "Usage",
       "notes": "The Appica homepage card. Invite an email to add a row; at five members the form locks.",
-      "code": "phlex do\n  TeamMembers(seats: seats.to_i, used: MEMBERS.size, class: \"w-100 max-w-full\") do\n    TeamMemberList do\n      MEMBERS.each { |member| TeamMember(**member) }\n    end\n    TeamInvite(placeholder: \"teammate@appica.dev\")\n  end\nend"
+      "code": "phlex do\n  TeamMembers(method:, invite:, **given(title:), seats: seats.to_i, used: MEMBERS.size, class: \"w-100 max-w-full\") do\n    TeamMemberList do\n      MEMBERS.each { |member| TeamMember(**member) }\n    end\n    TeamInvite(placeholder: \"teammate@appica.dev\")\n  end\nend"
     },
     {
       "name": "All seats taken",

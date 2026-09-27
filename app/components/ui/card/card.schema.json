@@ -101,7 +101,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex do\n  Card(frame: (frame.to_sym == :none ? false : frame), inset:, class: \"mx-auto w-80 max-w-full\") do\n    CardMedia(class: \"h-40\") { img(src: \"/carousel/slide-6.jpg\", alt: \"A valley at golden hour\") } if media\n    CardHeader do\n      CardTitle { \"Golden hour in the valley\" }\n      CardDescription { \"Three nights in a timber cabin at the treeline, with meadow trails and the peaks at your door.\" }\n    end\n    CardFooter do\n      Button { \"Book now\" }\n      Button(variant: :outline) { \"Details\" }\n    end\n  end\nend"
+      "code": "phlex do\n  Card(inset:, as:, frame: (frame.to_sym == :none ? false : frame), class: \"mx-auto w-80 max-w-full\") do\n    CardMedia(class: \"h-40\") { img(src: \"/carousel/slide-6.jpg\", alt: \"A valley at golden hour\") } if media\n    CardHeader do\n      CardTitle { \"Golden hour in the valley\" }\n      CardDescription { \"Three nights in a timber cabin at the treeline, with meadow trails and the peaks at your door.\" }\n    end\n    CardFooter do\n      Button { \"Book now\" }\n      Button(variant: :outline) { \"Details\" }\n    end\n  end\nend"
     },
     {
       "name": "Header and footer",

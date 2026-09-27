@@ -48,7 +48,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex { CopyButton(value:, variant:) }"
+      "code": "phlex do\n  CopyButton(value:, variant:, timeout:, size:, **given(label:, copied_label:))\nend"
     },
     {
       "name": "Variants",

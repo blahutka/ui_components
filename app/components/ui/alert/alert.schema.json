@@ -113,7 +113,7 @@
     {
       "name": "Usage",
       "notes": "The neutral default variant with an icon, title and description. Change the variant,\nlayout and dismiss button live.",
-      "code": "icon = variant.to_sym == :default ? :info_circle : :info_circle_filled\n\nphlex do\n  div(class: \"w-full max-w-md\") do\n    Alert(variant:, layout:, dismissible:) do\n      AlertIcon { Icon(icon) }\n      AlertTitle { title }\n      AlertDescription { description }\n    end\n  end\nend"
+      "code": "icon = variant.to_sym == :default ? :info_circle : :info_circle_filled\n\nphlex do\n  div(class: \"w-full max-w-md\") do\n    Alert(variant:, layout:, dismissible:, open:, persist_storage:, close_label:) do\n      AlertIcon { Icon(icon) }\n      AlertTitle { title }\n      AlertDescription { description }\n    end\n  end\nend"
     },
     {
       "name": "Variants",

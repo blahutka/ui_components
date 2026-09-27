@@ -71,7 +71,7 @@
     {
       "name": "Usage",
       "notes": "The Appica homepage card. Type to filter, ↑ / ↓ to move, ↵ to run; ⌘K / Ctrl+K focuses the\nsearch. The chosen command is shown below.",
-      "code": "phlex do\n  div(class: \"flex w-95 max-w-full flex-col gap-3\") do\n    CommandMenu(id: \"demo-command-menu\") { instance_exec(&COMMANDS) }\n    p(class: \"text-foreground-muted text-xs\", data: { demo: \"chosen\" }) { \"Choose a command…\" }\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      document.getElementById(\"demo-command-menu\").addEventListener(\"blocks--command-menu:select\", ({ detail }) => {\n        document.querySelector(\"[data-demo=chosen]\").textContent = `Chose “${detail.label}” (${detail.value})`\n      })\n    JS\n  end\nend"
+      "code": "phlex do\n  div(class: \"flex w-95 max-w-full flex-col gap-3\") do\n    CommandMenu(hotkey:, hotkey_hint:, hints:, **given(placeholder:), id: \"demo-command-menu\") { instance_exec(&COMMANDS) }\n    p(class: \"text-foreground-muted text-xs\", data: { demo: \"chosen\" }) { \"Choose a command…\" }\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      document.getElementById(\"demo-command-menu\").addEventListener(\"blocks--command-menu:select\", ({ detail }) => {\n        document.querySelector(\"[data-demo=chosen]\").textContent = `Chose “${detail.label}” (${detail.value})`\n      })\n    JS\n  end\nend"
     },
     {
       "name": "Links",

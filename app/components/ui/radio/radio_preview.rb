@@ -6,14 +6,21 @@
 # @component UI::RadioGroup
 # @display width wide
 class UI::RadioPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ invalid ].freeze
+
   PLANS = { free: "Free", pro: "Pro", team: "Team" }.freeze
 
   # @label Usage
-  # @param orientation [Symbol] select { choices: [vertical, horizontal] }
+  # @param orientation [Symbol] select {{ choices_for UI::RadioGroup, :orientation }}
   # @param disabled [Boolean] toggle
-  def default(orientation: :vertical, disabled: false)
+  # @param name text
+  # @param value text
+  # @param required [Boolean] toggle
+  # @param default_value text
+  def default(orientation: :vertical, disabled: false, name: nil, value: nil, required: false, default_value: "pro")
     phlex do
-      RadioGroup(default_value: "pro", orientation:, disabled:, aria_labelledby: "plan-label") do
+      RadioGroup(orientation:, disabled:, required:, **given(name:, value:), default_value:, aria_labelledby: "plan-label") do
         span(id: "plan-label", class: "text-foreground mb-1 text-sm font-medium") { "Plan" }
         PLANS.each do |value, text|
           label(class: "flex items-center gap-2 text-sm select-none") { Radio(value:); plain text }

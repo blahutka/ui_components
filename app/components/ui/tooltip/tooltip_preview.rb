@@ -6,13 +6,19 @@
 # @display width wide
 # @display min_height 200px
 class UI::TooltipPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ id delay close_delay ].freeze
+
   # @label Usage
   # @param side [Symbol] select { choices: [top, bottom, left, right] }
   # @param arrow [Boolean] toggle
-  def default(side: :top, arrow: true)
+  # @param default_open [Boolean] toggle
+  # @param track_cursor_axis [Symbol] select {{ choices_for UI::Tooltip, :track_cursor_axis }}
+  # @param disabled [Boolean] toggle
+  def default(side: :top, arrow: true, default_open: false, track_cursor_axis: :none, disabled: false)
     phlex do
       TooltipProvider do
-        Tooltip do
+        Tooltip(default_open:, track_cursor_axis:, disabled:) do
           TooltipTrigger { |trigger| Button(**trigger, variant: :outline, icon: true, aria_label: "Add to favorites") { Icon(:heart) } }
           TooltipContent(side:, arrow:) { "Add to favorites" }
         end

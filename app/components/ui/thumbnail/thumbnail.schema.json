@@ -52,7 +52,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex { Thumbnail(size:, shape:, src: PHOTO, alt: \"Snow-capped mountain peak at sunset\") }"
+      "code": "phlex do\n  Thumbnail(size:, shape:, variant:, src: PHOTO, alt:)\nend"
     },
     {
       "name": "Sizes",

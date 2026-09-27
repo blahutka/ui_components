@@ -62,7 +62,7 @@
   "examples": [
     {
       "name": "Usage",
-      "code": "phlex do\n  Textarea(placeholder:, rows: rows.to_i, variant:, size:, clearable:, disabled:, aria_label: \"Message\", class: \"max-w-70\")\nend"
+      "code": "phlex do\n  Textarea(placeholder:, variant:, size:, clearable:, disabled:, **given(value:, clear_label:), rows: rows.to_i, aria_label: \"Message\", class: \"max-w-70\")\nend"
     },
     {
       "name": "Variants",

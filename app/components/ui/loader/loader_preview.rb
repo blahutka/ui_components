@@ -12,8 +12,8 @@ class UI::LoaderPreview < UI::BasePreview
   ITEMS = %w[ Aurora Borealis Cosmos Drift Ember Flux Glow Halo Ion ].freeze
 
   # @label Usage
-  # @param variant [Symbol] select { choices: [bar, dots] }
-  # @param size [Symbol] select "Font size" { choices: [text-xl, text-3xl, text-[2.5rem], text-5xl, text-7xl] }
+  # @param variant [Symbol] select {{ choices_for UI::Loader, :variant }}
+  # @param size [Symbol] select "Font size" {{ FONT_SIZES }}
   # @param current_color [Boolean] toggle "Inherit the text color (violet here)"
   def default(variant: :bar, size: :"text-[2.5rem]", current_color: false)
     phlex do

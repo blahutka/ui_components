@@ -8,15 +8,20 @@
 # @component UI::Checkbox
 # @display width wide
 class UI::CheckboxPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ unchecked_value ].freeze
+
   # @label Usage
   # @param checked [Boolean] toggle
   # @param indeterminate [Boolean] toggle
   # @param disabled [Boolean] toggle
   # @param invalid [Boolean] toggle
-  def default(checked: true, indeterminate: false, disabled: false, invalid: false)
+  # @param parent [Boolean] toggle
+  # @param value text
+  def default(checked: true, indeterminate: false, disabled: false, invalid: false, parent: false, value: nil)
     phlex do
       label(class: "flex items-center gap-2 text-sm select-none") do
-        Checkbox(checked:, indeterminate:, disabled:, invalid:)
+        Checkbox(checked:, indeterminate:, disabled:, invalid:, parent:, **given(value:))
         plain "Accept terms and conditions"
       end
     end
@@ -74,10 +79,10 @@ class UI::CheckboxPreview < UI::BasePreview
     phlex do
       CheckboxGroup(name: "toppings[]", default_value: %w[ cheese olives ], aria_labelledby: "toppings-label") do
         span(id: "toppings-label", class: "text-foreground mb-1 text-sm font-medium") { "Toppings" }
-        label(class: "flex items-center gap-2 text-sm select-none") { Checkbox(value: :cheese); plain 'Extra cheese' }
-        label(class: "flex items-center gap-2 text-sm select-none") { Checkbox(value: :mushrooms); plain 'Mushrooms' }
-        label(class: "flex items-center gap-2 text-sm select-none") { Checkbox(value: :olives); plain 'Olives' }
-        label(class: "flex items-center gap-2 text-sm select-none") { Checkbox(value: :onions); plain 'Onions' }
+        label(class: "flex items-center gap-2 text-sm select-none") { Checkbox(value: :cheese); plain "Extra cheese" }
+        label(class: "flex items-center gap-2 text-sm select-none") { Checkbox(value: :mushrooms); plain "Mushrooms" }
+        label(class: "flex items-center gap-2 text-sm select-none") { Checkbox(value: :olives); plain "Olives" }
+        label(class: "flex items-center gap-2 text-sm select-none") { Checkbox(value: :onions); plain "Onions" }
       end
     end
   end

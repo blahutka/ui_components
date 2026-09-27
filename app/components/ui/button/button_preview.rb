@@ -6,9 +6,12 @@
 # @component UI::Button
 # @display width wide
 class UI::ButtonPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ icon ].freeze
+
   # @label Usage
-  # @param variant [Symbol] select "Visual style" { choices: [primary, primary_outline, secondary, soft, outline, ghost, destructive, light] }
-  # @param size [Symbol] select "Height, padding and text size" { choices: [sm, md, lg] }
+  # @param variant [Symbol] select "Visual style" {{ choices_for UI::Button, :variant }}
+  # @param size [Symbol] select "Height, padding and text size" {{ choices_for UI::Button, :size }}
   # @param label text "Button text"
   def default(variant: :primary, size: :md, label: "Button")
     phlex do

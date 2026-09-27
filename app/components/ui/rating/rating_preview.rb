@@ -12,12 +12,20 @@ class UI::RatingPreview < UI::BasePreview
   # @label Usage
   # @param default_value number
   # @param step [Symbol] select { choices: [1, 0.5, 0.25] }
-  # @param variant [Symbol] select { choices: [filled, outline] }
+  # @param variant [Symbol] select {{ choices_for UI::Rating, :variant }}
   # @param clearable [Boolean] toggle
   # @param disabled [Boolean] toggle
-  def default(default_value: 3, step: :"1", variant: :filled, clearable: false, disabled: false)
+  # @param value text
+  # @param count number
+  # @param orientation [Symbol] select {{ choices_for UI::Rating, :orientation }}
+  # @param size text
+  # @param icon text
+  # @param hoverable [Boolean] toggle
+  # @param read_only [Boolean] toggle
+  # @param name text
+  def default(default_value: 3, step: :"1", variant: :filled, clearable: false, disabled: false, value: nil, count: 5, orientation: :horizontal, size: "24px", icon: "star", hoverable: true, read_only: false, name: nil)
     phlex do
-      Rating(default_value: default_value.to_f, step: step.to_s.to_f, variant:, clearable:, disabled:, aria_label: "Rate this product")
+      Rating(variant:, clearable:, disabled:, count:, orientation:, size:, icon:, hoverable:, read_only:, **given(value:, name:), default_value: default_value.to_f, step: step.to_s.to_f, aria_label: "Rate this product")
     end
   end
 

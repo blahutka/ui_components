@@ -61,7 +61,7 @@
     {
       "name": "Usage",
       "notes": "The Appica homepage card. Without `src:` the demo advances the time while playing; drag the\nseek bar to jump.",
-      "code": "phlex do\n  MusicPlayer(title: \"Midnight Drive\", artist: \"Neon Waves\", album: \"Retrograde\", cover: \"/landing/midnight-drive.svg\",\n    duration: 222, position: position.to_i, playing:, class: \"w-95 max-w-full\")\nend"
+      "code": "phlex do\n  MusicPlayer(playing:, favorite:, shuffle:, repeat:, **given(cover_alt:, src:), title:, artist:, album:, cover:, duration:, position: position.to_i, class: \"w-95 max-w-full\")\nend"
     },
     {
       "name": "Without cover art",

@@ -13,16 +13,20 @@
 # @component Blocks::ChatAssistant
 # @display width wide
 class Blocks::ChatAssistantPreview < UI::BasePreview
+  # Props not in the Usage form (data, render blocks, generated ids): see ui_components:preview_params
+  UNLISTED_PROPS = %i[ action messages_id demo_replies status ].freeze
+
   # @label Usage
   # The Appica homepage card. The last request is still "generating" when the page loads; the
   # demo finishes it, then answers anything you send.
   # @param title text "Leave empty for the translated sample title"
   # @param online [Boolean] toggle
-  def default(title: nil, online: true)
+  # @param method text
+  def default(title: nil, online: true, method: "post")
     copy = sample
 
     phlex do
-      ChatAssistant(title: title.presence || copy[:title], status: (online ? :online : :offline), demo_replies: copy[:replies], class: "h-120 w-100 max-w-full") do
+      ChatAssistant(method:, title: title.presence || copy[:title], status: (online ? :online : :offline), demo_replies: copy[:replies], class: "h-120 w-100 max-w-full") do
         ChatHeader()
         ChatMessages do
           copy[:conversation].each_with_index { |text, index| ChatMessage(from: index.even? ? :user : :assistant) { text } }

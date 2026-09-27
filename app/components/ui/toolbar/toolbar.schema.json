@@ -111,7 +111,7 @@
     {
       "name": "Usage",
       "notes": "A search Input, a Filter action and an Export link, all in one focus stop.",
-      "code": "phlex do\n  Toolbar(aria_label: \"Table actions\") do\n    ToolbarInput(class: \"w-44\") { |item| Input(**item, start_slot: :search, placeholder: \"Search tasks…\", aria_label: \"Search tasks\", size: :sm) }\n    ToolbarGroup(aria_label: \"Refine\") do\n      ToolbarButton { |item| Button(**item, variant: :ghost, size: :sm) { Icon(:filter, data: { icon: \"start\" }); plain \"Filter\" } }\n    end\n    ToolbarSeparator()\n    ToolbarLink(href: \"#export\", class: cn(UI::Button::BASE, UI::Button::VARIANTS[:ghost], UI::Button::SIZES[:sm])) do\n      Icon(:download, data: { icon: \"start\" })\n      plain \"Export\"\n    end\n  end\nend"
+      "code": "phlex do\n  Toolbar(orientation:, loop_focus:, disabled:, aria_label: \"Table actions\") do\n    ToolbarInput(class: \"w-44\") { |item| Input(**item, start_slot: :search, placeholder: \"Search tasks…\", aria_label: \"Search tasks\", size: :sm) }\n    ToolbarGroup(aria_label: \"Refine\") do\n      ToolbarButton { |item| Button(**item, variant: :ghost, size: :sm) { Icon(:filter, data: { icon: \"start\" }); plain \"Filter\" } }\n    end\n    ToolbarSeparator()\n    ToolbarLink(href: \"#export\", class: cn(UI::Button::BASE, UI::Button::VARIANTS[:ghost], UI::Button::SIZES[:sm])) do\n      Icon(:download, data: { icon: \"start\" })\n      plain \"Export\"\n    end\n  end\nend"
     },
     {
       "name": "With a toggle group",
