@@ -1,21 +1,20 @@
 module AppicaUI::ViewAnnotation
   extend ActiveSupport::Concern
 
+  # BEGIN/END comments around every component, so a component in the browser can be opened in the
+  # IDE. Only when the host has asked for annotated views itself: checked at render time, since the
+  # setting is configured after this module is included, and a host that never turned it on must
+  # not find component paths in its production HTML or its mail.
   included do
-      # This works with Ctrl + V to open component file from browser in IDE
-      # if ActionView::Base.annotate_rendered_view_with_filenames
-      def before_template
-        comment { "BEGIN #{relative_file_path}" }
-        super
-      end
-      # end
+    def before_template
+      comment { "BEGIN #{relative_file_path}" } if annotate_rendered_view?
+      super
+    end
 
-      # if ActionView::Base.annotate_rendered_view_with_filenames
-      def after_template
-        comment { "END #{relative_file_path}" }
-        super
-      end
-    # end
+    def after_template
+      comment { "END #{relative_file_path}" } if annotate_rendered_view?
+      super
+    end
 
     # def around_template(&block)
     #   component_name = self.class.name
@@ -31,6 +30,10 @@ module AppicaUI::ViewAnnotation
   end
 
   private
+
+  def annotate_rendered_view?
+    ActionView::Base.annotate_rendered_view_with_filenames
+  end
 
   def relative_file_path
     file_path = view_template_source_location.first

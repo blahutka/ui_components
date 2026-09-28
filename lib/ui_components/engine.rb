@@ -24,11 +24,6 @@ module UiComponents
       end
     end
 
-    # Run this configuration during initialization
-    initializer "ui_components.configure_action_view" do |app|
-      app.config.action_view.annotate_rendered_view_with_filenames = true
-    end
-
     # `form.ux.text_field :name` on every Rails form builder (AppicaUI::FormBuilder)
     initializer "ui_components.form_builder" do
       ActiveSupport.on_load(:action_view) do
