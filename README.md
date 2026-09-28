@@ -280,6 +280,23 @@ import "appica_ui/blocks"
 .dark { --primary: oklch(58.5% 0.233 277.117); --primary-foreground: oklch(1 0 0); }
 ```
 
+### What the engine wires into a host
+
+Two switches, both set in `config/application.rb`:
+
+```ruby
+config.ui_components.importmap = :auto  # pin the component JS only under Propshaft + importmap;
+                                        # true always, false never
+config.ui_components.lookbook  = false  # register the previews and docs pages in the host's Lookbook
+```
+
+`:auto` leaves Sprockets hosts alone: there the pins would point at assets the host never
+precompiled. A host that embeds the components but serves their JavaScript some other way — an
+engine shipping its own build, say — sets `importmap = false`.
+
+View annotations (`<!-- BEGIN app/components/… -->` around every component) follow the host's own
+`config.action_view.annotate_rendered_view_with_filenames`; the gem no longer turns it on.
+
 ### Theming
 
 Generate the overrides with Lookbook's **Blocks → Theme customizer** (or appica.dev's "Get CSS

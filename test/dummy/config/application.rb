@@ -39,6 +39,9 @@ module Dummy
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    # This is the gem's own component browser, so it opts in to the previews and docs pages.
+    config.ui_components.lookbook = true
+
     # The locales the Lookbook "Locale" switch offers (number formats etc. from rails-i18n)
     config.i18n.available_locales = %i[ en cs de ar ]
     config.i18n.default_locale = :en
