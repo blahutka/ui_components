@@ -37,7 +37,7 @@ overrides a label; `label: false` renders only the control. Other attributes suc
 | Helper | Control | Options |
 |--------|---------|---------|
 | `text_field` | Input | `label:`, `description:`, native input attributes |
-| `email_field`, `password_field`, `telephone_field`, `url_field`, `search_field` | Input with the corresponding type | Same options; passwords are blank unless `value:` is explicitly supplied |
+| `email_field`, `password_field`, `telephone_field`, `url_field`, `search_field`, `date_field` | Input with the corresponding type | Same options; passwords are blank unless `value:` is explicitly supplied. In a form without a model, pass `value:` — there is no object to read it from |
 | `number_field` | NumberField | `label:`, `description:`, `min:`, `max:`, `step:`, NumberField options |
 | `select(method, choices, options = {}, html_options = {})` | Select | Labels, description, `prompt:`, `include_blank:`, `selected:`, `include_hidden:` in `options`; `multiple:`, `required:`, `disabled:` and trigger attributes in `html_options` |
 | `collection_select(method, collection, value_method, text_method, options = {}, html_options = {})` | Select | As `select`; value and text methods may be symbols or procs |
@@ -90,7 +90,7 @@ label becomes the empty control's placeholder.
 ## Inputs
 
 ### Text field
-`text_field`, `email_field`, `url_field` (and `password_field`, `telephone_field`, `search_field`).
+`text_field`, `email_field`, `url_field` (and `password_field`, `telephone_field`, `search_field`, `date_field`).
 
 <%= embed AppicaUI::FormBuilderPreview, :text_field %>
 

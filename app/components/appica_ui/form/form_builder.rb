@@ -29,7 +29,7 @@
 # `label:` overrides the label (`human_attribute_name`), `label: false` renders the control alone;
 # other options go to the control.
 class AppicaUI::FormBuilder
-  TEXT_TYPES = { text_field: "text", email_field: "email", password_field: "password", telephone_field: "tel", url_field: "url", search_field: "search" }.freeze
+  TEXT_TYPES = { text_field: "text", email_field: "email", password_field: "password", telephone_field: "tel", url_field: "url", search_field: "search", date_field: "date" }.freeze
 
   def initialize(form)
     @form = form
@@ -38,7 +38,7 @@ class AppicaUI::FormBuilder
 
   TEXT_TYPES.each do |helper, type|
     define_method(helper) do |method, label: nil, description: nil, **options|
-      value = type == "password" ? nil : value_for(method)
+      value = options.delete(:value) { type == "password" ? nil : value_for(method) }
       field(method, label:, description:, id: options[:id], name: options[:name]) do |control|
         AppicaUI::Input.new(type:, value:, **constraints(method, type:), **control, **options)
       end

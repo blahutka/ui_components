@@ -72,7 +72,7 @@ class AppicaUI::FormBuilderTest < ActionView::TestCase
   end
 
   test "text helper variants set their input types" do
-    { email_field: "email", password_field: "password", telephone_field: "tel", url_field: "url" }.each do |helper, type|
+    { email_field: "email", password_field: "password", telephone_field: "tel", url_field: "url", date_field: "date" }.each do |helper, type|
       html = form_html(User.new(name: "example")) { |form| form.ux.public_send(helper, :name) }
       assert_equal type, html.at_css("#user_name")["type"]
       assert_equal "user[name]", html.at_css("#user_name")["name"]
@@ -108,6 +108,22 @@ class AppicaUI::FormBuilderTest < ActionView::TestCase
     assert_nil number["data-appica-ui--number-field-min-value"]
     assert_nil number["data-appica-ui--number-field-max-value"]
     assert_equal "0.5", number["data-appica-ui--number-field-step-value"]
+  end
+
+  # Search and filter forms have no model: the value comes from the params, and the name is the
+  # bare attribute rather than model[attribute].
+  test "a form without a model binds bare names and takes values explicitly" do
+    html = Nokogiri::HTML5.fragment(form_with(url: "/search", method: :get) do |form|
+      safe_join([
+        form.ux.search_field(:q, value: "Jana", label: "Search"),
+        form.ux.date_field(:from, value: "2026-09-01", label: "From")
+      ])
+    end)
+
+    assert_equal "q", html.at_css("#q")["name"]
+    assert_equal "Jana", html.at_css("#q")["value"]
+    assert_equal "date", html.at_css("#from")["type"]
+    assert_equal "2026-09-01", html.at_css("#from")["value"]
   end
 
   test "explicit values and constraints override inferred options" do
