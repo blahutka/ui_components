@@ -9,7 +9,7 @@ label: Text field
 A single-line text field with optional icons, text or controls at either end, and a clear button.
 [Appica docs](https://appica.dev/ui/components/react/input)
 
-<%= embed UI::InputPreview, :default %>
+<%= embed AppicaUI::InputPreview, :default %>
 
 ## Usage
 
@@ -29,30 +29,30 @@ frame and `input: { … }` reaches the inner `<input>`. Label it with a [Field](
 
 ### Variants
 
-<%= embed UI::InputPreview, :variants %>
+<%= embed AppicaUI::InputPreview, :variants %>
 
 ### Sizes
 
-<%= embed UI::InputPreview, :sizes %>
+<%= embed AppicaUI::InputPreview, :sizes %>
 
 ### Start & end slots
 
 A slot is an [icon](<%= page_path(:icons) %>) name, a string, or a block that renders anything - an Avatar, a
 Button.
 
-<%= embed UI::InputPreview, :slots %>
+<%= embed AppicaUI::InputPreview, :slots %>
 
 ### Clearable
 
-<%= embed UI::InputPreview, :clearable %>
+<%= embed AppicaUI::InputPreview, :clearable %>
 
 ### Disabled, read-only & error states
 
-<%= embed UI::InputPreview, :states %>
+<%= embed AppicaUI::InputPreview, :states %>
 
 ### RTL
 
-<%= embed UI::InputPreview, :rtl %>
+<%= embed AppicaUI::InputPreview, :rtl %>
 
 ## API reference
 
@@ -67,7 +67,7 @@ Button.
 | `input:` | `Hash` | `{}` | Attributes for the inner `<input>` when it's wrapped. |
 
 Any other attribute goes to the `<input>` (`class:` to the frame when wrapped). Clearing dispatches `input` on the
-field and `ui--input:clear` on the frame.
+field and `appica-ui--input:clear` on the frame.
 
 ## Accessibility
 

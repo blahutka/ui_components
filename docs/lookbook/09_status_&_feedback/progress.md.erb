@@ -8,7 +8,7 @@ title: Progress
 Displays the completion status of a task that takes a while.
 [Appica docs](https://appica.dev/ui/components/react/progress)
 
-<%= embed UI::ProgressPreview, :default %>
+<%= embed AppicaUI::ProgressPreview, :default %>
 
 ## Usage
 
@@ -32,40 +32,40 @@ weight with `thickness:` (plus `size:` for the ring).
 
 ### Circular
 
-<%= embed UI::ProgressPreview, :circular %>
+<%= embed AppicaUI::ProgressPreview, :circular %>
 
 ### Custom color & thickness
 
 `indicator_color:` accepts any CSS color (a theme token like `var(--success-emphasis)` keeps it on-brand) and
 `thickness:` the weight in pixels - for both the bar and the ring.
 
-<%= embed UI::ProgressPreview, :custom %>
+<%= embed AppicaUI::ProgressPreview, :custom %>
 
 ### File upload (controlled)
 
-Advance the value as bytes arrive by setting `data-ui--progress-value-value` - the fill animates between
+Advance the value as bytes arrive by setting `data-appica-ui--progress-value-value` - the fill animates between
 values, and at `max` every part gets `data-complete`, which the card uses (`group-has-data-complete:`) to swap
 the icon and label and reveal an action.
 
-<%= embed UI::ProgressPreview, :upload %>
+<%= embed AppicaUI::ProgressPreview, :upload %>
 
 ```js
 xhr.upload.addEventListener("progress", ({ loaded, total }) => {
-  progress.setAttribute("data-ui--progress-value-value", Math.round((loaded / total) * 100))
+  progress.setAttribute("data-appica-ui--progress-value-value", Math.round((loaded / total) * 100))
 })
 ```
 
 From the server, replace it with a Turbo Stream as a job advances:
 
 ```ruby
-turbo_stream.replace "import-progress", UI::Progress.new(value: import.percent, id: "import-progress", aria_label: "Import")
+turbo_stream.replace "import-progress", AppicaUI::Progress.new(value: import.percent, id: "import-progress", aria_label: "Import")
 ```
 
 ### RTL
 
 The label and value swap sides and the bar fills from the right.
 
-<%= embed UI::ProgressPreview, :rtl %>
+<%= embed AppicaUI::ProgressPreview, :rtl %>
 
 ## API reference
 

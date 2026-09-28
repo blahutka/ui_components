@@ -9,7 +9,7 @@ A recent-transactions card: All / Income / Spending filter tabs over rows of ico
 dates and signed amounts. A **block** composed from [Tabs](<%= page_path(:tabs) %>),
 [Thumbnail](<%= page_path(:thumbnail) %>) and Icon, as on the [Appica homepage](https://appica.dev/ui).
 
-<%= embed Blocks::TransactionsPreview, :default %>
+<%= embed AppicaUI::Blocks::TransactionsPreview, :default %>
 
 ## Usage
 
@@ -24,7 +24,7 @@ end
 
 - A positive `amount:` is income (a `+` in the success color), a negative one spending (`-`); both use the
   block's `currency:` and the locale's number format.
-- The tabs filter the rows in the browser by that kind (`blocks--transactions`); a filter with no rows shows
+- The tabs filter the rows in the browser by that kind (`appica-ui--blocks--transactions`); a filter with no rows shows
   "No transactions yet". `filters: false` drops the tabs.
 - The meta line joins `category:` and `date:` (formatted per locale).
 
@@ -37,11 +37,11 @@ Czech, German and Arabic. Switch the **Locale** display option to try it.
 
 ### Empty filter
 
-<%= embed Blocks::TransactionsPreview, :spending_only %>
+<%= embed AppicaUI::Blocks::TransactionsPreview, :spending_only %>
 
 ### RTL
 
-<%= embed Blocks::TransactionsPreview, :rtl %>
+<%= embed AppicaUI::Blocks::TransactionsPreview, :rtl %>
 
 ## API reference
 

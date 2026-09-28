@@ -8,7 +8,7 @@ title: Collapsible
 A section that expands and collapses to show or hide its content.
 [Appica docs](https://appica.dev/ui/components/react/collapsible)
 
-<%= embed UI::CollapsiblePreview, :default %>
+<%= embed AppicaUI::CollapsiblePreview, :default %>
 
 ## Usage
 
@@ -30,7 +30,7 @@ Collapsible is a single show/hide disclosure - one trigger controlling one panel
 
 The parts ship almost unstyled so the collapsible inherits your layout - the examples add the chevron and
 spacing. The state is rendered on the server (`data-open` / `data-closed` on the root), so the page is
-right before JavaScript loads; the `ui--collapsible` controller toggles and animates it.
+right before JavaScript loads; the `appica-ui--collapsible` controller toggles and animates it.
 
 ## Examples
 
@@ -39,7 +39,7 @@ right before JavaScript loads; the `ui--collapsible` controller toggles and anim
 Nest a Collapsible inside another Collapsible's content to build an expandable tree. Each folder is its
 own disclosure; files are plain rows.
 
-<%= embed UI::CollapsiblePreview, :file_tree %>
+<%= embed AppicaUI::CollapsiblePreview, :file_tree %>
 
 ```ruby
 def tree_item(node)
@@ -60,7 +60,7 @@ end
 Reveal extra controls only when they're needed. The trigger renders as a Button through its block argument,
 and the icon swaps from the root's `data-open` state (`group-data-open:`) - no extra JavaScript.
 
-<%= embed UI::CollapsiblePreview, :settings_panel %>
+<%= embed AppicaUI::CollapsiblePreview, :settings_panel %>
 
 ```ruby
 Collapsible(class: "group") do
@@ -79,20 +79,20 @@ end
 Because the trigger and panel are independent, the trigger can sit below the always-visible text, with its
 label following the open state.
 
-<%= embed UI::CollapsiblePreview, :show_more %>
+<%= embed AppicaUI::CollapsiblePreview, :show_more %>
 
 ### Controlled
 
-Any button inside the root drives it with `data: { action: "ui--collapsible#toggle" }` (or `#open` /
-`#close`). The controller dispatches `ui--collapsible:open-change` with `{ open }`.
+Any button inside the root drives it with `data: { action: "appica-ui--collapsible#toggle" }` (or `#open` /
+`#close`). The controller dispatches `appica-ui--collapsible:open-change` with `{ open }`.
 
-<%= embed UI::CollapsiblePreview, :controlled %>
+<%= embed AppicaUI::CollapsiblePreview, :controlled %>
 
 ### Disabled
 
 `disabled: true` locks the panel shut. The trigger drops out of the tab order and exposes `data-disabled`.
 
-<%= embed UI::CollapsiblePreview, :disabled %>
+<%= embed AppicaUI::CollapsiblePreview, :disabled %>
 
 ### Hidden until found
 
@@ -100,14 +100,14 @@ Closed panels carry the `hidden` attribute. With `hidden_until_found: true` they
 `hidden="until-found"` instead, so the browser's find-in-page (and crawlers) can reach the text - and a
 match opens the panel.
 
-<%= embed UI::CollapsiblePreview, :hidden_until_found %>
+<%= embed AppicaUI::CollapsiblePreview, :hidden_until_found %>
 
 ### RTL
 
 The trigger and panel align to the right, the indent moves via the logical `ps-*` padding, and the chevron
 mirrors (`rtl:-scale-x-100`).
 
-<%= embed UI::CollapsiblePreview, :rtl %>
+<%= embed AppicaUI::CollapsiblePreview, :rtl %>
 
 ## API reference
 
@@ -120,7 +120,7 @@ mirrors (`rtl:-scale-x-100`).
 | `id:`, `class:`, `data:`, … | | | Other attributes go on the root `<div>`. |
 
 The root carries `data-open` / `data-closed`; the controller exposes the `toggle`, `open` and `close`
-actions and the `ui--collapsible:open-change` event.
+actions and the `appica-ui--collapsible:open-change` event.
 
 ### CollapsibleTrigger
 

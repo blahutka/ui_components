@@ -5,7 +5,7 @@ title: Form builder
 
 <%= UiComponents::Lookbook::TableOfContents.call(page) %>
 
-Keep Rails' `form_with` and use `form.ui` for model-bound UI components. Each helper renders
+Keep Rails' `form_with` and use `form.ux` for model-bound UI components. Each helper renders
 a Field with a label, the control, an optional description, and the model's validation errors.
 No custom `builder:` option is needed.
 
@@ -19,9 +19,9 @@ The full form in one ERB view lives at `/users/new` in the dummy app.
 
 ```erb
 <%%= form_with model: @user do |form| %>
-  <%%= form.ui.text_field :name, description: "As it appears on your profile" %>
-  <%%= form.ui.number_field :age, min: 0 %>
-  <%%= form.ui.select :locations, [["Prague", "prg"], ["Berlin", "ber"]],
+  <%%= form.ux.text_field :name, description: "As it appears on your profile" %>
+  <%%= form.ux.number_field :age, min: 0 %>
+  <%%= form.ux.select :locations, [["Prague", "prg"], ["Berlin", "ber"]],
         { prompt: "Pick cities" }, { multiple: true } %>
   <%%= form.submit %>
 <%% end %>
@@ -92,60 +92,60 @@ label becomes the empty control's placeholder.
 ### Text field
 `text_field`, `email_field`, `url_field` (and `password_field`, `telephone_field`, `search_field`).
 
-<%= embed UI::FormBuilderPreview, :text_field %>
+<%= embed AppicaUI::FormBuilderPreview, :text_field %>
 
 ### Number field
-<%= embed UI::FormBuilderPreview, :number_field %>
+<%= embed AppicaUI::FormBuilderPreview, :number_field %>
 
 ### Textarea
-<%= embed UI::FormBuilderPreview, :textarea %>
+<%= embed AppicaUI::FormBuilderPreview, :textarea %>
 
 ### Select
 `select` with a prompt, `multiple: true`, and `collection_select`.
 
-<%= embed UI::FormBuilderPreview, :select_field %>
+<%= embed AppicaUI::FormBuilderPreview, :select_field %>
 
 ### Combobox
-<%= embed UI::FormBuilderPreview, :combobox %>
+<%= embed AppicaUI::FormBuilderPreview, :combobox %>
 
 ### Checkbox
 The second box uses custom checked and unchecked values (`"team"` / `"free"`).
 
-<%= embed UI::FormBuilderPreview, :checkbox %>
+<%= embed AppicaUI::FormBuilderPreview, :checkbox %>
 
 ### Checkbox group
-<%= embed UI::FormBuilderPreview, :checkbox_group %>
+<%= embed AppicaUI::FormBuilderPreview, :checkbox_group %>
 
 ### Chip
-<%= embed UI::FormBuilderPreview, :chip %>
+<%= embed AppicaUI::FormBuilderPreview, :chip %>
 
 ### Radio
-<%= embed UI::FormBuilderPreview, :radio %>
+<%= embed AppicaUI::FormBuilderPreview, :radio %>
 
 ### Switch
-<%= embed UI::FormBuilderPreview, :switch %>
+<%= embed AppicaUI::FormBuilderPreview, :switch %>
 
 ### Slider
-<%= embed UI::FormBuilderPreview, :slider %>
+<%= embed AppicaUI::FormBuilderPreview, :slider %>
 
 ### OTP field
-<%= embed UI::FormBuilderPreview, :otp_field %>
+<%= embed AppicaUI::FormBuilderPreview, :otp_field %>
 
 ### Autocomplete
-<%= embed UI::FormBuilderPreview, :autocomplete %>
+<%= embed AppicaUI::FormBuilderPreview, :autocomplete %>
 
 ### Rating
-<%= embed UI::FormBuilderPreview, :rating %>
+<%= embed AppicaUI::FormBuilderPreview, :rating %>
 
 ### Toggle
-<%= embed UI::FormBuilderPreview, :toggle %>
+<%= embed AppicaUI::FormBuilderPreview, :toggle %>
 
 ### Toggle group
-<%= embed UI::FormBuilderPreview, :toggle_group %>
+<%= embed AppicaUI::FormBuilderPreview, :toggle_group %>
 
 ## In Phlex views
 
-phlex-rails' `form_with` yields its own builder, and `form.ui` works on it too: each helper
+phlex-rails' `form_with` yields its own builder, and `form.ux` works on it too: each helper
 writes its Field straight into the view, like `form.text_field` does there - no `raw` needed.
 
 ```ruby
@@ -156,10 +156,10 @@ class ProfileForm < ApplicationComponent
 
   def view_template
     form_with(model: @user) do |form|
-      form.ui.text_field :name
-      form.ui.chip_group :tags, User::TAGS
+      form.ux.text_field :name
+      form.ux.chip_group :tags, User::TAGS
       form.fields_for :address do |address|
-        address.ui.text_field :city
+        address.ux.text_field :city
       end
       Button(type: "submit") { "Save" }
     end
@@ -192,19 +192,19 @@ An empty number submits `""`, which an integer model attribute casts to `nil`.
 
 ## Nested forms
 
-<%= embed UI::FormBuilderPreview, :nested_fields %>
+<%= embed AppicaUI::FormBuilderPreview, :nested_fields %>
 
 The builder returned by `fields_for` also has `ui`. Rails supplies every name and ID, including
 `_attributes`, collection indices, and a custom `child_index:`:
 
 ```erb
 <%%= form.fields_for :address do |address| %>
-  <%%= address.ui.text_field :city %>
-  <%%= address.ui.select :country, Address::COUNTRIES %>
+  <%%= address.ux.text_field :city %>
+  <%%= address.ux.select :country, Address::COUNTRIES %>
 <%% end %>
 <%%= form.fields_for :phones do |phone| %>
-  <%%= phone.ui.telephone_field :number %>
-  <%%= phone.ui.select :kind, %w[mobile home work] %>
+  <%%= phone.ux.telephone_field :number %>
+  <%%= phone.ux.select :kind, %w[mobile home work] %>
 <%% end %>
 ```
 
@@ -248,7 +248,7 @@ saved User:
 
 Like Rails, multiple Select, check box groups and multiple Combobox controls include an empty
 hidden input so clearing all selections still submits the key. Disable it with
-`include_hidden: false` (in Select's `options` hash when using `form.ui`). The dummy User setters
+`include_hidden: false` (in Select's `options` hash when using `form.ux`). The dummy User setters
 normalize those arrays with `Array(values).compact_blank`, so `[""]` becomes `[]` and fails presence
 validation.
 

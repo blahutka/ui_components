@@ -8,7 +8,7 @@ title: Avatar
 A user image with a text or icon fallback when it's missing.
 [Appica docs](https://appica.dev/ui/components/react/avatar)
 
-<%= embed UI::AvatarPreview, :default %>
+<%= embed AppicaUI::AvatarPreview, :default %>
 
 ## Usage
 
@@ -23,7 +23,7 @@ Avatar represents a person or entity. Compose it from its parts:
 
 - **Avatar** - the root that sets size and shape and clips its children to the rounded silhouette.
 - **AvatarImage** - the photo. It stays hidden until it has loaded, so a broken or slow image never
-  flashes; the `ui--avatar` controller then swaps it in for the fallback.
+  flashes; the `appica-ui--avatar` controller then swaps it in for the fallback.
 - **AvatarFallback** - what shows until (or unless) the image loads: initials or an icon.
 - **AvatarBadge** - an optional status dot in the corner.
 - **AvatarGroup** - a wrapper that overlaps a row of avatars and passes a shared size/shape down.
@@ -38,7 +38,7 @@ image, fallback text, and status badge together.
 When the image is missing, still loading, or fails to load, `AvatarFallback` renders instead. Use
 initials for people, or an icon for a generic placeholder.
 
-<%= embed UI::AvatarPreview, :fallback %>
+<%= embed AppicaUI::AvatarPreview, :fallback %>
 
 ```ruby
 Avatar(size: :lg) do
@@ -56,14 +56,14 @@ end
 Seven presets run from `:"2xs"` to `:"2xl"`. Because the avatar is sized in em, the fallback text
 and status badge scale along with the image.
 
-<%= embed UI::AvatarPreview, :sizes %>
+<%= embed AppicaUI::AvatarPreview, :sizes %>
 
 ### Custom size
 
 Pass a number to `size:` for an exact pixel dimension when a preset doesn't fit. It drives the
 root's font-size, so everything inside still scales proportionally.
 
-<%= embed UI::AvatarPreview, :custom_size %>
+<%= embed AppicaUI::AvatarPreview, :custom_size %>
 
 ```ruby
 Avatar(size: 44) { ... }
@@ -74,14 +74,14 @@ Avatar(size: 44) { ... }
 `shape: :circle` (the default) renders a full circle; `shape: :rounded` uses a squircle-style
 rounded square for a more app-like look.
 
-<%= embed UI::AvatarPreview, :shape %>
+<%= embed AppicaUI::AvatarPreview, :shape %>
 
 ### Status badge
 
 Drop an `AvatarBadge` inside the avatar for a corner status dot. Add `animate: true` for a pulsing
 ping that draws the eye to an online indicator, and recolor it with a `text-*` class.
 
-<%= embed UI::AvatarPreview, :status_badge %>
+<%= embed AppicaUI::AvatarPreview, :status_badge %>
 
 ```ruby
 Avatar(size: :lg) do
@@ -97,7 +97,7 @@ end
 as a stack. It passes a shared `size:`/`shape:` to its children, and any non-image avatar (like a
 +5 counter) sits in the same rhythm. `orientation: :vertical` stacks them in a column.
 
-<%= embed UI::AvatarPreview, :group %>
+<%= embed AppicaUI::AvatarPreview, :group %>
 
 ```ruby
 AvatarGroup(size: :md, aria_label: "Project members") do
@@ -117,7 +117,7 @@ end
 swapped for the photo automatically - no extra state needed. The demo image is served with a 2.5s
 delay; use the embed's reload to watch it again.
 
-<%= embed UI::AvatarPreview, :loading %>
+<%= embed AppicaUI::AvatarPreview, :loading %>
 
 ```ruby
 Avatar(size: :xl, class: "bg-transparent") do
@@ -129,10 +129,10 @@ end
 ### Listening for loading changes
 
 The controller moves the root's `data-status` through `idle`, `loading`, `loaded` and `error`, and
-dispatches `ui--avatar:loading-status-change` with `{ status }` (React's `onLoadingStatusChange`).
+dispatches `appica-ui--avatar:loading-status-change` with `{ status }` (React's `onLoadingStatusChange`).
 
 ```ruby
-Avatar(data: { action: "ui--avatar:loading-status-change->profile#avatarStatus" }) { ... }
+Avatar(data: { action: "appica-ui--avatar:loading-status-change->profile#avatarStatus" }) { ... }
 ```
 
 ### RTL
@@ -140,7 +140,7 @@ Avatar(data: { action: "ui--avatar:loading-status-change->profile#avatarStatus" 
 The status badge moves to the start corner and the group stacks from the right, because both are
 expressed with logical properties.
 
-<%= embed UI::AvatarPreview, :rtl %>
+<%= embed AppicaUI::AvatarPreview, :rtl %>
 
 ## API reference
 

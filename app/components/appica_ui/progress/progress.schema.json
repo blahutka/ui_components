@@ -1,0 +1,109 @@
+{
+  "name": "Progress",
+  "kit": "AppicaUI",
+  "description": "The completion status of a task that takes a while - an upload, an import, an install. (For a static measurement use Meter; for an unknown duration, Loader or Spinner.)\n\n  Progress(value: 60) do\n    ProgressLabel { \"Uploading\" }\n    ProgressValue()\n  end\n\n  Progress(variant: :circular, value: 72, size: 64) { ProgressValue() }\n\n`variant: :bar` draws a track under the label and value; `:circular` an SVG ring with the value in its center. `indicator_color:` takes any CSS color, `thickness:` the weight in px. `value: nil` is indeterminate. To update it live, set `data-appica-ui--progress-value-value` on the root.",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Progress(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/09_status_&_feedback/progress.md.erb",
+  "appica": "https://appica.dev/ui/components/react/progress",
+  "components": {
+    "Progress": {
+      "constant": "AppicaUI::Progress",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {},
+          "variant": {
+            "enum": [
+              "bar",
+              "circular"
+            ],
+            "default": "bar"
+          },
+          "min": {
+            "default": 0,
+            "type": "integer"
+          },
+          "max": {
+            "default": 100,
+            "type": "integer"
+          },
+          "size": {
+            "default": 56,
+            "type": "integer"
+          },
+          "thickness": {
+            "default": null
+          },
+          "indicator_color": {
+            "default": null
+          },
+          "format": {
+            "default": null
+          },
+          "locale": {
+            "default": null
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "additionalProperties": true
+      },
+      "parts": [
+        "AppicaUI::ProgressLabel",
+        "AppicaUI::ProgressValue"
+      ]
+    },
+    "ProgressLabel": {
+      "constant": "AppicaUI::ProgressLabel",
+      "description": "Names the task; the root points aria-labelledby at it.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Progress"
+      ]
+    },
+    "ProgressValue": {
+      "constant": "AppicaUI::ProgressValue",
+      "description": "Prints the formatted value (\"60%\"). A block receives the formatted string and the raw value:\n\n  ProgressValue { |formatted, _value| \"#{formatted} done\" }",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Progress"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "notes": "The bar layout: a label on the left, the percentage on the right, the track beneath.",
+      "code": "\", min: 0, max: 100, size: 64)\n  phlex do\n    Progress(variant:, min:, max:, value: value.to_f, thickness: thickness.presence&.to_i, indicator_color: indicator_color.to_s, size:, class: (\"w-72 max-w-full\" if variant.to_sym == :bar)) do\n      ProgressLabel { \"Uploading\" }\n      ProgressValue()\n    end\n  end"
+    },
+    {
+      "name": "Circular",
+      "notes": "`variant: :circular` draws a ring with the value centered; `size:` sets its diameter and an\noptional ProgressLabel drops below.",
+      "code": "phlex do\n  div(class: \"flex items-center gap-10\") do\n    Progress(variant: :circular, value: 72, size: 64) { ProgressValue() }\n    Progress(variant: :circular, value: 40, size: 64) do\n      ProgressValue()\n      ProgressLabel { \"Synced\" }\n    end\n  end\nend"
+    },
+    {
+      "name": "Custom color & thickness",
+      "notes": "`indicator_color:` takes any CSS color (a theme token keeps it on-brand) and `thickness:`\nthe track weight in pixels - for both the bar and the ring.",
+      "code": "phlex do\n  div(class: \"flex w-72 max-w-full flex-col gap-7\") do\n    Progress(value: 88, thickness: 10, indicator_color: \"var(--success-emphasis)\") do\n      ProgressLabel { \"Backup\" }\n      ProgressValue()\n    end\n    Progress(value: 24, thickness: 2, indicator_color: \"var(--warning-emphasis)\") do\n      ProgressLabel { \"Storage\" }\n      ProgressValue()\n    end\n    div(class: \"flex justify-center\") do\n      Progress(variant: :circular, value: 62, size: 72, thickness: 8, indicator_color: \"var(--secondary-emphasis)\") { ProgressValue() }\n    end\n  end\nend"
+    },
+    {
+      "name": "File upload (controlled)",
+      "notes": "Advance the value as bytes arrive (here on a timer) by setting `data-appica-ui--progress-value-value`;\nthe fill animates between values. At 100 the parts get data-complete, and the card swaps the\nicon and label and reveals the action through `group-has-data-complete:` classes.",
+      "code": "phlex do\n  div(class: \"group/upload border-border bg-background w-80 max-w-full rounded-xl border p-4\") do\n    div(class: \"flex items-center gap-3\") do\n      span(class: \"bg-background-muted text-foreground-muted group-has-data-complete/upload:bg-success-subtle group-has-data-complete/upload:text-success-emphasis flex size-12 shrink-0 items-center justify-center rounded-lg transition-colors\") do\n        Icon(:photo, stroke_width: 1.75, class: \"size-5 group-has-data-complete/upload:hidden\")\n        svg(viewBox: \"0 0 24 24\", fill: \"none\", aria_hidden: \"true\", class: \"hidden size-5 group-has-data-complete/upload:block\") do |s|\n          s.path(d: \"M5 12.5l4.5 4.5L19 7\", stroke: \"currentColor\", stroke_width: \"2\", stroke_linecap: \"round\", stroke_linejoin: \"round\", pathLength: \"1\",\n            class: \"[stroke-dasharray:1] [stroke-dashoffset:1] group-has-data-complete/upload:animate-[upload-check_500ms_ease-out_forwards] motion-reduce:[stroke-dashoffset:0]\")\n        end\n      end\n      div(class: \"min-w-0 flex-1\") do\n        p(class: \"text-foreground-intense truncate text-sm font-medium\") { \"cover-photo.jpg\" }\n        Progress(value: 0, class: \"mt-1.5 gap-y-1\", id: \"upload-progress\") do\n          ProgressValue(class: \"text-foreground-muted text-xs\")\n          ProgressLabel(class: \"text-foreground-muted text-xs font-normal\") do\n            span(class: \"group-has-data-complete/upload:hidden\") { \"Uploading…\" }\n            span(class: \"hidden group-has-data-complete/upload:inline\") { \"Uploaded\" }\n          end\n        end\n      end\n    end\n    Button(variant: :soft, size: :sm, class: \"mt-3 hidden w-full group-has-data-complete/upload:flex\", id: \"upload-again\") { \"Upload again\" }\n  end\n  style { raw safe(\"@keyframes upload-check { to { stroke-dashoffset: 0 } }\") }\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const progress = document.getElementById(\"upload-progress\")\n      let timer\n      const set = value => progress.setAttribute(\"data-appica-ui--progress-value-value\", value)\n      const run = () => {\n        clearInterval(timer)\n        let value = 0\n        set(value)\n        timer = setInterval(() => {\n          value = Math.min(100, value + 7)\n          set(value)\n          if (value >= 100) clearInterval(timer)\n        }, 280)\n      }\n      document.getElementById(\"upload-again\").addEventListener(\"click\", run)\n      run()\n    JS\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "The label and value swap sides and the bar fills from the right.",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"flex w-72 max-w-full flex-col items-center gap-7\") do\n    Progress(value: 60) do\n      ProgressLabel { \"جارٍ الرفع\" }\n      ProgressValue()\n    end\n    Progress(variant: :circular, value: 45, size: 64) { ProgressValue() }\n  end\nend"
+    }
+  ]
+}

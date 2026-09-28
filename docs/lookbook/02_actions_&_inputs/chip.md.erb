@@ -8,7 +8,7 @@ title: Chip
 A compact pill for tags, attributes, filters and removable tokens.
 [Appica docs](https://appica.dev/ui/components/react/chip)
 
-<%= embed UI::ChipPreview, :default %>
+<%= embed AppicaUI::ChipPreview, :default %>
 
 ## Usage
 
@@ -20,50 +20,50 @@ Chip(href: tag_path(tag)) { "##{tag.name}" }
 
 A `<button>` (an `<a>` with `href:`) in [Button](<%= page_path(:button) %>)'s palette with compact sizes.
 `dismissible: true` adds a ✕: clicking the chip plays a blur-and-scale exit, removes it and emits
-`ui--chip:dismiss` - cancel that event to handle removal yourself (e.g. a Turbo Stream `remove`).
+`appica-ui--chip:dismiss` - cancel that event to handle removal yourself (e.g. a Turbo Stream `remove`).
 
 ## Examples
 
 ### Variants
 
-<%= embed UI::ChipPreview, :variants %>
+<%= embed AppicaUI::ChipPreview, :variants %>
 
 ### Sizes
 
-<%= embed UI::ChipPreview, :sizes %>
+<%= embed AppicaUI::ChipPreview, :sizes %>
 
 ### With an icon
 
-<%= embed UI::ChipPreview, :with_icon %>
+<%= embed AppicaUI::ChipPreview, :with_icon %>
 
 ### Dismissible
 
-<%= embed UI::ChipPreview, :dismissible %>
+<%= embed AppicaUI::ChipPreview, :dismissible %>
 
 ### Selectable filters
 
-<%= embed UI::ChipPreview, :filters %>
+<%= embed AppicaUI::ChipPreview, :filters %>
 
 ### Chip group
 
-<%= embed UI::ChipPreview, :group %>
+<%= embed AppicaUI::ChipPreview, :group %>
 
 ### Selectable (form)
 
 `ChipCheckbox` is a chip you can select: a `<label>` around a visually hidden checkbox, so a set of
 them submits like check boxes (`job_types[]`). The checked chip turns primary and shows a check,
-with no JavaScript. In a Rails form, `form.ui.chip_group :tags, choices` renders the whole group
+with no JavaScript. In a Rails form, `form.ux.chip_group :tags, choices` renders the whole group
 bound to the model - see the [Form builder](<%= page_path(:form_builder) %>).
 
-<%= embed UI::ChipPreview, :selectable %>
+<%= embed AppicaUI::ChipPreview, :selectable %>
 
 ### As a link
 
-<%= embed UI::ChipPreview, :link %>
+<%= embed AppicaUI::ChipPreview, :link %>
 
 ### RTL
 
-<%= embed UI::ChipPreview, :rtl %>
+<%= embed AppicaUI::ChipPreview, :rtl %>
 
 ## API reference
 
@@ -78,7 +78,7 @@ bound to the model - see the [Form builder](<%= page_path(:form_builder) %>).
 | `disabled:` | `Boolean` | `false` | Disables it. |
 | `href:` | `String` | - | Render an `<a>`. |
 
-Event: `ui--chip:dismiss` (cancelable).
+Event: `appica-ui--chip:dismiss` (cancelable).
 
 ### ChipGroup
 
@@ -86,7 +86,7 @@ Event: `ui--chip:dismiss` (cancelable).
 |------|------|---------|-------------|
 | `variant:` / `size:` | as Chip | - | Defaults for the chips inside. |
 
-Dispatch `ui--chip-group:clear` on it to dismiss every dismissible chip.
+Dispatch `appica-ui--chip-group:clear` on it to dismiss every dismissible chip.
 
 ### ChipCheckbox
 

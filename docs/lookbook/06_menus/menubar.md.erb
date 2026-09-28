@@ -8,7 +8,7 @@ title: Menubar
 A bar of menus for an app's top-level commands.
 [Appica docs](https://appica.dev/ui/components/react/menubar)
 
-<%= embed UI::MenubarPreview, :default %>
+<%= embed AppicaUI::MenubarPreview, :default %>
 
 ## Usage
 
@@ -47,14 +47,14 @@ The root is the bar that coordinates a row (or column) of menus, sharing `varian
 - **MenubarTrigger** - the top-level label that opens its menu. Once any menu is open, moving the pointer
   to a sibling trigger switches to it; arrow keys move focus along the bar.
 - **MenubarContent** - the popup for that menu. In a vertical bar it opens to the side.
-- **MenubarItem** - one action. Dispatches `ui--menubar:select` and closes the menu by default.
+- **MenubarItem** - one action. Dispatches `appica-ui--menubar:select` and closes the menu by default.
 - **MenubarGroup / MenubarGroupLabel / MenubarSeparator** - structure for sectioned menus.
 - **MenubarCheckboxItem / MenubarRadioGroup + MenubarRadioItem** - stateful options with a check indicator.
 - **MenubarLinkItem** - an item that renders an `<a>` for navigation.
 - **MenubarSub / MenubarSubTrigger / MenubarSubContent** - a nested submenu.
 
 Inside an item, put a leading icon on `data: { icon: "start" }`, and push a trailing `Kbd` shortcut to the
-edge with `class: "ms-auto"`. All behaviour lives in the `ui--menubar` Stimulus controller.
+edge with `class: "ms-auto"`. All behaviour lives in the `appica-ui--menubar` Stimulus controller.
 
 Reach for a Menubar for the persistent command bar of an application (File / Edit / View …).
 
@@ -65,14 +65,14 @@ Reach for a Menubar for the persistent command bar of an application (File / Edi
 `variant: :pill` (default) gives each trigger a hover/active pill, while `variant: :line` draws an
 animated underline - closer to a classic desktop menu bar.
 
-<%= embed UI::MenubarPreview, :variants %>
+<%= embed AppicaUI::MenubarPreview, :variants %>
 
 ### Vertical
 
 `orientation: :vertical` stacks the menus into a sidebar. Triggers can carry a leading icon, and each menu
 opens to the inline-end side (below the trigger when there's no room).
 
-<%= embed UI::MenubarPreview, :vertical %>
+<%= embed AppicaUI::MenubarPreview, :vertical %>
 
 ```ruby
 Menubar(orientation: :vertical, aria_label: "Workspace", class: "w-35") do
@@ -91,15 +91,15 @@ end
 Nest a `MenubarSub` inside a menu with its own `MenubarSubTrigger` and `MenubarSubContent`. The sub-trigger
 shows a chevron and opens to the side on hover, click or the arrow key, flipping near a screen edge.
 
-<%= embed UI::MenubarPreview, :submenus %>
+<%= embed AppicaUI::MenubarPreview, :submenus %>
 
 ### Checkbox & radio items
 
 `MenubarCheckboxItem` toggles; a `MenubarRadioGroup` of `MenubarRadioItem`s picks a single value, both
 labelled with a `MenubarGroupLabel`. They keep the menu open and dispatch
-`ui--menubar:checked-change` ({ item, checked }) and `ui--menubar:value-change` ({ group, value }).
+`appica-ui--menubar:checked-change` ({ item, checked }) and `appica-ui--menubar:value-change` ({ group, value }).
 
-<%= embed UI::MenubarPreview, :selections %>
+<%= embed AppicaUI::MenubarPreview, :selections %>
 
 ```ruby
 MenubarContent do
@@ -121,7 +121,7 @@ end
 A leading icon on `data: { icon: "start" }` works on both a `MenubarTrigger` and a `MenubarItem`; pair an
 item with a trailing `Kbd` shortcut pushed to the edge with `ms-auto`.
 
-<%= embed UI::MenubarPreview, :icons %>
+<%= embed AppicaUI::MenubarPreview, :icons %>
 
 ```ruby
 MenubarItem do
@@ -136,7 +136,7 @@ end
 Every part is plain markup; listen to the controller's events from your own Stimulus controller:
 
 ```ruby
-Menubar(aria_label: "Application", data: { action: "ui--menubar:select->editor#command" }) { ... }
+Menubar(aria_label: "Application", data: { action: "appica-ui--menubar:select->editor#command" }) { ... }
 ```
 
 `event.detail` carries `{ item, label }` - put a `data-command` on the item to tell them apart.
@@ -146,7 +146,7 @@ Menubar(aria_label: "Application", data: { action: "ui--menubar:select->editor#c
 The bar lays out from the right, arrow-key focus reverses, and popups and submenus open towards the
 inline end.
 
-<%= embed UI::MenubarPreview, :rtl %>
+<%= embed AppicaUI::MenubarPreview, :rtl %>
 
 ## API reference
 
@@ -185,10 +185,10 @@ inline end.
 
 | Event | Detail |
 |-------|--------|
-| `ui--menubar:select` | `{ item, label }` |
-| `ui--menubar:checked-change` | `{ item, checked }` |
-| `ui--menubar:value-change` | `{ group, value }` |
-| `ui--menubar:open-change` | `{ menu, open }` |
+| `appica-ui--menubar:select` | `{ item, label }` |
+| `appica-ui--menubar:checked-change` | `{ item, checked }` |
+| `appica-ui--menubar:value-change` | `{ group, value }` |
+| `appica-ui--menubar:open-change` | `{ menu, open }` |
 
 ## Accessibility
 

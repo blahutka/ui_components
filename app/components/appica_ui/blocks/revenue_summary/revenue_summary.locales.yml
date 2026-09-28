@@ -1,0 +1,103 @@
+# AppicaUI::Blocks::RevenueSummary strings - t(".key") in any of its parts looks here.
+# Every language in one file; add a locale as another top-level key with the same keys
+# (test/components/locales_test.rb checks that they match).
+en:
+  ui_components:
+    appica_ui:
+      blocks:
+        revenue_summary:
+          title:
+            day: Revenue today
+            week: Weekly revenue
+            month: Monthly revenue
+            year: Yearly revenue
+            other: Revenue
+          previous:
+            day: yesterday
+            week: last week
+            month: last month
+            year: last year
+            other: last period
+          comparison: vs %{amount} %{previous}
+          markets: Top markets
+          chart: Revenue trend
+          stats:
+            orders: Orders
+            average_order: Avg. order value
+            refunds: Refunds
+            conversion: Conversion
+cs:
+  ui_components:
+    appica_ui:
+      blocks:
+        revenue_summary:
+          title:
+            day: Tržby dnes
+            week: Týdenní tržby
+            month: Měsíční tržby
+            year: Roční tržby
+            other: Tržby
+          previous:
+            day: včera
+            week: minulý týden
+            month: minulý měsíc
+            year: minulý rok
+            other: předchozí období
+          comparison: oproti %{amount} %{previous}
+          markets: Hlavní trhy
+          chart: Vývoj tržeb
+          stats:
+            orders: Objednávky
+            average_order: Průměrná objednávka
+            refunds: Vrácení
+            conversion: Konverze
+de:
+  ui_components:
+    appica_ui:
+      blocks:
+        revenue_summary:
+          title:
+            day: Umsatz heute
+            week: Wochenumsatz
+            month: Monatsumsatz
+            year: Jahresumsatz
+            other: Umsatz
+          previous:
+            day: gestern
+            week: letzte Woche
+            month: letzten Monat
+            year: letztes Jahr
+            other: Vorperiode
+          comparison: vs. %{amount} %{previous}
+          markets: Top-Märkte
+          chart: Umsatzentwicklung
+          stats:
+            orders: Bestellungen
+            average_order: Ø Bestellwert
+            refunds: Rückerstattungen
+            conversion: Konversion
+ar:
+  ui_components:
+    appica_ui:
+      blocks:
+        revenue_summary:
+          title:
+            day: إيرادات اليوم
+            week: الإيرادات الأسبوعية
+            month: الإيرادات الشهرية
+            year: الإيرادات السنوية
+            other: الإيرادات
+          previous:
+            day: أمس
+            week: الأسبوع الماضي
+            month: الشهر الماضي
+            year: العام الماضي
+            other: الفترة السابقة
+          comparison: مقابل %{amount} %{previous}
+          markets: أهم الأسواق
+          chart: اتجاه الإيرادات
+          stats:
+            orders: الطلبات
+            average_order: متوسط قيمة الطلب
+            refunds: المبالغ المستردة
+            conversion: التحويل

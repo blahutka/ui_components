@@ -8,7 +8,7 @@ title: Dropdown Menu
 A menu of actions opened from a button.
 [Appica docs](https://appica.dev/ui/components/react/dropdown-menu)
 
-<%= embed UI::DropdownMenuPreview, :default %>
+<%= embed AppicaUI::DropdownMenuPreview, :default %>
 
 ## Usage
 
@@ -36,7 +36,7 @@ end
 - `DropdownMenuSub` / `DropdownMenuSubTrigger` / `DropdownMenuSubContent` - nested submenus.
 
 Tag a leading icon `data: { icon: "start" }`; push a trailing Kbd or Badge to the edge with `class: "ms-auto"`. Items
-emit `ui--dropdown-menu:select`; wire an action with Stimulus, or use a link item or `button_to` inside the menu. To
+emit `appica-ui--dropdown-menu:select`; wire an action with Stimulus, or use a link item or `button_to` inside the menu. To
 pick a value use a [Select](<%= page_path(:select) %>); for right-click use a
 [Context Menu](<%= page_path(:context_menu) %>); for an app command bar a [Menubar](<%= page_path(:menubar) %>).
 
@@ -44,47 +44,47 @@ pick a value use a [Select](<%= page_path(:select) %>); for right-click use a
 
 ### Account menu
 
-<%= embed UI::DropdownMenuPreview, :account %>
+<%= embed AppicaUI::DropdownMenuPreview, :account %>
 
 ### Icons, shortcuts & animated chevron
 
-<%= embed UI::DropdownMenuPreview, :shortcuts %>
+<%= embed AppicaUI::DropdownMenuPreview, :shortcuts %>
 
 ### Scrollable
 
-<%= embed UI::DropdownMenuPreview, :scrollable %>
+<%= embed AppicaUI::DropdownMenuPreview, :scrollable %>
 
 ### Checkbox items
 
-<%= embed UI::DropdownMenuPreview, :checkboxes %>
+<%= embed AppicaUI::DropdownMenuPreview, :checkboxes %>
 
 ### Radio items
 
-<%= embed UI::DropdownMenuPreview, :radios %>
+<%= embed AppicaUI::DropdownMenuPreview, :radios %>
 
 ### Submenus
 
-<%= embed UI::DropdownMenuPreview, :submenus %>
+<%= embed AppicaUI::DropdownMenuPreview, :submenus %>
 
 ### Open on hover
 
-<%= embed UI::DropdownMenuPreview, :hover %>
+<%= embed AppicaUI::DropdownMenuPreview, :hover %>
 
 ### Link items
 
-<%= embed UI::DropdownMenuPreview, :links %>
+<%= embed AppicaUI::DropdownMenuPreview, :links %>
 
 ### Sizes
 
-<%= embed UI::DropdownMenuPreview, :sizes %>
+<%= embed AppicaUI::DropdownMenuPreview, :sizes %>
 
 ### Side & alignment
 
-<%= embed UI::DropdownMenuPreview, :placement %>
+<%= embed AppicaUI::DropdownMenuPreview, :placement %>
 
 ### RTL
 
-<%= embed UI::DropdownMenuPreview, :rtl %>
+<%= embed AppicaUI::DropdownMenuPreview, :rtl %>
 
 ## API reference
 
@@ -96,7 +96,7 @@ pick a value use a [Select](<%= page_path(:select) %>); for right-click use a
 | `open_on_hover:` | `Boolean` | `false` | Open when the pointer rests on the trigger. |
 | `delay:` / `close_delay:` | `Integer` | `100` | Hover open / close delays in ms. |
 
-Events (prefix `ui--dropdown-menu:`): `select` { item, label }, `checked-change` { item, checked }, `value-change`
+Events (prefix `appica-ui--dropdown-menu:`): `select` { item, label }, `checked-change` { item, checked }, `value-change`
 { group, value }, `open-change` { open }.
 
 ### DropdownMenuContent

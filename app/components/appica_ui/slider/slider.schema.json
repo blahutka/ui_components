@@ -1,0 +1,116 @@
+{
+  "name": "Slider",
+  "kit": "AppicaUI",
+  "description": "A value (or a range) picked along a track. The number of thumbs follows the value: a number renders one, an array one per entry.\n\n  Slider(default_value: 50, thumb_aria_label: \"Volume\")\n  Slider(default_value: [ 25, 75 ], thumb_aria_label: [ \"Minimum\", \"Maximum\" ], name: \"price\")\n  Slider(default_value: 40, step: 10, tooltip: :always, format: { style: \"percent\" }, max: 1)\n\nEach thumb holds a visually hidden native <input type=\"range\"> - it carries the name, the value, aria-valuenow and the focus, so the slider submits with forms. The `appica-ui--slider` controller adds dragging anywhere on the track, the keyboard (arrows by `step`, Shift / Page Up·Down by `large_step`, Home / End) and keeps the fill, thumbs and tooltips in sync. It emits `appica-ui--slider:change` while moving and `appica-ui--slider:commit` on release, both with { value }.",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Slider(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/02_actions_&_inputs/slider.md.erb",
+  "appica": "https://appica.dev/ui/components/react/slider",
+  "components": {
+    "Slider": {
+      "constant": "AppicaUI::Slider",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "default": null
+          },
+          "default_value": {
+            "default": null
+          },
+          "min": {
+            "default": 0.0,
+            "type": "number"
+          },
+          "max": {
+            "default": 100.0,
+            "type": "number"
+          },
+          "step": {
+            "default": 1.0,
+            "type": "number"
+          },
+          "large_step": {
+            "default": 10.0,
+            "type": "number"
+          },
+          "min_steps_between_values": {
+            "default": 0,
+            "type": "integer"
+          },
+          "orientation": {
+            "enum": [
+              "horizontal",
+              "vertical"
+            ],
+            "default": "horizontal"
+          },
+          "tooltip": {
+            "enum": [
+              "auto",
+              "always",
+              "never"
+            ],
+            "default": "auto"
+          },
+          "thumb_aria_label": {
+            "default": null
+          },
+          "format": {
+            "default": null
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "name": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  Slider(tooltip:, disabled:, min:, max:, large_step:, min_steps_between_values:, orientation:, **given(name:), default_value: value.to_f, step: step.to_f, thumb_aria_label:, class: \"max-w-70\")\nend"
+    },
+    {
+      "name": "Range",
+      "notes": "An array value renders a thumb per entry; name each end with `thumb_aria_label:`.",
+      "code": "phlex { Slider(default_value: [ 25, 75 ], thumb_aria_label: %w[ Minimum Maximum ], class: \"max-w-70\") }"
+    },
+    {
+      "name": "Steps",
+      "notes": "`step:` sets the granularity; Shift / Page Up·Down move by `large_step:`.",
+      "code": "phlex { Slider(default_value: 40, step: 10, tooltip: :always, thumb_aria_label: \"Amount\", class: \"max-w-70 mt-6\") }"
+    },
+    {
+      "name": "Tooltip visibility",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-70 flex-col gap-8 pt-6\") do\n    Slider(default_value: 30, tooltip: :auto, thumb_aria_label: \"Auto\")\n    Slider(default_value: 50, tooltip: :always, thumb_aria_label: \"Always\")\n    Slider(default_value: 70, tooltip: :never, thumb_aria_label: \"Never\")\n  end\nend"
+    },
+    {
+      "name": "Formatted",
+      "notes": "`format:` takes Intl.NumberFormat options for the tooltip and aria-valuetext.",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-70 flex-col gap-10 pt-6\") do\n    Slider(default_value: 0.4, max: 1, step: 0.05, format: { style: \"percent\" }, tooltip: :always, thumb_aria_label: \"Opacity\")\n    Slider(default_value: [ 120, 480 ], min: 0, max: 1000, step: 10, format: { style: \"currency\", currency: \"USD\", maximum_fraction_digits: 0 }, tooltip: :always, thumb_aria_label: %w[ From To ])\n  end\nend"
+    },
+    {
+      "name": "Vertical",
+      "code": "phlex do\n  div(class: \"flex h-48 items-center gap-10\") do\n    Slider(orientation: :vertical, default_value: 60, thumb_aria_label: \"Volume\")\n    Slider(orientation: :vertical, default_value: [ 20, 80 ], thumb_aria_label: %w[ Min Max ])\n  end\nend"
+    },
+    {
+      "name": "Reacting to changes",
+      "notes": "`appica-ui--slider:change` fires while moving - three sliders drive an RGB swatch.",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-90 items-center gap-6\", data: { demo: \"rgb\" }) do\n    div(class: \"flex w-full max-w-64 flex-col gap-4\") do\n      { r: 99, g: 102, b: 241 }.each do |channel, value|\n        div(class: \"flex items-center gap-3\") do\n          span(class: \"text-foreground-muted w-3 text-sm font-medium\") { channel.to_s.upcase }\n          Slider(default_value: value, max: 255, tooltip: :never, thumb_aria_label: \"#{channel.upcase} channel\", class: \"flex-1\", data: { channel: })\n          span(class: \"text-foreground-muted w-8 text-end text-sm tabular-nums\", data: { output: channel }) { value.to_s }\n        end\n      end\n    end\n    div(class: \"flex shrink-0 flex-col items-center gap-2\") do\n      div(class: \"border-border-muted size-20 rounded-lg border\", style: \"background-color: #6366f1\", data: { demo: \"swatch\" })\n      span(class: \"text-foreground-muted font-mono text-xs uppercase\", data: { demo: \"hex\" }) { \"#6366f1\" }\n    end\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const demo = document.querySelector(\"[data-demo=rgb]\")\n      const rgb = { r: 99, g: 102, b: 241 }\n      demo.addEventListener(\"appica-ui--slider:change\", ({ target, detail: { value } }) => {\n        const channel = target.dataset.channel\n        rgb[channel] = value\n        demo.querySelector(`[data-output=${channel}]`).textContent = value\n        const hex = \"#\" + [ rgb.r, rgb.g, rgb.b ].map(c => c.toString(16).padStart(2, \"0\")).join(\"\")\n        demo.querySelector(\"[data-demo=swatch]\").style.backgroundColor = hex\n        demo.querySelector(\"[data-demo=hex]\").textContent = hex\n      })\n    JS\n  end\nend"
+    },
+    {
+      "name": "Disabled",
+      "code": "phlex { Slider(default_value: 50, disabled: true, thumb_aria_label: \"Disabled\", class: \"max-w-70\") }"
+    },
+    {
+      "name": "RTL",
+      "notes": "The fill grows from the right and ←/→ follow the reading direction.",
+      "code": "phlex { div(dir: \"rtl\", class: \"w-full max-w-70\") { Slider(default_value: [ 20, 60 ], thumb_aria_label: %w[ الأدنى الأعلى ]) } }"
+    }
+  ]
+}

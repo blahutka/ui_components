@@ -8,7 +8,7 @@ title: Alert Dialog
 A dialog that demands a response - for destructive or high-stakes confirmations.
 [Appica docs](https://appica.dev/ui/components/react/alert-dialog)
 
-<%= embed UI::AlertDialogPreview, :default %>
+<%= embed AppicaUI::AlertDialogPreview, :default %>
 
 ## Usage
 
@@ -36,22 +36,22 @@ Put the cancel action first and give the confirm button the destructive variant.
 
 ### With media
 
-<%= embed UI::AlertDialogPreview, :media %>
+<%= embed AppicaUI::AlertDialogPreview, :media %>
 
 ### Asynchronous action
 
-<%= embed UI::AlertDialogPreview, :async %>
+<%= embed AppicaUI::AlertDialogPreview, :async %>
 
 ### RTL
 
-<%= embed UI::AlertDialogPreview, :rtl %>
+<%= embed AppicaUI::AlertDialogPreview, :rtl %>
 
 ## API reference
 
 The same as [Dialog](<%= page_path(:dialog) %>): `AlertDialog(default_open:, dismissible: false)`,
 `AlertDialogTrigger`, `AlertDialogContent(close_button: false, backdrop:, frame:)`, `AlertDialogHeader`,
 `AlertDialogTitle`, `AlertDialogDescription`, `AlertDialogBody`, `AlertDialogFooter`, `AlertDialogClose`. Events are
-`ui--dialog:*`.
+`appica-ui--dialog:*`.
 
 ## Accessibility
 

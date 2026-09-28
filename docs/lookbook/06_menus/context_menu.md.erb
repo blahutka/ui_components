@@ -8,7 +8,7 @@ title: Context Menu
 A menu of actions for an object, opened by right-clicking it.
 [Appica docs](https://appica.dev/ui/components/react/context-menu)
 
-<%= embed UI::ContextMenuPreview, :default %>
+<%= embed AppicaUI::ContextMenuPreview, :default %>
 
 ## Usage
 
@@ -33,22 +33,22 @@ actions from a visible button too, for discoverability.
 
 ### On a card
 
-<%= embed UI::ContextMenuPreview, :card %>
+<%= embed AppicaUI::ContextMenuPreview, :card %>
 
 ### Checkbox & radio items
 
-<%= embed UI::ContextMenuPreview, :stateful %>
+<%= embed AppicaUI::ContextMenuPreview, :stateful %>
 
 ### RTL
 
-<%= embed UI::ContextMenuPreview, :rtl %>
+<%= embed AppicaUI::ContextMenuPreview, :rtl %>
 
 ## API reference
 
 `ContextMenu(size:)`, `ContextMenuTrigger`, `ContextMenuContent(side_offset: 2, …)`, `ContextMenuItem`,
 `ContextMenuCheckboxItem`, `ContextMenuRadioGroup`, `ContextMenuRadioItem`, `ContextMenuLinkItem`, `ContextMenuGroup`,
 `ContextMenuGroupLabel`, `ContextMenuSeparator`, `ContextMenuSub`, `ContextMenuSubTrigger`, `ContextMenuSubContent` - see
-[Dropdown Menu](<%= page_path(:dropdown_menu) %>) for their props. Events are prefixed `ui--context-menu:`.
+[Dropdown Menu](<%= page_path(:dropdown_menu) %>) for their props. Events are prefixed `appica-ui--context-menu:`.
 
 ## Accessibility
 

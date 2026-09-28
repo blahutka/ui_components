@@ -1,0 +1,70 @@
+{
+  "name": "Switch",
+  "kit": "AppicaUI",
+  "description": "An on/off toggle for a setting that applies right away: a native checkbox with role=\"switch\".\n\n  label(class: \"flex items-center gap-2.5\") do\n    Switch(name: \"airplane_mode\", checked: true)\n    plain \"Airplane mode\"\n  end\n\nIt renders only the track and thumb - wrap it with its text in a <label>. `size:` scales both. Native attributes (name, value, required, form, aria_*) go to the <input>, `class:` to the track. `unchecked_value:` submits a value when it's off. Inside a Field it takes the field's id and state.",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Switch(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/02_actions_&_inputs/switch.md.erb",
+  "appica": "https://appica.dev/ui/components/react/switch",
+  "components": {
+    "Switch": {
+      "constant": "AppicaUI::Switch",
+      "props": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": "md"
+          },
+          "checked": {
+            "default": null
+          },
+          "invalid": {
+            "default": null
+          },
+          "value": {
+            "default": null
+          },
+          "unchecked_value": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  label(class: \"flex items-center gap-2.5 text-sm select-none\") do\n    Switch(size:, checked:, disabled:, **given(value:))\n    plain \"Airplane mode\"\n  end\nend"
+    },
+    {
+      "name": "Sizes",
+      "notes": "`size:` scales the track and thumb together.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center gap-6 text-sm select-none\") do\n    label(class: \"flex items-center gap-2 text-xs\") { Switch(size: :sm, checked: true); plain \"Small\" }\n    label(class: \"flex items-center gap-2.5\") { Switch(size: :md, checked: true); plain \"Medium\" }\n    label(class: \"flex items-center gap-2.5 text-base\") { Switch(size: :lg, checked: true); plain \"Large\" }\n  end\nend"
+    },
+    {
+      "name": "States",
+      "notes": "Off, on, disabled either way, and the error state (`aria_invalid:` or inside an invalid Field).",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center gap-6 text-sm select-none\") do\n    label(class: \"flex items-center gap-2.5\") { Switch(); plain \"Off\" }\n    label(class: \"flex items-center gap-2.5\") { Switch(checked: true); plain \"On\" }\n    label(class: \"text-foreground-muted flex items-center gap-2.5\") { Switch(disabled: true); plain \"Disabled\" }\n    label(class: \"text-foreground-muted flex items-center gap-2.5\") { Switch(disabled: true, checked: true); plain \"Disabled on\" }\n    label(class: \"flex items-center gap-2.5\") { Switch(aria_invalid: true); plain \"Error\" }\n  end\nend"
+    },
+    {
+      "name": "With a label and description",
+      "notes": "A settings row: the whole card is one click target.",
+      "code": "phlex do\n  label(class: \"border-border flex max-w-sm items-center justify-between gap-4 rounded-xl border p-5 select-none\") do\n    span(class: \"flex flex-col\") do\n      span(class: \"text-foreground-intense font-medium\") { \"Marketing emails\" }\n      span(class: \"text-foreground-muted text-sm\") { \"Receive tips, product updates, and occasional offers.\" }\n    end\n    Switch(checked: true)\n  end\nend"
+    },
+    {
+      "name": "Reacting to changes",
+      "notes": "It's a checkbox: listen for `change` (here a tiny Stimulus-free script updates the text).\n`unchecked_value:` submits \"0\" when it's off.",
+      "code": "phlex do\n  label(class: \"text-foreground flex items-center gap-2.5 text-sm select-none\") do\n    Switch(name: \"wifi\", value: \"1\", unchecked_value: \"0\", checked: true, data: { demo: \"wifi\" })\n    span { plain \"Wi-Fi is \"; span(data: { demo: \"wifi-state\" }) { \"on\" } }\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const wifi = document.querySelector(\"[data-demo=wifi]\")\n      wifi.addEventListener(\"change\", () => document.querySelector(\"[data-demo=wifi-state]\").textContent = wifi.checked ? \"on\" : \"off\")\n    JS\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "The thumb slides toward the start edge.",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"flex items-center gap-6 text-sm select-none\") do\n    label(class: \"flex items-center gap-2.5\") { Switch(checked: true); plain \"الوضع الليلي\" }\n    label(class: \"flex items-center gap-2.5\") { Switch(); plain \"الإشعارات\" }\n  end\nend"
+    }
+  ]
+}

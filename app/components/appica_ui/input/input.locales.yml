@@ -1,0 +1,22 @@
+# AppicaUI::Input / AppicaUI::Textarea strings. Every language in one file (test/components/locales_test.rb
+# checks the keys match).
+en:
+  ui_components:
+    appica_ui:
+      input:
+        clear: Clear input
+cs:
+  ui_components:
+    appica_ui:
+      input:
+        clear: Vymazat pole
+de:
+  ui_components:
+    appica_ui:
+      input:
+        clear: Eingabe löschen
+ar:
+  ui_components:
+    appica_ui:
+      input:
+        clear: مسح الحقل

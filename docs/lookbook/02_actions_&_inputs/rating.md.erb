@@ -8,7 +8,7 @@ title: Rating
 A score input built from a row of stars - or any icon pair - with support for fractional values.
 [Appica docs](https://appica.dev/ui/components/react/rating)
 
-<%= embed UI::RatingPreview, :default %>
+<%= embed AppicaUI::RatingPreview, :default %>
 
 ## Usage
 
@@ -31,49 +31,49 @@ is the text color (`text-primary` by default). Every animation honors `prefers-r
 `icon:` takes any [icon](<%= page_path(:icons) %>) name with a `-filled` twin (`:heart`, `:thumb_up`, `:bolt`…), or
 an `{ empty:, filled: }` pair.
 
-<%= embed UI::RatingPreview, :icons %>
+<%= embed AppicaUI::RatingPreview, :icons %>
 
 ### Variants
 
-<%= embed UI::RatingPreview, :variants %>
+<%= embed AppicaUI::RatingPreview, :variants %>
 
 ### Orientation
 
-<%= embed UI::RatingPreview, :orientation %>
+<%= embed AppicaUI::RatingPreview, :orientation %>
 
 ### Sizes
 
-<%= embed UI::RatingPreview, :sizes %>
+<%= embed AppicaUI::RatingPreview, :sizes %>
 
 ### Fractions
 
-<%= embed UI::RatingPreview, :fractions %>
+<%= embed AppicaUI::RatingPreview, :fractions %>
 
 ### Color
 
-<%= embed UI::RatingPreview, :color %>
+<%= embed AppicaUI::RatingPreview, :color %>
 
 ### Read only
 
-<%= embed UI::RatingPreview, :read_only %>
+<%= embed AppicaUI::RatingPreview, :read_only %>
 
 ### Controlled with labels
 
-<%= embed UI::RatingPreview, :feedback %>
+<%= embed AppicaUI::RatingPreview, :feedback %>
 
 ```js
-element.addEventListener("ui--rating:change", ({ detail }) => save(detail.value))
-element.addEventListener("ui--rating:hover-change", ({ detail }) => preview(detail.value)) // null on leave
-// set it from outside: element.setAttribute("data-ui--rating-value-value", 4)
+element.addEventListener("appica-ui--rating:change", ({ detail }) => save(detail.value))
+element.addEventListener("appica-ui--rating:hover-change", ({ detail }) => preview(detail.value)) // null on leave
+// set it from outside: element.setAttribute("data-appica-ui--rating-value-value", 4)
 ```
 
 ### In a form
 
-<%= embed UI::RatingPreview, :form %>
+<%= embed AppicaUI::RatingPreview, :form %>
 
 ### RTL
 
-<%= embed UI::RatingPreview, :rtl %>
+<%= embed AppicaUI::RatingPreview, :rtl %>
 
 ## API reference
 
@@ -93,7 +93,7 @@ element.addEventListener("ui--rating:hover-change", ({ detail }) => preview(deta
 | `name:` | `String` | - | Hidden input submitted with a form. |
 
 Attributes like `aria_label:` / `aria_labelledby:` go to the root; `class:` is merged (set the accent there).
-Events: `ui--rating:change` and `ui--rating:hover-change`, both with `{ value }`.
+Events: `appica-ui--rating:change` and `appica-ui--rating:hover-change`, both with `{ value }`.
 
 ## Accessibility
 

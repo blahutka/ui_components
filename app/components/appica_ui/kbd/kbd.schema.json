@@ -1,0 +1,25 @@
+{
+  "name": "Kbd",
+  "kit": "AppicaUI",
+  "description": "A keyboard key or shortcut, e.g. in menu items: Kbd(size: :sm, class: \"ms-auto\") { \"⌘N\" }",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Kbd(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "components": {
+    "Kbd": {
+      "constant": "AppicaUI::Kbd",
+      "props": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": "md"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  }
+}

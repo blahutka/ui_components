@@ -1,0 +1,93 @@
+{
+  "name": "Textarea",
+  "kit": "AppicaUI",
+  "description": "A multi-line text field - Input's appearance, variants and sizes for a <textarea>.\n\n  Textarea(rows: 4, placeholder: \"Write a message…\", aria_label: \"Message\")\n  Textarea(clearable: true, end_slot: -> { span(class: \"text-xs\") { \"0/180\" } })\n\n`rows:` seeds the height (it still resizes vertically). Slots and `clearable:` wrap it like Input; slots align to the first line. Inside a Field it takes the field's id and state.",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Textarea(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/02_actions_&_inputs/textarea.md.erb",
+  "appica": "https://appica.dev/ui/components/react/textarea",
+  "components": {
+    "Textarea": {
+      "constant": "AppicaUI::Textarea",
+      "props": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "enum": [
+              "outline",
+              "soft"
+            ],
+            "default": "outline"
+          },
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": "md"
+          },
+          "rows": {
+            "default": 3,
+            "type": "integer"
+          },
+          "start_slot": {
+            "default": null
+          },
+          "end_slot": {
+            "default": null
+          },
+          "clearable": {
+            "default": false,
+            "type": "boolean"
+          },
+          "invalid": {
+            "default": null
+          },
+          "value": {
+            "default": null
+          },
+          "clear_label": {
+            "default": "Clear input",
+            "type": "string"
+          },
+          "textarea": {
+            "default": {},
+            "type": "object"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  Textarea(placeholder:, variant:, size:, clearable:, disabled:, **given(value:, clear_label:), rows: rows.to_i, aria_label: \"Message\", class: \"max-w-70\")\nend"
+    },
+    {
+      "name": "Variants",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-70 flex-col gap-4\") do\n    Textarea(variant: :outline, placeholder: \"Outline\", aria_label: \"Outline\")\n    Textarea(variant: :soft, placeholder: \"Soft\", aria_label: \"Soft\")\n  end\nend"
+    },
+    {
+      "name": "Sizes",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-70 flex-col gap-4\") do\n    { sm: \"Small\", md: \"Medium\", lg: \"Large\" }.each { |size, label| Textarea(size:, placeholder: label, aria_label: label) }\n  end\nend"
+    },
+    {
+      "name": "Start & end slots",
+      "notes": "A compact composer (an avatar and a send button) and a live character counter.",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-70 flex-col gap-4\") do\n    Textarea(rows: 4, placeholder: \"Add a comment…\", aria_label: \"Comment\", class: \"*:data-[slot=textarea-end]:h-full *:data-[slot=textarea-end]:items-end\",\n      start_slot: -> { Avatar(size: :\"2xs\") { AvatarFallback { Icon(:user_filled) } } },\n      end_slot: -> { Button(variant: :soft, size: :sm, icon: true, aria_label: \"Send comment\") { Icon(:send_2) } })\n    Textarea(rows: 3, maxlength: 180, placeholder: \"What's on your mind?\", aria_label: \"Status\", data: { demo: \"status\" },\n      end_slot: -> { span(class: \"text-foreground-muted text-xs tabular-nums\", data: { demo: \"count\" }) { \"0/180\" } })\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const status = document.querySelector(\"[data-demo=status]\")\n      const count = document.querySelector(\"[data-demo=count]\")\n      status.addEventListener(\"input\", () => count.textContent = `${status.value.length}/180`)\n    JS\n  end\nend"
+    },
+    {
+      "name": "Clearable",
+      "code": "phlex do\n  Textarea(clearable: true, value: \"The quick brown fox jumps over the lazy dog.\", aria_label: \"Notes\", class: \"max-w-70\")\nend"
+    },
+    {
+      "name": "Disabled, read-only & error states",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-70 flex-col gap-4\") do\n    Textarea(placeholder: \"Disabled\", disabled: true, aria_label: \"Disabled\")\n    Textarea(value: \"Read-only content\", readonly: true, aria_label: \"Read-only\")\n    Textarea(value: \"Too short\", invalid: true, aria_label: \"Notes with error\")\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"w-full max-w-70\") do\n    Textarea(rows: 3, placeholder: \"اكتب رسالتك…\", aria_label: \"رسالة\")\n  end\nend"
+    }
+  ]
+}

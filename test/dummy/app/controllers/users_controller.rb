@@ -1,4 +1,4 @@
-# The form builder demo: renders a form of `form.ui` fields, saves the User (with its address
+# The form builder demo: renders a form of `form.ux` fields, saves the User (with its address
 # and phones) and shows what `create` received.
 class UsersController < ApplicationController
   layout "component_preview"

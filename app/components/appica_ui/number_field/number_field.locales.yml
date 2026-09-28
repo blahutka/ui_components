@@ -1,0 +1,28 @@
+en:
+  ui_components:
+    appica_ui:
+      number_field:
+        increment: Increase value
+        decrement: Decrease value
+        invalid_number: Enter a number.
+cs:
+  ui_components:
+    appica_ui:
+      number_field:
+        increment: Zvýšit hodnotu
+        decrement: Snížit hodnotu
+        invalid_number: Zadejte číslo.
+de:
+  ui_components:
+    appica_ui:
+      number_field:
+        increment: Wert erhöhen
+        decrement: Wert verringern
+        invalid_number: Geben Sie eine Zahl ein.
+ar:
+  ui_components:
+    appica_ui:
+      number_field:
+        increment: زيادة القيمة
+        decrement: إنقاص القيمة
+        invalid_number: أدخل رقمًا.

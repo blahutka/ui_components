@@ -1,7 +1,7 @@
 require "test_helper"
 
 class UsersFormTest < ActionDispatch::IntegrationTest
-  test "the full ERB form renders every form.ui helper" do
+  test "the full ERB form renders every form.ux helper" do
     get "/users/new"
 
     assert_response :success

@@ -8,7 +8,7 @@ title: Toggle
 A two-state button that stays pressed - bold on, bold off.
 [Appica docs](https://appica.dev/ui/components/react/toggle)
 
-<%= embed UI::TogglePreview, :default %>
+<%= embed AppicaUI::TogglePreview, :default %>
 
 ## Usage
 
@@ -25,23 +25,23 @@ To group toggles, see [Toggle Group](<%= page_path(:toggle_group) %>).
 
 ### Composing with Button
 
-<%= embed UI::TogglePreview, :composing %>
+<%= embed AppicaUI::TogglePreview, :composing %>
 
 ### States
 
-<%= embed UI::TogglePreview, :states %>
+<%= embed AppicaUI::TogglePreview, :states %>
 
 ### Reacting to changes
 
 ```js
-element.addEventListener("ui--toggle:change", ({ detail }) => save(detail.pressed))
+element.addEventListener("appica-ui--toggle:change", ({ detail }) => save(detail.pressed))
 ```
 
-<%= embed UI::TogglePreview, :controlled %>
+<%= embed AppicaUI::TogglePreview, :controlled %>
 
 ### RTL
 
-<%= embed UI::TogglePreview, :rtl %>
+<%= embed AppicaUI::TogglePreview, :rtl %>
 
 ## API reference
 
@@ -51,7 +51,7 @@ element.addEventListener("ui--toggle:change", ({ detail }) => save(detail.presse
 | `value:` | `String` | - | Identity inside a ToggleGroup. |
 | `disabled:` | `Boolean` | `false` | Disables the button. |
 
-Event: `ui--toggle:change` with `{ pressed }`.
+Event: `appica-ui--toggle:change` with `{ pressed }`.
 
 ## Accessibility
 

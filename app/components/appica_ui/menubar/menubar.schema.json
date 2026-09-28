@@ -1,0 +1,362 @@
+{
+  "name": "Menubar",
+  "kit": "AppicaUI",
+  "description": "A bar of menus for an app's top-level commands (File / Edit / View …).\n\n  Menubar(aria_label: \"Application\") do\n    MenubarMenu do\n      MenubarTrigger { \"File\" }\n      MenubarContent do\n        MenubarItem { \"New file\" }\n        MenubarSub do\n          MenubarSubTrigger { \"Open recent\" }\n          MenubarSubContent { MenubarItem { \"project-alpha\" } }\n        end\n        MenubarSeparator()\n        MenubarItem { \"Save\" }\n      end\n    end\n  end\n\nThe bar shares `variant:`, `size:` and `orientation:` with every menu. Behaviour (opening, hover-switching, submenus, keyboard navigation, typeahead, checkbox/radio state) lives in the `appica-ui--menubar` Stimulus controller.",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Menubar(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/06_menus/menubar.md.erb",
+  "appica": "https://appica.dev/ui/components/react/menubar",
+  "components": {
+    "Menubar": {
+      "constant": "AppicaUI::Menubar",
+      "props": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "enum": [
+              "pill",
+              "line"
+            ],
+            "default": "pill"
+          },
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": "md"
+          },
+          "orientation": {
+            "enum": [
+              "horizontal",
+              "vertical"
+            ],
+            "default": "horizontal"
+          },
+          "loop_focus": {
+            "default": true,
+            "type": "boolean"
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "AppicaUI::MenubarCheckboxItem",
+        "AppicaUI::MenubarContent",
+        "AppicaUI::MenubarGroupLabel",
+        "AppicaUI::MenubarItem",
+        "AppicaUI::MenubarLinkItem",
+        "AppicaUI::MenubarRadioItem",
+        "AppicaUI::MenubarSubContent",
+        "AppicaUI::MenubarSubTrigger",
+        "AppicaUI::MenubarTrigger"
+      ]
+    },
+    "MenubarCheckIndicator": {
+      "constant": "AppicaUI::MenubarCheckIndicator",
+      "description": "The animated check drawn at the end of a checkbox or radio item (Appica's indicator)",
+      "props": {
+        "type": "object",
+        "properties": {
+          "checked": {},
+          "slot": {}
+        },
+        "required": [
+          "checked",
+          "slot"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "MenubarCheckboxItem": {
+      "constant": "AppicaUI::MenubarCheckboxItem",
+      "description": "A toggleable item with a check indicator. Keeps the menu open and dispatches `appica-ui--menubar:checked-change` with { checked, item }.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "checked": {
+            "default": false,
+            "type": "boolean"
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "close_on_click": {
+            "default": false,
+            "type": "boolean"
+          },
+          "label": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Menubar"
+      ]
+    },
+    "MenubarContent": {
+      "constant": "AppicaUI::MenubarContent",
+      "description": "The popup for a menu. It opens below its trigger (to the inline-end side in a vertical bar) and flips when there isn't room.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Menubar",
+        "AppicaUI::MenubarMenu"
+      ]
+    },
+    "MenubarGroup": {
+      "constant": "AppicaUI::MenubarGroup",
+      "description": "One labelled section of a menu; give it a MenubarGroupLabel",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "MenubarGroupLabel": {
+      "constant": "AppicaUI::MenubarGroupLabel",
+      "description": "The visible heading of a MenubarGroup or MenubarRadioGroup",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Menubar"
+      ]
+    },
+    "MenubarItem": {
+      "constant": "AppicaUI::MenubarItem",
+      "description": "One action. Selecting it (click, Enter or Space) dispatches `appica-ui--menubar:select` and closes the menu; `close_on_click: false` keeps it open. Tag a leading icon `data: { icon: \"start\" }` and push a trailing Kbd to the edge with `class: \"ms-auto\"`.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "close_on_click": {
+            "default": true,
+            "type": "boolean"
+          },
+          "label": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Menubar"
+      ]
+    },
+    "MenubarLinkItem": {
+      "constant": "AppicaUI::MenubarLinkItem",
+      "description": "An item that renders an <a> for navigation",
+      "props": {
+        "type": "object",
+        "properties": {
+          "href": {},
+          "close_on_click": {
+            "default": true,
+            "type": "boolean"
+          },
+          "label": {
+            "default": null
+          }
+        },
+        "required": [
+          "href"
+        ],
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Menubar"
+      ]
+    },
+    "MenubarMenu": {
+      "constant": "AppicaUI::MenubarMenu",
+      "description": "Wraps one menu in the bar: a trigger and its popup",
+      "props": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "id": {}
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "AppicaUI::MenubarContent",
+        "AppicaUI::MenubarTrigger"
+      ]
+    },
+    "MenubarRadioGroup": {
+      "constant": "AppicaUI::MenubarRadioGroup",
+      "description": "A set of mutually exclusive MenubarRadioItems. Choosing one dispatches `appica-ui--menubar:value-change` with { value, group }.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "default": null
+          },
+          "name": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "MenubarRadioItem": {
+      "constant": "AppicaUI::MenubarRadioItem",
+      "description": "One option in a MenubarRadioGroup. Keeps the menu open when chosen.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {},
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "close_on_click": {
+            "default": false,
+            "type": "boolean"
+          },
+          "label": {
+            "default": null
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Menubar"
+      ]
+    },
+    "MenubarSeparator": {
+      "constant": "AppicaUI::MenubarSeparator",
+      "description": "A thin divider between items or groups",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "MenubarSub": {
+      "constant": "AppicaUI::MenubarSub",
+      "description": "A nested submenu: MenubarSubTrigger plus MenubarSubContent",
+      "props": {
+        "type": "object",
+        "properties": {
+          "id": {}
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "AppicaUI::MenubarSubContent",
+        "AppicaUI::MenubarSubTrigger"
+      ]
+    },
+    "MenubarSubContent": {
+      "constant": "AppicaUI::MenubarSubContent",
+      "description": "The submenu popup. Opens to the inline-end side of its trigger, flipping near the edge.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Menubar",
+        "AppicaUI::MenubarSub"
+      ]
+    },
+    "MenubarSubTrigger": {
+      "constant": "AppicaUI::MenubarSubTrigger",
+      "description": "The item that opens a submenu, with a trailing chevron. Opens on hover, click or →.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "label": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Menubar",
+        "AppicaUI::MenubarSub"
+      ]
+    },
+    "MenubarTrigger": {
+      "constant": "AppicaUI::MenubarTrigger",
+      "description": "The top-level label that opens its menu. Once a menu is open, hovering a sibling trigger switches to it; arrow keys move along the bar.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Menubar",
+        "AppicaUI::MenubarMenu"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Application menu",
+      "notes": "A desktop-style command bar: File, Edit and View menus with shortcuts, separators,\na nested \"Open recent\" submenu and a disabled item.",
+      "code": "phlex do\n  Menubar(variant:, size:, orientation:, loop_focus:, disabled:, aria_label: \"Application\") do\n    MenubarMenu do\n      MenubarTrigger { \"File\" }\n      MenubarContent do\n        MenubarItem { plain \"New file\"; Kbd(size: :sm, class: \"ms-auto\") { \"⌘N\" } }\n        MenubarItem { plain \"Open…\"; Kbd(size: :sm, class: \"ms-auto\") { \"⌘O\" } }\n        MenubarSub do\n          MenubarSubTrigger { \"Open recent\" }\n          MenubarSubContent do\n            MenubarItem { \"project-alpha\" }\n            MenubarItem { \"landing-page\" }\n            MenubarItem { \"design-system\" }\n          end\n        end\n        MenubarSeparator()\n        MenubarItem { plain \"Save\"; Kbd(size: :sm, class: \"ms-auto\") { \"⌘S\" } }\n        MenubarItem { plain \"Save as…\"; Kbd(size: :sm, class: \"ms-auto\") { \"⇧⌘S\" } }\n      end\n    end\n    MenubarMenu do\n      MenubarTrigger { \"Edit\" }\n      MenubarContent do\n        MenubarItem { plain \"Undo\"; Kbd(size: :sm, class: \"ms-auto\") { \"⌘Z\" } }\n        MenubarItem { plain \"Redo\"; Kbd(size: :sm, class: \"ms-auto\") { \"⇧⌘Z\" } }\n        MenubarSeparator()\n        MenubarItem { \"Cut\" }\n        MenubarItem { \"Copy\" }\n        MenubarItem { \"Paste\" }\n      end\n    end\n    MenubarMenu do\n      MenubarTrigger { \"View\" }\n      MenubarContent do\n        MenubarItem { \"Zoom in\" }\n        MenubarItem { \"Zoom out\" }\n        MenubarItem { \"Reset zoom\" }\n        MenubarSeparator()\n        MenubarItem(disabled: true) { \"Enter full screen\" }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Variants",
+      "notes": "`variant: :pill` (default) gives each trigger a hover/active pill; `variant: :line` draws\nan animated underline, closer to a classic desktop menu bar.",
+      "code": "phlex do\n  div(class: \"flex flex-col items-center gap-8\") do\n    [ :pill, :line ].each do |variant|\n      Menubar(variant:, aria_label: \"#{variant.to_s.capitalize} menubar\") do\n        [ \"File\", \"Edit\", \"View\" ].each do |label|\n          MenubarMenu do\n            MenubarTrigger { label }\n            MenubarContent do\n              MenubarItem { \"Action one\" }\n              MenubarItem { \"Action two\" }\n              MenubarItem { \"Action three\" }\n            end\n          end\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Vertical",
+      "notes": "`orientation: :vertical` stacks the menus into a sidebar; each menu opens to the\ninline-end side. Triggers take a leading icon (`data: { icon: \"start\" }`).",
+      "code": "phlex do\n  Menubar(orientation: :vertical, aria_label: \"Workspace\", class: \"w-35\") do\n    { \"Overview\" => [ :layout_dashboard, [ \"Summary\", \"Activity\" ] ], \"Projects\" => [ :folder, [ \"All projects\", \"New project\", nil, \"Archived\" ] ],\n      \"Team\" => [ :users, [ \"Members\", \"Invitations\" ] ], \"Settings\" => [ :settings, [ \"General\", \"Billing\" ] ] }.each do |label, (icon, items)|\n      MenubarMenu do\n        MenubarTrigger do\n          Icon(icon, data: { icon: \"start\" })\n          plain label\n        end\n        MenubarContent do\n          items.each { |item| item ? MenubarItem { item } : MenubarSeparator() }\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Submenus",
+      "notes": "Nest a MenubarSub with its own MenubarSubTrigger and MenubarSubContent. It opens to the\nside on hover or with the arrow keys, flipping near a screen edge.",
+      "code": "phlex do\n  Menubar(aria_label: \"Application\") do\n    MenubarMenu do\n      MenubarTrigger { \"File\" }\n      MenubarContent do\n        MenubarItem { plain \"New file\"; Kbd(size: :sm, class: \"ms-auto\") { \"⌘N\" } }\n        MenubarSub do\n          MenubarSubTrigger { \"Open recent\" }\n          MenubarSubContent do\n            MenubarItem { \"project-alpha\" }\n            MenubarItem { \"landing-page\" }\n            MenubarItem { \"design-system\" }\n            MenubarSeparator()\n            MenubarItem { \"Clear recent\" }\n          end\n        end\n        MenubarSeparator()\n        MenubarItem { plain \"Save\"; Kbd(size: :sm, class: \"ms-auto\") { \"⌘S\" } }\n      end\n    end\n    MenubarMenu do\n      MenubarTrigger { \"Share\" }\n      MenubarContent do\n        MenubarItem { \"Copy link\" }\n        MenubarSub do\n          MenubarSubTrigger { \"Export as\" }\n          MenubarSubContent do\n            MenubarItem { \"PDF\" }\n            MenubarItem { \"PNG\" }\n            MenubarItem { \"SVG\" }\n          end\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Checkbox & radio items",
+      "notes": "MenubarCheckboxItem toggles; a MenubarRadioGroup of MenubarRadioItems picks one value.\nBoth keep the menu open and dispatch `appica-ui--menubar:checked-change` / `value-change`.",
+      "code": "phlex do\n  Menubar(aria_label: \"Editor\") do\n    MenubarMenu do\n      MenubarTrigger { \"View\" }\n      MenubarContent do\n        MenubarGroup do\n          MenubarGroupLabel { \"Panels\" }\n          MenubarCheckboxItem(checked: true) { \"Toolbar\" }\n          MenubarCheckboxItem { \"Sidebar\" }\n        end\n        MenubarSeparator()\n        MenubarRadioGroup(value: \"system\") do\n          MenubarGroupLabel { \"Theme\" }\n          MenubarRadioItem(value: \"light\") { \"Light\" }\n          MenubarRadioItem(value: \"dark\") { \"Dark\" }\n          MenubarRadioItem(value: \"system\") { \"System\" }\n        end\n      end\n    end\n    MenubarMenu do\n      MenubarTrigger { \"Help\" }\n      MenubarContent do\n        MenubarLinkItem(href: \"https://appica.dev/ui/components/react/menubar\", target: \"_blank\", rel: \"noopener\") { \"Documentation\" }\n        MenubarItem { \"Keyboard shortcuts\" }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Leading icons",
+      "notes": "A leading icon on `data: { icon: \"start\" }` works on triggers and items; a trailing Kbd\nis pushed to the edge with `class: \"ms-auto\"`.",
+      "code": "phlex do\n  Menubar(aria_label: \"Application\") do\n    MenubarMenu do\n      MenubarTrigger do\n        Icon(:file_text, data: { icon: \"start\" })\n        plain \"File\"\n      end\n      MenubarContent do\n        MenubarItem do\n          Icon(:file_plus, data: { icon: \"start\" })\n          plain \"New file\"\n          Kbd(size: :sm, class: \"ms-auto\") { \"⌘N\" }\n        end\n        MenubarItem do\n          Icon(:folder, data: { icon: \"start\" })\n          plain \"Open…\"\n          Kbd(size: :sm, class: \"ms-auto\") { \"⌘O\" }\n        end\n        MenubarSeparator()\n        MenubarItem do\n          Icon(:download, data: { icon: \"start\" })\n          plain \"Save\"\n          Kbd(size: :sm, class: \"ms-auto\") { \"⌘S\" }\n        end\n      end\n    end\n    MenubarMenu do\n      MenubarTrigger do\n        Icon(:pencil, data: { icon: \"start\" })\n        plain \"Edit\"\n      end\n      MenubarContent do\n        { arrow_back_up: \"Undo\", arrow_forward_up: \"Redo\", nil => nil, scissors: \"Cut\", copy: \"Copy\", clipboard: \"Paste\" }.each do |icon, label|\n          if label\n            MenubarItem do\n              Icon(icon, data: { icon: \"start\" })\n              plain label\n            end\n          else\n            MenubarSeparator()\n          end\n        end\n      end\n    end\n    MenubarMenu do\n      MenubarTrigger do\n        Icon(:eye, data: { icon: \"start\" })\n        plain \"View\"\n      end\n      MenubarContent do\n        { zoom_in: \"Zoom in\", zoom_out: \"Zoom out\" }.each do |icon, label|\n          MenubarItem do\n            Icon(icon, data: { icon: \"start\" })\n            plain label\n          end\n        end\n        MenubarSeparator()\n        MenubarItem do\n          Icon(:maximize, data: { icon: \"start\" })\n          plain \"Enter full screen\"\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "The bar lays out from the right, arrow keys reverse, and popups and submenus open\ntowards the inline end.",
+      "code": "phlex do\n  div(dir: \"rtl\") do\n    Menubar(aria_label: \"التطبيق\") do\n      { \"ملف\" => [ \"ملف جديد\", \"فتح…\", \"حفظ\" ], \"تحرير\" => [ \"تراجع\", \"إعادة\", \"نسخ\" ], \"عرض\" => [ \"تكبير\", \"تصغير\" ] }.each do |label, items|\n        MenubarMenu do\n          MenubarTrigger { label }\n          MenubarContent do\n            items.each { |item| MenubarItem { item } }\n            if label == \"ملف\"\n              MenubarSub do\n                MenubarSubTrigger { \"فتح الأخيرة\" }\n                MenubarSubContent do\n                  MenubarItem { \"project-alpha\" }\n                  MenubarItem { \"landing-page\" }\n                end\n              end\n            end\n          end\n        end\n      end\n    end\n  end\nend"
+    }
+  ]
+}

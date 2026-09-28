@@ -9,7 +9,7 @@ The trigger and action element used across components. Renders a `<button>`, or 
 given `href:`.
 [Appica docs](https://appica.dev/ui/components/react/button)
 
-<%= embed UI::ButtonPreview, :default %>
+<%= embed AppicaUI::ButtonPreview, :default %>
 
 ## Usage
 
@@ -26,7 +26,7 @@ Button(href: "/docs", variant: :ghost) { "Read the docs" }
 `variant:` picks the visual style: `primary` (default), `primary_outline`, `secondary`, `soft`,
 `outline`, `ghost` and `destructive`.
 
-<%= embed UI::ButtonPreview, :variants %>
+<%= embed AppicaUI::ButtonPreview, :variants %>
 
 ### Sizes & icon buttons
 
@@ -34,7 +34,7 @@ Button(href: "/docs", variant: :ghost) { "Read the docs" }
 it an `aria_label:`. Mark a leading or trailing icon with `data: { icon: "start" }` /
 `data: { icon: "end" }` to tighten the padding on that side.
 
-<%= embed UI::ButtonPreview, :sizes %>
+<%= embed AppicaUI::ButtonPreview, :sizes %>
 
 ```ruby
 Button(variant: :soft, icon: true, aria_label: "Bookmark") { bookmark_icon }

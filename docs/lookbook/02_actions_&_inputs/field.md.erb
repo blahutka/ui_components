@@ -8,7 +8,7 @@ title: Field
 Wires a label, description and error message to one control, and validates it with the browser's own constraints.
 [Appica docs](https://appica.dev/ui/components/react/field)
 
-<%= embed UI::FieldPreview, :default %>
+<%= embed AppicaUI::FieldPreview, :default %>
 
 ## Usage
 
@@ -37,25 +37,25 @@ without JavaScript.
 
 ### Validation
 
-<%= embed UI::FieldPreview, :validation %>
+<%= embed AppicaUI::FieldPreview, :validation %>
 
 ### Server errors
 
 `FieldError(match: :too_short) { "…" }` shows its own text for one failure only.
 
-<%= embed UI::FieldPreview, :server_error %>
+<%= embed AppicaUI::FieldPreview, :server_error %>
 
 ### Disabled & read-only
 
-<%= embed UI::FieldPreview, :disabled %>
+<%= embed AppicaUI::FieldPreview, :disabled %>
 
 ### Fieldset
 
-<%= embed UI::FieldPreview, :fieldset %>
+<%= embed AppicaUI::FieldPreview, :fieldset %>
 
 ### RTL
 
-<%= embed UI::FieldPreview, :rtl %>
+<%= embed AppicaUI::FieldPreview, :rtl %>
 
 ## API reference
 
@@ -71,7 +71,7 @@ without JavaScript.
 | `messages:` | `Hash` | `{}` | Text per failure: `value_missing`, `type_mismatch`, `pattern_mismatch`, `too_short`, `too_long`, `range_underflow`, `range_overflow`, `step_mismatch`, `bad_input`. |
 | `id:` | `String` | random | Prefix for the parts' ids. |
 
-Events: `ui--field:valid` and `ui--field:invalid` (with `{ failure }`).
+Events: `appica-ui--field:valid` and `appica-ui--field:invalid` (with `{ failure }`).
 
 ### FieldLabel, FieldDescription
 

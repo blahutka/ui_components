@@ -11,7 +11,7 @@ Appica's theme settings panel: mode, base / primary / secondary colors, font and
 [Dialog](<%= page_path(:dialog) %>) and Copy Button. Every change repaints this page **and every other Lookbook
 preview**, even in other tabs - the choice is kept in your browser until you reset it.
 
-<%= embed Blocks::ThemeCustomizerPreview, :default %>
+<%= embed AppicaUI::Blocks::ThemeCustomizerPreview, :default %>
 
 ## Using the generated CSS
 
@@ -21,7 +21,7 @@ preview**, even in other tabs - the choice is kept in your browser until you res
 ```css
 /* app/assets/tailwind/application.css */
 @import "tailwindcss";
-@import "<gem path>/app/components/ui/index.css";
+@import "<gem path>/app/components/appica_ui/index.css";
 
 /* ← paste the overrides here */
 :root,
@@ -33,7 +33,7 @@ preview**, even in other tabs - the choice is kept in your browser until you res
 .dark { /* … */ }
 ```
 
-Don't paste them into `ui/theme.css` or use them **instead** of it. `theme.css` holds every default token and the
+Don't paste them into `appica_ui/theme.css` or use them **instead** of it. `theme.css` holds every default token and the
 `@theme inline` block that turns each variable into its Tailwind utilities (`--primary` → `bg-primary`,
 `text-primary`, `ring-primary`…). Without it those utilities aren't generated at all, so buttons, badges and inputs
 lose their colors - which is what happens when the overrides replace it.
@@ -67,12 +67,12 @@ ThemeCustomizer()
 
 ```js
 // app/javascript/application.js - every page applies the stored theme and follows changes
-import { watchStoredTheme } from "blocks/theme_customizer/theme"
+import { watchStoredTheme } from "appica_ui/blocks/theme_customizer/theme"
 watchStoredTheme()
 ```
 
 `theme.js` also exports `overridesCss(theme)` (the CSS text), `applyTheme(theme)`, `loadTheme()` / `saveTheme()` and
-`customScale(color)`. The panel emits `blocks--theme-customizer:change` with `{ theme, css }` - save it on the server
+`customScale(color)`. The panel emits `appica-ui--blocks--theme-customizer:change` with `{ theme, css }` - save it on the server
 there to make it permanent.
 
 Mode: **Light** and **Dark** always apply; **System** follows the OS unless the page chose its own mode
@@ -82,4 +82,4 @@ Mode: **Light** and **Dark** always apply; **System** follows the OS unless the 
 
 ### Panel only
 
-<%= embed Blocks::ThemeCustomizerPreview, :panel %>
+<%= embed AppicaUI::Blocks::ThemeCustomizerPreview, :panel %>

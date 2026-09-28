@@ -8,7 +8,7 @@ title: Card
 A flexible content container for a title, description, media, and actions.
 [Appica docs](https://appica.dev/ui/components/react/card)
 
-<%= embed UI::CardPreview, :default %>
+<%= embed AppicaUI::CardPreview, :default %>
 
 ## Usage
 
@@ -54,21 +54,21 @@ a `rounded-*` class only paints the element you put it on.
 
 The most basic setup - no options, just a header and a footer.
 
-<%= embed UI::CardPreview, :header_and_footer %>
+<%= embed AppicaUI::CardPreview, :header_and_footer %>
 
 ### Frame
 
 `frame: :solid` (or `frame: true`) wraps the content in a band of `background-subtle` and softens the
 inner hairline to `border-muted`. Leave it off unless the card needs that extra separation from the page.
 
-<%= embed UI::CardPreview, :frame %>
+<%= embed AppicaUI::CardPreview, :frame %>
 
 ### Glass frame
 
 `frame: :glass` swaps the band for a translucent, blurred one and drops the inner border. Glass only
 exists relative to what's behind it - put the card over a photo, a gradient, or a colored section.
 
-<%= embed UI::CardPreview, :glass %>
+<%= embed AppicaUI::CardPreview, :glass %>
 
 ### Media
 
@@ -76,7 +76,7 @@ exists relative to what's behind it - put the card over a photo, a gradient, or 
 with all four corners rounded. With `inset: false`, the header and footer take the full gutter and media
 runs edge to edge - the content wrapper clips it, so a top image rounds only its top corners.
 
-<%= embed UI::CardPreview, :media %>
+<%= embed AppicaUI::CardPreview, :media %>
 
 ```ruby
 Card(inset: false) do
@@ -94,7 +94,7 @@ There's no orientation option - the content wrapper is a flex column, so one cla
 turns the card sideways. Wrap the header and footer in a plain `div` so they keep stacking. `as: :article`
 renders the card as self-contained content, and only the title is a link.
 
-<%= embed UI::CardPreview, :horizontal %>
+<%= embed AppicaUI::CardPreview, :horizontal %>
 
 ```ruby
 Card(as: :article, content: { class: "md:flex-row md:gap-2" }) do
@@ -114,20 +114,20 @@ end
 For a card that is an image, position `CardMedia` absolutely - `inset-2` when the card is inset,
 `inset-0` when it isn't - and let `CardHeader` stack above it. Add a scrim inside the media.
 
-<%= embed UI::CardPreview, :overlay %>
+<%= embed AppicaUI::CardPreview, :overlay %>
 
 ### Profile
 
 Any content is welcome inside `CardHeader`; it's a plain flex column. Here an Avatar leads a centered
 profile card.
 
-<%= embed UI::CardPreview, :profile %>
+<%= embed AppicaUI::CardPreview, :profile %>
 
 ### Empty state
 
 `content:` restyles the surface itself - a dashed border and a subtle fill turn a card into a placeholder.
 
-<%= embed UI::CardPreview, :empty_state %>
+<%= embed AppicaUI::CardPreview, :empty_state %>
 
 ```ruby
 Card(content: { class: "bg-background-subtle items-center border-dashed border-border-strong text-center" }) { ... }
@@ -138,27 +138,27 @@ Card(content: { class: "bg-background-subtle items-center border-dashed border-b
 `CardHeader` can hold anything - a price row and size buttons here. Badges and buttons are positioned
 inside `CardMedia`, which is already `relative`.
 
-<%= embed UI::CardPreview, :product %>
+<%= embed AppicaUI::CardPreview, :product %>
 
 ### Form in a card
 
 `as: :form` makes the card itself the form element, so fields and the submit button need no extra
 wrapper; other attributes (`action:`, `method:`, `data:`) go on the form.
 
-<%= embed UI::CardPreview, :form %>
+<%= embed AppicaUI::CardPreview, :form %>
 
 ### Radius
 
 Changing `--card-radius` retunes the card and its inset media together, in one place.
 
-<%= embed UI::CardPreview, :radius %>
+<%= embed AppicaUI::CardPreview, :radius %>
 
 ### RTL
 
 Card is built from logical padding and flex ordering, so the footer's actions flow from the right and text
 aligns to the start edge with no direction-specific classes. Flush media follows the writing direction too.
 
-<%= embed UI::CardPreview, :rtl %>
+<%= embed AppicaUI::CardPreview, :rtl %>
 
 ## API reference
 

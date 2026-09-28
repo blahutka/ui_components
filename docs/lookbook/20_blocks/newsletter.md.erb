@@ -10,7 +10,7 @@ links. A **block** composed from [Field](<%= page_path(:field) %>), [Input](<%= 
 [Button](<%= page_path(:button) %>) and [Thumbnail](<%= page_path(:thumbnail) %>), as on the
 [Appica homepage](https://appica.dev/ui).
 
-<%= embed Blocks::NewsletterPreview, :default %>
+<%= embed AppicaUI::Blocks::NewsletterPreview, :default %>
 
 ## Usage
 
@@ -29,7 +29,7 @@ end
 - A hidden `website` field (`honeypot:` renames it) catches bots: when it's filled the submission is dropped.
   Check it on the server too.
 - After a successful submit the note turns into a thank-you (also announced to screen readers), the field clears
-  and `blocks--newsletter:subscribed` fires with `{ email }`.
+  and `appica-ui--blocks--newsletter:subscribed` fires with `{ email }`.
 - Without `action:` the block runs a demo and shows the thank-you at once.
 - It has no background of its own - put it on a panel (the preview uses a `dark` one, like Appica's footer).
 
@@ -52,11 +52,11 @@ Czech, German, Arabic); `title:`, `description:` and `note:` replace them.
 
 ### Form only
 
-<%= embed Blocks::NewsletterPreview, :minimal %>
+<%= embed AppicaUI::Blocks::NewsletterPreview, :minimal %>
 
 ### RTL
 
-<%= embed Blocks::NewsletterPreview, :rtl %>
+<%= embed AppicaUI::Blocks::NewsletterPreview, :rtl %>
 
 ## API reference
 

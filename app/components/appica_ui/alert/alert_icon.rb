@@ -1,0 +1,9 @@
+# A leading icon slot; the icon takes the variant's accent color.
+class AppicaUI::AlertIcon < AppicaUI::Base
+  def view_template(&)
+    alert = consume(:alert, component: "AppicaUI::Alert")
+
+    span(**mix({ data: { slot: "alert-icon" } }, @attributes.except(:class)),
+      class: cn("me-3 flex h-lh shrink-0 items-center [grid-area:icon] [&_svg:not([class*='size-'])]:size-5", alert.icon_class, override: @attributes[:class]), &)
+  end
+end

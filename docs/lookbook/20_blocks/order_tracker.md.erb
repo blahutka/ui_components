@@ -9,7 +9,7 @@ A shipment card: the order number and total, a status badge, the delivery progre
 courier. A **block** composed from Badge, [Progress](<%= page_path(:progress) %>), Icon,
 [Separator](<%= page_path(:separator) %>), Avatar and Button, as on the [Appica homepage](https://appica.dev/ui).
 
-<%= embed Blocks::OrderTrackerPreview, :default %>
+<%= embed AppicaUI::Blocks::OrderTrackerPreview, :default %>
 
 ## Usage
 
@@ -41,15 +41,15 @@ date/time formats per language. Money uses the locale's currency format. Switch 
 
 ### Delivered
 
-<%= embed Blocks::OrderTrackerPreview, :delivered %>
+<%= embed AppicaUI::Blocks::OrderTrackerPreview, :delivered %>
 
 ### Custom steps
 
-<%= embed Blocks::OrderTrackerPreview, :custom_steps %>
+<%= embed AppicaUI::Blocks::OrderTrackerPreview, :custom_steps %>
 
 ### RTL
 
-<%= embed Blocks::OrderTrackerPreview, :rtl %>
+<%= embed AppicaUI::Blocks::OrderTrackerPreview, :rtl %>
 
 ## API reference
 

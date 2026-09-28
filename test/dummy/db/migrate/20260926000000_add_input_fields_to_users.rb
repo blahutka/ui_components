@@ -1,4 +1,4 @@
-# One attribute per remaining `form.ui` helper in the form builder demo
+# One attribute per remaining `form.ux` helper in the form builder demo
 class AddInputFieldsToUsers < ActiveRecord::Migration[8.1]
   def change
     change_table :users do |t|

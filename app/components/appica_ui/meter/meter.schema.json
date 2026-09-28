@@ -1,0 +1,137 @@
+{
+  "name": "Meter",
+  "kit": "AppicaUI",
+  "description": "A static measurement inside a known range - disk usage, a score, remaining battery. (For a task moving toward completion use Progress.)\n\n  Meter(value: 64) do\n    MeterLabel { \"Storage\" }\n    MeterValue()\n    MeterProgress()\n  end\n\nThe root lays the parts out on a grid: label top-left, value top-right, track underneath. Pass `low:`, `high:` and/or `optimum:` and the fill turns green, amber or red by zone. To update it live, set `data-appica-ui--meter-value-value` on the root (see meter_controller.js).",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Meter(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/09_status_&_feedback/meter.md.erb",
+  "appica": "https://appica.dev/ui/components/react/meter",
+  "components": {
+    "Meter": {
+      "constant": "AppicaUI::Meter",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {},
+          "min": {
+            "default": 0,
+            "type": "integer"
+          },
+          "max": {
+            "default": 100,
+            "type": "integer"
+          },
+          "low": {
+            "default": null
+          },
+          "high": {
+            "default": null
+          },
+          "optimum": {
+            "default": null
+          },
+          "format": {
+            "default": null
+          },
+          "locale": {
+            "default": null
+          },
+          "status_classes": {
+            "default": {
+              "optimum": "bg-success-emphasis",
+              "suboptimum": "bg-warning-emphasis",
+              "invalid": "bg-error-emphasis",
+              "default": "bg-primary"
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "additionalProperties": true
+      },
+      "parts": [
+        "AppicaUI::MeterLabel",
+        "AppicaUI::MeterProgress",
+        "AppicaUI::MeterValue"
+      ]
+    },
+    "MeterLabel": {
+      "constant": "AppicaUI::MeterLabel",
+      "description": "Names the meter; the root points aria-labelledby at it.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Meter"
+      ]
+    },
+    "MeterProgress": {
+      "constant": "AppicaUI::MeterProgress",
+      "description": "The track and its fill; the fill's color comes from the root's status.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Meter"
+      ]
+    },
+    "MeterValue": {
+      "constant": "AppicaUI::MeterValue",
+      "description": "Prints the formatted value (\"64%\", \"$1,280.00\"). Customize the text with a block that receives the formatted string and the raw value, or map values to words with `labels:` (also used for live updates):\n\n  MeterValue { |formatted, _value| \"#{formatted} of 8 GB\" }\n  MeterValue(labels: %w[ Weak Fair Strong ])",
+      "props": {
+        "type": "object",
+        "properties": {
+          "labels": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Meter"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "notes": "A label, a formatted value and a track; `value:` is read against the default 0-100 range.",
+      "code": "zones = thresholds ? { low: 40, high: 75, optimum: 10 } : {}\n\nphlex do\n  Meter(min:, max:, value: value.to_f, class: \"w-72 max-w-full\", **zones) do\n    MeterLabel { label }\n    MeterValue()\n    MeterProgress()\n  end\nend"
+    },
+    {
+      "name": "Status thresholds",
+      "notes": "With `low:`, `high:` and `optimum:` the fill colors by zone: green where optimum sits,\namber one zone away, red at the far end. `optimum: 10` marks low usage as healthy.",
+      "code": "phlex do\n  div(class: \"flex w-72 max-w-full flex-col gap-5\") do\n    USAGE.each do |label, value|\n      Meter(value:, low: 40, high: 75, optimum: 10) do\n        MeterLabel { label }\n        MeterValue()\n        MeterProgress()\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Formatting the value",
+      "notes": "`format:` takes Intl.NumberFormat options (in snake_case) - currency, a unit, and so on.\nFor full control give MeterValue a block that receives the formatted string.",
+      "code": "phlex do\n  div(class: \"flex w-72 max-w-full flex-col gap-6\") do\n    Meter(value: 1280, max: 2000, format: { style: :currency, currency: \"USD\" }, low: 1000, high: 1800, optimum: 0) do\n      MeterLabel { \"Monthly budget\" }\n      MeterValue()\n      MeterProgress()\n    end\n    Meter(value: 3.4, max: 8, format: { style: :unit, unit: \"gigabyte\", maximum_fraction_digits: 1 }) do\n      MeterLabel { \"Backup size\" }\n      MeterValue { |formatted, _value| \"#{formatted} of 8 GB\" }\n      MeterProgress()\n    end\n  end\nend"
+    },
+    {
+      "name": "Password strength (controlled)",
+      "notes": "Score the input as the user types and set the meter's value - the controller moves the\nfill, recolors it by zone (`max: 4`, red → amber → green) and shows a word from `labels:`.",
+      "code": "phlex do\n  div(class: \"flex w-72 max-w-full flex-col gap-2\") do\n    label(class: \"relative block\") do\n      Icon(:lock, stroke_width: 1.75, class: \"text-foreground-muted pointer-events-none absolute start-3 top-1/2 size-4.5 -translate-y-1/2\")\n      input(type: \"password\", id: \"password-demo\", autocomplete: \"new-password\", placeholder: \"Choose a password\", aria_label: \"Password\",\n        class: \"border-border-strong bg-background text-foreground h-10 w-full min-w-0 rounded-md border ps-9.5 pe-3.5 text-sm outline-none focus:border-transparent focus:ring-3 focus:ring-ring-input\")\n    end\n    Meter(value: 0, max: 4, low: 2, high: 2, optimum: 4, aria_label: \"Password strength\", id: \"password-meter\",\n      status_classes: { invalid: \"bg-error-emphasis\", suboptimum: \"bg-warning-emphasis\", optimum: \"bg-success-emphasis\" }) do\n      MeterValue(labels: LEVELS, class: \"text-foreground-muted text-xs\")\n      MeterProgress()\n    end\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const score = value => {\n        if (value.length < 3) return 0\n        let score = 1\n        if (value.length >= 10) score++\n        if (/[A-Z]/.test(value) && /[a-z]/.test(value)) score++\n        if (/[0-9]/.test(value) || /[^A-Za-z0-9]/.test(value)) score++\n        return score\n      }\n      const meter = document.getElementById(\"password-meter\")\n      document.getElementById(\"password-demo\").addEventListener(\"input\", ({ target }) => {\n        meter.setAttribute(\"data-appica-ui--meter-value-value\", score(target.value))\n      })\n    JS\n  end\nend"
+    },
+    {
+      "name": "Minimal",
+      "notes": "Drop MeterValue (and even MeterLabel) for a bare track; restyle the track height and the\nlabel through `class:`.",
+      "code": "phlex do\n  div(class: \"flex w-64 max-w-full flex-col gap-3\") do\n    SKILLS.each do |label, value|\n      Meter(value:, class: \"gap-1\") do\n        MeterLabel(class: \"text-foreground text-xs font-normal\") { label }\n        MeterProgress(class: \"h-1\")\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "The label and value swap sides and the track fills from the right.",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"flex w-72 max-w-full flex-col gap-5\") do\n    Meter(value: 64) do\n      MeterLabel { \"التخزين\" }\n      MeterValue()\n      MeterProgress()\n    end\n    Meter(value: 92, low: 40, high: 75, optimum: 10) do\n      MeterLabel { \"النطاق الترددي\" }\n      MeterValue()\n      MeterProgress()\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "USAGE": "USAGE = { \"Operations\" => 32, \"Marketing\" => 64, \"Infrastructure\" => 94 }.freeze",
+    "SKILLS": "SKILLS = { \"TypeScript\" => 90, \"React\" => 82, \"CSS\" => 70, \"Rust\" => 38 }.freeze",
+    "LEVELS": "LEVELS = [ \"Too weak\", \"Weak\", \"Fair\", \"Good\", \"Strong\" ].freeze"
+  }
+}

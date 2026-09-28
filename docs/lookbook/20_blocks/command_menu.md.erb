@@ -9,7 +9,7 @@ A command palette card: a search field with a ⌘K hint, grouped commands with i
 footer of key hints. A **block** composed from [Input](<%= page_path(:input) %>), Kbd,
 [Navigation](<%= page_path(:navigation) %>) and Icon, as on the [Appica homepage](https://appica.dev/ui).
 
-<%= embed Blocks::CommandMenuPreview, :default %>
+<%= embed AppicaUI::Blocks::CommandMenuPreview, :default %>
 
 ## Usage
 
@@ -32,10 +32,10 @@ end
 - ⌘K / Ctrl+K focuses the search from anywhere on the page (`hotkey:` changes the key, `hotkey: nil` turns it off;
   `hotkey_hint:` is the Kbd shown in the field).
 - A command with `href:` is a link; one without is a button. Running either emits
-  `blocks--command-menu:select` with `{ value, label }` - cancel it to keep a link from being followed.
+  `appica-ui--blocks--command-menu:select` with `{ value, label }` - cancel it to keep a link from being followed.
 
 ```js
-document.addEventListener("blocks--command-menu:select", ({ detail }) => {
+document.addEventListener("appica-ui--blocks--command-menu:select", ({ detail }) => {
   if (detail.value === "dark-mode") document.documentElement.classList.toggle("dark")
 })
 ```
@@ -51,11 +51,11 @@ Arabic).
 
 ### Links
 
-<%= embed Blocks::CommandMenuPreview, :links %>
+<%= embed AppicaUI::Blocks::CommandMenuPreview, :links %>
 
 ### RTL
 
-<%= embed Blocks::CommandMenuPreview, :rtl %>
+<%= embed AppicaUI::Blocks::CommandMenuPreview, :rtl %>
 
 ## API reference
 
@@ -79,7 +79,7 @@ Arabic).
 | `icon:` | `Symbol` | - | Leading icon. |
 | `shortcut:` | `Array` / `String` | `[]` | Keys shown as Kbds. |
 | `href:` | `String` | - | Makes it a link. |
-| `value:` | `String` | the label | Sent with `blocks--command-menu:select`. |
+| `value:` | `String` | the label | Sent with `appica-ui--blocks--command-menu:select`. |
 
 ## Accessibility
 

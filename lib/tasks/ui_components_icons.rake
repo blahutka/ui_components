@@ -4,19 +4,19 @@ require "rubygems/package"
 require "stringio"
 require "zlib"
 
-# Generates the data behind UI::Icon from the published @appica/icons-react package (MIT):
+# Generates the data behind AppicaUI::Icon from the published @appica/icons-react package (MIT):
 #
 #   bundle exec rake "ui_components:icons:sync[1.1.0]"
 #
 # Every icon in the package is `createIcon("Name", '<inner svg>', { fill: "none", stroke: … })` in
 # dist/icons/<category>/<name>.js. We keep the inner markup and the svg options, one JSON file per
-# category plus an index (name => category) in app/components/ui/icon/icons/. No Node needed.
+# category plus an index (name => category) in app/components/appica_ui/icon/icons/. No Node needed.
 namespace :ui_components do
   namespace :icons do
-    desc "Download @appica/icons-react and regenerate app/components/ui/icon/icons/*.json"
+    desc "Download @appica/icons-react and regenerate app/components/appica_ui/icon/icons/*.json"
     task :sync, [ :version ] do |_task, args|
       version = args[:version] || "1.1.0"
-      target = File.expand_path("../../app/components/ui/icon/icons", __dir__)
+      target = File.expand_path("../../app/components/appica_ui/icon/icons", __dir__)
       outline = { "fill" => "none", "stroke" => "currentColor", "stroke_width" => "1.5", "stroke_linecap" => "round", "stroke_linejoin" => "round" }
 
       url = URI("https://registry.npmjs.org/@appica/icons-react/-/icons-react-#{version}.tgz")

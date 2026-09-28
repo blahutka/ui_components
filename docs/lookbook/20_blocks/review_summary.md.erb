@@ -9,7 +9,7 @@ A product-reviews card: the average score with stars and a review count, the sha
 social-proof footer. A **block** composed from [Rating](<%= page_path(:rating) %>), [Meter](<%= page_path(:meter) %>),
 [Separator](<%= page_path(:separator) %>) and AvatarGroup, as on the [Appica homepage](https://appica.dev/ui).
 
-<%= embed Blocks::ReviewSummaryPreview, :default %>
+<%= embed AppicaUI::Blocks::ReviewSummaryPreview, :default %>
 
 ## Usage
 
@@ -35,15 +35,15 @@ percentages use the locale's number format. `verified: false` drops "verified"; 
 
 ### Linked rows
 
-<%= embed Blocks::ReviewSummaryPreview, :linked %>
+<%= embed AppicaUI::Blocks::ReviewSummaryPreview, :linked %>
 
 ### Few reviews
 
-<%= embed Blocks::ReviewSummaryPreview, :few %>
+<%= embed AppicaUI::Blocks::ReviewSummaryPreview, :few %>
 
 ### RTL
 
-<%= embed Blocks::ReviewSummaryPreview, :rtl %>
+<%= embed AppicaUI::Blocks::ReviewSummaryPreview, :rtl %>
 
 ## API reference
 

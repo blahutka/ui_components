@@ -1,0 +1,77 @@
+# AppicaUI::Blocks::ReviewSummary strings - t(".key") in any of its parts looks here.
+# Every language in one file; add a locale as another top-level key with the same keys
+# (test/components/locales_test.rb checks that they match; plural forms may differ per language).
+en:
+  ui_components:
+    appica_ui:
+      blocks:
+        review_summary:
+          reviews:
+            one: "%{formatted} review"
+            other: "%{formatted} reviews"
+          verified_reviews:
+            one: "%{formatted} verified review"
+            other: "%{formatted} verified reviews"
+          stars:
+            one: "%{count} star reviews"
+            other: "%{count} star reviews"
+cs:
+  ui_components:
+    appica_ui:
+      blocks:
+        review_summary:
+          reviews:
+            one: "%{formatted} recenze"
+            few: "%{formatted} recenze"
+            many: "%{formatted} recenze"
+            other: "%{formatted} recenzí"
+          verified_reviews:
+            one: "%{formatted} ověřená recenze"
+            few: "%{formatted} ověřené recenze"
+            many: "%{formatted} ověřené recenze"
+            other: "%{formatted} ověřených recenzí"
+          stars:
+            one: "Recenze s %{count} hvězdičkou"
+            few: "Recenze se %{count} hvězdičkami"
+            many: "Recenze s %{count} hvězdičkami"
+            other: "Recenze s %{count} hvězdičkami"
+de:
+  ui_components:
+    appica_ui:
+      blocks:
+        review_summary:
+          reviews:
+            one: "%{formatted} Bewertung"
+            other: "%{formatted} Bewertungen"
+          verified_reviews:
+            one: "%{formatted} verifizierte Bewertung"
+            other: "%{formatted} verifizierte Bewertungen"
+          stars:
+            one: "Bewertungen mit %{count} Stern"
+            other: "Bewertungen mit %{count} Sternen"
+ar:
+  ui_components:
+    appica_ui:
+      blocks:
+        review_summary:
+          reviews:
+            zero: "لا توجد مراجعات"
+            one: "مراجعة واحدة"
+            two: "مراجعتان"
+            few: "%{formatted} مراجعات"
+            many: "%{formatted} مراجعة"
+            other: "%{formatted} مراجعة"
+          verified_reviews:
+            zero: "لا توجد مراجعات موثقة"
+            one: "مراجعة موثقة واحدة"
+            two: "مراجعتان موثقتان"
+            few: "%{formatted} مراجعات موثقة"
+            many: "%{formatted} مراجعة موثقة"
+            other: "%{formatted} مراجعة موثقة"
+          stars:
+            zero: "مراجعات بلا نجوم"
+            one: "مراجعات بنجمة واحدة"
+            two: "مراجعات بنجمتين"
+            few: "مراجعات بـ %{count} نجوم"
+            many: "مراجعات بـ %{count} نجمة"
+            other: "مراجعات بـ %{count} نجمة"

@@ -1,5 +1,5 @@
 # The form builder demo's model (app/views/users): an Active Record with nested children and
-# one attribute per `form.ui` helper.
+# one attribute per `form.ux` helper.
 class User < ApplicationRecord
   LOCATIONS = [ [ "Prague", "prg" ], [ "Berlin", "ber" ], [ "Vienna", "vie" ], [ "New York", "nyc" ] ].freeze
   PLANS = [ [ "Free", "free" ], [ "Pro", "pro" ], [ "Team", "team" ] ].freeze

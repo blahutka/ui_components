@@ -9,7 +9,7 @@ class PreviewParamsTest < ActiveSupport::TestCase
   test "every preview file loads and is in Lookbook" do
     files = Dir[UiComponents::Schema::ROOT.join("**/*_preview.rb")]
     classes = files.filter_map { |file| File.read(file)[/^class (\S+) </, 1] }
-    missing = classes.reject { |name| name == "UI::BasePreview" || PREVIEWS.key?(name.safe_constantize) }
+    missing = classes.reject { |name| name == "AppicaUI::BasePreview" || PREVIEWS.key?(name.safe_constantize) }
 
     assert_empty missing, "These previews didn't load - check them with `ruby -c`"
   end
@@ -33,7 +33,7 @@ class PreviewParamsTest < ActiveSupport::TestCase
     missing = PREVIEWS.filter_map do |preview_class, preview|
       component = UiComponents::PreviewParams.component_for(preview_class)
       default = preview.scenarios.find { |scenario| scenario.name.to_s == "default" }
-      next unless component.is_a?(Class) && component < UI::Base && default
+      next unless component.is_a?(Class) && component < AppicaUI::Base && default
 
       listed = default.tags(:param).map(&:name)
       unlisted = preview_class.const_defined?(:UNLISTED_PROPS, false) ? preview_class::UNLISTED_PROPS.map(&:to_s) : []

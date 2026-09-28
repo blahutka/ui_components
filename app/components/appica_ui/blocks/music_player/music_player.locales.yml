@@ -1,0 +1,59 @@
+# AppicaUI::Blocks::MusicPlayer strings - t(".key") in any of its parts looks here.
+# Every language in one file; add a locale as another top-level key with the same keys
+# (test/components/locales_test.rb checks that they match).
+en:
+  ui_components:
+    appica_ui:
+      blocks:
+        music_player:
+          cover: Album cover
+          favorite: Favorite this track
+          seek: Seek
+          play: Play
+          pause: Pause
+          previous: Previous track
+          next: Next track
+          shuffle: Shuffle
+          repeat: Repeat
+cs:
+  ui_components:
+    appica_ui:
+      blocks:
+        music_player:
+          cover: Obal alba
+          favorite: Přidat skladbu do oblíbených
+          seek: Posun
+          play: Přehrát
+          pause: Pozastavit
+          previous: Předchozí skladba
+          next: Další skladba
+          shuffle: Náhodně
+          repeat: Opakovat
+de:
+  ui_components:
+    appica_ui:
+      blocks:
+        music_player:
+          cover: Albumcover
+          favorite: Titel als Favorit markieren
+          seek: Spulen
+          play: Abspielen
+          pause: Pausieren
+          previous: Vorheriger Titel
+          next: Nächster Titel
+          shuffle: Zufällige Wiedergabe
+          repeat: Wiederholen
+ar:
+  ui_components:
+    appica_ui:
+      blocks:
+        music_player:
+          cover: غلاف الألبوم
+          favorite: أضف المقطع إلى المفضلة
+          seek: التقديم
+          play: تشغيل
+          pause: إيقاف مؤقت
+          previous: المقطع السابق
+          next: المقطع التالي
+          shuffle: تشغيل عشوائي
+          repeat: تكرار

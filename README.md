@@ -5,7 +5,7 @@ Appica's **Tailwind v4** classes and made interactive with **Stimulus**. Preview
 
 ```ruby
 class FrameworkPicker < Phlex::HTML
-  include UI
+  include AppicaUI
 
   def view_template
     Autocomplete(items: [ "Next.js", "Remix", "Astro" ]) do
@@ -25,22 +25,22 @@ From ERB: `<%= render FrameworkPicker.new %>`.
 
 ## Rails forms
 
-Use `form.ui` on the builder you already get from `form_with` or `fields_for`:
+Use `form.ux` on the builder you already get from `form_with` or `fields_for`:
 
 ```erb
 <%= form_with model: @user do |form| %>
-  <%= form.ui.text_field :name, description: "As it appears on your profile" %>
-  <%= form.ui.number_field :age, min: 0 %>
-  <%= form.ui.select :locations, [["Prague", "prg"], ["Berlin", "ber"]],
+  <%= form.ux.text_field :name, description: "As it appears on your profile" %>
+  <%= form.ux.number_field :age, min: 0 %>
+  <%= form.ux.select :locations, [["Prague", "prg"], ["Berlin", "ber"]],
         { prompt: "Pick cities" }, { multiple: true } %>
-  <%= form.ui.text_area :bio %>
-  <%= form.ui.radio_group :plan, [["Free", "free"], ["Pro", "pro"]] %>
-  <%= form.ui.checkbox_group :interests, [["Design", "design"], ["Sales", "sales"]] %>
-  <%= form.ui.combobox :skills, %w[Ruby Rails SQL], multiple: true %>
-  <%= form.ui.range_field :experience %>
-  <%= form.ui.otp_field :pin, length: 4 %>
-  <%= form.ui.switch :newsletter %>
-  <%= form.ui.check_box :terms_of_service %>
+  <%= form.ux.text_area :bio %>
+  <%= form.ux.radio_group :plan, [["Free", "free"], ["Pro", "pro"]] %>
+  <%= form.ux.checkbox_group :interests, [["Design", "design"], ["Sales", "sales"]] %>
+  <%= form.ux.combobox :skills, %w[Ruby Rails SQL], multiple: true %>
+  <%= form.ux.range_field :experience %>
+  <%= form.ux.otp_field :pin, length: 4 %>
+  <%= form.ux.switch :newsletter %>
+  <%= form.ux.check_box :terms_of_service %>
   <%= form.submit %>
 <% end %>
 ```
@@ -109,8 +109,8 @@ to the dummy app's SQLite database.
 
 ### Blocks
 
-Higher-level compositions of the primitives live in `app/components/blocks/` (the `Blocks` kit; add
-`import "blocks"` next to `import "ui"`):
+Higher-level compositions of the primitives live in `app/components/appica_ui/blocks/` (the `AppicaUI::Blocks` kit; add
+`import "appica_ui/blocks"` next to `import "appica_ui"`):
 
 | Block | Parts |
 |-------|-------|
@@ -151,17 +151,17 @@ end
 Without an argument (`DrawerTrigger { "Open" }`) the part renders a plain `<button>`.
 `DrawerContent` is a native `<dialog>` opened with `showModal()`, so it sits in the top layer
 without a portal. Nest a `Drawer` inside `DrawerBody` for stacked drawers; `snap_points:` works
-on top/bottom drawers. JS events: `ui--drawer:open-change` and `ui--drawer:snap-point-change`.
+on top/bottom drawers. JS events: `appica-ui--drawer:open-change` and `appica-ui--drawer:snap-point-change`.
 
 ### Props
 
-Components declare their props with `UI::Props` ([dry-initializer](https://hanakai.org/learn/dry/dry-initializer/v3.2)),
-included in `UI::Base`. Declared props become instance variables (no public readers, so a prop called `title` or
+Components declare their props with `AppicaUI::Props` ([dry-initializer](https://hanakai.org/learn/dry/dry-initializer/v3.2)),
+included in `AppicaUI::Base`. Declared props become instance variables (no public readers, so a prop called `title` or
 `label` never hides a Phlex element); every other keyword - `class:`, `id:`, `data:`, `aria_*` - is collected in
 `@attributes` for the root element.
 
 ```ruby
-class UI::Badge < UI::Base
+class AppicaUI::Badge < AppicaUI::Base
   prop :variant, one_of(VARIANTS, :primary), default: -> { :primary }  # enum with a fallback
   prop :size,    one_of(SIZES, :md), default: -> { :md }
   prop :as,      default: -> { nil }
@@ -178,11 +178,11 @@ explicit `nil` means "default" are resolved in a reader instead.
 
 ### Translations
 
-Components translate with `t(".key")` (`UI::Localized`, in `UI::Base`). The scope comes from the component's folder -
-`blocks/revenue_summary/*` → `ui_components.blocks.revenue_summary` - so every part of a compound component shares it
+Components translate with `t(".key")` (`AppicaUI::Localized`, in `AppicaUI::Base`). The scope comes from the component's folder -
+`appica_ui/blocks/revenue_summary/*` → `ui_components.appica_ui.blocks.revenue_summary` - so every part of a compound component shares it
 without declaring anything (`translation_scope "…"` overrides). The strings sit next to the component in one
 `*.locales.yml` file with all languages side by side (`test/components/locales_test.rb` checks they define the same
-keys); country names are shared in `app/components/ui/countries.locales.yml`.
+keys); country names are shared in `app/components/appica_ui/countries.locales.yml`.
 
 Translated defaults are declared on the props, and `translated` turns Symbol values into keys:
 
@@ -201,16 +201,16 @@ language, define the same keys in your app's locale files.
 Each component lives in its own folder with everything it needs:
 
 ```
-app/components/ui/autocomplete/
-  autocomplete.rb, autocomplete_input.rb, …   # UI::Autocomplete, UI::AutocompleteInput, …
-  autocomplete_controller.js                   # Stimulus controller "ui--autocomplete"
+app/components/appica_ui/autocomplete/
+  autocomplete.rb, autocomplete_input.rb, …   # AppicaUI::Autocomplete, AppicaUI::AutocompleteInput, …
+  autocomplete_controller.js                   # Stimulus controller "appica-ui--autocomplete"
   autocomplete.css                             # non-utility CSS
   autocomplete_preview.rb                      # Lookbook scenarios
 ```
 
 The folders are collapsed for Zeitwerk (no extra namespace), served by Propshaft and pinned
-by the engine's importmap (`ui/...`). `app/components/ui/index.js` registers the controllers,
-`app/components/ui/index.css` imports the Appica tokens (`theme.css`) and each component's CSS.
+by the engine's importmap (`ui/...`). `app/components/appica_ui/index.js` registers the controllers,
+`app/components/appica_ui/index.css` imports the Appica tokens (`theme.css`) and each component's CSS.
 
 ## Schemas for LLMs and MCP servers
 
@@ -252,7 +252,7 @@ docs/lookbook/
 
 Start a page with `<%= UiComponents::Lookbook::TableOfContents.call(page) %>` to get the
 "On this page" box; it lists the `##` and `###` headings. Embed scenarios with
-`<%= embed UI::DrawerPreview, :nested %>`. Components whose popups or panels need room in an
+`<%= embed AppicaUI::DrawerPreview, :nested %>`. Components whose popups or panels need room in an
 embed set `@display min_height …` on their preview class.
 
 ## Host app setup
@@ -264,16 +264,16 @@ gem "ui_components", path: "../ui_components"
 
 ```js
 // app/javascript/application.js (after controllers/application exists)
-import "ui"
-import "blocks"
+import "appica_ui"
+import "appica_ui/blocks"
 ```
 
 ```css
 /* app/assets/tailwind/application.css — use the installed gem path (`bundle show ui_components`) */
 @import "tailwindcss";
-@import "<gem path>/app/components/ui/index.css";
+@import "<gem path>/app/components/appica_ui/index.css";
 @source "<gem path>/app/components";
-@source not "<gem path>/app/components/ui/icon/icons";
+@source not "<gem path>/app/components/appica_ui/icon/icons";
 
 /* Your theme: only the variables that differ, *after* the import above */
 :root, .light { --primary: oklch(58.5% 0.233 277.117); --radius: 0.5rem; }
@@ -283,9 +283,9 @@ import "blocks"
 ### Theming
 
 Generate the overrides with Lookbook's **Blocks → Theme customizer** (or appica.dev's "Get CSS
-Code" - same output) and paste them into your stylesheet **after** `@import ".../ui/index.css"`.
+Code" - same output) and paste them into your stylesheet **after** `@import ".../appica_ui/index.css"`.
 They list only the variables you changed. Don't paste them into, or in place of,
-`ui/theme.css`: that file holds every default token plus the `@theme inline` block that turns
+`appica_ui/theme.css`: that file holds every default token plus the `@theme inline` block that turns
 `--primary` into `bg-primary`, `text-primary-foreground`…; without it those utilities aren't
 generated at all and components lose their colors.
 
@@ -339,7 +339,7 @@ New component folders are picked up on the next reload too, so a restart is only
 changing the engine, initializers, the Gemfile or anything else loaded once at boot.
 
 Notes:
-- Previews live next to each component (`app/components/ui/<component>/*_preview.rb`).
+- Previews live next to each component (`app/components/appica_ui/<component>/*_preview.rb`).
 - Lookbook's **display options** (⚙ in the preview toolbar) switch **Theme** (light/dark),
   **Locale** (English, Čeština, Deutsch, العربية - the preview renders in that `I18n.locale`, and
   right-to-left languages flip `dir`; see `test/dummy/config/initializers/lookbook.rb`) and

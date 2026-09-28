@@ -8,7 +8,7 @@ title: Combobox
 Pick a value from a list you can filter by typing - one, several (chips), or a new one.
 [Appica docs](https://appica.dev/ui/components/react/combobox)
 
-<%= embed UI::ComboboxPreview, :default %>
+<%= embed AppicaUI::ComboboxPreview, :default %>
 
 ## Usage
 
@@ -32,39 +32,39 @@ hidden inputs submit it under `name:`. Object items are read through `item_to_st
 
 ### Variants
 
-<%= embed UI::ComboboxPreview, :variants %>
+<%= embed AppicaUI::ComboboxPreview, :variants %>
 
 ### Clearable & chevron
 
-<%= embed UI::ComboboxPreview, :clearable %>
+<%= embed AppicaUI::ComboboxPreview, :clearable %>
 
 ### Country select
 
-<%= embed UI::ComboboxPreview, :countries %>
+<%= embed AppicaUI::ComboboxPreview, :countries %>
 
 ### Input inside the popup
 
-<%= embed UI::ComboboxPreview, :popup_search %>
+<%= embed AppicaUI::ComboboxPreview, :popup_search %>
 
 ### Grouped options
 
-<%= embed UI::ComboboxPreview, :grouped %>
+<%= embed AppicaUI::ComboboxPreview, :grouped %>
 
 ### Multiple selection
 
-<%= embed UI::ComboboxPreview, :multiple %>
+<%= embed AppicaUI::ComboboxPreview, :multiple %>
 
 ### Creatable
 
 ```js
-element.addEventListener("ui--combobox:create", ({ detail }) => createLabel(detail.value))
+element.addEventListener("appica-ui--combobox:create", ({ detail }) => createLabel(detail.value))
 ```
 
-<%= embed UI::ComboboxPreview, :creatable %>
+<%= embed AppicaUI::ComboboxPreview, :creatable %>
 
 ### RTL
 
-<%= embed UI::ComboboxPreview, :rtl %>
+<%= embed AppicaUI::ComboboxPreview, :rtl %>
 
 ## API reference
 
@@ -82,7 +82,7 @@ Everything [Autocomplete](<%= page_path(:autocomplete) %>) takes (`items:`, `siz
 | `creatable:` | `Boolean` | `false` | Offer "Create "…"" for a query with no exact match. |
 | `name:`, `required:`, `disabled:` | | | Form behaviour. |
 
-Events: `ui--combobox:change` (`{ value }`) and `ui--combobox:create` (`{ value }`).
+Events: `appica-ui--combobox:change` (`{ value }`) and `appica-ui--combobox:create` (`{ value }`).
 
 ### Parts
 

@@ -8,7 +8,7 @@ title: Checkbox
 A tick box for on/off choices, with a mixed state, groups and a "select all" parent.
 [Appica docs](https://appica.dev/ui/components/react/checkbox)
 
-<%= embed UI::CheckboxPreview, :default %>
+<%= embed AppicaUI::CheckboxPreview, :default %>
 
 ## Usage
 
@@ -29,36 +29,36 @@ submits (like Rails' `check_box`).
 
 ### States
 
-<%= embed UI::CheckboxPreview, :states %>
+<%= embed AppicaUI::CheckboxPreview, :states %>
 
 ### Sizing
 
-<%= embed UI::CheckboxPreview, :sizing %>
+<%= embed AppicaUI::CheckboxPreview, :sizing %>
 
 ### With a label and description
 
-<%= embed UI::CheckboxPreview, :with_label %>
+<%= embed AppicaUI::CheckboxPreview, :with_label %>
 
 ### Checkbox group
 
 `CheckboxGroup` gives its boxes one `name:` (e.g. `"toppings[]"`, so Rails receives an array) and checks those
 whose `value:` is in `default_value:`.
 
-<%= embed UI::CheckboxPreview, :group %>
+<%= embed AppicaUI::CheckboxPreview, :group %>
 
 ### Select all (parent checkbox)
 
-<%= embed UI::CheckboxPreview, :select_all %>
+<%= embed AppicaUI::CheckboxPreview, :select_all %>
 
 ### In a form
 
 Inside a [Field](<%= page_path(:field) %>) it takes the field's id, name and error state and is validated on submit.
 
-<%= embed UI::CheckboxPreview, :form %>
+<%= embed AppicaUI::CheckboxPreview, :form %>
 
 ### RTL
 
-<%= embed UI::CheckboxPreview, :rtl %>
+<%= embed AppicaUI::CheckboxPreview, :rtl %>
 
 ## API reference
 
@@ -84,7 +84,7 @@ Other attributes go to the `<input>`; `class:` to the box.
 | `orientation:` | `:vertical`, `:horizontal` | `:vertical` | A column, or a wrapping row. |
 | `disabled:` | `Boolean` | `false` | Disables every box. |
 
-Event: `ui--checkbox-group:change` with `{ value }`.
+Event: `appica-ui--checkbox-group:change` with `{ value }`.
 
 ## Accessibility
 

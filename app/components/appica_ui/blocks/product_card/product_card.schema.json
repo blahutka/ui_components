@@ -1,0 +1,131 @@
+{
+  "name": "ProductCard",
+  "kit": "AppicaUI::Blocks",
+  "description": "A product card: a photo with a discount badge and a wishlist toggle, the name, price and original price, and whatever the block adds (sizes, quantity, the cart button) - composed from Badge, Toggle, Button, ToggleGroup and NumberField.\n\n  ProductCard(name: product.name, description: product.subtitle, image: product.photo_url,\n    price: product.price, original_price: product.list_price, action: cart_items_path) do\n    ProductOptions(sizes: product.sizes, selected: \"42\")\n    ProductAddToCart()\n  end\n\nWith `action:` the card is a form: the size group submits `size`, the quantity `quantity` and the hidden `product_id:` - Add to cart posts them. Strings: product_card.locales.yml.",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI::Blocks (e.g. `ProductCard(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/20_blocks/product_card.md.erb",
+  "components": {
+    "ProductAddToCart": {
+      "constant": "AppicaUI::Blocks::ProductAddToCart",
+      "description": "The ProductCard's full-width Add to cart button, pinned to the bottom of the card. In a card with `action:` it submits the form.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "default": "Add to cart",
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "ProductCard": {
+      "constant": "AppicaUI::Blocks::ProductCard",
+      "props": {
+        "type": "object",
+        "properties": {
+          "name": {},
+          "price": {},
+          "description": {
+            "default": null
+          },
+          "original_price": {
+            "default": null
+          },
+          "currency": {
+            "default": "USD",
+            "type": "string"
+          },
+          "image": {
+            "default": null
+          },
+          "image_alt": {
+            "default": "",
+            "type": "string"
+          },
+          "badge": {
+            "default": null
+          },
+          "wishlist": {
+            "default": true,
+            "type": "boolean"
+          },
+          "wishlisted": {
+            "default": false,
+            "type": "boolean"
+          },
+          "action": {
+            "default": null
+          },
+          "method": {
+            "default": "post",
+            "type": "string"
+          },
+          "product_id": {
+            "default": null
+          }
+        },
+        "required": [
+          "name",
+          "price"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "ProductOptions": {
+      "constant": "AppicaUI::Blocks::ProductOptions",
+      "description": "The ProductCard's option row: a size picker (a ToggleGroup of outline toggles) and a quantity NumberField. In a card with `action:` they submit `size` and `quantity`.\n\n  ProductOptions(sizes: %w[ 40 41 42 43 ], selected: \"42\", max: 9)",
+      "props": {
+        "type": "object",
+        "properties": {
+          "sizes": {
+            "default": [],
+            "type": "array"
+          },
+          "selected": {
+            "default": null
+          },
+          "size_label": {
+            "default": "Size",
+            "type": "string"
+          },
+          "quantity": {
+            "default": 1,
+            "type": "integer"
+          },
+          "max": {
+            "default": 9,
+            "type": "integer"
+          },
+          "compact": {
+            "default": 3,
+            "type": "integer"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "notes": "The Appica homepage card. The discount badge is computed from the two prices.",
+      "code": "phlex do\n  ProductCard(price:, original_price:, currency:, wishlisted:, wishlist:, method:, name:, description:, image:, image_alt:, class: \"w-95 max-w-full\") do\n    ProductOptions(sizes: %w[ 40 41 42 43 ], selected: \"42\")\n    ProductAddToCart()\n  end\nend"
+    },
+    {
+      "name": "Add to cart form",
+      "notes": "With `action:` the card is a form posting `product_id`, `size` and `quantity`.",
+      "code": "phlex do\n  ProductCard(name: \"Nimbus Runner\", description: \"Men's running shoes\", image: \"/landing/nimbus-runner.svg\",\n    price: 96, original_price: 120, action: \"/cart_items\", product_id: 42, class: \"w-95 max-w-full\") do\n    ProductOptions(sizes: %w[ 40 41 42 43 ], selected: \"42\")\n    ProductAddToCart()\n  end\nend"
+    },
+    {
+      "name": "Full price, no photo",
+      "notes": "No original price means no badge; a missing image shows a placeholder.",
+      "code": "phlex do\n  ProductCard(name: \"Trail Cap\", description: \"Unisex, one size\", price: 28, wishlist: false, class: \"w-95 max-w-full\") do\n    ProductOptions(quantity: 2)\n    ProductAddToCart()\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "Rendered in Arabic whatever the toolbar says.",
+      "code": "phlex do\n  I18n.with_locale(:ar) do\n    div(dir: \"rtl\") do\n      ProductCard(name: \"نيمبوس رانر\", description: \"أحذية جري رجالية\", image: \"/landing/nimbus-runner.svg\",\n        price: 96, original_price: 120, class: \"w-95 max-w-full\") do\n        ProductOptions(sizes: %w[ 40 41 42 43 ], selected: \"42\")\n        ProductAddToCart()\n      end\n    end\n  end\nend"
+    }
+  ]
+}

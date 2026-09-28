@@ -8,7 +8,7 @@ title: Slider
 Pick a value - or a range - along a track, with a value tooltip.
 [Appica docs](https://appica.dev/ui/components/react/slider)
 
-<%= embed UI::SliderPreview, :default %>
+<%= embed AppicaUI::SliderPreview, :default %>
 
 ## Usage
 
@@ -19,47 +19,47 @@ Slider(default_value: [ 25, 75 ], name: "price", thumb_aria_label: %w[ Minimum M
 
 The number of thumbs follows the value: a number renders one, an array one per entry. Each thumb holds a visually
 hidden native `<input type="range">` that carries the name (`name[]` for a range), the value and the focus, so the
-slider submits with forms and is announced as a slider. The `ui--slider` controller adds dragging anywhere on the
+slider submits with forms and is announced as a slider. The `appica-ui--slider` controller adds dragging anywhere on the
 track and the keyboard, and keeps the fill, thumbs and tooltips in sync.
 
 ## Examples
 
 ### Range
 
-<%= embed UI::SliderPreview, :range %>
+<%= embed AppicaUI::SliderPreview, :range %>
 
 ### Steps
 
-<%= embed UI::SliderPreview, :steps %>
+<%= embed AppicaUI::SliderPreview, :steps %>
 
 ### Tooltip visibility
 
-<%= embed UI::SliderPreview, :tooltip %>
+<%= embed AppicaUI::SliderPreview, :tooltip %>
 
 ### Formatting
 
-<%= embed UI::SliderPreview, :formatted %>
+<%= embed AppicaUI::SliderPreview, :formatted %>
 
 ### Vertical
 
-<%= embed UI::SliderPreview, :vertical %>
+<%= embed AppicaUI::SliderPreview, :vertical %>
 
 ### Reacting to changes
 
 ```js
-element.addEventListener("ui--slider:change", ({ detail }) => preview(detail.value))  // while moving
-element.addEventListener("ui--slider:commit", ({ detail }) => save(detail.value))     // on release
+element.addEventListener("appica-ui--slider:change", ({ detail }) => preview(detail.value))  // while moving
+element.addEventListener("appica-ui--slider:commit", ({ detail }) => save(detail.value))     // on release
 ```
 
-<%= embed UI::SliderPreview, :controlled %>
+<%= embed AppicaUI::SliderPreview, :controlled %>
 
 ### Disabled
 
-<%= embed UI::SliderPreview, :disabled %>
+<%= embed AppicaUI::SliderPreview, :disabled %>
 
 ### RTL
 
-<%= embed UI::SliderPreview, :rtl %>
+<%= embed AppicaUI::SliderPreview, :rtl %>
 
 ## API reference
 
@@ -77,7 +77,7 @@ element.addEventListener("ui--slider:commit", ({ detail }) => save(detail.value)
 | `name:` | `String` | - | Form field name. |
 | `disabled:` | `Boolean` | `false` | Dims it and blocks interaction. |
 
-Events: `ui--slider:change` and `ui--slider:commit`, with `{ value }`.
+Events: `appica-ui--slider:change` and `appica-ui--slider:commit`, with `{ value }`.
 
 ## Accessibility
 

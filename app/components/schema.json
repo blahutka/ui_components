@@ -1,127 +1,14 @@
 {
-  "description": "Phlex UI components (a port of Appica UI) with Tailwind v4 classes and Stimulus controllers. UI holds the primitives, Blocks the compositions. Each entry's `schema` file lists the props, the compound parts (with where each renders), and working examples.",
+  "description": "Phlex UI components (a port of Appica UI) with Tailwind v4 classes and Stimulus controllers. AppicaUI holds the primitives, AppicaUI::Blocks the compositions. Each entry's `schema` file lists the props, the compound parts (with where each renders), and working examples.",
   "kits": {
-    "UI": "include UI in a Phlex view, then call Button(...), Select(...) { … }",
-    "Blocks": "include Blocks (and UI) to use compositions like ReviewSummary(...)"
+    "AppicaUI": "include AppicaUI in a Phlex view, then call Button(...), Select(...) { … }",
+    "AppicaUI::Blocks": "include AppicaUI::Blocks (and AppicaUI) to use compositions like ReviewSummary(...)"
   },
-  "theme": "Colors come from CSS variables (ui/theme.css). Override them after importing ui/index.css; never replace theme.css.",
+  "theme": "Colors come from CSS variables (appica_ui/theme.css). Override them after importing appica_ui/index.css; never replace theme.css.",
   "components": [
     {
-      "name": "ChatAssistant",
-      "kit": "Blocks",
-      "summary": "An assistant chat card: a header, the conversation, a \"thinking\" status, suggestion chips and a composer - the Appica homepage's assistant, composed from UI primitives.",
-      "parts": [
-        "ChatComposer",
-        "ChatHeader",
-        "ChatMessage",
-        "ChatMessages",
-        "ChatStatus",
-        "ChatSuggestion",
-        "ChatSuggestions"
-      ],
-      "schema": "blocks/chat_assistant/chat_assistant.schema.json"
-    },
-    {
-      "name": "CommandMenu",
-      "kit": "Blocks",
-      "summary": "A command palette card: a search field with a ⌘K hint, grouped commands with icons and keyboard shortcuts, and a footer of key hints - composed from Input, Kbd, Navigation and Icon.",
-      "parts": [
-        "CommandGroup",
-        "CommandItem"
-      ],
-      "schema": "blocks/command_menu/command_menu.schema.json"
-    },
-    {
-      "name": "MusicPlayer",
-      "kit": "Blocks",
-      "summary": "A now-playing card: cover art, title and artist with a favorite toggle, a seek bar with elapsed and remaining time, and shuffle / previous / play-pause / next / repeat controls - composed from Toggle, Button, Slider and Icon.",
-      "parts": [],
-      "schema": "blocks/music_player/music_player.schema.json"
-    },
-    {
-      "name": "Newsletter",
-      "kit": "Blocks",
-      "summary": "A newsletter signup: a heading, a pitch, a list of perks, an email form with a spam honeypot and a note, and social links - composed from Field, Input, Button, Thumbnail and Icon.",
-      "parts": [
-        "NewsletterPerk"
-      ],
-      "schema": "blocks/newsletter/newsletter.schema.json"
-    },
-    {
-      "name": "OrderTracker",
-      "kit": "Blocks",
-      "summary": "A shipment card: the order number and total, a status badge, the delivery progress, a timeline of steps and the courier - composed from Badge, Progress, Icon, Separator, Avatar and Button.",
-      "parts": [
-        "OrderCourier",
-        "OrderStep",
-        "OrderTimeline"
-      ],
-      "schema": "blocks/order_tracker/order_tracker.schema.json"
-    },
-    {
-      "name": "ProductCard",
-      "kit": "Blocks",
-      "summary": "A product card: a photo with a discount badge and a wishlist toggle, the name, price and original price, and whatever the block adds (sizes, quantity, the cart button) - composed from Badge, Toggle, Button, ToggleGroup and NumberField.",
-      "parts": [
-        "ProductAddToCart",
-        "ProductOptions"
-      ],
-      "schema": "blocks/product_card/product_card.schema.json"
-    },
-    {
-      "name": "RevenueSummary",
-      "kit": "Blocks",
-      "summary": "A revenue overview card: the period's total with a trend badge against the previous period, top markets, a trend chart and a row of key stats - composed from Badge, Icon and Sparkline.",
-      "parts": [
-        "CountryFlag",
-        "RevenueChart",
-        "RevenueMarket",
-        "RevenueMarkets",
-        "RevenueStat",
-        "RevenueStats"
-      ],
-      "schema": "blocks/revenue_summary/revenue_summary.schema.json"
-    },
-    {
-      "name": "ReviewSummary",
-      "kit": "Blocks",
-      "summary": "A product-reviews card: the average score with stars and a review count, the breakdown by stars and a social-proof footer - composed from Rating, Meter, Separator and AvatarGroup.",
-      "parts": [
-        "ReviewBreakdown",
-        "ReviewHighlight"
-      ],
-      "schema": "blocks/review_summary/review_summary.schema.json"
-    },
-    {
-      "name": "TeamMembers",
-      "kit": "Blocks",
-      "summary": "A team card: the member list with roles and presence, a seat count and an invite-by-email form - composed from Avatar, Badge, Button, Icon and Separator.",
-      "parts": [
-        "TeamInvite",
-        "TeamMember",
-        "TeamMemberList"
-      ],
-      "schema": "blocks/team_members/team_members.schema.json"
-    },
-    {
-      "name": "ThemeCustomizer",
-      "kit": "Blocks",
-      "summary": "A theme settings panel like Appica's: mode, base / primary / secondary colors (a Tailwind scale or any custom color), font and radius, \"Get CSS Code\", \"Disable animations\" and a reset - composed from ToggleGroup, Select, Input, Switch, Button, Dialog and CopyButton.",
-      "parts": [],
-      "schema": "blocks/theme_customizer/theme_customizer.schema.json"
-    },
-    {
-      "name": "Transactions",
-      "kit": "Blocks",
-      "summary": "A recent-transactions card: a title, All / Income / Spending filter tabs and a list of Transaction rows - composed from Tabs, Thumbnail and Icon.",
-      "parts": [
-        "Transaction"
-      ],
-      "schema": "blocks/transactions/transactions.schema.json"
-    },
-    {
       "name": "Alert",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A prominent, in-page message about a status or event - a banner that lives in the layout.",
       "parts": [
         "AlertAction",
@@ -129,11 +16,11 @@
         "AlertIcon",
         "AlertTitle"
       ],
-      "schema": "ui/alert/alert.schema.json"
+      "schema": "appica_ui/alert/alert.schema.json"
     },
     {
       "name": "AlertDialog",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A dialog that demands a response - a destructive or high-stakes confirmation.",
       "parts": [
         "AlertDialogBody",
@@ -145,11 +32,11 @@
         "AlertDialogTitle",
         "AlertDialogTrigger"
       ],
-      "schema": "ui/alert_dialog/alert_dialog.schema.json"
+      "schema": "appica_ui/alert_dialog/alert_dialog.schema.json"
     },
     {
       "name": "Autocomplete",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "Root of the compound component.",
       "parts": [
         "AutocompleteCollection",
@@ -161,11 +48,11 @@
         "AutocompleteLabel",
         "AutocompleteList"
       ],
-      "schema": "ui/autocomplete/autocomplete.schema.json"
+      "schema": "appica_ui/autocomplete/autocomplete.schema.json"
     },
     {
       "name": "Avatar",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A user image with a text or icon fallback when it's missing.",
       "parts": [
         "AvatarBadge",
@@ -173,18 +60,131 @@
         "AvatarGroup",
         "AvatarImage"
       ],
-      "schema": "ui/avatar/avatar.schema.json"
+      "schema": "appica_ui/avatar/avatar.schema.json"
     },
     {
       "name": "Badge",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A small label that highlights a status, count, or category.",
       "parts": [],
-      "schema": "ui/badge/badge.schema.json"
+      "schema": "appica_ui/badge/badge.schema.json"
+    },
+    {
+      "name": "ChatAssistant",
+      "kit": "AppicaUI::Blocks",
+      "summary": "An assistant chat card: a header, the conversation, a \"thinking\" status, suggestion chips and a composer - the Appica homepage's assistant, composed from UI primitives.",
+      "parts": [
+        "ChatComposer",
+        "ChatHeader",
+        "ChatMessage",
+        "ChatMessages",
+        "ChatStatus",
+        "ChatSuggestion",
+        "ChatSuggestions"
+      ],
+      "schema": "appica_ui/blocks/chat_assistant/chat_assistant.schema.json"
+    },
+    {
+      "name": "CommandMenu",
+      "kit": "AppicaUI::Blocks",
+      "summary": "A command palette card: a search field with a ⌘K hint, grouped commands with icons and keyboard shortcuts, and a footer of key hints - composed from Input, Kbd, Navigation and Icon.",
+      "parts": [
+        "CommandGroup",
+        "CommandItem"
+      ],
+      "schema": "appica_ui/blocks/command_menu/command_menu.schema.json"
+    },
+    {
+      "name": "MusicPlayer",
+      "kit": "AppicaUI::Blocks",
+      "summary": "A now-playing card: cover art, title and artist with a favorite toggle, a seek bar with elapsed and remaining time, and shuffle / previous / play-pause / next / repeat controls - composed from Toggle, Button, Slider and Icon.",
+      "parts": [],
+      "schema": "appica_ui/blocks/music_player/music_player.schema.json"
+    },
+    {
+      "name": "Newsletter",
+      "kit": "AppicaUI::Blocks",
+      "summary": "A newsletter signup: a heading, a pitch, a list of perks, an email form with a spam honeypot and a note, and social links - composed from Field, Input, Button, Thumbnail and Icon.",
+      "parts": [
+        "NewsletterPerk"
+      ],
+      "schema": "appica_ui/blocks/newsletter/newsletter.schema.json"
+    },
+    {
+      "name": "OrderTracker",
+      "kit": "AppicaUI::Blocks",
+      "summary": "A shipment card: the order number and total, a status badge, the delivery progress, a timeline of steps and the courier - composed from Badge, Progress, Icon, Separator, Avatar and Button.",
+      "parts": [
+        "OrderCourier",
+        "OrderStep",
+        "OrderTimeline"
+      ],
+      "schema": "appica_ui/blocks/order_tracker/order_tracker.schema.json"
+    },
+    {
+      "name": "ProductCard",
+      "kit": "AppicaUI::Blocks",
+      "summary": "A product card: a photo with a discount badge and a wishlist toggle, the name, price and original price, and whatever the block adds (sizes, quantity, the cart button) - composed from Badge, Toggle, Button, ToggleGroup and NumberField.",
+      "parts": [
+        "ProductAddToCart",
+        "ProductOptions"
+      ],
+      "schema": "appica_ui/blocks/product_card/product_card.schema.json"
+    },
+    {
+      "name": "RevenueSummary",
+      "kit": "AppicaUI::Blocks",
+      "summary": "A revenue overview card: the period's total with a trend badge against the previous period, top markets, a trend chart and a row of key stats - composed from Badge, Icon and Sparkline.",
+      "parts": [
+        "CountryFlag",
+        "RevenueChart",
+        "RevenueMarket",
+        "RevenueMarkets",
+        "RevenueStat",
+        "RevenueStats"
+      ],
+      "schema": "appica_ui/blocks/revenue_summary/revenue_summary.schema.json"
+    },
+    {
+      "name": "ReviewSummary",
+      "kit": "AppicaUI::Blocks",
+      "summary": "A product-reviews card: the average score with stars and a review count, the breakdown by stars and a social-proof footer - composed from Rating, Meter, Separator and AvatarGroup.",
+      "parts": [
+        "ReviewBreakdown",
+        "ReviewHighlight"
+      ],
+      "schema": "appica_ui/blocks/review_summary/review_summary.schema.json"
+    },
+    {
+      "name": "TeamMembers",
+      "kit": "AppicaUI::Blocks",
+      "summary": "A team card: the member list with roles and presence, a seat count and an invite-by-email form - composed from Avatar, Badge, Button, Icon and Separator.",
+      "parts": [
+        "TeamInvite",
+        "TeamMember",
+        "TeamMemberList"
+      ],
+      "schema": "appica_ui/blocks/team_members/team_members.schema.json"
+    },
+    {
+      "name": "ThemeCustomizer",
+      "kit": "AppicaUI::Blocks",
+      "summary": "A theme settings panel like Appica's: mode, base / primary / secondary colors (a Tailwind scale or any custom color), font and radius, \"Get CSS Code\", \"Disable animations\" and a reset - composed from ToggleGroup, Select, Input, Switch, Button, Dialog and CopyButton.",
+      "parts": [],
+      "schema": "appica_ui/blocks/theme_customizer/theme_customizer.schema.json"
+    },
+    {
+      "name": "Transactions",
+      "kit": "AppicaUI::Blocks",
+      "summary": "A recent-transactions card: a title, All / Income / Spending filter tabs and a list of Transaction rows - composed from Tabs, Thumbnail and Icon.",
+      "parts": [
+        "Transaction"
+      ],
+      "schema": "appica_ui/blocks/transactions/transactions.schema.json"
     },
     {
       "name": "Breadcrumb",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "Where the current page sits in a hierarchy: a `<nav>` landmark around a trail of links.",
       "parts": [
         "BreadcrumbEllipsis",
@@ -193,25 +193,25 @@
         "BreadcrumbList",
         "BreadcrumbSeparator"
       ],
-      "schema": "ui/breadcrumb/breadcrumb.schema.json"
+      "schema": "appica_ui/breadcrumb/breadcrumb.schema.json"
     },
     {
       "name": "Button",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "Appica's Button.",
       "parts": [],
-      "schema": "ui/button/button.schema.json"
+      "schema": "appica_ui/button/button.schema.json"
     },
     {
       "name": "ButtonGroup",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "Buttons joined into one control: inner corners squared, shared borders overlapped.",
       "parts": [],
-      "schema": "ui/button_group/button_group.schema.json"
+      "schema": "appica_ui/button_group/button_group.schema.json"
     },
     {
       "name": "Card",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A flexible content container for a title, description, media and actions.",
       "parts": [
         "CardDescription",
@@ -220,11 +220,11 @@
         "CardMedia",
         "CardTitle"
       ],
-      "schema": "ui/card/card.schema.json"
+      "schema": "appica_ui/card/card.schema.json"
     },
     {
       "name": "Carousel",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A draggable, swipeable slider built on Embla Carousel, with autoplay, fade, auto-height, thumbnails and scroll effects.",
       "parts": [
         "CarouselArrow",
@@ -237,40 +237,40 @@
         "CarouselThumb",
         "CarouselThumbs"
       ],
-      "schema": "ui/carousel/carousel.schema.json"
+      "schema": "appica_ui/carousel/carousel.schema.json"
     },
     {
       "name": "Checkbox",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A tick box on a native <input type=\"checkbox\">, sized in em so it follows the text size.",
       "parts": [
         "CheckboxGroup"
       ],
-      "schema": "ui/checkbox/checkbox.schema.json"
+      "schema": "appica_ui/checkbox/checkbox.schema.json"
     },
     {
       "name": "Chip",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A compact pill for tags, attributes, filters and removable tokens, in Button's palette.",
       "parts": [
         "ChipCheckbox",
         "ChipGroup"
       ],
-      "schema": "ui/chip/chip.schema.json"
+      "schema": "appica_ui/chip/chip.schema.json"
     },
     {
       "name": "Collapsible",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A section that expands and collapses to show or hide its content.",
       "parts": [
         "CollapsibleContent",
         "CollapsibleTrigger"
       ],
-      "schema": "ui/collapsible/collapsible.schema.json"
+      "schema": "appica_ui/collapsible/collapsible.schema.json"
     },
     {
       "name": "Combobox",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "Pick a value (or several) from a list you can filter by typing - Autocomplete's sibling for selection: the value is one of the items, the input reverts to its label when you leave, and it submits under `name:` from hidden inputs.",
       "parts": [
         "ComboboxChips",
@@ -286,11 +286,11 @@
         "ComboboxTrigger",
         "ComboboxValue"
       ],
-      "schema": "ui/combobox/combobox.schema.json"
+      "schema": "appica_ui/combobox/combobox.schema.json"
     },
     {
       "name": "ContextMenu",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A menu of actions for an object, opened by right-clicking (or long-pressing) it.",
       "parts": [
         "ContextMenuCheckboxItem",
@@ -307,18 +307,18 @@
         "ContextMenuSubTrigger",
         "ContextMenuTrigger"
       ],
-      "schema": "ui/context_menu/context_menu.schema.json"
+      "schema": "appica_ui/context_menu/context_menu.schema.json"
     },
     {
       "name": "CopyButton",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A Button that copies text to the clipboard, then swaps its icon for a drawn check.",
       "parts": [],
-      "schema": "ui/copy_button/copy_button.schema.json"
+      "schema": "appica_ui/copy_button/copy_button.schema.json"
     },
     {
       "name": "Dialog",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A focused task or content that interrupts the page, in a centered modal.",
       "parts": [
         "DialogBody",
@@ -330,11 +330,11 @@
         "DialogTitle",
         "DialogTrigger"
       ],
-      "schema": "ui/dialog/dialog.schema.json"
+      "schema": "appica_ui/dialog/dialog.schema.json"
     },
     {
       "name": "Drawer",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "Root of the compound component: holds the edge (`side:`) and the drawer options and shares them with its parts.",
       "parts": [
         "DrawerBody",
@@ -346,11 +346,11 @@
         "DrawerTitle",
         "DrawerTrigger"
       ],
-      "schema": "ui/drawer/drawer.schema.json"
+      "schema": "appica_ui/drawer/drawer.schema.json"
     },
     {
       "name": "DropdownMenu",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A menu of actions opened from a button.",
       "parts": [
         "DropdownMenuCheckboxItem",
@@ -367,11 +367,11 @@
         "DropdownMenuSubTrigger",
         "DropdownMenuTrigger"
       ],
-      "schema": "ui/dropdown_menu/dropdown_menu.schema.json"
+      "schema": "appica_ui/dropdown_menu/dropdown_menu.schema.json"
     },
     {
       "name": "Field",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "Wires a label, description and error message to one control - Input, Textarea, Select… - and validates it.",
       "parts": [
         "FieldDescription",
@@ -380,12 +380,12 @@
         "Fieldset",
         "FieldsetLegend"
       ],
-      "schema": "ui/field/field.schema.json"
+      "schema": "appica_ui/field/field.schema.json"
     },
     {
       "name": "FormBuilderAutocomplete",
-      "kit": "UI",
-      "summary": "An Autocomplete (free text with suggestions) with its input and list, as UI::FormBuilder renders it.",
+      "kit": "AppicaUI",
+      "summary": "An Autocomplete (free text with suggestions) with its input and list, as AppicaUI::FormBuilder renders it.",
       "parts": [
         "FormBuilderChoices",
         "FormBuilderCombobox",
@@ -395,46 +395,46 @@
         "FormBuilderToggle",
         "FormBuilderToggleGroup"
       ],
-      "schema": "ui/form/form.schema.json"
+      "schema": "appica_ui/form/form.schema.json"
     },
     {
       "name": "Icon",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "One of the ~5,000 Appica icons (https://appica.dev/ui/icons), by its canonical name.",
       "parts": [],
-      "schema": "ui/icon/icon.schema.json"
+      "schema": "appica_ui/icon/icon.schema.json"
     },
     {
       "name": "Input",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A single-line text field, with optional start/end adornments and a clear button.",
       "parts": [],
-      "schema": "ui/input/input.schema.json"
+      "schema": "appica_ui/input/input.schema.json"
     },
     {
       "name": "Kbd",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A keyboard key or shortcut, e.g.",
       "parts": [],
-      "schema": "ui/kbd/kbd.schema.json"
+      "schema": "appica_ui/kbd/kbd.schema.json"
     },
     {
       "name": "Loader",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "An indeterminate \"working on it\" indicator for section- and status-level waits.",
       "parts": [],
-      "schema": "ui/loader/loader.schema.json"
+      "schema": "appica_ui/loader/loader.schema.json"
     },
     {
       "name": "Logo",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A brand logo: a circular mark (drawn with Phlex's SVG builder) plus a wordmark.",
       "parts": [],
-      "schema": "ui/logo/logo.schema.json"
+      "schema": "appica_ui/logo/logo.schema.json"
     },
     {
       "name": "Menubar",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A bar of menus for an app's top-level commands (File / Edit / View …).",
       "parts": [
         "MenubarCheckIndicator",
@@ -453,33 +453,33 @@
         "MenubarSubTrigger",
         "MenubarTrigger"
       ],
-      "schema": "ui/menubar/menubar.schema.json"
+      "schema": "appica_ui/menubar/menubar.schema.json"
     },
     {
       "name": "Meter",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A static measurement inside a known range - disk usage, a score, remaining battery.",
       "parts": [
         "MeterLabel",
         "MeterProgress",
         "MeterValue"
       ],
-      "schema": "ui/meter/meter.schema.json"
+      "schema": "appica_ui/meter/meter.schema.json"
     },
     {
       "name": "Navigation",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "Links between pages or sections, with the current one highlighted.",
       "parts": [
         "NavigationItem",
         "NavigationLink",
         "NavigationList"
       ],
-      "schema": "ui/navigation/navigation.schema.json"
+      "schema": "appica_ui/navigation/navigation.schema.json"
     },
     {
       "name": "NavigationMenu",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "Site navigation whose items open rich panels of links - Appica's mega-menu.",
       "parts": [
         "NavigationMenuContent",
@@ -490,28 +490,28 @@
         "NavigationMenuTrigger",
         "NavigationMenuViewport"
       ],
-      "schema": "ui/navigation_menu/navigation_menu.schema.json"
+      "schema": "appica_ui/navigation_menu/navigation_menu.schema.json"
     },
     {
       "name": "NumberField",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A numeric input between − and + steppers, formatting its value (currency, percent, units…).",
       "parts": [],
-      "schema": "ui/number_field/number_field.schema.json"
+      "schema": "appica_ui/number_field/number_field.schema.json"
     },
     {
       "name": "OTPField",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A one-time code split into single-character slots.",
       "parts": [
         "OTPFieldInput",
         "OTPFieldSeparator"
       ],
-      "schema": "ui/otp_field/otp_field.schema.json"
+      "schema": "appica_ui/otp_field/otp_field.schema.json"
     },
     {
       "name": "Pagination",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "Page links for a long list: a `<nav>` landmark around a row of links you lay out yourself - or let PaginationPages build the truncated range for you.",
       "parts": [
         "PaginationEllipsis",
@@ -520,11 +520,11 @@
         "PaginationList",
         "PaginationPages"
       ],
-      "schema": "ui/pagination/pagination.schema.json"
+      "schema": "appica_ui/pagination/pagination.schema.json"
     },
     {
       "name": "Popover",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "Rich, interactive content floating beside a control - a form, settings, a share sheet.",
       "parts": [
         "PopoverClose",
@@ -533,47 +533,47 @@
         "PopoverTitle",
         "PopoverTrigger"
       ],
-      "schema": "ui/popover/popover.schema.json"
+      "schema": "appica_ui/popover/popover.schema.json"
     },
     {
       "name": "PreviewCard",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A rich preview of a link, shown while it's hovered or focused - the profile behind an",
       "parts": [
         "PreviewCardContent",
         "PreviewCardTrigger"
       ],
-      "schema": "ui/preview_card/preview_card.schema.json"
+      "schema": "appica_ui/preview_card/preview_card.schema.json"
     },
     {
       "name": "Progress",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "The completion status of a task that takes a while - an upload, an import, an install.",
       "parts": [
         "ProgressLabel",
         "ProgressValue"
       ],
-      "schema": "ui/progress/progress.schema.json"
+      "schema": "appica_ui/progress/progress.schema.json"
     },
     {
       "name": "Radio",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "One option of a RadioGroup: a native <input type=\"radio\"> sized in em, so it follows the text.",
       "parts": [
         "RadioGroup"
       ],
-      "schema": "ui/radio/radio.schema.json"
+      "schema": "appica_ui/radio/radio.schema.json"
     },
     {
       "name": "Rating",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A score input: a row of stars (or any icon pair) that fills from the start up to the value, with fractional steps, a hover preview, keyboard control and a hidden form input.",
       "parts": [],
-      "schema": "ui/rating/rating.schema.json"
+      "schema": "appica_ui/rating/rating.schema.json"
     },
     {
       "name": "Select",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A button that opens a list of options to pick one (or several with `multiple: true`).",
       "parts": [
         "SelectContent",
@@ -584,113 +584,113 @@
         "SelectTrigger",
         "SelectValue"
       ],
-      "schema": "ui/select/select.schema.json"
+      "schema": "appica_ui/select/select.schema.json"
     },
     {
       "name": "Separator",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A thin horizontal or vertical line between sections of related content.",
       "parts": [],
-      "schema": "ui/separator/separator.schema.json"
+      "schema": "appica_ui/separator/separator.schema.json"
     },
     {
       "name": "Skeleton",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A placeholder block shown while content loads.",
       "parts": [],
-      "schema": "ui/skeleton/skeleton.schema.json"
+      "schema": "appica_ui/skeleton/skeleton.schema.json"
     },
     {
       "name": "Slider",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A value (or a range) picked along a track.",
       "parts": [],
-      "schema": "ui/slider/slider.schema.json"
+      "schema": "appica_ui/slider/slider.schema.json"
     },
     {
       "name": "Sparkline",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "Root of the sparkline compound component.",
       "parts": [
         "SparklineChart",
         "SparklineLabel",
         "SparklineValue"
       ],
-      "schema": "ui/sparkline/sparkline.schema.json"
+      "schema": "appica_ui/sparkline/sparkline.schema.json"
     },
     {
       "name": "Spinner",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A small spinning indicator for compact, in-place waits (a button, an icon button, an overlay).",
       "parts": [],
-      "schema": "ui/spinner/spinner.schema.json"
+      "schema": "appica_ui/spinner/spinner.schema.json"
     },
     {
       "name": "Switch",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "An on/off toggle for a setting that applies right away: a native checkbox with role=\"switch\".",
       "parts": [],
-      "schema": "ui/switch/switch.schema.json"
+      "schema": "appica_ui/switch/switch.schema.json"
     },
     {
       "name": "Tabs",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "Several panels sharing one region, one shown at a time.",
       "parts": [
         "TabsContent",
         "TabsList",
         "TabsTrigger"
       ],
-      "schema": "ui/tabs/tabs.schema.json"
+      "schema": "appica_ui/tabs/tabs.schema.json"
     },
     {
       "name": "Textarea",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A multi-line text field - Input's appearance, variants and sizes for a <textarea>.",
       "parts": [],
-      "schema": "ui/textarea/textarea.schema.json"
+      "schema": "appica_ui/textarea/textarea.schema.json"
     },
     {
       "name": "Thumbnail",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A compact preview tile beside a file, a list row or a media item: an image cropped to fill (falling back to a placeholder icon while it loads or when it fails), or a colored tile framing an icon.",
       "parts": [],
-      "schema": "ui/thumbnail/thumbnail.schema.json"
+      "schema": "appica_ui/thumbnail/thumbnail.schema.json"
     },
     {
       "name": "Toast",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "One toast: a title, optional description, leading icon, action button and close button.",
       "parts": [
         "ToastIcon",
         "ToastTrigger",
         "Toaster"
       ],
-      "schema": "ui/toast/toast.schema.json"
+      "schema": "appica_ui/toast/toast.schema.json"
     },
     {
       "name": "Toc",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "An \"on this page\" sidebar that highlights the links whose headings are in view.",
       "parts": [
         "TocItem",
         "TocLink",
         "TocList"
       ],
-      "schema": "ui/toc/toc.schema.json"
+      "schema": "appica_ui/toc/toc.schema.json"
     },
     {
       "name": "Toggle",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A two-state button (aria-pressed).",
       "parts": [
         "ToggleGroup"
       ],
-      "schema": "ui/toggle/toggle.schema.json"
+      "schema": "appica_ui/toggle/toggle.schema.json"
     },
     {
       "name": "Toolbar",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A strip of controls with one tab stop: the arrow keys move between its items along `orientation:`, Home / End jump to the ends.",
       "parts": [
         "ToolbarButton",
@@ -699,18 +699,18 @@
         "ToolbarLink",
         "ToolbarSeparator"
       ],
-      "schema": "ui/toolbar/toolbar.schema.json"
+      "schema": "appica_ui/toolbar/toolbar.schema.json"
     },
     {
       "name": "Tooltip",
-      "kit": "UI",
+      "kit": "AppicaUI",
       "summary": "A short, non-interactive hint shown while its trigger is hovered or focused.",
       "parts": [
         "TooltipContent",
         "TooltipProvider",
         "TooltipTrigger"
       ],
-      "schema": "ui/tooltip/tooltip.schema.json"
+      "schema": "appica_ui/tooltip/tooltip.schema.json"
     }
   ]
 }

@@ -1,0 +1,185 @@
+{
+  "name": "Drawer",
+  "kit": "AppicaUI",
+  "description": "Root of the compound component: holds the edge (`side:`) and the drawer options and shares them with its parts. Renders a `display: contents` wrapper for the Stimulus controller, so it doesn't affect layout.\n\n  Drawer(side: :right) do\n    DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { \"Open drawer\" } }\n    DrawerContent do\n      DrawerHeader do\n        DrawerTitle { \"Notifications\" }\n        DrawerDescription { \"Choose what you want to be notified about.\" }\n      end\n      DrawerBody { ... }\n      DrawerFooter do\n        DrawerClose { |close| Button(**close) { \"Save\" } }\n        DrawerClose { |close| Button(**close, variant: :outline) { \"Cancel\" } }\n      end\n    end\n  end",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Drawer(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/08_overlays/drawer.md.erb",
+  "appica": "https://appica.dev/ui/components/react/drawer",
+  "components": {
+    "Drawer": {
+      "constant": "AppicaUI::Drawer",
+      "props": {
+        "type": "object",
+        "properties": {
+          "side": {
+            "enum": [
+              "top",
+              "right",
+              "bottom",
+              "left"
+            ],
+            "default": "bottom"
+          },
+          "default_open": {
+            "default": false,
+            "type": "boolean"
+          },
+          "modal": {
+            "default": true,
+            "type": "boolean"
+          },
+          "disable_pointer_dismissal": {
+            "default": false,
+            "type": "boolean"
+          },
+          "snap_points": {
+            "default": null
+          },
+          "id": {}
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "AppicaUI::DrawerContent",
+        "AppicaUI::DrawerDescription",
+        "AppicaUI::DrawerTitle",
+        "AppicaUI::DrawerTrigger"
+      ]
+    },
+    "DrawerBody": {
+      "constant": "AppicaUI::DrawerBody",
+      "description": "The main content region. It owns the scroll, and swipes that start inside it scroll the content instead of dismissing the drawer.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "DrawerClose": {
+      "constant": "AppicaUI::DrawerClose",
+      "description": "A button that dismisses the drawer. Same render-prop convention as DrawerTrigger:\n\n  DrawerClose { |close| Button(**close) { \"Save\" } }",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "DrawerContent": {
+      "constant": "AppicaUI::DrawerContent",
+      "description": "The panel: a native <dialog> (top layer, so no portal is needed) holding the backdrop, the framed card with its drag handle, and the corner close button. `class:` styles the panel, e.g. \"mx-auto max-w-2xl\" for a top/bottom sheet.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "close_button": {
+            "default": true,
+            "type": "boolean"
+          },
+          "close_label": {
+            "default": "Close",
+            "type": "string"
+          },
+          "backdrop": {
+            "default": null
+          },
+          "frame": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Drawer"
+      ]
+    },
+    "DrawerDescription": {
+      "constant": "AppicaUI::DrawerDescription",
+      "description": "A <p> that describes the panel (the dialog's aria-describedby)",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Drawer"
+      ]
+    },
+    "DrawerFooter": {
+      "constant": "AppicaUI::DrawerFooter",
+      "description": "The actions, stacked at the bottom of the panel",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "DrawerHeader": {
+      "constant": "AppicaUI::DrawerHeader",
+      "description": "Groups the title and description with consistent spacing",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "DrawerTitle": {
+      "constant": "AppicaUI::DrawerTitle",
+      "description": "An <h2> that labels the panel (the dialog's aria-labelledby)",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Drawer"
+      ]
+    },
+    "DrawerTrigger": {
+      "constant": "AppicaUI::DrawerTrigger",
+      "description": "The button that opens the drawer. A block taking an argument receives the trigger attributes to put on your own element (Appica's `render` prop):\n\n  DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { \"Open\" } }\n  DrawerTrigger(class: \"underline\") { \"Open\" }   # plain <button>",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Drawer"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  Drawer(side:, disable_pointer_dismissal:, default_open:, modal:) do\n    DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { \"Open drawer\" } }\n    DrawerContent(close_button:, frame:, class: (\"mx-auto max-w-2xl\" if side.to_sym.in?(%i[ top bottom ]))) do\n      DrawerHeader do\n        DrawerTitle { \"Notifications\" }\n        DrawerDescription { \"Choose what you want to be notified about.\" }\n      end\n      DrawerBody do\n        p { \"Drag the handle or swipe toward the edge to dismiss. On the #{side} edge the panel slides in from there.\" }\n      end\n      DrawerFooter do\n        DrawerClose { |close| Button(**close) { \"Save\" } }\n        DrawerClose { |close| Button(**close, variant: :outline) { \"Cancel\" } }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Sides",
+      "notes": "`side:` picks the edge; the swipe-to-dismiss direction follows.\nCap top/bottom sheets (`mx-auto max-w-2xl`) so they don't stretch edge-to-edge.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center justify-center gap-3\") do\n    [ :top, :right, :bottom, :left ].each do |side|\n      label = side.to_s.capitalize\n      wide = side.in?(%i[ top bottom ])\n\n      Drawer(side:) do\n        DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { label } }\n        DrawerContent(class: (\"mx-auto max-w-2xl\" if wide)) do\n          DrawerHeader do\n            DrawerTitle { \"#{label} drawer\" }\n            DrawerDescription { \"This panel slides in from the #{side} edge.\" }\n          end\n          DrawerBody { p { \"Drag the handle or swipe toward the #{side} edge to dismiss it.\" } }\n          DrawerFooter do\n            DrawerClose { |close| Button(**close, variant: :outline) { \"Close\" } }\n          end\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Snap points",
+      "notes": "`snap_points:` lets a top or bottom drawer rest at intermediate heights: a fraction of the\nviewport (0-1), pixels (> 1) or a CSS length (\"24rem\"). It opens at the first point and\ndismisses when dragged past the smallest.",
+      "code": "phlex do\n  Drawer(snap_points: [ 0.4, 1 ]) do\n    DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { \"Open player\" } }\n    DrawerContent(class: \"mx-auto max-w-2xl\") do\n      DrawerHeader do\n        DrawerTitle { \"Up next\" }\n        DrawerDescription { \"Drag the sheet to a snap point - peek at 40% or pull it to full height.\" }\n      end\n      div(class: \"min-h-0 flex-1 overflow-y-auto\") do\n        div(class: \"flex flex-col gap-5 px-6 pb-6\") do\n          TRACKS.each do |title, artist|\n            div(class: \"flex items-center gap-3\") do\n              span(class: \"bg-background-muted text-foreground-muted flex size-9 shrink-0 items-center justify-center rounded-md\") do\n                Icon(:music, class: \"size-4.5\")\n              end\n              span(class: \"flex min-w-0 flex-col\") do\n                span(class: \"text-foreground-intense truncate text-sm font-medium\") { title }\n                span(class: \"text-foreground-muted truncate text-xs\") { artist }\n              end\n            end\n          end\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Scrollable content",
+      "notes": "DrawerBody owns the overflow between a pinned header and footer. A left/right drawer\nswipes horizontally, so it never fights the vertical scroll.",
+      "code": "phlex do\n  Drawer(side: :right) do\n    DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { \"View activity\" } }\n    DrawerContent do\n      DrawerHeader do\n        DrawerTitle { \"Activity\" }\n        DrawerDescription { \"Everything that happened in this project.\" }\n      end\n      DrawerBody do\n        ol(class: \"flex flex-col gap-4 pb-2\") do\n          EVENTS.each do |who, what, time|\n            li(class: \"flex flex-col gap-0.5\") do\n              p(class: \"text-sm\") do\n                span(class: \"text-foreground-intense font-medium\") { who }\n                plain \" #{what}\"\n              end\n              p(class: \"text-foreground-muted text-xs\") { time }\n            end\n          end\n        end\n      end\n      DrawerFooter do\n        DrawerClose { |close| Button(**close, variant: :outline) { \"Close\" } }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Nested drawers",
+      "notes": "A drawer can open another drawer: the parent tucks back as the child slides in,\nand the child renders without a backdrop, as a solid card.",
+      "code": "phlex do\n  Drawer(side: :right) do\n    DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { \"Workspace\" } }\n    DrawerContent do\n      DrawerHeader do\n        DrawerTitle { \"Workspace\" }\n        DrawerDescription { \"Manage the workspace and its members.\" }\n      end\n      DrawerBody(class: \"flex flex-col items-start gap-3\") do\n        p { \"Open a sub-panel to rename the workspace - the parent tucks back to show the stack.\" }\n\n        Drawer(side: :right) do\n          DrawerTrigger do |trigger|\n            Button(**trigger) do\n              Icon(:pencil, data: { icon: \"start\" })\n              plain \"Rename workspace\"\n            end\n          end\n          DrawerContent(close_button: false) do\n            DrawerHeader do\n              DrawerTitle { \"Rename workspace\" }\n              DrawerDescription { \"This name is visible to everyone on the team.\" }\n            end\n            DrawerBody do\n              label(class: \"flex flex-col gap-2 text-sm\") do\n                span(class: \"text-foreground-emphasis font-medium\") { \"Workspace name\" }\n                input(value: \"Appica\", class: \"border-border-strong bg-background text-foreground focus:ring-ring-input h-10 rounded-md border px-3.5 outline-none focus:border-transparent focus:ring-3\")\n              end\n            end\n            DrawerFooter do\n              DrawerClose { |close| Button(**close) { \"Save\" } }\n              DrawerClose { |close| Button(**close, variant: :outline) { \"Cancel\" } }\n            end\n          end\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "The header, body and footer read right-to-left; set `dir: \"rtl\"` on DrawerContent\nwhen RTL is scoped to part of an LTR page.",
+      "code": "phlex do\n  div(dir: \"rtl\") do\n    Drawer(side: :bottom) do\n      DrawerTrigger { |trigger| Button(**trigger, variant: :outline) { \"الإعدادات\" } }\n      DrawerContent(dir: \"rtl\", class: \"mx-auto max-w-2xl\") do\n        DrawerHeader do\n          DrawerTitle { \"الإعدادات\" }\n          DrawerDescription { \"اختر ما تريد أن يتم إعلامك به.\" }\n        end\n        DrawerFooter do\n          DrawerClose { |close| Button(**close) { \"حفظ\" } }\n          DrawerClose { |close| Button(**close, variant: :outline) { \"إلغاء\" } }\n        end\n      end\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "TRACKS": "TRACKS = [\n  [ \"Nightcall\", \"Neon Drift\" ], [ \"Midnight City\", \"Violet Skies\" ], [ \"Resonance\", \"Echo Theory\" ],\n  [ \"A Real Hero\", \"Pixel Horizon\" ], [ \"Sunset Avenue\", \"The Lateliners\" ], [ \"Turbo Killer\", \"Chrome Wolf\" ],\n  [ \"Afterglow\", \"Static Bloom\" ], [ \"Le Castle\", \"Power Circuit\" ], [ \"Tech Noir\", \"Ghost Signal\" ], [ \"Crystals\", \"Cassette 84\" ]\n].freeze",
+    "EVENTS": "EVENTS = [\n  [ \"Sarah Jenkins\", \"merged pull request #482\", \"2m ago\" ], [ \"Maya Torres\", \"commented on “Release checklist”\", \"18m ago\" ],\n  [ \"Leo Martin\", \"approved pull request #480\", \"40m ago\" ], [ \"Daniel Reyes\", \"closed issue #311\", \"1h ago\" ],\n  [ \"Priya Shah\", \"added a label to issue #309\", \"2h ago\" ], [ \"Emma Clarke\", \"deployed to production\", \"3h ago\" ],\n  [ \"Sarah Jenkins\", \"opened pull request #485\", \"5h ago\" ], [ \"Tom Becker\", \"pushed 12 commits to main\", \"6h ago\" ],\n  [ \"Maya Torres\", \"requested changes on #478\", \"8h ago\" ], [ \"Leo Martin\", \"linked issue #312 to #485\", \"11h ago\" ],\n  [ \"Maya Torres\", \"invited 2 members\", \"Yesterday\" ], [ \"Nina Foster\", \"updated the roadmap\", \"Yesterday\" ],\n  [ \"Priya Shah\", \"merged pull request #476\", \"Yesterday\" ], [ \"Daniel Reyes\", \"renamed the project\", \"2d ago\" ],\n  [ \"Emma Clarke\", \"archived 4 tasks\", \"2d ago\" ], [ \"Tom Becker\", \"reverted commit 9f3c1a\", \"3d ago\" ],\n  [ \"Sarah Jenkins\", \"created milestone “v2.0”\", \"3d ago\" ], [ \"Leo Martin\", \"closed issue #298\", \"4d ago\" ],\n  [ \"Nina Foster\", \"edited the README\", \"5d ago\" ], [ \"Priya Shah\", \"opened pull request #470\", \"5d ago\" ],\n  [ \"Daniel Reyes\", \"added 3 members\", \"6d ago\" ], [ \"Emma Clarke\", \"set up continuous integration\", \"1w ago\" ],\n  [ \"Tom Becker\", \"imported the codebase\", \"1w ago\" ], [ \"Sarah Jenkins\", \"created the project\", \"2w ago\" ]\n].freeze"
+  }
+}

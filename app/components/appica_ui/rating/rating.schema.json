@@ -1,0 +1,131 @@
+{
+  "name": "Rating",
+  "kit": "AppicaUI",
+  "description": "A score input: a row of stars (or any icon pair) that fills from the start up to the value, with fractional steps, a hover preview, keyboard control and a hidden form input.\n\n  Rating(default_value: 3, aria_label: \"Rate this product\")\n  Rating(value: 4.3, step: 0.1, read_only: true, size: 14, class: \"text-warning-emphasis\")\n  Rating(icon: :heart, name: \"score\", clearable: true)\n\nThe accent is the text color (text-primary by default). `variant: :filled` draws unrated items as muted solid icons, `:outline` as line icons. `read_only: true` renders a single labelled image (\"4.3 out of 5\") without buttons. The `appica-ui--rating` controller handles the pointer preview, clicks and arrow keys, and dispatches `appica-ui--rating:change` with { value }.",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Rating(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/02_actions_&_inputs/rating.md.erb",
+  "appica": "https://appica.dev/ui/components/react/rating",
+  "components": {
+    "Rating": {
+      "constant": "AppicaUI::Rating",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "default": null
+          },
+          "default_value": {
+            "default": 0,
+            "type": "integer"
+          },
+          "count": {
+            "default": 5,
+            "type": "integer"
+          },
+          "step": {
+            "default": 1.0,
+            "type": "number"
+          },
+          "variant": {
+            "enum": [
+              "filled",
+              "outline"
+            ],
+            "default": "filled"
+          },
+          "orientation": {
+            "enum": [
+              "horizontal",
+              "vertical"
+            ],
+            "default": "horizontal"
+          },
+          "size": {
+            "default": "24px",
+            "type": "string"
+          },
+          "icon": {
+            "default": "star",
+            "type": "string"
+          },
+          "hoverable": {
+            "default": true,
+            "type": "boolean"
+          },
+          "clearable": {
+            "default": false,
+            "type": "boolean"
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "read_only": {
+            "default": false,
+            "type": "boolean"
+          },
+          "name": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  Rating(variant:, clearable:, disabled:, count:, orientation:, size:, icon:, hoverable:, read_only:, **given(value:, name:), default_value: default_value.to_f, step: step.to_s.to_f, aria_label: \"Rate this product\")\nend"
+    },
+    {
+      "name": "Icons",
+      "notes": "The star is built in; `icon:` takes any icon name with a -filled twin (or an\n`{ empty:, filled: }` pair).",
+      "code": "phlex do\n  div(class: \"flex flex-col gap-3\") do\n    [ [ \"Star\", :star, nil ], [ \"Heart\", :heart, \"text-error-emphasis\" ], [ \"Thumb up\", :thumb_up, \"text-success-emphasis\" ],\n      [ \"Bolt\", :bolt, \"text-warning-emphasis\" ], [ \"Crown\", :crown_2, \"text-secondary-emphasis\" ] ].each do |label, icon, color|\n      div(class: \"flex items-center gap-4\") do\n        span(class: \"w-20 text-sm\") { label }\n        Rating(default_value: 4, icon:, class: color, aria_label: \"#{label} rating\")\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Variants",
+      "notes": "`:filled` draws unrated items as muted solid icons, `:outline` as line icons in the accent.",
+      "code": "phlex do\n  div(class: \"flex flex-col gap-3\") do\n    %i[ filled outline ].each do |variant|\n      div(class: \"flex items-center gap-4\") do\n        span(class: \"w-16 text-sm capitalize\") { variant.to_s }\n        Rating(default_value: 3, variant:, aria_label: \"#{variant} rating\")\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Orientation",
+      "notes": "`orientation: :vertical` stacks the items and fills from the top down.",
+      "code": "phlex do\n  div(class: \"flex items-start gap-10\") do\n    Rating(default_value: 3, aria_label: \"Horizontal rating\")\n    Rating(default_value: 3, orientation: :vertical, aria_label: \"Vertical rating\")\n    Rating(default_value: 3.5, step: 0.5, orientation: :vertical, variant: :outline, aria_label: \"Vertical half-step\")\n  end\nend"
+    },
+    {
+      "name": "Sizes",
+      "notes": "`size:` takes pixels or any CSS length (\"1em\" follows the text); the padding grows with it.",
+      "code": "phlex do\n  div(class: \"flex flex-col items-start gap-3\") do\n    Rating(default_value: 4, size: 16, aria_label: \"16px rating\")\n    Rating(default_value: 4, aria_label: \"Default rating\")\n    Rating(default_value: 4, size: 40, aria_label: \"40px rating\")\n    Rating(default_value: 4, size: \"1em\", class: \"text-lg\", aria_label: \"Text-relative rating\")\n  end\nend"
+    },
+    {
+      "name": "Fractions",
+      "notes": "`step:` sets the granularity of clicks and the hover preview; a finer value renders exactly.",
+      "code": "phlex do\n  div(class: \"flex flex-col gap-3\") do\n    { \"Halves\" => [ 3.5, 0.5 ], \"Quarters\" => [ 3.75, 0.25 ] }.each do |label, (value, step)|\n      div(class: \"flex items-center gap-4\") do\n        span(class: \"w-16 text-sm\") { label }\n        Rating(default_value: value, step:, aria_label: \"#{label} rating\")\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Color",
+      "notes": "The accent is inherited: a text-* class recolors fill and outline together.",
+      "code": "phlex do\n  div(class: \"flex flex-col items-start gap-3\") do\n    Rating(default_value: 4, aria_label: \"Primary rating\")\n    Rating(default_value: 4, class: \"text-warning-emphasis\", aria_label: \"Warning rating\")\n    Rating(default_value: 4, class: \"text-error-emphasis\", aria_label: \"Error rating\")\n    Rating(default_value: 4, variant: :outline, class: \"text-success-emphasis\", aria_label: \"Success rating\")\n  end\nend"
+    },
+    {
+      "name": "Read only",
+      "notes": "`read_only: true` renders a non-interactive display exposed as one labelled image\n(\"4.3 out of 5\"); pair it with a small step for averages.",
+      "code": "phlex do\n  div(class: \"flex flex-col gap-3\") do\n    div(class: \"flex items-center gap-3\") do\n      Rating(value: 4.3, step: 0.1, size: 32, read_only: true)\n      span(class: \"text-sm font-medium\") { \"4.3\" }\n      span(class: \"text-foreground-muted text-sm\") { \"(1,284 reviews)\" }\n    end\n    div(class: \"flex flex-col gap-1.5\") do\n      { \"Value for money\" => 4.5, \"Build quality\" => 4, \"Battery life\" => 3.5 }.each do |label, score|\n        div(class: \"flex items-center gap-3\") do\n          span(class: \"text-foreground-muted w-32 text-sm\") { label }\n          Rating(value: score, step: 0.5, size: 16, read_only: true)\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Controlled with labels",
+      "notes": "`appica-ui--rating:hover-change` reports the rating under the pointer and `appica-ui--rating:change` the\ncommitted one - here a caption follows them. `clearable:` lets a second click reset to 0.",
+      "code": "phlex do\n  div(class: \"flex flex-col items-center gap-2\", data: { demo: \"feedback\" }) do\n    span(id: \"feedback-label\", class: \"text-foreground-intense text-sm font-medium\") { \"How was your experience?\" }\n    Rating(clearable: true, size: 32, aria_labelledby: \"feedback-label\")\n    span(class: \"text-foreground-muted h-5 text-sm\", data: { caption: \"\" })\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const demo = document.querySelector(\"[data-demo=feedback]\")\n      const caption = demo.querySelector(\"[data-caption]\")\n      const labels = [ \"Terrible\", \"Poor\", \"Average\", \"Good\", \"Excellent\" ]\n      let committed = 0\n      const show = value => caption.textContent = value > 0 ? labels[Math.ceil(value) - 1] : \"\"\n      demo.addEventListener(\"appica-ui--rating:change\", ({ detail }) => show(committed = detail.value))\n      demo.addEventListener(\"appica-ui--rating:hover-change\", ({ detail }) => show(detail.value ?? committed))\n    JS\n  end\nend"
+    },
+    {
+      "name": "In a form",
+      "notes": "`name:` renders a hidden input with the current value, so the rating submits with the form.\nName the group with aria_labelledby.",
+      "code": "phlex do\n  form(class: \"flex w-full max-w-70 flex-col gap-4\", data: { demo: \"form\" }) do\n    div do\n      span(id: \"score-label\", class: \"text-foreground-intense mb-1.5 block text-sm font-medium select-none\") { \"Rate your stay\" }\n      Rating(name: \"score\", aria_labelledby: \"score-label\")\n      p(class: \"text-foreground-muted mt-1 text-xs\") { \"Submits as a hidden input named score.\" }\n    end\n    Button(type: \"submit\", class: \"self-start\") { \"Send review\" }\n    output(class: \"text-foreground-muted font-mono text-xs\")\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const form = document.querySelector(\"[data-demo=form]\")\n      form.addEventListener(\"submit\", event => {\n        event.preventDefault()\n        form.querySelector(\"output\").textContent = `score=${new FormData(form).get(\"score\")}`\n      })\n    JS\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "The first item sits on the right and the fill runs right to left; ←/→ swap roles.",
+      "code": "phlex do\n  I18n.with_locale(:ar) do\n    div(dir: \"rtl\", class: \"flex flex-col items-start gap-2\") do\n      span(class: \"text-sm font-medium\") { \"قيّم هذا المنتج\" }\n      Rating(default_value: 3.5, step: 0.5)\n    end\n  end\nend"
+    }
+  ]
+}

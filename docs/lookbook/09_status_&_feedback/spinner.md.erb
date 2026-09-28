@@ -8,7 +8,7 @@ title: Spinner
 A spinning indicator that shows a loading state.
 [Appica docs](https://appica.dev/ui/components/react/spinner)
 
-<%= embed UI::SpinnerPreview, :default %>
+<%= embed AppicaUI::SpinnerPreview, :default %>
 
 ## Usage
 
@@ -34,22 +34,22 @@ For a wider "this section is loading" indicator, use [Loader](<%= page_path(:loa
 
 ### Variants
 
-<%= embed UI::SpinnerPreview, :variants %>
+<%= embed AppicaUI::SpinnerPreview, :variants %>
 
 ### Sizing
 
-<%= embed UI::SpinnerPreview, :sizing %>
+<%= embed AppicaUI::SpinnerPreview, :sizing %>
 
 ### Color
 
-<%= embed UI::SpinnerPreview, :color %>
+<%= embed AppicaUI::SpinnerPreview, :color %>
 
 ### In a button
 
 Show a spinner while the action runs: `current_color:` matches the button text, `text-[1.2em]` scales with
 the button, and the button is disabled meanwhile. The second pairs the sparkle variant with an "Ask AI" affordance.
 
-<%= embed UI::SpinnerPreview, :in_button %>
+<%= embed AppicaUI::SpinnerPreview, :in_button %>
 
 With Turbo you can get this without JavaScript: render the spinner hidden inside the submit button and reveal
 it while the form submits (Turbo sets `aria-busy` on the form, so give the form `class: "group"`):
@@ -65,17 +65,17 @@ end
 
 In an icon button, swap the icon for a spinner - the button keeps its size, so the layout never jumps.
 
-<%= embed UI::SpinnerPreview, :refresh %>
+<%= embed AppicaUI::SpinnerPreview, :refresh %>
 
 ### Loading a panel
 
-<%= embed UI::SpinnerPreview, :panel %>
+<%= embed AppicaUI::SpinnerPreview, :panel %>
 
 ### RTL
 
 The spinner is direction-agnostic; inside a button it leads the label on the correct side.
 
-<%= embed UI::SpinnerPreview, :rtl %>
+<%= embed AppicaUI::SpinnerPreview, :rtl %>
 
 ## API reference
 

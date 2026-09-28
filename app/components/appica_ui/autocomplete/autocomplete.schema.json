@@ -1,0 +1,271 @@
+{
+  "name": "Autocomplete",
+  "kit": "AppicaUI",
+  "description": "Root of the compound component. Holds the data and the shared options and makes itself available to its parts (AutocompleteInput, AutocompleteList, …).\n\n  Autocomplete(items: frameworks) do\n    AutocompleteInput(placeholder: \"Search a framework\")\n    AutocompleteContent do\n      AutocompleteEmpty { \"No frameworks found.\" }\n      AutocompleteList do |item|\n        AutocompleteItem(value: item) { item }\n      end\n    end\n  end",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Autocomplete(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/02_actions_&_inputs/autocomplete.md.erb",
+  "appica": "https://appica.dev/ui/components/react/autocomplete",
+  "components": {
+    "Autocomplete": {
+      "constant": "AppicaUI::Autocomplete",
+      "props": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "default": [],
+            "type": "array"
+          },
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": "md"
+          },
+          "variant": {
+            "enum": [
+              "outline",
+              "soft"
+            ],
+            "default": "outline"
+          },
+          "clearable": {
+            "default": false,
+            "type": "boolean"
+          },
+          "icon": {
+            "default": false,
+            "type": "boolean"
+          },
+          "grid": {
+            "default": false,
+            "type": "boolean"
+          },
+          "value": {
+            "default": null
+          },
+          "default_value": {
+            "default": null
+          },
+          "name": {
+            "default": null
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "item_to_string_value": {
+            "default": null
+          },
+          "id": {}
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "AppicaUI::AutocompleteContent",
+        "AppicaUI::AutocompleteEmpty",
+        "AppicaUI::AutocompleteGroup",
+        "AppicaUI::AutocompleteInput",
+        "AppicaUI::AutocompleteItem",
+        "AppicaUI::AutocompleteLabel",
+        "AppicaUI::AutocompleteList"
+      ]
+    },
+    "AutocompleteCollection": {
+      "constant": "AppicaUI::AutocompleteCollection",
+      "description": "Maps over the items of the enclosing AutocompleteGroup",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::AutocompleteGroup"
+      ]
+    },
+    "AutocompleteContent": {
+      "constant": "AppicaUI::AutocompleteContent",
+      "description": "The popup wrapping AutocompleteEmpty + AutocompleteList. Hidden until the Stimulus controller opens it; flips above the input when there is no room below.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "side": {
+            "default": "bottom",
+            "type": "string"
+          },
+          "side_offset": {
+            "default": 6,
+            "type": "integer"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Autocomplete"
+      ]
+    },
+    "AutocompleteEmpty": {
+      "constant": "AppicaUI::AutocompleteEmpty",
+      "description": "Shown only when the filter matches nothing",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Autocomplete"
+      ]
+    },
+    "AutocompleteGroup": {
+      "constant": "AppicaUI::AutocompleteGroup",
+      "description": "A labelled group of options for grouped items ({ value:, items: }).\n\n  AutocompleteList do |group|\n    AutocompleteGroup(items: group[:items]) do\n      AutocompleteLabel { group[:value] }\n      AutocompleteCollection { |item| AutocompleteItem(value: item) { item } }\n    end\n  end",
+      "props": {
+        "type": "object",
+        "properties": {
+          "items": {}
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": true
+      },
+      "parts": [
+        "AppicaUI::AutocompleteCollection",
+        "AppicaUI::AutocompleteLabel"
+      ],
+      "render_inside": [
+        "AppicaUI::Autocomplete"
+      ]
+    },
+    "AutocompleteInput": {
+      "constant": "AppicaUI::AutocompleteInput",
+      "description": "The text field, styled like Appica's Input. Renders the clear button and the chevron toggle when the root has `clearable:` / `icon:`.\n\nstart_slot: / end_slot: accept a String, a Proc (rendered in this component), or :selected_icon to mirror the selected item's `data-icon=\"start\"` element.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "placeholder": {
+            "default": " ",
+            "type": "string"
+          },
+          "start_slot": {
+            "default": null
+          },
+          "end_slot": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Autocomplete"
+      ]
+    },
+    "AutocompleteItem": {
+      "constant": "AppicaUI::AutocompleteItem",
+      "description": "One option. `value:` is what selection writes into the input; for object items it is read through the root's item_to_string_value.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {},
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Autocomplete"
+      ]
+    },
+    "AutocompleteLabel": {
+      "constant": "AppicaUI::AutocompleteLabel",
+      "description": "Heading of an AutocompleteGroup",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Autocomplete",
+        "AppicaUI::AutocompleteGroup"
+      ]
+    },
+    "AutocompleteList": {
+      "constant": "AppicaUI::AutocompleteList",
+      "description": "The scrollable list. With a block that takes an argument it maps over the root's items (Appica's render function); otherwise it renders static children.\n\n  AutocompleteList { |item| AutocompleteItem(value: item) { item } }\n  AutocompleteList { AutocompleteItem(value: \"Remix\") { \"Remix\" } }",
+      "props": {
+        "type": "object",
+        "properties": {
+          "cols": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Autocomplete"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  Autocomplete(size:, variant:, clearable:, icon:, grid:, disabled:, **given(value:, default_value:, name:), items: FRAMEWORKS) do\n    AutocompleteInput(placeholder:, aria_label: placeholder)\n    AutocompleteContent do\n      AutocompleteEmpty { \"No frameworks found.\" }\n      AutocompleteList do |item|\n        AutocompleteItem(value: item) { item }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Variants",
+      "notes": "`variant:` switches the input between a bordered outline (default) and a filled soft field.",
+      "code": "phlex do\n  [ :outline, :soft ].each do |variant|\n    Autocomplete(items: FRAMEWORKS, variant:) do\n      AutocompleteInput(placeholder: \"Search a framework\", aria_label: \"Search (#{variant})\")\n      AutocompleteContent do\n        AutocompleteEmpty { \"No frameworks found.\" }\n        AutocompleteList { |item| AutocompleteItem(value: item) { item } }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Sizes",
+      "notes": "`size:` on the root scales the input, popup radius, and items together.",
+      "code": "phlex do\n  [ :sm, :md, :lg ].each do |size|\n    Autocomplete(items: FRAMEWORKS, size:) do\n      AutocompleteInput(placeholder: \"Search a framework\", aria_label: \"Search (#{size})\")\n      AutocompleteContent do\n        AutocompleteEmpty { \"No frameworks found.\" }\n        AutocompleteList { |item| AutocompleteItem(value: item) { item } }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Clearable & chevron",
+      "notes": "`clearable:` adds a clear (✕) button once there's a value, `icon:` a chevron that toggles the popup.",
+      "code": "phlex do\n  Autocomplete(items: FRAMEWORKS, default_value: \"Next.js\", clearable: true, icon: true) do\n    AutocompleteInput(placeholder: \"Search a framework\", aria_label: \"Search a framework\")\n    AutocompleteContent do\n      AutocompleteEmpty { \"No frameworks found.\" }\n      AutocompleteList { |item| AutocompleteItem(value: item) { item } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Items with icons",
+      "notes": "Object items need `item_to_string_value:`. Mark a leading icon with `data-icon=\"start\"`;\n`start_slot: :selected_icon` mirrors the selected item's icon into the input.",
+      "code": "phlex do\n  Autocomplete(items: COMMANDS, item_to_string_value: :label, clearable: true, icon: true) do\n    AutocompleteInput(placeholder: \"Search commands\", aria_label: \"Search commands\", start_slot: :selected_icon)\n    AutocompleteContent do\n      AutocompleteEmpty { \"No commands found.\" }\n      AutocompleteList do |command|\n        AutocompleteItem(value: command) do\n          Icon(command[:icon], data: { icon: \"start\" })\n          plain command[:label]\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Country search",
+      "code": "phlex do\n  Autocomplete(items: COUNTRIES, item_to_string_value: :name, clearable: true, icon: true) do\n    AutocompleteInput(placeholder: \"Search a country\", aria_label: \"Search a country\", start_slot: :selected_icon)\n    AutocompleteContent do\n      AutocompleteEmpty { \"No countries found.\" }\n      AutocompleteList do |country|\n        AutocompleteItem(value: country) do\n          flag = country[:code].chars.map { |char| (char.ord + 127_397).chr(Encoding::UTF_8) }.join\n          span(class: \"text-base leading-none\", aria_hidden: \"true\", data: { icon: \"start\" }) { flag }\n          plain country[:name]\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Grouped options",
+      "notes": "Grouped items (`{ value:, items: }`) render with AutocompleteGroup + AutocompleteLabel + AutocompleteCollection.",
+      "code": "phlex do\n  Autocomplete(items: PRODUCE) do\n    AutocompleteInput(placeholder: \"Search produce\", aria_label: \"Search produce\")\n    AutocompleteContent do\n      AutocompleteEmpty { \"No produce found.\" }\n      AutocompleteList do |group|\n        AutocompleteGroup(items: group[:items]) do\n          AutocompleteLabel { group[:value] }\n          AutocompleteCollection do |item|\n            AutocompleteItem(value: item) { item }\n          end\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Grid layout",
+      "notes": "`grid: true` lays options out in a grid (arrow keys move in two dimensions); `cols:` sets items per row.",
+      "code": "phlex do\n  Autocomplete(items: LIBRARIES, grid: true, icon: true) do\n    AutocompleteInput(placeholder: \"Search a library\", aria_label: \"Search a library\")\n    AutocompleteContent do\n      AutocompleteEmpty { \"No libraries found.\" }\n      AutocompleteList(cols: 2) do |item|\n        AutocompleteItem(value: item, class: \"flex-1\") { item }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Static items & form",
+      "notes": "Static AutocompleteItem children work too. `name:` submits the typed/selected value with the form.",
+      "code": "phlex do\n  form(action: \"#\", class: \"flex flex-col gap-3\") do\n    Autocomplete(name: \"framework\") do\n      AutocompleteInput(placeholder: \"Pick a framework\", aria_label: \"Pick a framework\")\n      AutocompleteContent do\n        AutocompleteEmpty { \"No frameworks found.\" }\n        AutocompleteList do\n          AutocompleteItem(value: \"Rails\") { \"Rails\" }\n          AutocompleteItem(value: \"Hanami\") { \"Hanami\" }\n          AutocompleteItem(value: \"Sinatra\", disabled: true) { \"Sinatra (disabled)\" }\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "code": "phlex do\n  div(dir: \"rtl\") do\n    Autocomplete(items: [ \"لوحة التحكم\", \"الملف الشخصي\", \"الإعدادات\", \"الفواتير\" ], icon: true) do\n      AutocompleteInput(placeholder: \"ابحث عن أمر\", aria_label: \"ابحث عن أمر\")\n      AutocompleteContent do\n        AutocompleteEmpty { \"لا توجد نتائج.\" }\n        AutocompleteList { |item| AutocompleteItem(value: item) { item } }\n      end\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "FRAMEWORKS": "FRAMEWORKS = [ \"Next.js\", \"Remix\", \"Astro\", \"Nuxt.js\", \"SvelteKit\", \"SolidStart\", \"Gatsby\", \"Vite\" ].freeze",
+    "COMMANDS": "COMMANDS = [\n  { label: \"Dashboard\", icon: :layout_dashboard },\n  { label: \"Profile\", icon: :user },\n  { label: \"Settings\", icon: :settings },\n  { label: \"Billing\", icon: :credit_card },\n  { label: \"Notifications\", icon: :bell },\n  { label: \"Messages\", icon: :mail }\n].freeze",
+    "COUNTRIES": "COUNTRIES = [\n  { code: \"AU\", name: \"Australia\" }, { code: \"BR\", name: \"Brazil\" }, { code: \"CA\", name: \"Canada\" },\n  { code: \"FR\", name: \"France\" }, { code: \"DE\", name: \"Germany\" }, { code: \"IT\", name: \"Italy\" },\n  { code: \"JP\", name: \"Japan\" }, { code: \"ES\", name: \"Spain\" }, { code: \"GB\", name: \"United Kingdom\" },\n  { code: \"US\", name: \"United States\" }\n].freeze",
+    "PRODUCE": "PRODUCE = [\n  { value: \"Fruits\", items: [ \"Apple\", \"Banana\", \"Cherry\", \"Grapefruit\", \"Mango\", \"Orange\", \"Strawberry\" ] },\n  { value: \"Vegetables\", items: [ \"Broccoli\", \"Carrot\", \"Cucumber\", \"Lettuce\", \"Potato\", \"Spinach\", \"Tomato\" ] },\n  { value: \"Herbs\", items: [ \"Basil\", \"Mint\", \"Oregano\", \"Parsley\", \"Rosemary\", \"Thyme\" ] }\n].freeze",
+    "LIBRARIES": "LIBRARIES = [ \"React\", \"Vue\", \"Svelte\", \"Angular\", \"Solid\", \"Qwik\", \"Preact\", \"Lit\" ].freeze"
+  }
+}

@@ -24,7 +24,7 @@ The pages follow Appica's sidebar categories.
 - [Combobox](<%= page_path(:combobox) %>): pick from a list filtered by typing - single, chips or creatable.
 - [Copy Button](<%= page_path(:copy_button) %>): copies text to the clipboard and confirms with a check.
 - [Field](<%= page_path(:field) %>): a label, description and error wired to one control, with native validation.
-- [Form builder](<%= page_path(:form_builder) %>): model-bound components through `form.ui` (text, number, select, text area, check box, switch, radio and check box groups, combobox, slider, OTP), with Active Record, nested forms and validation errors.
+- [Form builder](<%= page_path(:form_builder) %>): model-bound components through `form.ux` (text, number, select, text area, check box, switch, radio and check box groups, combobox, slider, OTP), with Active Record, nested forms and validation errors.
 - [Text field](<%= page_path(:input) %>) (`Input`): a single-line text field with icons, adornments and a clear button.
 - [Number Field](<%= page_path(:number_field) %>): a numeric input between steppers that formats its value.
 - [OTP Field](<%= page_path(:otp_field) %>): a one-time code entered one character per slot.
@@ -88,7 +88,7 @@ The pages follow Appica's sidebar categories.
 
 ### Blocks
 
-Ready-made compositions of the primitives, `include Blocks` to use them.
+Ready-made compositions of the primitives, `include AppicaUI::Blocks` to use them.
 
 - [Chat assistant](<%= page_path(:chat_assistant) %>): an assistant chat card with suggestions, a composer and Turbo Stream replies.
 - [Revenue summary](<%= page_path(:revenue_summary) %>): a revenue card with a trend badge, top markets, a chart and key stats.
@@ -104,11 +104,11 @@ Ready-made compositions of the primitives, `include Blocks` to use them.
 
 ## Usage
 
-Include the `UI` kit in any Phlex view and call components like JSX tags:
+Include the `AppicaUI` kit in any Phlex view and call components like JSX tags:
 
 ```ruby
 class FrameworkPicker < Phlex::HTML
-  include UI
+  include AppicaUI
 
   def view_template
     Autocomplete(items: [ "Next.js", "Remix", "Astro" ]) do
@@ -132,6 +132,6 @@ From ERB: `<%%= render FrameworkPicker.new %>`.
 - **`className` is `class:`.** Your classes are merged with the defaults through tailwind_merge,
   so conflicting utilities (`h-14` vs `h-10`) replace them.
 - **Events instead of callbacks.** `onValueChange`, `onOpenChange`, … are Stimulus events such as
-  `ui--autocomplete:change` and `ui--drawer:open-change`, with the value in `event.detail`.
+  `appica-ui--autocomplete:change` and `appica-ui--drawer:open-change`, with the value in `event.detail`.
 - **One folder per component.** Ruby parts, the Stimulus controller, CSS and the Lookbook preview
-  live together in `app/components/ui/<component>/`.
+  live together in `app/components/appica_ui/<component>/`.

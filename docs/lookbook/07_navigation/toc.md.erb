@@ -8,7 +8,7 @@ title: Table of Contents
 An "on this page" sidebar that highlights the links whose headings are in view.
 [Appica docs](https://appica.dev/ui/components/react/toc)
 
-<%= embed UI::TocPreview, :default %>
+<%= embed AppicaUI::TocPreview, :default %>
 
 ## Usage
 
@@ -22,7 +22,7 @@ Toc(aria_label: "On this page", root_margin: "-64px 0px 0px 0px") do
 end
 ```
 
-Each `TocLink` points at a heading's `id`. The `ui--toc` controller observes those headings and marks the links
+Each `TocLink` points at a heading's `id`. The `appica-ui--toc` controller observes those headings and marks the links
 whose heading is in view `data-active`; the topmost one also gets `aria-current="location"`, and the indicator on the
 rail slides over them. With nothing in view the heading nearest the top wins. Give headings `scroll-mt-*` so they
 aren't hidden under a sticky header when a link jumps to them, and offset the tracking boundary with `root_margin:`.
@@ -34,15 +34,15 @@ leave it out and the anchors jump the page.
 
 ### Nested headings
 
-<%= embed UI::TocPreview, :nested %>
+<%= embed AppicaUI::TocPreview, :nested %>
 
 ### With icons
 
-<%= embed UI::TocPreview, :icons %>
+<%= embed AppicaUI::TocPreview, :icons %>
 
 ### RTL
 
-<%= embed UI::TocPreview, :rtl %>
+<%= embed AppicaUI::TocPreview, :rtl %>
 
 ## API reference
 

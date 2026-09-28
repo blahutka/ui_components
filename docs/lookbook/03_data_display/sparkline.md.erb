@@ -8,7 +8,7 @@ title: Sparkline
 A compact, interactive inline chart for showing a trend at a glance.
 [Appica docs](https://appica.dev/ui/components/react/sparkline)
 
-<%= embed UI::SparklinePreview, :default %>
+<%= embed AppicaUI::SparklinePreview, :default %>
 
 ## Usage
 
@@ -31,53 +31,53 @@ adds pointer/touch state, so the chart is complete before the controller connect
 
 The default is a crisp stroke. Its hover indicator snaps to the nearest point.
 
-<%= embed UI::SparklinePreview, :default %>
+<%= embed AppicaUI::SparklinePreview, :default %>
 
 ### Area
 
 `variant: :area` fills between the curve and `baseline:` (zero by default). Values below the
 baseline fill below it, so a signed series reads as magnitude rather than only direction.
 
-<%= embed UI::SparklinePreview, :area %>
+<%= embed AppicaUI::SparklinePreview, :area %>
 
 ### Filled line
 
 A line is stroke-only by default. Add `fill: true` for a gradient that fades to the bottom edge.
 This works well for KPIs far from zero; use `variant: :area` when the baseline itself has meaning.
 
-<%= embed UI::SparklinePreview, :filled_line %>
+<%= embed AppicaUI::SparklinePreview, :filled_line %>
 
 ### Columns
 
 `variant: :column` renders one bar per reading. Bars grow above or below `baseline:` and the active
 bucket is highlighted on hover.
 
-<%= embed UI::SparklinePreview, :columns %>
+<%= embed AppicaUI::SparklinePreview, :columns %>
 
 ### Line smoothing
 
 `curve:` ranges from `0` (straight segments) to `1` (fully rounded peaks).
 
-<%= embed UI::SparklinePreview, :smoothing %>
+<%= embed AppicaUI::SparklinePreview, :smoothing %>
 
 ### Line weight
 
 `stroke_width:` is measured in pixels and stays the same at any chart width.
 
-<%= embed UI::SparklinePreview, :line_weight %>
+<%= embed AppicaUI::SparklinePreview, :line_weight %>
 
 ### Tooltip
 
 Set `tooltip: true` to float the current value. Root `labels:` appear beside it.
 
-<%= embed UI::SparklinePreview, :tooltip %>
+<%= embed AppicaUI::SparklinePreview, :tooltip %>
 
 ### Value headline
 
 Put `SparklineValue` and `SparklineLabel` anywhere inside the root. They show the final point while
 idle and follow the nearest point while the chart is active.
 
-<%= embed UI::SparklinePreview, :value_headline %>
+<%= embed AppicaUI::SparklinePreview, :value_headline %>
 
 ```ruby
 Sparkline(data: totals, labels: dates, class: "w-72") do
@@ -90,13 +90,13 @@ end
 
 ### Reacting to the active point
 
-The root dispatches `ui--sparkline:active-change` with `{ point: { index, value, label } }`, or
+The root dispatches `appica-ui--sparkline:active-change` with `{ point: { index, value, label } }`, or
 `{ point: null }` when the pointer leaves or a touch ends. Connect it to another Stimulus controller
 when a reading needs to appear outside the sparkline.
 
 ```ruby
 Sparkline(data: totals, labels: dates,
-          data: { action: "ui--sparkline:active-change->dashboard#showReading" }) do
+          data: { action: "appica-ui--sparkline:active-change->dashboard#showReading" }) do
   SparklineChart(aria_label: "Weekly requests")
 end
 ```
@@ -121,13 +121,13 @@ end
 `color:` accepts a theme token or any CSS color and drives the line, fill, indicator, columns, and
 tooltip swatch.
 
-<%= embed UI::SparklinePreview, :colors %>
+<%= embed AppicaUI::SparklinePreview, :colors %>
 
 ### RTL
 
 The visualization and pointer mapping mirror automatically under `dir="rtl"`.
 
-<%= embed UI::SparklinePreview, :rtl %>
+<%= embed AppicaUI::SparklinePreview, :rtl %>
 
 ## API reference
 

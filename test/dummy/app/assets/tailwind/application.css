@@ -3,9 +3,9 @@
 /* ui_components engine: Appica tokens + component sidecar CSS, and the component
    Ruby files as a Tailwind source so their class strings get generated.
    (A real host app points these at the installed gem path.) */
-@import "../../../../../app/components/ui/index.css";
+@import "../../../../../app/components/appica_ui/index.css";
 @source "../../../../../app/components";
-@source not "../../../../../app/components/ui/icon/icons"; /* icon data, no classes */
+@source not "../../../../../app/components/appica_ui/icon/icons"; /* icon data, no classes */
 
-/* Theme overrides go after the engine's tokens (never replace ui/theme.css) */
+/* Theme overrides go after the engine's tokens (never replace appica_ui/theme.css) */
 @import "./theme_overrides.css";

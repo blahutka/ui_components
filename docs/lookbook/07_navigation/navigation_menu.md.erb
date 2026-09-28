@@ -8,7 +8,7 @@ title: Navigation Menu
 Site navigation whose items open rich panels of links - a marketing-style mega-menu.
 [Appica docs](https://appica.dev/ui/components/react/navigation-menu)
 
-<%= embed UI::NavigationMenuPreview, :default %>
+<%= embed AppicaUI::NavigationMenuPreview, :default %>
 
 ## Usage
 
@@ -37,7 +37,7 @@ end
 - `NavigationMenuLink` - a link, in a panel (a full-width row) or in the bar.
 
 Panels are rendered on the server, hidden inside their items, so crawlers and no-JS visitors still get every link.
-The `ui--navigation-menu` controller moves the open panel into a popup in the browser's top layer, places it under
+The `appica-ui--navigation-menu` controller moves the open panel into a popup in the browser's top layer, places it under
 its trigger (beside it when vertical, flipping for RTL and the viewport edge) and morphs the popup's size as you move
 between items. For a menu of actions from a button use a DropdownMenu; for an app command bar a
 [Menubar](<%= page_path(:menubar) %>).
@@ -46,37 +46,37 @@ between items. For a menu of actions from a button use a DropdownMenu; for an ap
 
 ### Variants
 
-<%= embed UI::NavigationMenuPreview, :variants %>
+<%= embed AppicaUI::NavigationMenuPreview, :variants %>
 
 ### Sizes
 
-<%= embed UI::NavigationMenuPreview, :sizes %>
+<%= embed AppicaUI::NavigationMenuPreview, :sizes %>
 
 ### Indicator
 
-<%= embed UI::NavigationMenuPreview, :indicator %>
+<%= embed AppicaUI::NavigationMenuPreview, :indicator %>
 
 ### Vertical
 
-<%= embed UI::NavigationMenuPreview, :vertical %>
+<%= embed AppicaUI::NavigationMenuPreview, :vertical %>
 
 ### Backdrop
 
-<%= embed UI::NavigationMenuPreview, :backdrop %>
+<%= embed AppicaUI::NavigationMenuPreview, :backdrop %>
 
 ### Nested submenus
 
 A vertical `NavigationMenu` inside a panel is a submenu with its own popup beside the parent's.
 
-<%= embed UI::NavigationMenuPreview, :nested %>
+<%= embed AppicaUI::NavigationMenuPreview, :nested %>
 
 ### Nested inline submenus
 
-<%= embed UI::NavigationMenuPreview, :inline %>
+<%= embed AppicaUI::NavigationMenuPreview, :inline %>
 
 ### RTL
 
-<%= embed UI::NavigationMenuPreview, :rtl %>
+<%= embed AppicaUI::NavigationMenuPreview, :rtl %>
 
 ## API reference
 
@@ -95,7 +95,7 @@ A vertical `NavigationMenu` inside a panel is a submenu with its own popup besid
 | `delay:` / `close_delay:` | `Integer` | `50` | Hover open / close delays in ms. |
 | `side_offset:` | `Integer` | `6` (`12` nested) | Gap between trigger and popup. |
 
-Event: `ui--navigation-menu:change` with `{ value }` (`null` when closed).
+Event: `appica-ui--navigation-menu:change` with `{ value }` (`null` when closed).
 
 ### Parts
 

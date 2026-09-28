@@ -4,22 +4,22 @@ module UiComponents
   class Engine < ::Rails::Engine
     COMPONENTS_PATH = root.join("app/components")
 
-    # Sidecar layout: app/components/ui/<component>/{*.rb,*_controller.js,*.css}.
-    # Collapsing the component folders keeps constants flat (UI::AutocompleteInput),
-    # like the React exports, instead of UI::Autocomplete::AutocompleteInput.
+    # Sidecar layout: app/components/appica_ui/<component>/{*.rb,*_controller.js,*.css}.
+    # Collapsing the component folders keeps constants flat (AppicaUI::AutocompleteInput),
+    # like the React exports, instead of AppicaUI::Autocomplete::AutocompleteInput.
     initializer "ui_components.autoloader", before: :setup_main_autoloader do
       Rails.autoloaders.main.inflector.inflect(
-        "ui" => "UI",
+        "appica_ui" => "AppicaUI",
         "otp_field" => "OTPField", "otp_field_input" => "OTPFieldInput", "otp_field_separator" => "OTPFieldSeparator", "otp_field_preview" => "OTPFieldPreview",
         "form_builder_otp" => "FormBuilderOTP"
       )
-      Rails.autoloaders.main.collapse(COMPONENTS_PATH.join("ui/*"))
-      Rails.autoloaders.main.collapse(COMPONENTS_PATH.join("blocks/*"))
+      primitive_folders = COMPONENTS_PATH.glob("appica_ui/*").select(&:directory?).reject { |path| path.basename.to_s == "blocks" }
+      Rails.autoloaders.main.collapse(*primitive_folders)
+      Rails.autoloaders.main.collapse(COMPONENTS_PATH.join("appica_ui/blocks/*"))
 
       # Lookbook-only code: previews next to each component and docs helpers in app/lookbook
       unless defined?(Lookbook)
-        Rails.autoloaders.main.ignore(COMPONENTS_PATH.join("ui/**/*_preview.rb"))
-        Rails.autoloaders.main.ignore(COMPONENTS_PATH.join("blocks/**/*_preview.rb"))
+        Rails.autoloaders.main.ignore(COMPONENTS_PATH.join("appica_ui/**/*_preview.rb"))
         Rails.autoloaders.main.ignore(root.join("app/lookbook"))
       end
     end
@@ -29,7 +29,7 @@ module UiComponents
       app.config.action_view.annotate_rendered_view_with_filenames = true
     end
 
-    # `form.ui.text_field :name` on every Rails form builder (UI::FormBuilder)
+    # `form.ux.text_field :name` on every Rails form builder (AppicaUI::FormBuilder)
     initializer "ui_components.form_builder" do
       ActiveSupport.on_load(:action_view) do
         ActionView::Helpers::FormBuilder.include(UiComponents::FormBuilderExtension)
@@ -55,8 +55,7 @@ module UiComponents
 
     initializer "ui_components.importmap", before: "importmap" do |app|
       app.config.importmap.paths << root.join("config/importmap.rb")
-      app.config.importmap.cache_sweepers << COMPONENTS_PATH.join("ui")
-      app.config.importmap.cache_sweepers << COMPONENTS_PATH.join("blocks")
+      app.config.importmap.cache_sweepers << COMPONENTS_PATH.join("appica_ui")
       app.config.importmap.cache_sweepers << root.join("vendor/javascript")
     end
 

@@ -8,7 +8,7 @@ title: Tabs
 Several panels sharing one region, one shown at a time.
 [Appica docs](https://appica.dev/ui/components/react/tabs)
 
-<%= embed UI::TabsPreview, :default %>
+<%= embed AppicaUI::TabsPreview, :default %>
 
 ## Usage
 
@@ -24,7 +24,7 @@ end
 ```
 
 Each `TabsTrigger` is matched to the `TabsContent` with the same `value:`. The selected tab and panel are rendered
-on the server (the others' panels are `hidden`), so the page is right before JavaScript loads; the `ui--tabs`
+on the server (the others' panels are `hidden`), so the page is right before JavaScript loads; the `appica-ui--tabs`
 controller then switches panels, slides the indicator and handles the keyboard. `variant:` (`:pill`, `:line`),
 `size:` and `orientation:` are set on the root. To move between pages use [Navigation](<%= page_path(:navigation) %>).
 
@@ -32,40 +32,40 @@ controller then switches panels, slides the indicator and handles the keyboard. 
 
 ### Variants
 
-<%= embed UI::TabsPreview, :variants %>
+<%= embed AppicaUI::TabsPreview, :variants %>
 
 ### Sizes
 
-<%= embed UI::TabsPreview, :sizes %>
+<%= embed AppicaUI::TabsPreview, :sizes %>
 
 ### Vertical
 
-<%= embed UI::TabsPreview, :vertical %>
+<%= embed AppicaUI::TabsPreview, :vertical %>
 
 ### With icons & badges
 
-<%= embed UI::TabsPreview, :icons %>
+<%= embed AppicaUI::TabsPreview, :icons %>
 
 ### Icon-only
 
-<%= embed UI::TabsPreview, :icon_only %>
+<%= embed AppicaUI::TabsPreview, :icon_only %>
 
 ### Controlled
 
 ```js
-tabs.dispatchEvent(new CustomEvent("ui--tabs:select", { detail: { value: "review" } }))
-tabs.addEventListener("ui--tabs:change", ({ detail }) => console.log(detail.value))
+tabs.dispatchEvent(new CustomEvent("appica-ui--tabs:select", { detail: { value: "review" } }))
+tabs.addEventListener("appica-ui--tabs:change", ({ detail }) => console.log(detail.value))
 ```
 
-<%= embed UI::TabsPreview, :controlled %>
+<%= embed AppicaUI::TabsPreview, :controlled %>
 
 ### Disabled
 
-<%= embed UI::TabsPreview, :disabled %>
+<%= embed AppicaUI::TabsPreview, :disabled %>
 
 ### RTL
 
-<%= embed UI::TabsPreview, :rtl %>
+<%= embed AppicaUI::TabsPreview, :rtl %>
 
 ## API reference
 
@@ -78,7 +78,7 @@ tabs.addEventListener("ui--tabs:change", ({ detail }) => console.log(detail.valu
 | `size:` | `:sm`, `:md`, `:lg` | `:md` | Trigger padding and text. |
 | `orientation:` | `:horizontal`, `:vertical` | `:horizontal` | Layout and arrow-key axis. |
 
-Events: `ui--tabs:change` (`{ value }`); dispatch `ui--tabs:select` with `{ value }` to switch.
+Events: `appica-ui--tabs:change` (`{ value }`); dispatch `appica-ui--tabs:select` with `{ value }` to switch.
 
 ### TabsList
 

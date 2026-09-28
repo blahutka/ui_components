@@ -11,7 +11,7 @@ field and an Add to cart button. A **block** composed from [Badge](<%= page_path
 [Number Field](<%= page_path(:number_field) %>) and [Button](<%= page_path(:button) %>), as on the
 [Appica homepage](https://appica.dev/ui).
 
-<%= embed Blocks::ProductCardPreview, :default %>
+<%= embed AppicaUI::Blocks::ProductCardPreview, :default %>
 
 ## Usage
 
@@ -47,15 +47,15 @@ number format. Switch the **Locale** display option to try it.
 
 ### Add to cart form
 
-<%= embed Blocks::ProductCardPreview, :form %>
+<%= embed AppicaUI::Blocks::ProductCardPreview, :form %>
 
 ### Full price, no photo
 
-<%= embed Blocks::ProductCardPreview, :simple %>
+<%= embed AppicaUI::Blocks::ProductCardPreview, :simple %>
 
 ### RTL
 
-<%= embed Blocks::ProductCardPreview, :rtl %>
+<%= embed AppicaUI::Blocks::ProductCardPreview, :rtl %>
 
 ## API reference
 

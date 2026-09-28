@@ -1,0 +1,135 @@
+# AppicaUI::Blocks::ThemeCustomizer strings - t(".key") in any of its parts looks here.
+# Every language in one file; add a locale as another top-level key with the same keys
+# (test/components/locales_test.rb checks that they match).
+en:
+  ui_components:
+    appica_ui:
+      blocks:
+        theme_customizer:
+          title: Settings
+          mode: Mode
+          modes:
+            light: Light
+            dark: Dark
+            system: System
+          base: Base Color
+          primary: Primary Color
+          secondary: Secondary Color
+          font: Font
+          radius: Radius
+          custom: Custom
+          base_primary: Base
+          pick_color: Pick a color
+          custom_color: "%{setting} (hex or oklch)"
+          radii:
+            none: None
+            xsmall: Extra Small
+            small: Small
+            medium: Medium
+            large: Large
+            xlarge: Extra Large
+          get_css: Get CSS Code
+          css_title: Theme overrides
+          css_description: Only the variables you changed. Paste them into your stylesheet after the appica_ui/index.css import - don't replace appica_ui/theme.css.
+          no_changes: "/* The default theme - nothing to override. */"
+          disable_animations: Disable Animations
+          reset: Reset to defaults
+cs:
+  ui_components:
+    appica_ui:
+      blocks:
+        theme_customizer:
+          title: Nastavení
+          mode: Režim
+          modes:
+            light: Světlý
+            dark: Tmavý
+            system: Systémový
+          base: Základní barva
+          primary: Primární barva
+          secondary: Sekundární barva
+          font: Písmo
+          radius: Zaoblení
+          custom: Vlastní
+          base_primary: Základní
+          pick_color: Vybrat barvu
+          custom_color: "%{setting} (hex nebo oklch)"
+          radii:
+            none: Žádné
+            xsmall: Velmi malé
+            small: Malé
+            medium: Střední
+            large: Velké
+            xlarge: Velmi velké
+          get_css: Získat CSS
+          css_title: Úpravy motivu
+          css_description: Jen proměnné, které jste změnili. Vložte je do svého stylu za import appica_ui/index.css - nenahrazujte appica_ui/theme.css.
+          no_changes: "/* Výchozí motiv - není co měnit. */"
+          disable_animations: Vypnout animace
+          reset: Obnovit výchozí
+de:
+  ui_components:
+    appica_ui:
+      blocks:
+        theme_customizer:
+          title: Einstellungen
+          mode: Modus
+          modes:
+            light: Hell
+            dark: Dunkel
+            system: System
+          base: Grundfarbe
+          primary: Primärfarbe
+          secondary: Sekundärfarbe
+          font: Schrift
+          radius: Radius
+          custom: Eigene
+          base_primary: Grundfarbe
+          pick_color: Farbe wählen
+          custom_color: "%{setting} (Hex oder OKLCH)"
+          radii:
+            none: Keiner
+            xsmall: Sehr klein
+            small: Klein
+            medium: Mittel
+            large: Groß
+            xlarge: Sehr groß
+          get_css: CSS-Code holen
+          css_title: Theme-Anpassungen
+          css_description: Nur die geänderten Variablen. Füge sie in dein Stylesheet nach dem Import von appica_ui/index.css ein - ersetze appica_ui/theme.css nicht.
+          no_changes: "/* Das Standard-Theme - nichts zu überschreiben. */"
+          disable_animations: Animationen deaktivieren
+          reset: Auf Standard zurücksetzen
+ar:
+  ui_components:
+    appica_ui:
+      blocks:
+        theme_customizer:
+          title: الإعدادات
+          mode: الوضع
+          modes:
+            light: فاتح
+            dark: داكن
+            system: النظام
+          base: اللون الأساسي
+          primary: اللون الرئيسي
+          secondary: اللون الثانوي
+          font: الخط
+          radius: الانحناء
+          custom: مخصص
+          base_primary: أساسي
+          pick_color: اختر لونًا
+          custom_color: "%{setting} (hex أو oklch)"
+          radii:
+            none: بلا
+            xsmall: صغير جدًا
+            small: صغير
+            medium: متوسط
+            large: كبير
+            xlarge: كبير جدًا
+          get_css: احصل على CSS
+          css_title: تعديلات السمة
+          css_description: المتغيرات التي غيرتها فقط. الصقها في ملف الأنماط بعد استيراد appica_ui/index.css - لا تستبدل appica_ui/theme.css.
+          no_changes: "/* السمة الافتراضية - لا شيء لتعديله. */"
+          disable_animations: تعطيل الحركات
+          reset: استعادة الافتراضي

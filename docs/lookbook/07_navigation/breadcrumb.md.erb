@@ -8,7 +8,7 @@ title: Breadcrumb
 Shows where the current page sits in a hierarchy - a trail of links ending in the current page.
 [Appica docs](https://appica.dev/ui/components/react/breadcrumb)
 
-<%= embed UI::BreadcrumbPreview, :default %>
+<%= embed AppicaUI::BreadcrumbPreview, :default %>
 
 ## Usage
 
@@ -39,11 +39,11 @@ For switching between sibling views use Tabs or Navigation instead.
 
 ### With icons
 
-<%= embed UI::BreadcrumbPreview, :icons %>
+<%= embed AppicaUI::BreadcrumbPreview, :icons %>
 
 ### Custom separators
 
-<%= embed UI::BreadcrumbPreview, :separators %>
+<%= embed AppicaUI::BreadcrumbPreview, :separators %>
 
 ### Soft badges
 
@@ -51,18 +51,18 @@ A block that takes an argument receives the crumb's attributes (Appica's `render
 [Badge](<%= page_path(:badge) %>), which keeps idle crumbs muted and fills the current one. The same works for a
 `link_to`: `BreadcrumbLink { |crumb| a(**crumb, href: …) { … } }`.
 
-<%= embed UI::BreadcrumbPreview, :badges %>
+<%= embed AppicaUI::BreadcrumbPreview, :badges %>
 
 ### Collapsed trail
 
 Collapse the middle of a long trail into a [Dropdown Menu](<%= page_path(:dropdown_menu) %>) whose trigger shows a
 `BreadcrumbEllipsis`.
 
-<%= embed UI::BreadcrumbPreview, :collapsed %>
+<%= embed AppicaUI::BreadcrumbPreview, :collapsed %>
 
 ### RTL
 
-<%= embed UI::BreadcrumbPreview, :rtl %>
+<%= embed AppicaUI::BreadcrumbPreview, :rtl %>
 
 ## API reference
 

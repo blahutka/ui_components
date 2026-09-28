@@ -1,0 +1,406 @@
+{
+  "name": "Carousel",
+  "kit": "AppicaUI",
+  "description": "A draggable, swipeable slider built on Embla Carousel, with autoplay, fade, auto-height, thumbnails and scroll effects.\n\n  Carousel(loop: true) do\n    CarouselContent do\n      slides.each { |slide| CarouselSlide { img(src: slide.url, alt: slide.title) } }\n    end\n    CarouselPrev { |prev| Button(**prev, variant: :outline, icon: true, class: \"rounded-full\") { chevron_left } }\n    CarouselNext { |nxt| Button(**nxt, variant: :outline, icon: true, class: \"rounded-full\") { chevron_right } }\n    CarouselPagination(class: \"absolute inset-x-0 top-full mt-5 justify-center\")\n  end\n\nFlat options mirror Embla's (`loop:`, `align:`, `slides_to_scroll:`, `drag_free:` …); `options:` is a raw Embla options hash merged last. The plugins are switched on with `autoplay:`, `auto_scroll:`, `fade:`, `auto_height:` and `wheel_gestures:` (true or a hash).",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Carousel(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "components": {
+    "Carousel": {
+      "constant": "AppicaUI::Carousel",
+      "props": {
+        "type": "object",
+        "properties": {
+          "orientation": {
+            "enum": [
+              "horizontal",
+              "vertical"
+            ],
+            "default": "horizontal"
+          },
+          "loop": {
+            "default": false,
+            "type": "boolean"
+          },
+          "align": {
+            "default": "start",
+            "type": "string"
+          },
+          "slides_to_scroll": {
+            "default": 1,
+            "type": "integer"
+          },
+          "contain_scroll": {
+            "default": "trim_snaps",
+            "type": "string"
+          },
+          "drag_free": {
+            "default": false,
+            "type": "boolean"
+          },
+          "start_snap": {
+            "default": null
+          },
+          "active": {
+            "default": true,
+            "type": "boolean"
+          },
+          "draggable": {
+            "default": true,
+            "type": "boolean"
+          },
+          "duration": {
+            "default": null
+          },
+          "options": {
+            "default": {},
+            "type": "object"
+          },
+          "autoplay": {
+            "default": false,
+            "type": "boolean"
+          },
+          "auto_scroll": {
+            "default": false,
+            "type": "boolean"
+          },
+          "auto_height": {
+            "default": false,
+            "type": "boolean"
+          },
+          "fade": {
+            "default": false,
+            "type": "boolean"
+          },
+          "wheel_gestures": {
+            "default": false,
+            "type": "boolean"
+          },
+          "effect": {
+            "default": null
+          },
+          "sync_with": {
+            "default": null
+          },
+          "light": {
+            "default": false,
+            "type": "boolean"
+          },
+          "aria_label": {
+            "default": "Carousel",
+            "type": "string"
+          },
+          "id": {}
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "AppicaUI::CarouselContent",
+        "AppicaUI::CarouselNext",
+        "AppicaUI::CarouselPrev",
+        "AppicaUI::CarouselSlide"
+      ]
+    },
+    "CarouselArrow": {
+      "constant": "AppicaUI::CarouselArrow",
+      "description": "Shared by CarouselPrev and CarouselNext: a positioner plus a button. A block taking an argument receives the button attributes, so you can render your own Button (Appica's `render` prop); without one it renders an unstyled button with a chevron.\n\n  CarouselNext(position: :outside) { |nxt| Button(**nxt, variant: :outline, icon: true) { chevron } }",
+      "props": {
+        "type": "object",
+        "properties": {
+          "position": {
+            "enum": [
+              "inside",
+              "outside",
+              "outside_half",
+              "none"
+            ],
+            "default": "inside"
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "aria_label": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "CarouselContent": {
+      "constant": "AppicaUI::CarouselContent",
+      "description": "The scroll viewport plus the flex track that holds the slides. `class:` lands on the track (e.g. a fixed height like \"h-100\" for vertical carousels); `viewport:` reaches the clipping element.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "viewport": {
+            "default": {},
+            "type": "object"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Carousel"
+      ]
+    },
+    "CarouselNext": {
+      "constant": "AppicaUI::CarouselNext",
+      "description": "The next arrow. `position:` is :inside (default), :outside, :outside_half or :none.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "position": {
+            "enum": [
+              "inside",
+              "outside",
+              "outside_half",
+              "none"
+            ],
+            "default": "inside"
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "aria_label": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Carousel"
+      ]
+    },
+    "CarouselPagination": {
+      "constant": "AppicaUI::CarouselPagination",
+      "description": "Clickable bullets, one per snap point. The count is only known once the engine has measured the slides, so the bullets are cloned in the browser from the <template> rendered here. While autoplay runs, the active bullet grows into a filling pill.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "orientation": {
+            "enum": [
+              "horizontal",
+              "vertical"
+            ],
+            "default": "horizontal"
+          },
+          "light": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "CarouselPrev": {
+      "constant": "AppicaUI::CarouselPrev",
+      "description": "The previous arrow. `position:` is :inside (default), :outside, :outside_half or :none.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "position": {
+            "enum": [
+              "inside",
+              "outside",
+              "outside_half",
+              "none"
+            ],
+            "default": "inside"
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "aria_label": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Carousel"
+      ]
+    },
+    "CarouselProgress": {
+      "constant": "AppicaUI::CarouselProgress",
+      "description": "A scroll / autoplay progress indicator: a bar (default) or a ring (`variant: :circular`). `source: :auto` counts down the autoplay timer while it plays, otherwise tracks scrolling.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "enum": [
+              "bar",
+              "circular"
+            ],
+            "default": "bar"
+          },
+          "source": {
+            "enum": [
+              "auto",
+              "autoplay",
+              "scroll"
+            ],
+            "default": "auto"
+          },
+          "orientation": {
+            "enum": [
+              "horizontal",
+              "vertical"
+            ],
+            "default": "horizontal"
+          },
+          "light": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "CarouselSlide": {
+      "constant": "AppicaUI::CarouselSlide",
+      "description": "One slide / snap point. Full width by default; set a basis-* class to show several per view.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Carousel"
+      ]
+    },
+    "CarouselThumb": {
+      "constant": "AppicaUI::CarouselThumb",
+      "description": "One thumbnail: a button around a square, clipped media frame. 72px by default; size it with a width class (the height follows the square aspect).\n\n  CarouselThumb(class: \"w-16 sm:w-22\") { img(src: slide.url, alt: \"\", class: \"size-full object-cover\") }",
+      "props": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::CarouselThumbs"
+      ]
+    },
+    "CarouselThumbs": {
+      "constant": "AppicaUI::CarouselThumbs",
+      "description": "A rail of thumbnails that drives the carousel it sits in. The rail is a small carousel of its own, so it scrolls when the thumbnails outgrow it; selection is one outline that slides to the current thumbnail. `orientation: :vertical` stands the rail beside the viewer (give its row a height).",
+      "props": {
+        "type": "object",
+        "properties": {
+          "orientation": {
+            "enum": [
+              "horizontal",
+              "vertical"
+            ],
+            "default": "horizontal"
+          },
+          "light": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "AppicaUI::CarouselThumb"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "notes": "A single slide per view with arrows inside the frame and pagination below.\n`loop:` wraps around from the last slide back to the first.",
+      "code": "phlex do\n  div(class: \"mx-auto w-full max-w-xl pb-8\") do\n    Carousel(loop:, align:, fade:, autoplay:, orientation:, slides_to_scroll:, contain_scroll:, drag_free:, active:, draggable:, auto_scroll:, auto_height:, wheel_gestures:, light:, aria_label:) do\n      CarouselContent do\n        (1..5).each do |n|\n          CarouselSlide { img(src: \"/carousel/slide-#{n}.jpg\", alt: \"Slide #{n}\", class: \"aspect-3/2 w-full rounded-xl object-cover\") }\n        end\n      end\n      CarouselPrev { |prev| Button(**prev, variant: :outline, icon: true, class: \"rounded-full\") { Icon(:chevron_left) } }\n      CarouselNext { |nxt| Button(**nxt, variant: :outline, icon: true, class: \"rounded-full\") { Icon(:chevron_right) } }\n      CarouselPagination(class: \"absolute inset-x-0 top-full mt-5 justify-center\")\n    end\n  end\nend"
+    },
+    {
+      "name": "Multiple slides (responsive)",
+      "notes": "A fractional basis-* fits several per view. `slides_to_scroll: :auto` advances by\nhowever many are fully visible; arrows sit outside the frame.",
+      "code": "phlex do\n  div(class: \"mx-auto w-full max-w-xl px-15\") do\n    Carousel(align: :start, slides_to_scroll: :auto, loop: true) do\n      CarouselContent do\n        [ 4, 5, 6, 7, 8, 2 ].each do |n|\n          CarouselSlide(class: \"sm:basis-1/2 md:basis-1/3\") { img(src: \"/carousel/slide-#{n}.jpg\", alt: \"Slide #{n}\", class: \"aspect-square w-full rounded-xl object-cover\") }\n        end\n      end\n      CarouselPrev(position: :outside) { |prev| Button(**prev, variant: :outline, icon: true, class: \"rounded-full\") { Icon(:chevron_left) } }\n      CarouselNext(position: :outside) { |nxt| Button(**nxt, variant: :outline, icon: true, class: \"rounded-full\") { Icon(:chevron_right) } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Alignment",
+      "notes": "`align:` controls where slides settle. With a basis smaller than the viewport,\n:center peeks the neighbouring slides on either side.",
+      "code": "phlex do\n  div(class: \"mx-auto w-full max-w-xl\") do\n    Carousel(align: :center, loop: true) do\n      CarouselContent do\n        (1..6).each do |n|\n          CarouselSlide(class: \"basis-2/3\") { img(src: \"/carousel/slide-#{n}.jpg\", alt: \"Slide #{n}\", class: \"aspect-3/2 w-full rounded-xl object-cover\") }\n        end\n      end\n      CarouselPrev { |prev| Button(**prev, variant: :outline, icon: true, class: \"rounded-full\") { Icon(:chevron_left) } }\n      CarouselNext { |nxt| Button(**nxt, variant: :outline, icon: true, class: \"rounded-full\") { Icon(:chevron_right) } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Vertical",
+      "notes": "`orientation: :vertical` drags and snaps along the Y axis. Give the track a fixed\nheight; the arrows settle at the top and bottom, and pagination runs down the side.",
+      "code": "phlex do\n  Carousel(orientation: :vertical, loop: true, class: \"mx-auto flex w-full max-w-2xl items-center justify-center gap-5\") do\n    div(class: \"relative w-full max-w-xl\") do\n      CarouselContent(class: \"h-100\") do\n        [ 1, 2, 4, 5 ].each do |n|\n          CarouselSlide { img(src: \"/carousel/slide-#{n}.jpg\", alt: \"Slide #{n}\", class: \"size-full rounded-xl object-cover\") }\n        end\n      end\n      CarouselPrev { |prev| Button(**prev, variant: :outline, icon: true, class: \"rounded-full\") { Icon(:chevron_up) } }\n      CarouselNext { |nxt| Button(**nxt, variant: :outline, icon: true, class: \"rounded-full\") { Icon(:chevron_down) } }\n    end\n    CarouselPagination(orientation: :vertical)\n  end\nend"
+    },
+    {
+      "name": "Autoplay",
+      "notes": "`autoplay:` advances on a timer. `resume_after:` restarts it a set time after the user\ninteracts; while it runs, the active bullet grows into a filling progress pill.",
+      "code": "phlex do\n  div(class: \"mx-auto w-full max-w-xl pb-8\") do\n    Carousel(loop: true, autoplay: { delay: 4000, resume_after: 3000 }) do\n      CarouselContent do\n        [ 1, 5, 4, 7, 6 ].each do |n|\n          CarouselSlide { img(src: \"/carousel/slide-#{n}.jpg\", alt: \"Slide #{n}\", class: \"aspect-3/2 w-full rounded-xl object-cover\") }\n        end\n      end\n      CarouselPagination(class: \"absolute inset-x-0 top-full mt-5 justify-center\")\n    end\n  end\nend"
+    },
+    {
+      "name": "Auto scroll",
+      "notes": "`auto_scroll:` is continuous marquee-style motion; pair it with `loop:` and\n`drag_free:` for an endless conveyor. Paused under reduced motion.",
+      "code": "phlex do\n  div(class: \"mx-auto w-full max-w-xl\") do\n    Carousel(loop: true, drag_free: true, auto_scroll: { speed: 1.5, start_delay: 0, resume_after: 3000 }) do\n      CarouselContent do\n        (1..8).each do |n|\n          CarouselSlide(class: \"basis-1/2 sm:basis-1/3\") { img(src: \"/carousel/slide-#{n}.jpg\", alt: \"Slide #{n}\", class: \"aspect-square w-full rounded-xl object-cover\") }\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Fade",
+      "notes": "`fade:` cross-fades between slides instead of sliding - one slide per view.",
+      "code": "phlex do\n  div(class: \"mx-auto w-full max-w-xl pb-8\") do\n    Carousel(loop: true, fade: true) do\n      CarouselContent do\n        (1..5).each do |n|\n          CarouselSlide { img(src: \"/carousel/slide-#{n}.jpg\", alt: \"Slide #{n}\", class: \"aspect-3/2 w-full rounded-xl object-cover\") }\n        end\n      end\n      CarouselPrev { |prev| Button(**prev, variant: :outline, icon: true, class: \"rounded-full\") { Icon(:chevron_left) } }\n      CarouselNext { |nxt| Button(**nxt, variant: :outline, icon: true, class: \"rounded-full\") { Icon(:chevron_right) } }\n      CarouselPagination(class: \"absolute inset-x-0 top-full mt-5 justify-center\")\n    end\n  end\nend"
+    },
+    {
+      "name": "Auto height",
+      "notes": "`auto_height:` animates the viewport to each slide's natural height; use\n`align: :start` so slides measure from the top.",
+      "code": "phlex do\n  div(class: \"mx-auto w-full max-w-md\") do\n    Carousel(loop: true, auto_height: true, align: :start) do\n      CarouselContent do\n        CARDS.each do |card|\n          CarouselSlide do\n            div(class: \"border-border-muted bg-background-subtle rounded-xl border p-6\") do\n              h4(class: \"text-foreground-intense mb-2 font-semibold\") { card[:title] }\n              p(class: \"text-sm\") { card[:body] }\n            end\n          end\n        end\n      end\n      div(class: \"mt-5 flex items-center justify-between gap-4\") do\n        CarouselPrev(position: :none) { |prev| Button(**prev, variant: :outline, icon: true) { Icon(:chevron_left) } }\n        CarouselPagination()\n        CarouselNext(position: :none) { |nxt| Button(**nxt, variant: :outline, icon: true) { Icon(:chevron_right) } }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Free drag & wheel gestures",
+      "notes": "`drag_free:` glides to a momentum stop wherever the drag ends; `wheel_gestures:`\nscrolls with a trackpad or mouse wheel.",
+      "code": "phlex do\n  div(class: \"mx-auto w-full max-w-xl\") do\n    Carousel(drag_free: true, wheel_gestures: true, align: :start, contain_scroll: :trim_snaps) do\n      CarouselContent do\n        (1..8).each do |n|\n          CarouselSlide(class: \"basis-1/2 sm:basis-1/3 md:basis-1/4\") { img(src: \"/carousel/slide-#{n}.jpg\", alt: \"Slide #{n}\", class: \"aspect-square w-full rounded-xl object-cover\") }\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Progress",
+      "notes": "CarouselProgress is a scroll progress bar, or a ring with `variant: :circular`.\nIt tracks the drag position, and counts down the autoplay timer while autoplay plays.",
+      "code": "phlex do\n  div(class: \"mx-auto w-full max-w-xl\") do\n    Carousel(align: :start) do\n      CarouselContent do\n        (1..6).each do |n|\n          CarouselSlide(class: \"basis-1/2 sm:basis-1/3\") { img(src: \"/carousel/slide-#{n}.jpg\", alt: \"Slide #{n}\", class: \"aspect-square w-full rounded-xl object-cover\") }\n        end\n      end\n      div(class: \"mt-5 flex items-center justify-between\") do\n        div(class: \"flex items-center gap-4\") do\n          CarouselProgress(class: \"w-14\")\n          CarouselProgress(variant: :circular)\n        end\n        div(class: \"flex gap-2\") do\n          CarouselPrev(position: :none) { |prev| Button(**prev, variant: :outline, icon: true) { Icon(:chevron_left) } }\n          CarouselNext(position: :none) { |nxt| Button(**nxt, variant: :outline, icon: true) { Icon(:chevron_right) } }\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Thumbnails",
+      "notes": "CarouselThumbs is a rail of CarouselThumb buttons that drives the carousel it sits in.\nThe rail scrolls when it outgrows its width; selection is one outline that slides.",
+      "code": "phlex do\n  Carousel(loop: true, class: \"mx-auto flex w-full max-w-142 flex-col gap-3\") do\n    CarouselContent do\n      (1..7).each do |n|\n        CarouselSlide { img(src: \"/carousel/slide-#{n}.jpg\", alt: \"Slide #{n}\", class: \"aspect-3/2 w-full rounded-xl object-cover\") }\n      end\n    end\n    CarouselThumbs do\n      (1..7).each do |n|\n        CarouselThumb(class: \"w-16 sm:w-22\") { img(src: \"/carousel/slide-#{n}.jpg\", alt: \"\", class: \"size-full object-cover\") }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Thumbnails over imagery",
+      "notes": "`light: true` on the carousel switches every control to its light-on-dark palette.\nFloat the rail over the slides with a gradient scrim under it.",
+      "code": "phlex do\n  Carousel(loop: true, light: true, class: \"mx-auto w-full max-w-146 overflow-hidden rounded-xl\") do\n    CarouselContent do\n      (1..7).each do |n|\n        CarouselSlide do\n          div(class: \"relative aspect-3/2 w-full\") do\n            img(src: \"/carousel/slide-#{n}.jpg\", alt: \"Slide #{n}\", class: \"size-full object-cover\")\n            div(class: \"absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent\")\n          end\n        end\n      end\n    end\n    CarouselThumbs(class: \"absolute inset-x-0 bottom-3 px-3 sm:bottom-4 sm:px-4\") do\n      (1..7).each do |n|\n        CarouselThumb(class: \"w-14 sm:w-18\") { img(src: \"/carousel/slide-#{n}.jpg\", alt: \"\", class: \"size-full object-cover\") }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Synced carousels",
+      "notes": "`sync_with:` links two carousels (by id) both ways: the image carousel drives a fading\ncaption carousel, which is `draggable: false` so it only follows.",
+      "code": "phlex do\n  div(class: \"mx-auto flex w-full max-w-xl flex-col gap-4 px-15\") do\n    Carousel(id: \"synced-images\", loop: true, sync_with: \"synced-captions\") do\n      CarouselContent do\n        PLACES.each do |place|\n          CarouselSlide { img(src: \"/carousel/slide-#{place[:n]}.jpg\", alt: place[:title], class: \"aspect-3/2 w-full rounded-xl object-cover\") }\n        end\n      end\n      CarouselPrev(position: :outside) { |prev| Button(**prev, variant: :outline, icon: true, class: \"rounded-full\") { Icon(:chevron_left) } }\n      CarouselNext(position: :outside) { |nxt| Button(**nxt, variant: :outline, icon: true, class: \"rounded-full\") { Icon(:chevron_right) } }\n    end\n    Carousel(id: \"synced-captions\", loop: true, fade: true, draggable: false) do\n      CarouselContent do\n        PLACES.each do |place|\n          CarouselSlide do\n            div(class: \"min-h-24 text-center\") do\n              p(class: \"text-foreground-intense text-lg font-semibold\") { place[:title] }\n              p(class: \"text-foreground mt-1 text-sm\") { place[:body] }\n            end\n          end\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Parallax",
+      "notes": "`effect: :parallax` over-scales each slide's inner layer (`data: { carousel_layer: true }`)\nand drifts it against the scroll.",
+      "code": "phlex do\n  div(class: \"mx-auto w-full max-w-xl\") do\n    Carousel(loop: true, align: :center, effect: :parallax) do\n      CarouselContent do\n        (1..6).each do |n|\n          CarouselSlide(class: \"basis-2/3\") do\n            div(class: \"aspect-3/2 overflow-hidden rounded-xl\") do\n              div(class: \"size-full\", data: { carousel_layer: true }) do\n                img(src: \"/carousel/slide-#{n}.jpg\", alt: \"Slide #{n}\", class: \"size-full scale-[1.6] object-cover\")\n              end\n            end\n          end\n        end\n      end\n      div(class: \"mt-5 flex justify-center gap-2\") do\n        CarouselPrev(position: :none) { |prev| Button(**prev, variant: :outline, icon: true) { Icon(:chevron_left) } }\n        CarouselNext(position: :none) { |nxt| Button(**nxt, variant: :outline, icon: true) { Icon(:chevron_right) } }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Scale",
+      "notes": "`effect: :scale` shrinks and dims each slide by its distance from the center,\nso the focused slide pops.",
+      "code": "phlex do\n  div(class: \"mx-auto w-full max-w-xl\") do\n    Carousel(loop: true, align: :center, effect: :scale) do\n      CarouselContent do\n        (1..6).each do |n|\n          CarouselSlide(class: \"basis-2/3\") do\n            div(data: { carousel_layer: true }) do\n              img(src: \"/carousel/slide-#{n}.jpg\", alt: \"Slide #{n}\", class: \"aspect-3/2 w-full rounded-xl object-cover\")\n            end\n          end\n        end\n      end\n      div(class: \"mt-5 flex justify-center gap-2\") do\n        CarouselPrev(position: :none) { |prev| Button(**prev, variant: :outline, icon: true) { Icon(:chevron_left) } }\n        CarouselNext(position: :none) { |nxt| Button(**nxt, variant: :outline, icon: true) { Icon(:chevron_right) } }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Overlaid controls",
+      "notes": "`light: true` when the controls sit over imagery, with a light Button for the arrows.",
+      "code": "phlex do\n  div(class: \"mx-auto w-full max-w-xl\") do\n    Carousel(loop: true, light: true, class: \"overflow-hidden rounded-xl\") do\n      CarouselContent do\n        PLACES.each do |place|\n          CarouselSlide do\n            div(class: \"relative aspect-3/2 w-full\") do\n              img(src: \"/carousel/slide-#{place[:n]}.jpg\", alt: place[:title], class: \"size-full object-cover\")\n              div(class: \"absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent\")\n              div(class: \"absolute inset-s-0 bottom-0 p-5\") do\n                p(class: \"text-lg font-semibold text-white\") { place[:title] }\n                p(class: \"text-sm text-white/70\") { place[:caption] }\n              end\n            end\n          end\n        end\n      end\n      CarouselPrev { |prev| Button(**prev, variant: :light, icon: true, class: \"rounded-full\") { Icon(:chevron_left) } }\n      CarouselNext { |nxt| Button(**nxt, variant: :light, icon: true, class: \"rounded-full\") { Icon(:chevron_right) } }\n      CarouselPagination(class: \"absolute inset-x-0 bottom-5 justify-center\")\n    end\n  end\nend"
+    },
+    {
+      "name": "Controlled",
+      "notes": "Arrows can live anywhere inside the carousel. Elements targeted as `current` / `count`\nshow the position, and the `appica-ui--carousel:select` event carries { index, count, api }.",
+      "code": "phlex do\n  div(class: \"mx-auto w-full max-w-xl\") do\n    Carousel(loop: true) do\n      CarouselContent do\n        (1..5).each do |n|\n          CarouselSlide { img(src: \"/carousel/slide-#{n}.jpg\", alt: \"Slide #{n}\", class: \"aspect-3/2 w-full rounded-xl object-cover\") }\n        end\n      end\n      div(class: \"mt-5 flex items-center justify-between\") do\n        CarouselPrev(position: :none) { |prev| Button(**prev, variant: :outline, icon: true) { Icon(:chevron_left) } }\n        p(class: \"text-sm tabular-nums\") do\n          plain \"Slide \"\n          span(data: { \"appica-ui--carousel-target\": \"current\" }) { \"1\" }\n          plain \" of \"\n          span(data: { \"appica-ui--carousel-target\": \"count\" }) { \"5\" }\n        end\n        CarouselNext(position: :none) { |nxt| Button(**nxt, variant: :outline, icon: true) { Icon(:chevron_right) } }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "A horizontal carousel reverses its drag axis and starting edge; the arrows swap sides.",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"mx-auto w-full max-w-xl pb-8\") do\n    Carousel(loop: true, aria_label: \"معرض الصور\") do\n      CarouselContent do\n        (1..5).each do |n|\n          CarouselSlide { img(src: \"/carousel/slide-#{n}.jpg\", alt: \"الشريحة #{n}\", class: \"aspect-3/2 w-full rounded-xl object-cover\") }\n        end\n      end\n      CarouselPrev(aria_label: \"الشريحة السابقة\") { |prev| Button(**prev, variant: :outline, icon: true, class: \"rounded-full\") { Icon(:chevron_left, class: \"rotate-180\") } }\n      CarouselNext(aria_label: \"الشريحة التالية\") { |nxt| Button(**nxt, variant: :outline, icon: true, class: \"rounded-full\") { Icon(:chevron_right, class: \"rotate-180\") } }\n      CarouselPagination(class: \"absolute inset-x-0 top-full mt-5 justify-center\")\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "PLACES": "PLACES = [\n  { n: 1, title: \"Sunlit summit\", caption: \"Aurora Range\", body: \"First light catches the ridgeline while the valley below stays in shadow - the clearest window for the summit push.\" },\n  { n: 2, title: \"Heather bloom\", caption: \"Meadowvale Heath\", body: \"The heath turns violet at golden hour, birches standing in a sea of flowering heather.\" },\n  { n: 3, title: \"Tulip garden\", caption: \"Keukenhof Lanes\", body: \"Rows of tulips run up to an old wooden fence, every colour of the spring palette in one bed.\" },\n  { n: 4, title: \"Alpenglow\", caption: \"Crimson Peaks\", body: \"The last sun paints the peaks pink and gold while the valleys fill with evening shadow.\" },\n  { n: 5, title: \"Rainbow ridges\", caption: \"Painted Hills\", body: \"Layers of red, orange and cream sandstone stripe the hills like a watercolour.\" }\n].freeze",
+    "CARDS": "CARDS = [\n  { title: \"Short\", body: \"A compact slide.\" },\n  { title: \"Medium\", body: \"This slide carries a couple of sentences, so it stands a little taller than the first. The viewport grows to fit it.\" },\n  { title: \"Tall\", body: \"And this one runs longer still. Auto height animates the viewport between each slide's natural height as you navigate, so nothing is clipped and there's no empty space below shorter slides. It keeps mixed-length content - quotes, cards, forms - looking tidy inside a single carousel.\" }\n].freeze"
+  }
+}

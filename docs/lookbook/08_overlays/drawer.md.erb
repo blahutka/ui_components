@@ -8,7 +8,7 @@ title: Drawer
 A panel that slides in from a screen edge, with swipe-to-dismiss and snap points.
 [Appica docs](https://appica.dev/ui/components/react/drawer)
 
-<%= embed UI::DrawerPreview, :default %>
+<%= embed AppicaUI::DrawerPreview, :default %>
 
 ## Usage
 
@@ -55,7 +55,7 @@ Set `side:` to `:top`, `:right`, `:bottom`, or `:left`. Left and right read as s
 and bottom as sheets - cap the sheet's width (`class: "mx-auto max-w-2xl"` on `DrawerContent`)
 so it doesn't stretch edge-to-edge on a wide screen.
 
-<%= embed UI::DrawerPreview, :sides %>
+<%= embed AppicaUI::DrawerPreview, :sides %>
 
 ```ruby
 Drawer(side: :bottom) do
@@ -74,7 +74,7 @@ For content taller than the panel, let `DrawerBody` own the overflow between a p
 footer. A left/right drawer is the natural fit: its swipe is horizontal, so it never fights the
 vertical scroll.
 
-<%= embed UI::DrawerPreview, :long_content %>
+<%= embed AppicaUI::DrawerPreview, :long_content %>
 
 ```ruby
 Drawer(snap_points: [ 0.4, 1 ]) do
@@ -88,7 +88,7 @@ end
 A drawer can open another drawer: nest the markup inside `DrawerBody`. The parent tucks back as
 the child slides in, and the child renders without a backdrop, as a solid card.
 
-<%= embed UI::DrawerPreview, :nested %>
+<%= embed AppicaUI::DrawerPreview, :nested %>
 
 ```ruby
 Drawer(side: :right) do
@@ -106,11 +106,11 @@ end
 
 ### Listening for changes
 
-The controller dispatches `ui--drawer:open-change` with `{ open }` and, for sheets with snap
-points, `ui--drawer:snap-point-change` with `{ snapPoint }`.
+The controller dispatches `appica-ui--drawer:open-change` with `{ open }` and, for sheets with snap
+points, `appica-ui--drawer:snap-point-change` with `{ snapPoint }`.
 
 ```ruby
-Drawer(data: { action: "ui--drawer:open-change->player#toggle" }) { ... }
+Drawer(data: { action: "appica-ui--drawer:open-change->player#toggle" }) { ... }
 ```
 
 ### RTL
@@ -118,7 +118,7 @@ Drawer(data: { action: "ui--drawer:open-change->player#toggle" }) { ... }
 The header, body and footer read right-to-left and the handle and close button mirror. When RTL
 is scoped to part of an LTR page, set `dir: "rtl"` on `DrawerContent` too.
 
-<%= embed UI::DrawerPreview, :rtl %>
+<%= embed AppicaUI::DrawerPreview, :rtl %>
 
 ## API reference
 

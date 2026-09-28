@@ -1,0 +1,10 @@
+# A <p> that describes the panel (the dialog's aria-describedby)
+class AppicaUI::DrawerDescription < AppicaUI::Base
+  def view_template(&)
+    p(**mix({ id: drawer.description_id, data: { slot: "drawer-description" } }, @attributes.except(:class)),
+      class: cn("text-foreground-muted text-sm", override: @attributes[:class]), &)
+  end
+
+  private
+    def drawer = consume(:ui_drawer, component: "Drawer")
+end

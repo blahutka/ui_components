@@ -8,7 +8,7 @@ title: Copy Button
 A button that copies text to the clipboard and confirms with a drawn check.
 [Appica docs](https://appica.dev/ui/components/react/copy-button)
 
-<%= embed UI::CopyButtonPreview, :default %>
+<%= embed AppicaUI::CopyButtonPreview, :default %>
 
 ## Usage
 
@@ -26,23 +26,23 @@ text; `target:` (a CSS selector) copies an element's value or text instead. It f
 
 ### Variants
 
-<%= embed UI::CopyButtonPreview, :variants %>
+<%= embed AppicaUI::CopyButtonPreview, :variants %>
 
 ### Sizes
 
-<%= embed UI::CopyButtonPreview, :sizes %>
+<%= embed AppicaUI::CopyButtonPreview, :sizes %>
 
 ### With a label
 
-<%= embed UI::CopyButtonPreview, :with_label %>
+<%= embed AppicaUI::CopyButtonPreview, :with_label %>
 
 ### Custom icon
 
-<%= embed UI::CopyButtonPreview, :custom_icon %>
+<%= embed AppicaUI::CopyButtonPreview, :custom_icon %>
 
 ### Copy from an element
 
-<%= embed UI::CopyButtonPreview, :from_element %>
+<%= embed AppicaUI::CopyButtonPreview, :from_element %>
 
 ## API reference
 
@@ -55,7 +55,7 @@ text; `target:` (a CSS selector) copies an element's value or text instead. It f
 | `icon:` | `Symbol` | copy glyph | The resting icon. |
 | `variant:` / `size:` | Button's | `:ghost` / `:sm` | Square without a block; a block adds a text label. |
 
-Events: `ui--copy-button:copy` (`{ value }`) and `ui--copy-button:error`. `data-copied` is set while copied.
+Events: `appica-ui--copy-button:copy` (`{ value }`) and `appica-ui--copy-button:error`. `data-copied` is set while copied.
 
 ## Accessibility
 

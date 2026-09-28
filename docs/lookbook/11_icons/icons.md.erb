@@ -9,7 +9,7 @@ Open-source collection of ~5,000 SVG icons - sourced from [Tabler Icons](https:/
 [Hugeicons](https://hugeicons.com/) and custom designs, normalized and organized into categories.
 [Appica icons](https://appica.dev/ui/icons)
 
-<%= embed UI::IconPreview, :default %>
+<%= embed AppicaUI::IconPreview, :default %>
 
 ## Usage
 
@@ -24,48 +24,48 @@ Button do
 end
 ```
 
-The React package exports one component per icon (`<Star />`); in Phlex a single `UI::Icon` takes the name. It
+The React package exports one component per icon (`<Star />`); in Phlex a single `AppicaUI::Icon` takes the name. It
 renders the same `<svg class="appica-icon">` markup as `@appica/icons-react` - fill/stroke attributes, 24×24
 viewBox, `aria-hidden` - with the icon's paths inside. Browse and search every icon in the
-[Gallery](<%= Lookbook.previews.find { |preview| preview.preview_class == UI::IconPreview }.scenarios.find { |scenario| scenario.name == "gallery" }.inspect_path %>) preview; clicking one copies its `Icon(...)` call.
+[Gallery](<%= Lookbook.previews.find { |preview| preview.preview_class == AppicaUI::IconPreview }.scenarios.find { |scenario| scenario.name == "gallery" }.inspect_path %>) preview; clicking one copies its `Icon(...)` call.
 
 ## Examples
 
 ### Sizes
 
-<%= embed UI::IconPreview, :sizes %>
+<%= embed AppicaUI::IconPreview, :sizes %>
 
 ### Stroke width
 
-<%= embed UI::IconPreview, :stroke_width %>
+<%= embed AppicaUI::IconPreview, :stroke_width %>
 
 ### Outline & filled
 
 Filled variants are separate icons with a `-filled` suffix (`star` / `star-filled`).
 
-<%= embed UI::IconPreview, :filled %>
+<%= embed AppicaUI::IconPreview, :filled %>
 
 ### Color
 
 Icons draw with `currentColor`, so a `text-*` class (or the parent's color) colors them. `color:` sets the
 attribute directly.
 
-<%= embed UI::IconPreview, :color %>
+<%= embed AppicaUI::IconPreview, :color %>
 
 ### In a button
 
-<%= embed UI::IconPreview, :in_button %>
+<%= embed AppicaUI::IconPreview, :in_button %>
 
 ### Accessible icon
 
-<%= embed UI::IconPreview, :accessible %>
+<%= embed AppicaUI::IconPreview, :accessible %>
 
 ## Naming
 
 - Every icon has one canonical kebab-case name: `smart-home`, `star-filled`, `sort-0-9`.
 - `Icon` also accepts a symbol with underscores (`:smart_home`, `:sort_0_9`) or the React name (`"SmartHome"`).
 - An unknown name raises `KeyError` with suggestions ("Did you mean: star?").
-- `UI::IconLibrary.names`, `.categories` and `.each(category)` list the set.
+- `AppicaUI::IconLibrary.names`, `.categories` and `.each(category)` list the set.
 
 ## API reference
 
@@ -82,7 +82,7 @@ Any other attribute goes to the `<svg>`.
 
 ## Data & updates
 
-The icons live as JSON in `app/components/ui/icon/icons/` (one file per category plus `index.json`, ~1.7 MB);
+The icons live as JSON in `app/components/appica_ui/icon/icons/` (one file per category plus `index.json`, ~1.7 MB);
 a category is read the first time one of its icons renders and then cached. Regenerate them from a newer
 `@appica/icons-react` release (no Node needed):
 
@@ -93,9 +93,9 @@ bundle exec rake "ui_components:icons:sync[1.1.0]"
 Keep the icon data out of Tailwind's scan in the host app:
 
 ```css
-@source not "<gem path>/app/components/ui/icon/icons";
+@source not "<gem path>/app/components/appica_ui/icon/icons";
 ```
 
 ## Credits
 
-Appica Icons, MIT licensed (`app/components/ui/icon/icons/LICENSE-appica-icons`), built on Tabler Icons (MIT) and Hugeicons.
+Appica Icons, MIT licensed (`app/components/appica_ui/icon/icons/LICENSE-appica-icons`), built on Tabler Icons (MIT) and Hugeicons.

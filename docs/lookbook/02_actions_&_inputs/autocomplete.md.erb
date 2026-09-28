@@ -8,7 +8,7 @@ title: Autocomplete
 A text input that suggests matching options as you type.
 [Appica docs](https://appica.dev/ui/components/react/autocomplete)
 
-<%= embed UI::AutocompletePreview, :default %>
+<%= embed AppicaUI::AutocompletePreview, :default %>
 
 ## Usage
 
@@ -36,7 +36,7 @@ Autocomplete is a compound component. The root holds the data (`items:`) and sha
 - **AutocompleteItem** - one option; its `value:` is what selection writes into the input.
 - **AutocompleteEmpty** - shown only when the filter matches nothing.
 
-Filtering, keyboard navigation and the ARIA combobox state come from the `ui--autocomplete`
+Filtering, keyboard navigation and the ARIA combobox state come from the `appica-ui--autocomplete`
 Stimulus controller.
 
 ## Examples
@@ -45,7 +45,7 @@ Stimulus controller.
 
 `variant:` switches the input between a bordered outline (default) and a filled soft field.
 
-<%= embed UI::AutocompletePreview, :variants %>
+<%= embed AppicaUI::AutocompletePreview, :variants %>
 
 ```ruby
 Autocomplete(items: frameworks, variant: :soft) do
@@ -58,7 +58,7 @@ end
 
 `size:` on the root scales the input, popup radius, and items together.
 
-<%= embed UI::AutocompletePreview, :sizes %>
+<%= embed AppicaUI::AutocompletePreview, :sizes %>
 
 ```ruby
 Autocomplete(items: frameworks, size: :lg) { ... }
@@ -69,7 +69,7 @@ Autocomplete(items: frameworks, size: :lg) { ... }
 `clearable:` adds a clear (✕) button once there's a value, `icon:` a chevron that toggles the
 popup. Both render inside the input.
 
-<%= embed UI::AutocompletePreview, :clearable %>
+<%= embed AppicaUI::AutocompletePreview, :clearable %>
 
 ```ruby
 Autocomplete(items: frameworks, default_value: "Next.js", clearable: true, icon: true) { ... }
@@ -82,7 +82,7 @@ same inner spacing as in Button. When items are objects rather than strings, giv
 `item_to_string_value:` (a key, method name or proc) so the filter and input know how to read
 each one. `start_slot: :selected_icon` mirrors the selected item's icon into the input.
 
-<%= embed UI::AutocompletePreview, :object_items %>
+<%= embed AppicaUI::AutocompletePreview, :object_items %>
 
 ```ruby
 Autocomplete(items: commands, item_to_string_value: :label, clearable: true, icon: true) do
@@ -105,7 +105,7 @@ Pass grouped items (`{ value:, items: }`) and render each group with `Autocomple
 `AutocompleteLabel` + `AutocompleteCollection`. The outer block iterates groups;
 `AutocompleteCollection` renders the items inside each.
 
-<%= embed UI::AutocompletePreview, :grouped %>
+<%= embed AppicaUI::AutocompletePreview, :grouped %>
 
 ```ruby
 Autocomplete(items: produce) do
@@ -127,7 +127,7 @@ end
 `grid: true` lays options out in a grid (arrow keys move in two dimensions).
 `AutocompleteList(cols:)` controls how many items per row.
 
-<%= embed UI::AutocompletePreview, :grid %>
+<%= embed AppicaUI::AutocompletePreview, :grid %>
 
 ```ruby
 Autocomplete(items: libraries, grid: true, icon: true) do
@@ -143,16 +143,16 @@ end
 Static `AutocompleteItem` children work too. `name:` submits the typed or selected value with
 the surrounding form; `disabled: true` on an item skips it in navigation.
 
-<%= embed UI::AutocompletePreview, :static_items %>
+<%= embed AppicaUI::AutocompletePreview, :static_items %>
 
 ### Listening for changes
 
-The controller dispatches `ui--autocomplete:change` with `{ value }` whenever the value changes
+The controller dispatches `appica-ui--autocomplete:change` with `{ value }` whenever the value changes
 (typing, selection, clear) - the counterpart of React's `onValueChange`. The input also fires a
 native `change` event on selection.
 
 ```ruby
-Autocomplete(items: frameworks, data: { action: "ui--autocomplete:change->search#update" }) { ... }
+Autocomplete(items: frameworks, data: { action: "appica-ui--autocomplete:change->search#update" }) { ... }
 ```
 
 ### RTL
@@ -160,7 +160,7 @@ Autocomplete(items: frameworks, data: { action: "ui--autocomplete:change->search
 The component uses logical properties, so it mirrors under `dir="rtl"`; arrow keys follow the
 direction in grid mode.
 
-<%= embed UI::AutocompletePreview, :rtl %>
+<%= embed AppicaUI::AutocompletePreview, :rtl %>
 
 ## API reference
 

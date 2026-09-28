@@ -1,0 +1,71 @@
+# AppicaUI::Blocks::Newsletter strings - t(".key") in any of its parts looks here.
+# Every language in one file; add a locale as another top-level key with the same keys
+# (test/components/locales_test.rb checks that they match).
+en:
+  ui_components:
+    appica_ui:
+      blocks:
+        newsletter:
+          title: Stay connected. Stay updated.
+          description: Subscribe for occasional updates, product insights, and early news from our team.
+          note: No spam. Just updates.
+          form: Newsletter subscription
+          honeypot: Leave this field empty
+          email: Email
+          placeholder: Your Email
+          subscribe: Subscribe
+          missing: Enter your email address.
+          invalid: Enter a valid email address.
+          thanks: Thanks for subscribing! Check your inbox.
+          social: Social
+cs:
+  ui_components:
+    appica_ui:
+      blocks:
+        newsletter:
+          title: Zůstaňte ve spojení.
+          description: Přihlaste se k odběru občasných novinek, tipů a zpráv z našeho týmu.
+          note: Žádný spam. Jen novinky.
+          form: Přihlášení k odběru novinek
+          honeypot: Toto pole nechte prázdné
+          email: E-mail
+          placeholder: Váš e-mail
+          subscribe: Přihlásit se
+          missing: Zadejte e-mailovou adresu.
+          invalid: Zadejte platnou e-mailovou adresu.
+          thanks: Díky za přihlášení! Zkontrolujte si schránku.
+          social: Sociální sítě
+de:
+  ui_components:
+    appica_ui:
+      blocks:
+        newsletter:
+          title: Bleib verbunden. Bleib informiert.
+          description: Abonniere gelegentliche Updates, Produkteinblicke und frühe Neuigkeiten aus unserem Team.
+          note: Kein Spam. Nur Updates.
+          form: Newsletter-Anmeldung
+          honeypot: Dieses Feld leer lassen
+          email: E-Mail
+          placeholder: Deine E-Mail
+          subscribe: Abonnieren
+          missing: Gib deine E-Mail-Adresse ein.
+          invalid: Gib eine gültige E-Mail-Adresse ein.
+          thanks: Danke fürs Abonnieren! Schau in dein Postfach.
+          social: Soziale Netzwerke
+ar:
+  ui_components:
+    appica_ui:
+      blocks:
+        newsletter:
+          title: ابقَ على تواصل. ابقَ على اطلاع.
+          description: اشترك لتصلك تحديثات دورية ورؤى حول المنتج وأخبار مبكرة من فريقنا.
+          note: لا رسائل مزعجة. تحديثات فقط.
+          form: الاشتراك في النشرة البريدية
+          honeypot: اترك هذا الحقل فارغًا
+          email: البريد الإلكتروني
+          placeholder: بريدك الإلكتروني
+          subscribe: اشترك
+          missing: أدخل عنوان بريدك الإلكتروني.
+          invalid: أدخل عنوان بريد إلكتروني صالحًا.
+          thanks: شكرًا لاشتراكك! تحقق من بريدك.
+          social: وسائل التواصل

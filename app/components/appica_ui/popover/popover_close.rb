@@ -1,0 +1,12 @@
+# A button that closes the popover; a block taking an argument receives its attributes.
+class AppicaUI::PopoverClose < AppicaUI::Base
+  def before_template(&content)
+    @render_prop = content&.arity == 1
+    super
+  end
+
+  def view_template(&)
+    attributes = mix({ type: "button", data: { slot: "popover-close", action: "appica-ui--popover#close" } }, @attributes)
+    @render_prop ? yield(attributes) : button(**attributes, &)
+  end
+end

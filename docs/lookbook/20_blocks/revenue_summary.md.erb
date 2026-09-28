@@ -9,7 +9,7 @@ A revenue overview card: the period's total with a trend badge against the previ
 chart and key stats. A **block** composed from Badge, Icon and Sparkline, as on the
 [Appica homepage](https://appica.dev/ui).
 
-<%= embed Blocks::RevenueSummaryPreview, :default %>
+<%= embed AppicaUI::Blocks::RevenueSummaryPreview, :default %>
 
 ## Usage
 
@@ -38,7 +38,7 @@ The card renders in the current `I18n.locale`. Switch the **Locale** display opt
 (⚙ - English, Čeština, Deutsch, العربية) to try it.
 
 - The strings live next to the component in `revenue_summary.locales.yml` (English, Czech, German and Arabic side
-  by side, under `ui_components.blocks.revenue_summary`); country names in `ui/countries.locales.yml`. Add a locale
+  by side, under `ui_components.appica_ui.blocks.revenue_summary`); country names in `appica_ui/countries.locales.yml`. Add a locale
   or override any single key by defining the same keys in your app's locale files.
 - `period:` (`:day`, `:week`, `:month`, `:year`) picks the translated title ("Monthly revenue") and the
   comparison ("vs $42,900 last month"). `title:` and `comparison:` take your own wording instead.
@@ -53,23 +53,23 @@ The card renders in the current `I18n.locale`. Switch the **Locale** display opt
 
 ### Down on last period
 
-<%= embed Blocks::RevenueSummaryPreview, :decline %>
+<%= embed AppicaUI::Blocks::RevenueSummaryPreview, :decline %>
 
 ### Compact
 
 A total and markets only. Countries without a bundled flag show their code on a tile.
 
-<%= embed Blocks::RevenueSummaryPreview, :compact %>
+<%= embed AppicaUI::Blocks::RevenueSummaryPreview, :compact %>
 
 ### Custom wording
 
-<%= embed Blocks::RevenueSummaryPreview, :custom_wording %>
+<%= embed AppicaUI::Blocks::RevenueSummaryPreview, :custom_wording %>
 
 ### RTL
 
 Rendered in Arabic with `I18n.with_locale(:ar)` inside a `dir="rtl"` container.
 
-<%= embed Blocks::RevenueSummaryPreview, :rtl %>
+<%= embed AppicaUI::Blocks::RevenueSummaryPreview, :rtl %>
 
 ## API reference
 

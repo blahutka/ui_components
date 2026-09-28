@@ -1,0 +1,20 @@
+en:
+  ui_components:
+    appica_ui:
+      dialog:
+        close: Close
+cs:
+  ui_components:
+    appica_ui:
+      dialog:
+        close: Zavřít
+de:
+  ui_components:
+    appica_ui:
+      dialog:
+        close: Schließen
+ar:
+  ui_components:
+    appica_ui:
+      dialog:
+        close: إغلاق

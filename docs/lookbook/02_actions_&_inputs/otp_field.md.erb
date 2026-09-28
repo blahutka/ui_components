@@ -9,7 +9,7 @@ label: OTP Field
 A one-time code entered one character per slot.
 [Appica docs](https://appica.dev/ui/components/react/otp-field)
 
-<%= embed UI::OTPFieldPreview, :default %>
+<%= embed AppicaUI::OTPFieldPreview, :default %>
 
 ## Usage
 
@@ -27,35 +27,35 @@ across them. A hidden input submits the joined value under `name:`.
 
 ### Variants
 
-<%= embed UI::OTPFieldPreview, :variants %>
+<%= embed AppicaUI::OTPFieldPreview, :variants %>
 
 ### Sizes
 
-<%= embed UI::OTPFieldPreview, :sizes %>
+<%= embed AppicaUI::OTPFieldPreview, :sizes %>
 
 ### With a separator
 
-<%= embed UI::OTPFieldPreview, :separator %>
+<%= embed AppicaUI::OTPFieldPreview, :separator %>
 
 ### Placeholder
 
-<%= embed UI::OTPFieldPreview, :placeholder %>
+<%= embed AppicaUI::OTPFieldPreview, :placeholder %>
 
 ### Masked
 
-<%= embed UI::OTPFieldPreview, :masked %>
+<%= embed AppicaUI::OTPFieldPreview, :masked %>
 
 ### Verify on complete
 
-<%= embed UI::OTPFieldPreview, :complete %>
+<%= embed AppicaUI::OTPFieldPreview, :complete %>
 
 ### Disabled, read-only & error states
 
-<%= embed UI::OTPFieldPreview, :states %>
+<%= embed AppicaUI::OTPFieldPreview, :states %>
 
 ### RTL
 
-<%= embed UI::OTPFieldPreview, :rtl %>
+<%= embed AppicaUI::OTPFieldPreview, :rtl %>
 
 ## API reference
 
@@ -71,7 +71,7 @@ across them. A hidden input submits the joined value under `name:`.
 | `auto_submit:` | `Boolean` | `false` | Submit the form when complete. |
 | `name:`, `required:`, `disabled:`, `read_only:`, `invalid:` | | | Form behaviour. |
 
-Events: `ui--otp-field:change` and `ui--otp-field:complete`, with `{ value }`.
+Events: `appica-ui--otp-field:change` and `appica-ui--otp-field:complete`, with `{ value }`.
 
 ### OTPFieldInput, OTPFieldSeparator
 

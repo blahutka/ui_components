@@ -7,7 +7,7 @@ module UiComponents
   #
   # Nothing is written by hand - everything comes from what the components already declare:
   #
-  # - props: the `prop` declarations (UI::Props) - names, required or not, defaults, the
+  # - props: the `prop` declarations (AppicaUI::Props) - names, required or not, defaults, the
   #   choices of `one_of`, `desc:`;
   # - description: the comment above each class;
   # - nesting: which part renders inside which root, recorded while rendering every Lookbook
@@ -18,12 +18,12 @@ module UiComponents
   # plus `app/components/schema.json`, the index an agent reads first.
   module Schema
     ROOT = Pathname.new(File.expand_path("../../app/components", __dir__))
-    KITS = { "ui" => "UI", "blocks" => "Blocks" }.freeze
+    KITS = { "appica_ui" => "AppicaUI", "appica_ui/blocks" => "AppicaUI::Blocks" }.freeze
     INDEX = ROOT.join("schema.json")
     SKIPPED_FILES = %w[ base.rb props.rb localized.rb number_format.rb smil.rb view_annotation.rb base_preview.rb ].freeze
 
     class << self
-      # Nesting recorder: UI::Base#consume reports (parent class, part class) while recording
+      # Nesting recorder: AppicaUI::Base#consume reports (parent class, part class) while recording
       def recording?
         Thread.current[:ui_components_schema_parts]
       end
@@ -75,7 +75,7 @@ module UiComponents
         # Every Phlex component class, with its kit and folder
         def components
           @components ||= KITS.flat_map do |dir, kit|
-            Dir[ROOT.join(dir, "**/*.rb")].sort.filter_map do |file|
+            Dir[ROOT.join(dir, "*.rb"), ROOT.join(dir, "*/*.rb")].sort.filter_map do |file|
               next if file.end_with?("_preview.rb") || SKIPPED_FILES.include?(File.basename(file)) || file.include?("/support/")
 
               klass = component_class(kit, file)
@@ -87,7 +87,7 @@ module UiComponents
         def component_class(kit, file)
           name = Rails.autoloaders.main.inflector.camelize(File.basename(file, ".rb"), file)
           klass = "#{kit}::#{name}".safe_constantize
-          klass if klass.is_a?(Class) && klass < UI::Base
+          klass if klass.is_a?(Class) && klass < AppicaUI::Base
         end
 
         # Renders every Lookbook scenario once, recording parent → parts
@@ -231,20 +231,20 @@ module UiComponents
 
           {
             "description" => "Phlex UI components (a port of Appica UI) with Tailwind v4 classes and Stimulus controllers. " \
-              "UI holds the primitives, Blocks the compositions. Each entry's `schema` file lists the props, the compound " \
+              "AppicaUI holds the primitives, AppicaUI::Blocks the compositions. Each entry's `schema` file lists the props, the compound " \
               "parts (with where each renders), and working examples.",
             "kits" => {
-              "UI" => "include UI in a Phlex view, then call Button(...), Select(...) { … }",
-              "Blocks" => "include Blocks (and UI) to use compositions like ReviewSummary(...)"
+              "AppicaUI" => "include AppicaUI in a Phlex view, then call Button(...), Select(...) { … }",
+              "AppicaUI::Blocks" => "include AppicaUI::Blocks (and AppicaUI) to use compositions like ReviewSummary(...)"
             },
-            "theme" => "Colors come from CSS variables (ui/theme.css). Override them after importing ui/index.css; " \
+            "theme" => "Colors come from CSS variables (appica_ui/theme.css). Override them after importing appica_ui/index.css; " \
               "never replace theme.css.",
             "components" => components
           }
         end
     end
 
-    # The props of a component, for UI::Props.to_schema
+    # The props of a component, for AppicaUI::Props.to_schema
     def self.property(klass, option)
       schema = option.type.respond_to?(:schema) ? option.type.schema.dup : {}
       desc = option.instance_variable_get(:@desc)

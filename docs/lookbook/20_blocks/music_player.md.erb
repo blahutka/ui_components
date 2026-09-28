@@ -10,7 +10,7 @@ time, and shuffle / previous / play-pause / next / repeat controls. A **block** 
 [Toggle](<%= page_path(:toggle) %>), [Button](<%= page_path(:button) %>), [Slider](<%= page_path(:slider) %>) and
 Icon, as on the [Appica homepage](https://appica.dev/ui).
 
-<%= embed Blocks::MusicPlayerPreview, :default %>
+<%= embed AppicaUI::Blocks::MusicPlayerPreview, :default %>
 
 ## Usage
 
@@ -22,21 +22,21 @@ MusicPlayer(title: track.title, artist: track.artist, album: track.album, cover:
 - With `src:` the block plays the audio: play / pause drive it, the seek bar jumps in it and follows its time.
 - Without `src:` the demo advances the time once a second while playing.
 - At the end of the track it starts over while **Repeat** is pressed, otherwise it stops.
-- Previous and next restart the track and emit `blocks--music-player:previous` / `:next` - load the other track
+- Previous and next restart the track and emit `appica-ui--blocks--music-player:previous` / `:next` - load the other track
   there (e.g. with a Turbo Frame).
 
 ```js
-document.addEventListener("blocks--music-player:next", () => Turbo.visit("/player/next", { frame: "player" }))
+document.addEventListener("appica-ui--blocks--music-player:next", () => Turbo.visit("/player/next", { frame: "player" }))
 ```
 
 ## Events
 
 | Event | Detail | When |
 |-------|--------|------|
-| `blocks--music-player:play` / `:pause` | - | The play button is toggled. |
-| `blocks--music-player:seek` | `{ position }` | The seek bar moves (seconds). |
-| `blocks--music-player:previous` / `:next` | - | The skip buttons are pressed. |
-| `ui--toggle:change` | `{ pressed }` | Favorite, shuffle or repeat is toggled. |
+| `appica-ui--blocks--music-player:play` / `:pause` | - | The play button is toggled. |
+| `appica-ui--blocks--music-player:seek` | `{ position }` | The seek bar moves (seconds). |
+| `appica-ui--blocks--music-player:previous` / `:next` | - | The skip buttons are pressed. |
+| `appica-ui--toggle:change` | `{ pressed }` | Favorite, shuffle or repeat is toggled. |
 
 ## Localization
 
@@ -47,11 +47,11 @@ label switches between "Play" and "Pause".
 
 ### Without cover art
 
-<%= embed Blocks::MusicPlayerPreview, :no_cover %>
+<%= embed AppicaUI::Blocks::MusicPlayerPreview, :no_cover %>
 
 ### RTL
 
-<%= embed Blocks::MusicPlayerPreview, :rtl %>
+<%= embed AppicaUI::Blocks::MusicPlayerPreview, :rtl %>
 
 ## API reference
 

@@ -1,0 +1,132 @@
+{
+  "name": "Toolbar",
+  "kit": "AppicaUI",
+  "description": "A strip of controls with one tab stop: the arrow keys move between its items along `orientation:`, Home / End jump to the ends. Too many items scroll instead of wrapping.\n\n  Toolbar(aria_label: \"Formatting\") do\n    ToolbarGroup(aria_label: \"Text style\") do\n      ToolbarButton { |item| Button(**item, variant: :ghost) { \"Bold\" } }\n      ToolbarButton { |item| Button(**item, variant: :ghost) { \"Italic\" } }\n    end\n    ToolbarSeparator()\n    ToolbarLink(href: \"#help\") { \"Help\" }\n  end\n\nItems hand their attributes to your own control (ToolbarButton → a Button, a Toggle, a SelectTrigger; ToolbarInput → an Input), so it keeps its look and joins the focus order.",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Toolbar(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/02_actions_&_inputs/toolbar.md.erb",
+  "appica": "https://appica.dev/ui/components/react/toolbar",
+  "components": {
+    "Toolbar": {
+      "constant": "AppicaUI::Toolbar",
+      "props": {
+        "type": "object",
+        "properties": {
+          "orientation": {
+            "enum": [
+              "horizontal",
+              "vertical"
+            ],
+            "default": "horizontal"
+          },
+          "loop_focus": {
+            "default": true,
+            "type": "boolean"
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "AppicaUI::ToolbarButton",
+        "AppicaUI::ToolbarGroup",
+        "AppicaUI::ToolbarInput",
+        "AppicaUI::ToolbarLink",
+        "AppicaUI::ToolbarSeparator"
+      ]
+    },
+    "ToolbarButton": {
+      "constant": "AppicaUI::ToolbarButton",
+      "description": "A toolbar button. Pass a block with an argument to put the attributes on your own control:\n\n  ToolbarButton { |item| Button(**item, variant: :ghost, icon: true, aria_label: \"Bold\") { Icon(:bold) } }\n\nDisabled items stay reachable (aria-disabled) so keyboard users can still read them.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Toolbar"
+      ]
+    },
+    "ToolbarGroup": {
+      "constant": "AppicaUI::ToolbarGroup",
+      "description": "Related toolbar items under one `role=\"group\"` - name it with aria_label:.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Toolbar"
+      ]
+    },
+    "ToolbarInput": {
+      "constant": "AppicaUI::ToolbarInput",
+      "description": "An input in the toolbar's focus order - the arrow keys leave it only at the text's edges.\n\n  ToolbarInput(class: \"w-44\") { |item| Input(**item, start_slot: :search, placeholder: \"Search…\") }",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Toolbar"
+      ]
+    },
+    "ToolbarLink": {
+      "constant": "AppicaUI::ToolbarLink",
+      "description": "A link in the toolbar's focus order: `ToolbarLink(href: \"#help\", class: \"…\") { \"Help\" }`, or a block with an argument for your own link.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Toolbar"
+      ]
+    },
+    "ToolbarSeparator": {
+      "constant": "AppicaUI::ToolbarSeparator",
+      "description": "A divider across the toolbar's axis (vertical in a horizontal toolbar, and vice versa).",
+      "props": {
+        "type": "object",
+        "properties": {
+          "orientation": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Toolbar"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "notes": "A search Input, a Filter action and an Export link, all in one focus stop.",
+      "code": "phlex do\n  Toolbar(orientation:, loop_focus:, disabled:, aria_label: \"Table actions\") do\n    ToolbarInput(class: \"w-44\") { |item| Input(**item, start_slot: :search, placeholder: \"Search tasks…\", aria_label: \"Search tasks\", size: :sm) }\n    ToolbarGroup(aria_label: \"Refine\") do\n      ToolbarButton { |item| Button(**item, variant: :ghost, size: :sm) { Icon(:filter, data: { icon: \"start\" }); plain \"Filter\" } }\n    end\n    ToolbarSeparator()\n    ToolbarLink(href: \"#export\", class: cn(AppicaUI::Button::BASE, AppicaUI::Button::VARIANTS[:ghost], AppicaUI::Button::SIZES[:sm])) do\n      Icon(:download, data: { icon: \"start\" })\n      plain \"Export\"\n    end\n  end\nend"
+    },
+    {
+      "name": "With a toggle group",
+      "notes": "Undo / redo, a font Select and an alignment ToggleGroup - each item hands its attributes to\nthe control it wraps.",
+      "code": "phlex do\n  Toolbar(aria_label: \"Text formatting\") do\n    ToolbarGroup(aria_label: \"History\") do\n      ToolbarButton { |item| Button(**item, variant: :ghost, icon: true, aria_label: \"Undo\") { Icon(:arrow_back_up) } }\n      ToolbarButton { |item| Button(**item, variant: :ghost, icon: true, aria_label: \"Redo\") { Icon(:arrow_forward_up) } }\n    end\n    ToolbarSeparator()\n    Select(default_value: \"Inter\", align_item_with_trigger: false, class: \"w-36\") do\n      ToolbarButton { |item| SelectTrigger(**item, start_slot: :typography, aria_label: \"Font\") { SelectValue() } }\n      SelectContent { %w[ Geist Inter Figtree Urbanist ].each { |font| SelectItem(value: font) { font } } }\n    end\n    ToolbarSeparator()\n    ToggleGroup(default_value: [ \"left\" ], aria_label: \"Alignment\") do\n      { left: \"Align left\", center: \"Align center\", right: \"Align right\" }.each do |value, text|\n        ToolbarButton do |item|\n          Toggle(**item, value:, aria_label: text) { |toggle| Button(**toggle, variant: :ghost, icon: true) { Icon(:\"align_#{value}\") } }\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Vertical orientation",
+      "notes": "The separator turns horizontal and ↑/↓ move focus.",
+      "code": "phlex do\n  Toolbar(aria_label: \"Formatting\", orientation: :vertical) do\n    ToolbarGroup(aria_label: \"Text style\") do\n      %i[ bold italic underline ].each { |icon| ToolbarButton { |item| Button(**item, variant: :ghost, icon: true, aria_label: icon.to_s.capitalize) { Icon(icon) } } }\n    end\n    ToolbarSeparator()\n    ToolbarGroup(aria_label: \"Clipboard\") do\n      ToolbarButton { |item| Button(**item, variant: :ghost, icon: true, aria_label: \"Copy\") { Icon(:copy) } }\n      ToolbarButton { |item| Button(**item, variant: :ghost, icon: true, aria_label: \"Cut\") { Icon(:scissors) } }\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "←/→ follow the reading direction.",
+      "code": "phlex do\n  Toolbar(dir: \"rtl\", aria_label: \"تنسيق\") do\n    %w[ عريض مائل مسطر ].each { |text| ToolbarButton { |item| Button(**item, variant: :ghost, size: :sm) { text } } }\n    ToolbarSeparator()\n    ToolbarLink(href: \"#help\", class: cn(AppicaUI::Button::BASE, AppicaUI::Button::VARIANTS[:ghost], AppicaUI::Button::SIZES[:sm])) { \"مساعدة\" }\n  end\nend"
+    }
+  ]
+}

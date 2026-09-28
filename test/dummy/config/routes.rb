@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   # Lookbook "Editor" panel: opens a project file in your editor (local requests, development only)
   get "editor/open" => "editor_openings#show", as: :editor_opening if Rails.env.development?
 
-  # The form builder demo (form.ui)
+  # The form builder demo (form.ux)
   resources :users, only: %i[ new create ]
   # The form builder previews' submit target: the params and errors of one small form
   resources :form_submissions, only: :create

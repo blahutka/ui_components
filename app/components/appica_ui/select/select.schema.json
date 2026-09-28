@@ -1,0 +1,264 @@
+{
+  "name": "Select",
+  "kit": "AppicaUI",
+  "description": "A button that opens a list of options to pick one (or several with `multiple: true`).\n\n  Select(name: \"fruit\", default_value: \"apple\") do\n    SelectTrigger(aria_label: \"Fruit\") { SelectValue(placeholder: \"Pick a fruit\") }\n    SelectContent do\n      SelectItem(value: \"apple\") { \"Apple\" }\n      SelectItem(value: \"orange\") { \"Orange\" }\n    end\n  end\n\nThe root holds the value and the shared `size:` / `variant:`; the popup opens in the top layer (so no overflow clips it), over the trigger with the selected item aligned to it (`align_item_with_trigger: false` to open below instead). A visually hidden input submits `name:` (`name[]` per value when multiple, after an empty one unless `include_hidden: false`) and carries `required:`. `items:` (a value → label Hash) lets the trigger show labels before the list is read. Emits `appica-ui--select:change` with { value }. Inside a Field it takes the field's id, name and state.",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Select(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/02_actions_&_inputs/select.md.erb",
+  "appica": "https://appica.dev/ui/components/react/select",
+  "components": {
+    "Select": {
+      "constant": "AppicaUI::Select",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "default": null
+          },
+          "default_value": {
+            "default": null
+          },
+          "multiple": {
+            "default": false,
+            "type": "boolean"
+          },
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": "md"
+          },
+          "variant": {
+            "enum": [
+              "outline",
+              "soft"
+            ],
+            "default": "outline"
+          },
+          "align_item_with_trigger": {
+            "default": true,
+            "type": "boolean"
+          },
+          "items": {
+            "default": {},
+            "type": "object"
+          },
+          "name": {
+            "default": null
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "required": {
+            "default": false,
+            "type": "boolean"
+          },
+          "read_only": {
+            "default": false,
+            "type": "boolean"
+          },
+          "id": {},
+          "include_hidden": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "AppicaUI::SelectContent",
+        "AppicaUI::SelectGroupLabel",
+        "AppicaUI::SelectItem",
+        "AppicaUI::SelectTrigger",
+        "AppicaUI::SelectValue"
+      ]
+    },
+    "SelectContent": {
+      "constant": "AppicaUI::SelectContent",
+      "description": "The Select's popup: a listbox of SelectItems (and SelectGroups / SelectSeparators). Opened by the controller in the top layer, over the trigger or `side: :top` / `:bottom` of it.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "side": {
+            "enum": [
+              "bottom",
+              "top"
+            ],
+            "default": "bottom"
+          },
+          "side_offset": {
+            "default": 6,
+            "type": "integer"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Select"
+      ]
+    },
+    "SelectGroup": {
+      "constant": "AppicaUI::SelectGroup",
+      "description": "A labelled section of a Select's list: SelectGroupLabel plus its SelectItems.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "SelectGroupLabel": {
+      "constant": "AppicaUI::SelectGroupLabel",
+      "description": "The visible label of a SelectGroup.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Select"
+      ]
+    },
+    "SelectItem": {
+      "constant": "AppicaUI::SelectItem",
+      "description": "One option of a Select. `value:` is what it submits; `label:` is what the trigger shows and typeahead matches (the item's text by default). Mark a leading element `data: { icon: \"start\" }`.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {},
+          "label": {
+            "default": null
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Select"
+      ]
+    },
+    "SelectSeparator": {
+      "constant": "AppicaUI::SelectSeparator",
+      "description": "A thin divider between SelectGroups.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    },
+    "SelectTrigger": {
+      "constant": "AppicaUI::SelectTrigger",
+      "description": "The button that opens the Select, styled like Input. `clearable: true` adds a ✕ (Delete / Backspace clear too); `start_slot:` / `end_slot:` take an icon name, text or a block - `start_slot: :selected` mirrors the selected item's `data: { icon: \"start\" }` element (a flag, an avatar). Put SelectValue inside.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "clearable": {
+            "default": false,
+            "type": "boolean"
+          },
+          "start_slot": {
+            "default": null
+          },
+          "end_slot": {
+            "default": null
+          },
+          "invalid": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Select"
+      ]
+    },
+    "SelectValue": {
+      "constant": "AppicaUI::SelectValue",
+      "description": "The selection shown in the trigger: the item's label (from the root's `items:`, or read from the list), `placeholder:` when empty. With `multiple`, one label or `summary:` (\"%{count} selected\", translated by default) for several.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "placeholder": {
+            "default": null
+          },
+          "summary": {
+            "default": "%{count} selected",
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Select"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  Select(variant:, size:, align_item_with_trigger:, multiple:, disabled:, required:, read_only:, include_hidden:, **given(value:, default_value:), name:, class: \"w-full max-w-70\") do\n    SelectTrigger(aria_label: \"Pick a fruit\") { SelectValue(placeholder: \"Pick a fruit\") }\n    SelectContent { instance_exec(&FRUIT_ITEMS) }\n  end\nend"
+    },
+    {
+      "name": "Variants",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-70 flex-col gap-4\") do\n    %i[ outline soft ].each do |variant|\n      Select(variant:) do\n        SelectTrigger(aria_label: \"Pick a fruit (#{variant})\") { SelectValue(placeholder: \"Pick a fruit\") }\n        SelectContent { instance_exec(&FRUIT_ITEMS) }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Sizes",
+      "notes": "`size:` scales the trigger, popup radius and items together.",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-70 flex-col gap-4\") do\n    %i[ sm md lg ].each do |size|\n      Select(size:) do\n        SelectTrigger(aria_label: \"Pick a fruit (#{size})\") { SelectValue(placeholder: \"Pick a fruit\") }\n        SelectContent { instance_exec(&FRUIT_ITEMS) }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Grouped options",
+      "code": "phlex do\n  Select(class: \"w-full max-w-70\") do\n    SelectTrigger(aria_label: \"Pick a food\") { SelectValue(placeholder: \"Pick a food\") }\n    SelectContent do\n      SelectGroup do\n        SelectGroupLabel { \"Fruits\" }\n        %w[ Apple Banana Orange Strawberry ].each { |food| SelectItem(value: food) { food } }\n      end\n      SelectSeparator()\n      SelectGroup do\n        SelectGroupLabel { \"Vegetables\" }\n        %w[ Carrot Potato Tomato ].each { |food| SelectItem(value: food) { food } }\n        SelectItem(value: \"Broccoli\", disabled: true) { \"Broccoli\" }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Clearable",
+      "notes": "`clearable: true` on the trigger adds a ✕ once there's a value (Delete / Backspace clear too).",
+      "code": "phlex do\n  Select(default_value: \"Orange\", class: \"w-full max-w-70\") do\n    SelectTrigger(clearable: true, aria_label: \"Pick a fruit\") { SelectValue(placeholder: \"Pick a fruit\") }\n    SelectContent { instance_exec(&FRUIT_ITEMS) }\n  end\nend"
+    },
+    {
+      "name": "Disabled & error states",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-70 flex-col gap-4\") do\n    Select(disabled: true) do\n      SelectTrigger(aria_label: \"Disabled\") { SelectValue(placeholder: \"Disabled\") }\n      SelectContent { instance_exec(&FRUIT_ITEMS) }\n    end\n    Select(default_value: \"Orange\") do\n      SelectTrigger(aria_invalid: true, aria_label: \"With error\") { SelectValue(placeholder: \"Pick a fruit\") }\n      SelectContent { instance_exec(&FRUIT_ITEMS) }\n    end\n  end\nend"
+    },
+    {
+      "name": "Start & end slots",
+      "notes": "With a start slot, open below the trigger (`align_item_with_trigger: false`).",
+      "code": "phlex do\n  Select(default_value: \"Credit card\", align_item_with_trigger: false, class: \"w-full max-w-70\") do\n    SelectTrigger(aria_label: \"Payment method\", start_slot: :credit_card, end_slot: -> { span(class: \"text-foreground-subtle text-xs\") { \"Default\" } }) do\n      SelectValue(placeholder: \"Payment method\")\n    end\n    SelectContent { [ \"Credit card\", \"PayPal\", \"Bank transfer\", \"Apple Pay\", \"Google Pay\" ].each { |method| SelectItem(value: method) { method } } }\n  end\nend"
+    },
+    {
+      "name": "Country select",
+      "notes": "`start_slot: :selected` mirrors the selected item's flag into the trigger.",
+      "code": "phlex do\n  Select(default_value: \"us\", align_item_with_trigger: false, name: \"country\", class: \"w-full max-w-70\") do\n    SelectTrigger(aria_label: \"Select a country\", start_slot: :selected) { SelectValue(placeholder: \"Select a country\") }\n    SelectContent do\n      %w[ au br ca fr de jp gb us ].each do |code|\n        SelectItem(value: code) do\n          CountryFlag(code, class: \"size-4.5 text-base\", data: { icon: \"start\" })\n          plain I18n.t(\"ui_components.countries.#{code}\", default: code.upcase)\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Showing a label for the value",
+      "notes": "When values differ from labels, `items:` lets the closed trigger show \"Pro\" instead of \"pro\".",
+      "code": "plans = { free: \"Free\", pro: \"Pro\", enterprise: \"Enterprise\" }\nphlex do\n  Select(default_value: \"pro\", items: plans, name: \"plan\", class: \"w-full max-w-70\") do\n    SelectTrigger(aria_label: \"Plan\") { SelectValue() }\n    SelectContent { plans.each { |value, label| SelectItem(value:) { label } } }\n  end\nend"
+    },
+    {
+      "name": "Multiple selection",
+      "notes": "Selected items keep a check; `SelectValue(summary:)` words the count.",
+      "code": "phlex do\n  Select(multiple: true, default_value: %w[ Pepperoni Mushrooms ], name: \"toppings\", class: \"w-full max-w-70\") do\n    SelectTrigger(clearable: true, aria_label: \"Choose toppings\") { SelectValue(placeholder: \"Choose toppings\", summary: \"%{count} toppings\") }\n    SelectContent { %w[ Pepperoni Mushrooms Onions Olives Peppers Bacon Pineapple ].each { |topping| SelectItem(value: topping) { topping } } }\n  end\nend"
+    },
+    {
+      "name": "In a form",
+      "notes": "Inside a Field it's labelled and validated like any control: submit without a choice.",
+      "code": "phlex do\n  form(class: \"flex w-full max-w-70 flex-col items-start gap-4\", data: { demo: \"form\" }) do\n    Field(name: \"fruit\", messages: { value_missing: \"Pick a fruit to continue.\" }, class: \"w-full\") do\n      FieldLabel { \"Favorite fruit\" }\n      Select(required: true) do\n        SelectTrigger { SelectValue(placeholder: \"Pick a fruit\") }\n        SelectContent { instance_exec(&FRUIT_ITEMS) }\n      end\n      FieldError()\n    end\n    Button(type: \"submit\", size: :sm) { \"Continue\" }\n  end\n  script(type: \"module\") do\n    raw safe(%(document.querySelector(\"[data-demo=form]\").addEventListener(\"submit\", event => event.preventDefault())))\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"w-full max-w-70\") do\n    Select(default_value: \"تفاح\") do\n      SelectTrigger(aria_label: \"اختر فاكهة\") { SelectValue(placeholder: \"اختر فاكهة\") }\n      SelectContent { %w[ تفاح موز برتقال فراولة ].each { |fruit| SelectItem(value: fruit) { fruit } } }\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "FRUIT_ITEMS": "FRUIT_ITEMS = proc { FRUITS.each { |fruit| SelectItem(value: fruit) { fruit } } }",
+    "FRUITS": "FRUITS = %w[ Apple Banana Blueberry Grapes Orange Strawberry ].freeze"
+  }
+}

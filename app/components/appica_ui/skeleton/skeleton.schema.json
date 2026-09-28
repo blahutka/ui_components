@@ -1,0 +1,67 @@
+{
+  "name": "Skeleton",
+  "kit": "AppicaUI",
+  "description": "A placeholder block shown while content loads. It has no size of its own - shape it with utility classes (h-* / w-* / size-*, rounded-*):\n\n  Skeleton(class: \"h-4 w-40\")\n  Skeleton(class: \"size-10 rounded-full\")\n  Skeleton(effect: :pulse, class: \"text-primary aspect-video w-full rounded-lg\")\n\nThe surface and the shimmer both come from currentColor, so one text-* class recolors it; `--skeleton-highlight` sets the shimmer on its own. `effect:` is :shimmer (a highlight gliding across), :pulse or :none; both animations stop under prefers-reduced-motion. Decorative (aria-hidden) - mark the loading region aria-busy instead.",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Skeleton(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/09_status_&_feedback/skeleton.md.erb",
+  "appica": "https://appica.dev/ui/components/react/skeleton",
+  "components": {
+    "Skeleton": {
+      "constant": "AppicaUI::Skeleton",
+      "props": {
+        "type": "object",
+        "properties": {
+          "effect": {
+            "enum": [
+              "shimmer",
+              "pulse",
+              "none"
+            ],
+            "default": "shimmer"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex { Skeleton(effect:, class: \"h-28 w-64 rounded-xl\") }"
+    },
+    {
+      "name": "Effects",
+      "notes": "`:shimmer` glides a highlight, `:pulse` fades the block, `:none` stays still.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-start justify-center gap-10\") do\n    %i[ shimmer pulse none ].each do |effect|\n      div(class: \"flex flex-col items-center gap-3\") do\n        Skeleton(effect:, class: \"h-24 w-40 rounded-xl\")\n        span(class: \"text-foreground-muted text-xs\") { effect.to_s }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Composing shapes",
+      "notes": "No shape props - reshape it with utility classes.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center justify-center gap-6\") do\n    Skeleton(class: \"size-16 rounded-full\")\n    Skeleton(class: \"size-16 rounded-xl\")\n    Skeleton(class: \"h-10 w-32 rounded-lg\")\n    Skeleton(class: \"h-4 w-40 rounded-full\")\n  end\nend"
+    },
+    {
+      "name": "Text lines",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-sm flex-col gap-2.5\") do\n    %w[ w-full w-full w-4/5 w-2/3 ].each { |width| Skeleton(class: \"h-4 #{width}\") }\n  end\nend"
+    },
+    {
+      "name": "Card",
+      "notes": "A skeleton shaped like the content it stands in for, so nothing shifts when it arrives.",
+      "code": "phlex do\n  div(class: \"border-border bg-background w-full max-w-sm rounded-xl border p-4\", aria_busy: \"true\") do\n    Skeleton(class: \"aspect-video w-full rounded-lg\")\n    div(class: \"mt-4 flex items-center gap-3\") do\n      Skeleton(class: \"size-10 shrink-0 rounded-full\")\n      div(class: \"flex flex-1 flex-col gap-2\") do\n        Skeleton(class: \"h-3.5 w-2/3\")\n        Skeleton(class: \"h-3 w-1/3\")\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Recoloring",
+      "notes": "One text-* class tints the surface and the shimmer together.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center justify-center gap-4\") do\n    [ nil, \"text-primary\", \"text-secondary-emphasis\", \"text-error-emphasis\", \"text-success-emphasis\", \"text-warning-emphasis\", \"text-info-emphasis\", \"text-violet-500\" ].each do |color|\n      Skeleton(class: \"#{color} size-16 rounded-xl\")\n    end\n  end\nend"
+    },
+    {
+      "name": "Swapping in content",
+      "notes": "The avatar shows a Skeleton as its fallback until the photo loads; the name and role\nreplace their skeletons at the same moment. Reload to see it again.",
+      "code": "phlex do\n  div(class: \"flex w-full max-w-sm flex-col gap-4\", data: { demo: \"profile\" }) do\n    div(class: \"flex justify-end\") { Button(size: :sm, variant: :outline, data: { demo: \"reload\" }) { Icon(:reload, data: { icon: \"start\" }); plain \"Reload\" } }\n    div(class: \"border-border bg-background flex items-center gap-3 rounded-xl border p-4\", aria_busy: \"true\", data: { demo: \"card\" }) do\n      Avatar(size: :lg, class: \"shrink-0 bg-transparent\", data: { demo: \"avatar\" }) do\n        AvatarImage(alt: \"Sarah Jenkins\", data: { demo: \"image\" })\n        AvatarFallback { Skeleton(class: \"size-full rounded-[inherit]\") }\n      end\n      div(class: \"flex flex-1 flex-col gap-1.5\") do\n        div(class: \"flex flex-col gap-1.5\", data: { demo: \"loading\" }) do\n          Skeleton(class: \"h-4 w-2/3\")\n          Skeleton(class: \"h-3 w-2/5\")\n        end\n        div(class: \"flex flex-col gap-1.5\", hidden: true, data: { demo: \"loaded\" }) do\n          span(class: \"text-foreground-intense -mb-0.5 text-sm font-semibold\") { \"Sarah Jenkins\" }\n          span(class: \"text-foreground-muted text-xs\") { \"Product designer\" }\n        end\n      end\n    end\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const demo = document.querySelector(\"[data-demo=profile]\")\n      const card = demo.querySelector(\"[data-demo=card]\")\n      const image = demo.querySelector(\"[data-demo=image]\")\n      const reload = demo.querySelector(\"[data-demo=reload]\")\n      const photo = \"data:image/svg+xml,\" + encodeURIComponent('<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" fill=\"#c4b5fd\"/><circle cx=\"32\" cy=\"26\" r=\"12\" fill=\"#7c3aed\"/><rect x=\"12\" y=\"42\" width=\"40\" height=\"22\" rx=\"11\" fill=\"#7c3aed\"/></svg>')\n      const show = loaded => {\n        demo.querySelector(\"[data-demo=loading]\").hidden = loaded\n        demo.querySelector(\"[data-demo=loaded]\").hidden = !loaded\n        card.setAttribute(\"aria-busy\", String(!loaded))\n        reload.disabled = !loaded\n      }\n      demo.addEventListener(\"appica-ui--avatar:loading-status-change\", ({ detail: { status } }) => show(status === \"loaded\"))\n      const load = () => {\n        show(false)\n        demo.querySelector(\"[data-demo=avatar]\").dataset.status = \"loading\"\n        image.removeAttribute(\"src\")\n        setTimeout(() => image.src = `${photo}#${Date.now()}`, 2500) // demo: a slow photo\n      }\n      reload.addEventListener(\"click\", load)\n      load()\n    JS\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "The shimmer runs with the reading direction.",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"flex w-full max-w-sm flex-col gap-2.5\") do\n    %w[ w-full w-4/5 w-2/3 ].each { |width| Skeleton(class: \"h-4 #{width}\") }\n  end\nend"
+    }
+  ]
+}

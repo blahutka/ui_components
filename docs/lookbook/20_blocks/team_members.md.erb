@@ -8,7 +8,7 @@ title: Team members
 A team card: members with roles and presence, a seat count and an invite-by-email form. A **block** composed from
 Avatar, Badge, Button and Icon, as on the [Appica homepage](https://appica.dev/ui) - with the invite form wired up.
 
-<%= embed Blocks::TeamMembersPreview, :default %>
+<%= embed AppicaUI::Blocks::TeamMembersPreview, :default %>
 
 ## Usage
 
@@ -33,7 +33,7 @@ end
 # app/controllers/invitations_controller.rb
 def create
   invitation = Current.account.invitations.create!(email: params[:email])
-  render turbo_stream: turbo_stream.append("team", Blocks::TeamMember.new(name: invitation.email, email: invitation.email, role: :invited))
+  render turbo_stream: turbo_stream.append("team", AppicaUI::Blocks::TeamMember.new(name: invitation.email, email: invitation.email, role: :invited))
 end
 ```
 
@@ -48,22 +48,22 @@ The title, seat count, roles, presence labels and the form's placeholder, labels
 
 ### All seats taken
 
-<%= embed Blocks::TeamMembersPreview, :full %>
+<%= embed AppicaUI::Blocks::TeamMembersPreview, :full %>
 
 ### Roles & pending invites
 
 The owner gets an outlined badge, a pending invite an outline badge, everyone else a soft one. Members without an
 avatar show their initials; `online: nil` hides the presence dot.
 
-<%= embed Blocks::TeamMembersPreview, :roles %>
+<%= embed AppicaUI::Blocks::TeamMembersPreview, :roles %>
 
 ### Read-only
 
-<%= embed Blocks::TeamMembersPreview, :read_only %>
+<%= embed AppicaUI::Blocks::TeamMembersPreview, :read_only %>
 
 ### RTL
 
-<%= embed Blocks::TeamMembersPreview, :rtl %>
+<%= embed AppicaUI::Blocks::TeamMembersPreview, :rtl %>
 
 ## API reference
 
@@ -86,9 +86,9 @@ avatar show their initials; `online: nil` hides the presence dot.
 | `TeamMember(name:, email:, avatar:, role:, online:)` | A row: avatar (or initials) with a presence dot, name, email, role badge. |
 | `TeamInvite(placeholder:, name: "email", label:)` | The email field and send button, under a divider. |
 
-### Controller (`blocks--team-members`)
+### Controller (`appica-ui--blocks--team-members`)
 
-Emits `blocks--team-members:invite` with `{ email }` before sending - call `preventDefault()` to handle it yourself.
+Emits `appica-ui--blocks--team-members:invite` with `{ email }` before sending - call `preventDefault()` to handle it yourself.
 
 ## Accessibility
 

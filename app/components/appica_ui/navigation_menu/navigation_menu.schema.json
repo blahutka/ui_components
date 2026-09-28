@@ -1,0 +1,236 @@
+{
+  "name": "NavigationMenu",
+  "kit": "AppicaUI",
+  "description": "Site navigation whose items open rich panels of links - Appica's mega-menu.\n\n  NavigationMenu(aria_label: \"Main\") do\n    NavigationMenuList do\n      NavigationMenuItem do\n        NavigationMenuTrigger { plain \"Products\"; NavigationMenuIcon() }\n        NavigationMenuContent do\n          ul(class: \"grid w-96 grid-cols-2 gap-0.5\") { li { NavigationMenuLink(href: \"/analytics\") { \"Analytics\" } } }\n        end\n      end\n      NavigationMenuItem { NavigationMenuLink(href: \"/pricing\") { \"Pricing\" } }\n    end\n  end\n\nThe root shares `variant:` (:pill, :line), `size:`, `orientation:` and the trigger `icon:` (:chevron, :caret, :plus, false). Panels are rendered on the server, hidden in their items; the `appica-ui--navigation-menu` controller moves the open one into a shared popup in the top layer, positions it under its trigger (beside it when vertical) and morphs the popup between panels. `backdrop: true` dims the page behind it. `viewport: false` with your own NavigationMenuViewport switches panels inline (a nested category sidebar); `default_value:` opens an item on load.",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `NavigationMenu(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/07_navigation/navigation_menu.md.erb",
+  "appica": "https://appica.dev/ui/components/react/navigation-menu",
+  "components": {
+    "NavigationMenu": {
+      "constant": "AppicaUI::NavigationMenu",
+      "props": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "enum": [
+              "pill",
+              "line"
+            ],
+            "default": "pill"
+          },
+          "size": {
+            "enum": [
+              "sm",
+              "md",
+              "lg"
+            ],
+            "default": "md"
+          },
+          "orientation": {
+            "enum": [
+              "horizontal",
+              "vertical"
+            ],
+            "default": "horizontal"
+          },
+          "icon": {
+            "default": "chevron",
+            "type": "string"
+          },
+          "morph": {
+            "default": true,
+            "type": "boolean"
+          },
+          "backdrop": {
+            "default": false,
+            "type": "boolean"
+          },
+          "viewport": {
+            "default": true,
+            "type": "boolean"
+          },
+          "side_offset": {
+            "default": null
+          },
+          "default_value": {
+            "default": null
+          },
+          "delay": {
+            "default": 50,
+            "type": "integer"
+          },
+          "close_delay": {
+            "default": 50,
+            "type": "integer"
+          },
+          "id": {}
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "AppicaUI::NavigationMenuContent",
+        "AppicaUI::NavigationMenuIcon",
+        "AppicaUI::NavigationMenuLink",
+        "AppicaUI::NavigationMenuList",
+        "AppicaUI::NavigationMenuTrigger"
+      ]
+    },
+    "NavigationMenuContent": {
+      "constant": "AppicaUI::NavigationMenuContent",
+      "description": "The panel of a NavigationMenuItem - lay links out inside however you like (a list, a grid, a featured card). Rendered hidden in its item (so it's crawlable) and shown in the menu's popup.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::NavigationMenu",
+        "AppicaUI::NavigationMenuItem"
+      ]
+    },
+    "NavigationMenuIcon": {
+      "constant": "AppicaUI::NavigationMenuIcon",
+      "description": "A trigger's open / close indicator: a chevron (flipping while open), a caret, or a plus that turns into a minus. `icon:` overrides the root's kind; false hides it.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "icon": {
+            "default": null
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::NavigationMenu"
+      ]
+    },
+    "NavigationMenuItem": {
+      "constant": "AppicaUI::NavigationMenuItem",
+      "description": "One entry of a NavigationMenu: a trigger with its content, or a single link. `value:` names it (for `default_value:`); one is generated otherwise.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "value": {}
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "AppicaUI::NavigationMenuContent",
+        "AppicaUI::NavigationMenuTrigger"
+      ]
+    },
+    "NavigationMenuLink": {
+      "constant": "AppicaUI::NavigationMenuLink",
+      "description": "A link in a NavigationMenu - inside a panel (a full-width pill row) or as a bar item. `active: true` marks the current page; `close_on_click: true` closes the menu (for in-page links or Turbo frames). A block taking an argument receives the attributes.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "active": {
+            "default": false,
+            "type": "boolean"
+          },
+          "close_on_click": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::NavigationMenu"
+      ]
+    },
+    "NavigationMenuList": {
+      "constant": "AppicaUI::NavigationMenuList",
+      "description": "The row (or column) of NavigationMenuItems.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::NavigationMenu"
+      ]
+    },
+    "NavigationMenuTrigger": {
+      "constant": "AppicaUI::NavigationMenuTrigger",
+      "description": "The label that opens its item's panel - on hover, click, Enter / Space or the arrow key toward the panel. Styled like a Navigation link. `disabled: true` dims it.",
+      "props": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::NavigationMenu",
+        "AppicaUI::NavigationMenuItem"
+      ]
+    },
+    "NavigationMenuViewport": {
+      "constant": "AppicaUI::NavigationMenuViewport",
+      "description": "Where panels show for a `viewport: false` NavigationMenu - next to its list, for switching panels inline (a category sidebar beside a detail pane).",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "notes": "Two panel items and a plain link; the popup morphs between the panels. Hover, click or ↓.",
+      "code": "phlex do\n  NavigationMenu(variant:, size:, icon:, orientation:, morph:, backdrop:, viewport:, delay:, close_delay:, **given(default_value:), aria_label: \"Main\") do\n    NavigationMenuList do\n      NavigationMenuItem do\n        NavigationMenuTrigger { plain \"Products\"; NavigationMenuIcon() }\n        NavigationMenuContent { ul(class: \"grid w-96 grid-cols-2 gap-0.5\") { instance_exec(PRODUCTS, &CARDS) } }\n      end\n      NavigationMenuItem do\n        NavigationMenuTrigger { plain \"Resources\"; NavigationMenuIcon() }\n        NavigationMenuContent { ul(class: \"grid w-50 gap-0.5\") { instance_exec(RESOURCES, &CARDS) } }\n      end\n      NavigationMenuItem { NavigationMenuLink(href: \"#!\") { \"Pricing\" } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Variants",
+      "notes": "`:pill` gives triggers a hover background, `:line` an animated underline.",
+      "code": "phlex do\n  div(class: \"flex flex-col gap-8\") do\n    %i[ pill line ].each { |variant| NavigationMenu(aria_label: variant.to_s, variant:) { NavigationMenuList { instance_exec(&SIMPLE) } } }\n  end\nend"
+    },
+    {
+      "name": "Sizes",
+      "code": "phlex do\n  div(class: \"flex flex-col gap-6\") do\n    %i[ sm md lg ].each { |size| NavigationMenu(aria_label: size.to_s, size:) { NavigationMenuList { instance_exec(&SIMPLE) } } }\n  end\nend"
+    },
+    {
+      "name": "Indicator",
+      "notes": "`icon:` - a chevron (default), a caret, or a plus that turns into a minus; `false` drops it.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap gap-6\") do\n    %i[ chevron caret plus ].each do |kind|\n      NavigationMenu(aria_label: kind.to_s, icon: kind) do\n        NavigationMenuList do\n          NavigationMenuItem do\n            NavigationMenuTrigger { plain kind.to_s; NavigationMenuIcon() }\n            NavigationMenuContent { ul(class: \"grid w-50 gap-0.5\") { %w[ Dashboard Reports Settings ].each { |label| li { NavigationMenuLink(href: \"#!\") { label } } } } }\n          end\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Vertical",
+      "notes": "A sidebar whose panels open to the inline-end side.",
+      "code": "menus = { \"Dashboard\" => [ :layout_dashboard, %w[ Summary Activity Insights ] ], \"Projects\" => [ :folder, [ \"All projects\", \"Archived\", \"Templates\" ] ], \"Team\" => [ :users, %w[ Members Roles Invitations ] ] }\nphlex do\n  NavigationMenu(aria_label: \"Sidebar\", orientation: :vertical, class: \"w-48\") do\n    NavigationMenuList do\n      menus.each do |label, (icon, links)|\n        NavigationMenuItem do\n          NavigationMenuTrigger(class: \"w-full justify-start\") { Icon(icon, data: { icon: \"start\" }); plain label; NavigationMenuIcon(class: \"ms-auto\") }\n          NavigationMenuContent { ul(class: \"grid w-48 gap-0.5\") { links.each { |link| li { NavigationMenuLink(href: \"#!\") { link } } } } }\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Backdrop",
+      "notes": "`backdrop: true` dims and blurs the page behind the open panel.",
+      "code": "phlex do\n  NavigationMenu(aria_label: \"Main\", backdrop: true) do\n    NavigationMenuList do\n      NavigationMenuItem do\n        NavigationMenuTrigger { plain \"Products\"; NavigationMenuIcon() }\n        NavigationMenuContent { ul(class: \"grid w-94 grid-cols-2 gap-0.5\") { instance_exec(PRODUCTS.map { |title, description, _| [ title, description ] }, &CARDS) } }\n      end\n      NavigationMenuItem { NavigationMenuLink(href: \"#!\") { \"Pricing\" } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Nested submenus",
+      "notes": "A vertical NavigationMenu inside a panel opens its own panel beside it.",
+      "code": "phlex do\n  NavigationMenu(aria_label: \"Main\") do\n    NavigationMenuList do\n      NavigationMenuItem do\n        NavigationMenuTrigger { plain \"Company\"; NavigationMenuIcon() }\n        NavigationMenuContent do\n          ul(class: \"grid w-58 gap-0.5\") do\n            instance_exec([ [ \"About\", \"Our mission and the team behind it.\" ], [ \"Careers\", \"Open roles across the company.\" ], [ \"Blog\", \"Product news and engineering notes.\" ] ], &CARDS)\n            li do\n              NavigationMenu(orientation: :vertical, aria_label: \"Handbook\") do\n                NavigationMenuList(class: \"w-full\") do\n                  NavigationMenuItem(class: \"w-full\") do\n                    NavigationMenuTrigger(class: \"h-auto w-full whitespace-normal\") do\n                      span(class: \"flex min-w-0 flex-1 flex-col items-start gap-0.5\") do\n                        span(class: \"text-foreground-intense font-medium\") { \"Handbook\" }\n                        span(class: \"text-foreground-muted text-xs font-normal\") { \"How the team works, day to day.\" }\n                      end\n                      NavigationMenuIcon()\n                    end\n                    NavigationMenuContent do\n                      ul(class: \"grid w-50 gap-0.5\") do\n                        instance_exec([ [ \"Getting started\", \"Set up your workspace.\" ], [ \"Principles\", \"How we make decisions.\" ], [ \"Remote work\", \"Working across time zones.\" ] ], &CARDS)\n                      end\n                    end\n                  end\n                end\n              end\n            end\n          end\n        end\n      end\n      NavigationMenuItem { NavigationMenuLink(href: \"#!\") { \"Pricing\" } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Nested inline submenus",
+      "notes": "`viewport: false` with a NavigationMenuViewport switches panels inside the same popup;\n`default_value:` opens a category on load.",
+      "code": "audiences = {\n  developers: [ \"Developers\", \"Build and ship faster\", \"APIs, SDKs, and primitives to integrate in minutes.\", [ [ \"API reference\", \"Every endpoint, documented.\" ], [ \"SDKs\", \"First-party libraries for your stack.\" ], [ \"Examples\", \"Copy-paste starting points.\" ] ] ],\n  designers: [ \"Designers\", \"Design with the system\", \"Tokens, kits, and guidelines that match the code.\", [ [ \"Figma kit\", \"Components mapped to production.\" ], [ \"Design tokens\", \"One source of truth for theming.\" ], [ \"Guidelines\", \"Patterns and accessibility notes.\" ] ] ],\n  teams: [ \"Teams\", \"Scale across the org\", \"Roles, governance, and shared workspaces.\", [ [ \"Permissions\", \"Granular role-based access.\" ], [ \"Audit log\", \"Track every change.\" ], [ \"SSO\", \"Single sign-on for everyone.\" ] ] ]\n}\ncard = \"h-auto flex-col items-start gap-0.5 whitespace-normal\"\nphlex do\n  NavigationMenu(aria_label: \"Main\") do\n    NavigationMenuList do\n      NavigationMenuItem do\n        NavigationMenuTrigger { plain \"Product\"; NavigationMenuIcon() }\n        NavigationMenuContent(class: \"p-0\") do\n          NavigationMenu(orientation: :vertical, default_value: \"developers\", viewport: false, aria_label: \"Audiences\") do\n            div(class: \"grid w-125 grid-cols-[13rem_minmax(0,1fr)]\") do\n              NavigationMenuList(class: \"border-border w-full flex-col items-stretch gap-1 border-e p-2\") do\n                audiences.each do |value, (label, hint, description, links)|\n                  NavigationMenuItem(value: value.to_s, class: \"w-full\") do\n                    NavigationMenuTrigger(class: \"w-full #{card}\") do\n                      span(class: \"text-foreground-intense font-medium\") { label }\n                      span(class: \"text-foreground-muted text-xs font-normal\") { hint }\n                    end\n                    NavigationMenuContent(class: \"p-0\") do\n                      div(class: \"flex flex-col gap-3 p-2\") do\n                        div(class: \"px-3 pt-1\") do\n                          h4(class: \"text-foreground-intense m-0 font-semibold\") { \"For #{label.downcase}\" }\n                          p(class: \"text-foreground-muted m-0 mt-0.5 text-sm\") { description }\n                        end\n                        ul(class: \"grid gap-1\") do\n                          links.each do |title, text|\n                            li do\n                              NavigationMenuLink(href: \"#!\", class: card) do\n                                span(class: \"text-foreground-emphasis font-medium\") { title }\n                                span(class: \"text-foreground-muted text-xs font-normal\") { text }\n                              end\n                            end\n                          end\n                        end\n                      end\n                    end\n                  end\n                end\n              end\n              NavigationMenuViewport(class: \"min-h-60\")\n            end\n          end\n        end\n      end\n      NavigationMenuItem { NavigationMenuLink(href: \"#!\") { \"Pricing\" } }\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "Panels open from the start edge of their trigger; the vertical menu opens to the left.",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"flex flex-wrap items-start gap-10\") do\n    NavigationMenu(aria_label: \"رئيسي\") do\n      NavigationMenuList do\n        NavigationMenuItem do\n          NavigationMenuTrigger { plain \"المنتجات\"; NavigationMenuIcon() }\n          NavigationMenuContent { ul(class: \"grid w-50 gap-0.5\") { %w[ التحليلات المكونات الأتمتة ].each { |label| li { NavigationMenuLink(href: \"#!\") { label } } } } }\n        end\n        NavigationMenuItem { NavigationMenuLink(href: \"#!\") { \"الأسعار\" } }\n      end\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "PRODUCTS": "PRODUCTS = [\n  [ \"Analytics\", \"Track usage and conversions in real time.\", :device_desktop_analytics ],\n  [ \"Components\", \"A composable library of UI primitives.\", :cube ],\n  [ \"Automation\", \"Wire up workflows without code.\", :bolt ],\n  [ \"Integrations\", \"Connect the tools your team already uses.\", :code ]\n].freeze",
+    "RESOURCES": "RESOURCES = [ [ \"Documentation\", \"Guides and API references.\", :book ], [ \"Support\", \"Reach our team for help.\", :lifebuoy ] ].freeze",
+    "CARDS": "CARDS = proc do |cards|\n  cards.each do |title, description, icon|\n    li do\n      NavigationMenuLink(href: \"#!\", class: CARD) do\n        span(class: \"text-foreground-intense flex items-center gap-1.5 font-medium\") { Icon(icon) if icon; plain title }\n        span(class: \"text-foreground-muted text-xs font-normal\") { description }\n      end\n    end\n  end\nend",
+    "SIMPLE": "SIMPLE = proc do |links = %w[ Overview Changelog Roadmap Releases ]|\n  NavigationMenuItem do\n    NavigationMenuTrigger { plain \"Product\"; NavigationMenuIcon() }\n    NavigationMenuContent { ul(class: \"grid w-50 gap-0.5\") { links.each { |label| li { NavigationMenuLink(href: \"#!\") { label } } } } }\n  end\n  NavigationMenuItem { NavigationMenuLink(href: \"#!\") { \"Pricing\" } }\nend",
+    "CARD": "CARD = \"h-auto flex-col items-start gap-1 whitespace-normal\""
+  }
+}

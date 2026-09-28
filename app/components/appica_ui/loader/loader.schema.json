@@ -1,0 +1,74 @@
+{
+  "name": "Loader",
+  "kit": "AppicaUI",
+  "description": "An indeterminate \"working on it\" indicator for section- and status-level waits.\n\n  Loader()\n  Loader(variant: :dots, current_color: true, class: \"text-3xl\")\n\n`variant: :bar` (a track with a sweeping fill) or `:dots` (a flowing trio). Sized by font-size like Spinner, and `current_color: true` takes the surrounding text color. Animated with SVG SMIL, holding a static frame under prefers-reduced-motion.",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Loader(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/09_status_&_feedback/loader.md.erb",
+  "appica": "https://appica.dev/ui/components/react/loader",
+  "components": {
+    "Loader": {
+      "constant": "AppicaUI::Loader",
+      "props": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "enum": [
+              "bar",
+              "dots"
+            ],
+            "default": "bar"
+          },
+          "current_color": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  span(class: \"text-violet-500\") { Loader(variant:, current_color:, class: size.to_s) }\nend"
+    },
+    {
+      "name": "Variants",
+      "notes": "Two shapes - a sweeping track and a flowing trio. Under prefers-reduced-motion both hold a\nstatic frame.",
+      "code": "phlex do\n  div(class: \"flex items-center gap-12\") do\n    %i[ bar dots ].each do |variant|\n      div(class: \"flex flex-col items-center gap-3\") do\n        Loader(variant:)\n        span(class: \"text-foreground-muted text-xs\") { variant.to_s }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Sizing",
+      "notes": "Scales with font-size at a fixed ratio - a text-* utility resizes it.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center gap-8\") do\n    %w[ text-xl text-3xl text-5xl text-7xl ].each { |size| Loader(class: size) }\n  end\nend"
+    },
+    {
+      "name": "Color",
+      "notes": "The primary accent with a soft track by default; `current_color: true` adopts the text color.",
+      "code": "phlex do\n  div(class: \"flex items-center gap-12 text-4xl\") do\n    Loader()\n    %w[ text-violet-500 text-success-emphasis ].each do |color|\n      span(class: color) { Loader(current_color: true) }\n    end\n  end\nend"
+    },
+    {
+      "name": "Load more",
+      "notes": "The button shows the dots loader while the next page \"fetches\"; `current_color:` matches\nthe button text.",
+      "code": "phlex do\n  div(class: \"flex w-56 flex-col gap-2\", data: { demo: \"load-more\" }) do\n    ul(class: \"flex flex-col gap-2\") do\n      ITEMS.each_with_index do |item, index|\n        li(class: \"bg-background-subtle border-border-muted text-foreground-emphasis rounded-lg border px-4 py-3 text-sm\", hidden: index >= 3) { item }\n      end\n    end\n    Button(class: \"self-center\") do\n      span { \"Load more\" }\n      Loader(variant: :dots, current_color: true, class: \"text-3xl\", hidden: true)\n    end\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const demo = document.querySelector(\"[data-demo=load-more]\")\n      const button = demo.querySelector(\"button\")\n      const [label, loader] = button.children\n\n      button.addEventListener(\"click\", () => {\n        button.disabled = true\n        label.hidden = true\n        loader.hidden = false\n        setTimeout(() => {\n          ;[ ...demo.querySelectorAll(\"li[hidden]\") ].slice(0, 3).forEach(item => item.hidden = false)\n          button.disabled = false\n          label.hidden = false\n          loader.hidden = true\n          button.hidden = !demo.querySelector(\"li[hidden]\")\n        }, 1400)\n      })\n    JS\n  end\nend"
+    },
+    {
+      "name": "Section loading",
+      "notes": "Show a centered loader while a panel's data is in flight, then swap in the content.\nRefresh re-runs it.",
+      "code": "phlex do\n  div(class: \"border-border bg-background w-80 overflow-hidden rounded-xl border\", data: { demo: \"section\" }) do\n    div(class: \"border-border-muted bg-background-subtle flex items-center justify-between border-b px-4 py-2.5\") do\n      span(class: \"text-foreground-intense text-sm font-semibold\") { \"Revenue\" }\n      Button(variant: :outline, size: :sm) { \"Refresh\" }\n    end\n    div(class: \"flex h-32 items-center justify-center p-4\") do\n      div(class: \"flex flex-col items-center gap-3\") do\n        Loader(variant: :bar, class: \"text-4xl\")\n        span(class: \"text-foreground-muted text-xs\") { \"Crunching the numbers…\" }\n      end\n      div(class: \"text-center\", hidden: true) do\n        p(class: \"text-foreground-intense mb-0.5 text-3xl font-semibold\") { \"$48,250\" }\n        p(class: \"text-success-emphasis text-sm\") { \"+12.5% this month\" }\n      end\n    end\n  end\n  script(type: \"module\") do\n    raw safe(<<~JS)\n      const demo = document.querySelector(\"[data-demo=section]\")\n      const button = demo.querySelector(\"button\")\n      const [loading, ready] = demo.lastElementChild.children\n      const load = () => {\n        button.disabled = true\n        loading.hidden = false\n        ready.hidden = true\n        setTimeout(() => {\n          button.disabled = false\n          loading.hidden = true\n          ready.hidden = false\n        }, 1800)\n      }\n      button.addEventListener(\"click\", load)\n      load()\n    JS\n  end\nend"
+    },
+    {
+      "name": "Inline status",
+      "notes": "Sized in em with `current_color:`, a loader sits on the line next to a status message.",
+      "code": "phlex do\n  div(class: \"flex flex-col gap-4 text-sm\") do\n    span(class: \"text-foreground-muted inline-flex items-center gap-2\") do\n      plain \"Syncing your changes\"\n      Loader(variant: :dots, current_color: true, class: \"text-[1.6em]\")\n    end\n    span(class: \"text-secondary-emphasis inline-flex items-center gap-2\") do\n      plain \"Uploading 3 files\"\n      Loader(variant: :bar, current_color: true, class: \"text-[1.6em]\")\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "notes": "Beside text, the loader follows the inline flow onto the correct side.",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"flex flex-col gap-4 text-sm\") do\n    span(class: \"text-foreground-muted inline-flex items-center gap-2\") do\n      plain \"جارٍ مزامنة تغييراتك\"\n      Loader(variant: :dots, current_color: true, class: \"text-[1.6em]\")\n    end\n    span(class: \"text-secondary-emphasis inline-flex items-center gap-2\") do\n      plain \"جارٍ رفع 3 ملفات\"\n      Loader(variant: :bar, current_color: true, class: \"text-[1.6em]\")\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "ITEMS": "ITEMS = %w[ Aurora Borealis Cosmos Drift Ember Flux Glow Halo Ion ].freeze"
+  }
+}

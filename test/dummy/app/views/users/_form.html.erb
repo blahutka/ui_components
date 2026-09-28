@@ -1,27 +1,27 @@
 <%= form_with model: user, url: main_app.users_path, html: { novalidate: !local_assigns.fetch(:browser_validation, true) }, class: "flex w-full max-w-md flex-col gap-5" do |form| %>
-  <%= form.ui.text_field :name, description: "As it appears on your profile" %>
-  <%= form.ui.email_field :email %>
-  <%= form.ui.url_field :website, placeholder: "https://" %>
-  <%= form.ui.number_field :age %>
-  <%= form.ui.text_area :bio, description: "Up to 280 characters", rows: 3 %>
-  <%= form.ui.select :locations, User::LOCATIONS, { prompt: "Pick cities" }, { multiple: true } %>
-  <%= form.ui.radio_group :plan, User::PLANS, orientation: :horizontal %>
-  <%= form.ui.checkbox_group :interests, User::INTERESTS, orientation: :horizontal %>
-  <%= form.ui.combobox :language, User::LANGUAGES, placeholder: "Search a language" %>
-  <%= form.ui.combobox :skills, User::SKILLS, multiple: true, placeholder: "Add skills", clearable: true %>
-  <%= form.ui.range_field :experience, label: "Years of experience", tooltip: :always %>
-  <%= form.ui.otp_field :pin, length: 4, label: "PIN", required: true, description: "4 digits to unlock your profile" %>
-  <%= form.ui.chip_group :tags, User::TAGS %>
-  <%= form.ui.autocomplete :city, User::CITIES, placeholder: "Search a city" %>
-  <%= form.ui.rating :score, label: "How do you like it?" %>
-  <%= form.ui.toggle_group :alignment, User::ALIGNMENTS %>
-  <%= form.ui.toggle_group :formats, User::FORMATS, multiple: true %>
+  <%= form.ux.text_field :name, description: "As it appears on your profile" %>
+  <%= form.ux.email_field :email %>
+  <%= form.ux.url_field :website, placeholder: "https://" %>
+  <%= form.ux.number_field :age %>
+  <%= form.ux.text_area :bio, description: "Up to 280 characters", rows: 3 %>
+  <%= form.ux.select :locations, User::LOCATIONS, { prompt: "Pick cities" }, { multiple: true } %>
+  <%= form.ux.radio_group :plan, User::PLANS, orientation: :horizontal %>
+  <%= form.ux.checkbox_group :interests, User::INTERESTS, orientation: :horizontal %>
+  <%= form.ux.combobox :language, User::LANGUAGES, placeholder: "Search a language" %>
+  <%= form.ux.combobox :skills, User::SKILLS, multiple: true, placeholder: "Add skills", clearable: true %>
+  <%= form.ux.range_field :experience, label: "Years of experience", tooltip: :always %>
+  <%= form.ux.otp_field :pin, length: 4, label: "PIN", required: true, description: "4 digits to unlock your profile" %>
+  <%= form.ux.chip_group :tags, User::TAGS %>
+  <%= form.ux.autocomplete :city, User::CITIES, placeholder: "Search a city" %>
+  <%= form.ux.rating :score, label: "How do you like it?" %>
+  <%= form.ux.toggle_group :alignment, User::ALIGNMENTS %>
+  <%= form.ux.toggle_group :formats, User::FORMATS, multiple: true %>
 
   <fieldset class="flex min-w-0 flex-col gap-4">
     <legend class="text-foreground-intense mb-4 text-lg font-medium">Address</legend>
     <%= form.fields_for :address do |address| %>
-      <%= address.ui.text_field :city %>
-      <%= address.ui.select :country, Address::COUNTRIES, prompt: "Pick a country" %>
+      <%= address.ux.text_field :city %>
+      <%= address.ux.select :country, Address::COUNTRIES, prompt: "Pick a country" %>
     <% end %>
   </fieldset>
 
@@ -29,15 +29,15 @@
     <legend class="text-foreground-intense mb-4 text-lg font-medium">Phones</legend>
     <%= form.fields_for :phones do |phone| %>
       <div class="grid min-w-0 grid-cols-1 items-start gap-3 sm:grid-cols-[minmax(0,1fr)_8rem]">
-        <%= phone.ui.telephone_field :number, placeholder: "+420 123 456 789" %>
-        <%= phone.ui.select :kind, Phone::KINDS, label: "Kind" %>
+        <%= phone.ux.telephone_field :number, placeholder: "+420 123 456 789" %>
+        <%= phone.ux.select :kind, Phone::KINDS, label: "Kind" %>
       </div>
     <% end %>
   </fieldset>
 
-  <%= form.ui.switch :newsletter, description: "A monthly summary, no spam" %>
-  <%= form.ui.toggle :featured, label: "Feature my profile", description: "Pinned to the top of the directory" %>
-  <%= form.ui.check_box :terms_of_service, label: "I accept the terms of service" %>
+  <%= form.ux.switch :newsletter, description: "A monthly summary, no spam" %>
+  <%= form.ux.toggle :featured, label: "Feature my profile", description: "Pinned to the top of the directory" %>
+  <%= form.ux.check_box :terms_of_service, label: "I accept the terms of service" %>
 
-  <%= render(UI::Button.new(type: "submit", class: "self-start")) { "Save" } %>
+  <%= render(AppicaUI::Button.new(type: "submit", class: "self-start")) { "Save" } %>
 <% end %>

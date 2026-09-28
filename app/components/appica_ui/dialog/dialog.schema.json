@@ -1,0 +1,192 @@
+{
+  "name": "Dialog",
+  "kit": "AppicaUI",
+  "description": "A focused task or content that interrupts the page, in a centered modal.\n\n  Dialog do\n    DialogTrigger { |trigger| Button(**trigger, variant: :outline) { \"Invite people\" } }\n    DialogContent do\n      DialogHeader do\n        DialogTitle { \"Invite your team\" }\n        DialogDescription { \"Send an invitation by email.\" }\n      end\n      DialogBody { … }\n      DialogFooter do\n        DialogClose { |close| Button(**close, variant: :outline) { \"Cancel\" } }\n        DialogClose { |close| Button(**close) { \"Send invites\" } }\n      end\n    end\n  end\n\nDialogContent is a native <dialog> opened with showModal(): top layer, focus trapped, the page behind inert, Escape to close, focus returned to the trigger. A click outside closes it unless `dismissible: false`; `modal: false` leaves the page usable. `default_open: true` renders it open (e.g. a dialog streamed in by Turbo). A Dialog inside another's content stacks on top and the parent steps back. Emits `appica-ui--dialog:open-change` with { open }; dispatch `appica-ui--dialog:open` / `appica-ui--dialog:close` on the root to drive it.",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Dialog(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/08_overlays/dialog.md.erb",
+  "appica": "https://appica.dev/ui/components/react/dialog",
+  "components": {
+    "Dialog": {
+      "constant": "AppicaUI::Dialog",
+      "props": {
+        "type": "object",
+        "properties": {
+          "default_open": {
+            "default": false,
+            "type": "boolean"
+          },
+          "modal": {
+            "default": true,
+            "type": "boolean"
+          },
+          "dismissible": {
+            "default": true,
+            "type": "boolean"
+          },
+          "id": {}
+        },
+        "additionalProperties": true
+      },
+      "parts": [
+        "AppicaUI::DialogBody",
+        "AppicaUI::DialogClose",
+        "AppicaUI::DialogContent",
+        "AppicaUI::DialogDescription",
+        "AppicaUI::DialogFooter",
+        "AppicaUI::DialogHeader",
+        "AppicaUI::DialogTitle",
+        "AppicaUI::DialogTrigger"
+      ]
+    },
+    "DialogBody": {
+      "constant": "AppicaUI::DialogBody",
+      "description": "The dialog's main content. Give the content a fixed height and a scrolling body for long text.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Dialog"
+      ]
+    },
+    "DialogClose": {
+      "constant": "AppicaUI::DialogClose",
+      "description": "A button that closes the dialog. A block taking an argument receives its attributes for your own Button: `DialogClose { |close| Button(**close) { \"Done\" } }`. It's `type=\"button\"`, so a form's submit button should be a plain Button with type: \"submit\" (the dialog closes when the page navigates or a Turbo Stream replaces it).",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Dialog"
+      ]
+    },
+    "DialogContent": {
+      "constant": "AppicaUI::DialogContent",
+      "description": "The modal: a native <dialog> covering the viewport, with the backdrop and the centered card (a frosted frame around it unless `frame: false`), plus a corner close button (`close_button: false` to drop it). `class:` styles the card - e.g. \"sm:w-100\" or \"h-138\".",
+      "props": {
+        "type": "object",
+        "properties": {
+          "close_button": {
+            "default": true,
+            "type": "boolean"
+          },
+          "close_label": {
+            "default": "Close",
+            "type": "string"
+          },
+          "backdrop": {
+            "default": true,
+            "type": "boolean"
+          },
+          "frame": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Dialog"
+      ]
+    },
+    "DialogDescription": {
+      "constant": "AppicaUI::DialogDescription",
+      "description": "The <p> that describes the dialog.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Dialog"
+      ]
+    },
+    "DialogFooter": {
+      "constant": "AppicaUI::DialogFooter",
+      "description": "The actions - stacked on small screens, a right-aligned row from `sm` up.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Dialog"
+      ]
+    },
+    "DialogHeader": {
+      "constant": "AppicaUI::DialogHeader",
+      "description": "Groups the title and description.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Dialog"
+      ]
+    },
+    "DialogTitle": {
+      "constant": "AppicaUI::DialogTitle",
+      "description": "The <h2> that labels the dialog.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Dialog"
+      ]
+    },
+    "DialogTrigger": {
+      "constant": "AppicaUI::DialogTrigger",
+      "description": "The button that opens the dialog. A block taking an argument receives its attributes for your own element: `DialogTrigger { |trigger| Button(**trigger) { \"Open\" } }`.",
+      "props": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "render_inside": [
+        "AppicaUI::Dialog"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  Dialog(dismissible:, default_open:, modal:) do\n    DialogTrigger { |trigger| Button(**trigger, variant: :outline) { \"Invite people\" } }\n    DialogContent(frame:, close_button:, class: \"sm:w-110\") do\n      DialogHeader do\n        DialogTitle { \"Invite your team\" }\n        DialogDescription { \"Send an invitation by email. They'll get access as soon as they accept.\" }\n      end\n      DialogBody do\n        Field { FieldLabel { \"Email addresses\" }; Input(type: \"email\", placeholder: \"name@company.com\") }\n      end\n      DialogFooter do\n        DialogClose { |close| Button(**close, variant: :soft) { \"Cancel\" } }\n        DialogClose { |close| Button(**close) { \"Send invites\" } }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Form dialog",
+      "notes": "A header, a body of Fields and a footer of actions.",
+      "code": "phlex do\n  Dialog do\n    DialogTrigger { |trigger| Button(**trigger, variant: :outline) { \"Edit profile\" } }\n    DialogContent(class: \"sm:w-110\") do\n      DialogHeader do\n        DialogTitle { \"Edit profile\" }\n        DialogDescription { \"Update how you appear across the workspace. Changes are visible to your team.\" }\n      end\n      DialogBody(class: \"flex flex-col gap-4\") do\n        Field { FieldLabel { \"Display name\" }; Input(value: \"Sarah Jenkins\") }\n        Field { FieldLabel { \"Email\" }; Input(type: \"email\", value: \"sarah@appica.dev\") }\n        Field { FieldLabel { \"Bio\" }; Textarea(rows: 3, value: \"Product designer focused on design systems and accessibility.\") }\n      end\n      DialogFooter do\n        DialogClose { |close| Button(**close, variant: :soft) { \"Cancel\" } }\n        DialogClose { |close| Button(**close) { \"Save changes\" } }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Sizing",
+      "notes": "The card is `w-150` by default; `class:` sets another width - it always shrinks to fit.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center justify-center gap-3\") do\n    { \"Small\" => [ \"sm:w-100\", \"400px\" ], \"Default\" => [ nil, \"600px\" ], \"Large\" => [ \"sm:w-200\", \"800px\" ] }.each do |label, (width, pixels)|\n      Dialog do\n        DialogTrigger { |trigger| Button(**trigger, variant: :outline) { label } }\n        DialogContent(class: width) do\n          DialogHeader do\n            DialogTitle { \"#{label} dialog\" }\n            DialogDescription { width ? \"Set with class: \\\"#{width}\\\" (#{pixels}).\" : \"The default width is #{pixels}.\" }\n          end\n          DialogBody { p { \"Every dialog also carries max-w-full, so it shrinks to fit narrow screens instead of overflowing.\" } }\n          DialogFooter { DialogClose { |close| Button(**close, variant: :outline) { \"Close\" } } }\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Scrollable content",
+      "notes": "A fixed height with a scrolling body between the pinned header and footer.",
+      "code": "sections = [\n  [ \"1. Acceptance of terms\", \"By accessing or using the service you agree to be bound by these terms. If you are entering into this agreement on behalf of a company, you represent that you have the authority to bind that company.\" ],\n  [ \"2. Accounts\", \"You are responsible for safeguarding the credentials you use to access the service and for any activity under your account.\" ],\n  [ \"3. Acceptable use\", \"You agree not to misuse the service: no probing, scanning, or testing the vulnerability of any system.\" ],\n  [ \"4. Content\", \"You retain ownership of the content you submit and grant us a license to host and display it to operate the service.\" ],\n  [ \"5. Subscriptions\", \"Paid plans renew automatically at the end of each billing cycle unless canceled beforehand.\" ],\n  [ \"6. Termination\", \"We may suspend or terminate your access if you breach these terms. You may stop using the service at any time.\" ],\n  [ \"7. Disclaimers\", \"The service is provided \\\"as is\\\" without warranties of any kind, whether express or implied.\" ],\n  [ \"8. Changes\", \"We may revise these terms from time to time. Material changes will be communicated in advance.\" ]\n]\nphlex do\n  Dialog do\n    DialogTrigger { |trigger| Button(**trigger, variant: :outline) { \"Review terms\" } }\n    DialogContent(class: \"h-138 sm:w-130\") do\n      DialogHeader do\n        DialogTitle { \"Terms of Service\" }\n        DialogDescription { \"Last updated June 27, 2026\" }\n      end\n      div(class: \"min-h-0 flex-1 overflow-y-auto\") do\n        div(class: \"flex flex-col gap-5 px-6 pb-2\") do\n          sections.each do |title, body|\n            section(class: \"flex flex-col gap-1.5\") do\n              h3(class: \"text-foreground-intense font-medium\") { title }\n              p { body }\n            end\n          end\n        end\n      end\n      DialogFooter do\n        DialogClose { |close| Button(**close, variant: :outline) { \"Decline\" } }\n        DialogClose { |close| Button(**close) { \"Accept\" } }\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "Nested",
+      "code": "phlex do\n  Dialog do\n    DialogTrigger { |trigger| Button(**trigger, variant: :outline) { \"Account settings\" } }\n    DialogContent(class: \"sm:w-110\") do\n      DialogHeader do\n        DialogTitle { \"Account & security\" }\n        DialogDescription { \"Manage how you sign in and keep your account safe.\" }\n      end\n      DialogBody do\n        instance_exec(\"Email\", \"ada@appica.dev\", &ROW)\n        change_password = proc do\n          Dialog do\n            DialogTrigger { |trigger| Button(**trigger, variant: :soft, size: :sm) { \"Change\" } }\n            DialogContent(class: \"sm:w-110\") do\n              DialogHeader do\n                DialogTitle { \"Change password\" }\n                DialogDescription { \"Use at least 8 characters, including a number.\" }\n              end\n              DialogBody(class: \"flex flex-col gap-4\") do\n                Field { FieldLabel { \"Current password\" }; Input(type: \"password\", autocomplete: \"new-password\", value: \"opensesame\") }\n                Field { FieldLabel { \"New password\" }; Input(type: \"password\", autocomplete: \"new-password\", value: \"correct-horse\") }\n              end\n              DialogFooter do\n                DialogClose { |close| Button(**close, variant: :soft) { \"Cancel\" } }\n                DialogClose { |close| Button(**close) { \"Update password\" } }\n              end\n            end\n          end\n        end\n        instance_exec(\"Password\", \"Last changed 3 months ago\", change_password, &ROW)\n        instance_exec(\"Two-factor auth\", proc { Badge(variant: :success) { \"Enabled\" } }, &ROW)\n        instance_exec(\"Active sessions\", \"2 devices\", &ROW)\n      end\n      DialogFooter { DialogClose { |close| Button(**close) { \"Done\" } } }\n    end\n  end\nend"
+    },
+    {
+      "name": "Opened by the server",
+      "notes": "`default_open: true` renders it open - e.g. a dialog a Turbo Stream appends to the page, or a\nform re-rendered with errors. Dispatch `appica-ui--dialog:open` / `appica-ui--dialog:close` to drive it.",
+      "code": "phlex do\n  div(class: \"flex gap-3\") do\n    Button(variant: :outline, data: { demo: \"open\" }) { \"Open from elsewhere\" }\n    Dialog(id: \"remote-dialog\") do\n      DialogContent(class: \"sm:w-100\") do\n        DialogHeader do\n          DialogTitle { \"Opened by an event\" }\n          DialogDescription { \"This dialog has no trigger - a script dispatched appica-ui--dialog:open on it.\" }\n        end\n        DialogFooter { DialogClose { |close| Button(**close) { \"Got it\" } } }\n      end\n    end\n  end\n  script(type: \"module\") do\n    raw safe(%(document.querySelector(\"[data-demo=open]\").addEventListener(\"click\", () => document.getElementById(\"remote-dialog\").dispatchEvent(new Event(\"appica-ui--dialog:open\")))))\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "code": "phlex do\n  div(dir: \"rtl\") do\n    Dialog do\n      DialogTrigger { |trigger| Button(**trigger, variant: :outline) { \"دعوة أشخاص\" } }\n      DialogContent(close_label: \"إغلاق\", class: \"sm:w-110\") do\n        DialogHeader do\n          DialogTitle { \"ادعُ فريقك\" }\n          DialogDescription { \"أرسل دعوة عبر البريد الإلكتروني.\" }\n        end\n        DialogBody { Input(type: \"email\", placeholder: \"name@company.com\", aria_label: \"البريد الإلكتروني\") }\n        DialogFooter do\n          DialogClose { |close| Button(**close, variant: :soft) { \"إلغاء\" } }\n          DialogClose { |close| Button(**close) { \"إرسال\" } }\n        end\n      end\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "ROW": "ROW = proc do |label, value, action = nil|\n  div(class: \"border-border-muted flex items-center justify-between gap-4 border-b py-3 last:border-b-0\") do\n    div(class: \"flex min-w-0 flex-col\") do\n      span(class: \"text-foreground-intense font-medium\") { label }\n      span(class: \"truncate text-sm\") { value.is_a?(Proc) ? instance_exec(&value) : value }\n    end\n    instance_exec(&action) if action\n  end\nend"
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "name": "Thumbnail",
+  "kit": "AppicaUI",
+  "description": "A compact preview tile beside a file, a list row or a media item: an image cropped to fill (falling back to a placeholder icon while it loads or when it fails), or a colored tile framing an icon.\n\n  Thumbnail(src: \"/photos/summit.jpg\", alt: \"Mountain peak\", size: :xl)\n  Thumbnail(variant: :icon_primary) { Icon(:bolt) }\n  Thumbnail(size: 56, shape: :circle, src: cover.url)\n\nSized in em from one `size:` (a preset or pixels), so the tile and its icon scale together. The image variant reuses Avatar's loader (`appica-ui--avatar`), which emits `appica-ui--avatar:loading-status-change` with { status }.",
+  "usage": "Call the kit method inside a Phlex view that includes AppicaUI (e.g. `Thumbnail(**props) { … }`); unknown keywords (class:, id:, data:, aria_*) go to the root element.",
+  "docs": "docs/lookbook/03_data_display/thumbnail.md.erb",
+  "appica": "https://appica.dev/ui/components/react/thumbnail",
+  "components": {
+    "Thumbnail": {
+      "constant": "AppicaUI::Thumbnail",
+      "props": {
+        "type": "object",
+        "properties": {
+          "variant": {
+            "enum": [
+              "image",
+              "icon_soft",
+              "icon_outline",
+              "icon_primary",
+              "icon_primary_outline",
+              "icon_secondary",
+              "icon_error",
+              "icon_success",
+              "icon_warning",
+              "icon_info"
+            ],
+            "default": "image"
+          },
+          "size": {
+            "default": "md",
+            "type": "string"
+          },
+          "shape": {
+            "enum": [
+              "rounded",
+              "circle"
+            ],
+            "default": "rounded"
+          },
+          "src": {
+            "default": null
+          },
+          "alt": {
+            "default": "",
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "name": "Usage",
+      "code": "phlex do\n  Thumbnail(size:, shape:, variant:, src: PHOTO, alt:)\nend"
+    },
+    {
+      "name": "Sizes",
+      "notes": "Seven presets from `2xs` to `2xl`.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-end justify-center gap-4\") do\n    AppicaUI::Thumbnail::SIZES.each_key { |size| Thumbnail(size:, src: PHOTO, alt: \"Mountain peak\") }\n  end\nend"
+    },
+    {
+      "name": "Custom size",
+      "notes": "A number is an exact pixel size; everything inside stays proportional.",
+      "code": "phlex do\n  div(class: \"flex items-end gap-4\") do\n    [ 40, 56, 88 ].each { |size| Thumbnail(size:, src: PHOTO, alt: \"Mountain peak\") }\n  end\nend"
+    },
+    {
+      "name": "Shape",
+      "code": "phlex do\n  div(class: \"flex items-center gap-4\") do\n    Thumbnail(size: :xl, shape: :rounded, src: PHOTO, alt: \"Mountain peak\")\n    Thumbnail(size: :xl, shape: :circle, src: PHOTO, alt: \"Mountain peak\")\n  end\nend"
+    },
+    {
+      "name": "Icon variants",
+      "notes": "The `icon_*` variants frame an icon instead of an image.",
+      "code": "phlex do\n  div(class: \"flex flex-wrap items-center justify-center gap-4\") do\n    {\n      icon_soft: :folder, icon_outline: :photo, icon_primary: :bolt, icon_primary_outline: :heart, icon_secondary: :star,\n      icon_error: :trash, icon_success: :check, icon_warning: :bell, icon_info: :mail\n    }.each { |variant, icon| Thumbnail(variant:, size: :lg) { Icon(icon) } }\n  end\nend"
+    },
+    {
+      "name": "Fallback",
+      "notes": "A missing or failing image shows the placeholder icon - no broken-image glyph.",
+      "code": "phlex do\n  div(class: \"flex items-center gap-4\") do\n    Thumbnail(size: :xl, src: \"/thumbnail-does-not-exist.jpg\", alt: \"Unavailable image\")\n    Thumbnail(size: :xl)\n  end\nend"
+    },
+    {
+      "name": "Media list",
+      "code": "phlex do\n  ul(class: \"divide-border border-border w-full max-w-90 divide-y rounded-xl border\") do\n    [\n      [ -> { Thumbnail(size: :md, src: PHOTO, alt: \"Mountain peak\") }, \"Summit.jpg\", \"Image · 2.4 MB\" ],\n      [ -> { Thumbnail(size: :md, variant: :icon_soft) { Icon(:folder) } }, \"Field notes\", \"Folder · 18 items\" ],\n      [ -> { Thumbnail(size: :md, variant: :icon_primary) { Icon(:music) } }, \"Trailhead.mp3\", \"Audio · 3:42\" ],\n      [ -> { Thumbnail(size: :md, variant: :icon_secondary) { Icon(:layout_2) } }, \"Moodboard\", \"Album · 24 photos\" ]\n    ].each do |thumbnail, title, meta|\n      li(class: \"flex items-center gap-3 px-4 py-3\") do\n        instance_exec(&thumbnail)\n        div(class: \"flex flex-col\") do\n          span(class: \"text-foreground-intense text-sm font-medium\") { title }\n          span(class: \"text-foreground-muted text-xs\") { meta }\n        end\n      end\n    end\n  end\nend"
+    },
+    {
+      "name": "RTL",
+      "code": "phlex do\n  div(dir: \"rtl\", class: \"flex items-center gap-3\") do\n    Thumbnail(size: :md, src: PHOTO, alt: \"القمة.jpg\")\n    div(class: \"flex flex-col\") do\n      span(class: \"text-foreground-intense text-sm font-medium\") { \"القمة.jpg\" }\n      span(class: \"text-foreground-muted text-xs\") { \"صورة · 2.4 ميغابايت\" }\n    end\n  end\nend"
+    }
+  ],
+  "example_helpers": {
+    "PHOTO": "PHOTO = \"/carousel/slide-1.jpg\""
+  }
+}

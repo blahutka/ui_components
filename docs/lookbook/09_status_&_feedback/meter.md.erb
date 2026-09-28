@@ -8,7 +8,7 @@ title: Meter
 A graphical display of a numeric value within a known range.
 [Appica docs](https://appica.dev/ui/components/react/meter)
 
-<%= embed UI::MeterPreview, :default %>
+<%= embed AppicaUI::MeterPreview, :default %>
 
 ## Usage
 
@@ -35,7 +35,7 @@ the reading is good, borderline or bad - green, amber or red.
 The indicator colors by zone: optimum (green) when the value sits in the same zone as `optimum:`, suboptimum
 (amber) one zone away, invalid (red) at the far end. `optimum: 10` marks low usage as healthy.
 
-<%= embed UI::MeterPreview, :status %>
+<%= embed AppicaUI::MeterPreview, :status %>
 
 ### Formatting the value
 
@@ -43,7 +43,7 @@ The indicator colors by zone: optimum (green) when the value sits in the same zo
 first render; live updates use the browser's `Intl.NumberFormat` with the same options. For full control, give
 `MeterValue` a block: it receives the formatted string and the raw value.
 
-<%= embed UI::MeterPreview, :formatting %>
+<%= embed AppicaUI::MeterPreview, :formatting %>
 
 ```ruby
 Meter(value: 3.4, max: 8, format: { style: :unit, unit: "gigabyte", maximum_fraction_digits: 1 }) do
@@ -53,26 +53,26 @@ end
 
 ### Password strength (controlled)
 
-Score the input as the user types and set the meter's value; the `ui--meter` controller moves the fill,
+Score the input as the user types and set the meter's value; the `appica-ui--meter` controller moves the fill,
 recolors it and updates the text and ARIA. `MeterValue(labels:)` prints a word for each value.
 
-<%= embed UI::MeterPreview, :password_strength %>
+<%= embed AppicaUI::MeterPreview, :password_strength %>
 
 ```js
-meter.setAttribute("data-ui--meter-value-value", score(input.value))
+meter.setAttribute("data-appica-ui--meter-value-value", score(input.value))
 ```
 
 ### Minimal
 
 Drop `MeterValue` (and even `MeterLabel`) for a bare track, and restyle the parts with `class:`.
 
-<%= embed UI::MeterPreview, :minimal %>
+<%= embed AppicaUI::MeterPreview, :minimal %>
 
 ### RTL
 
 The label and value swap sides and the track fills from the right.
 
-<%= embed UI::MeterPreview, :rtl %>
+<%= embed AppicaUI::MeterPreview, :rtl %>
 
 ## API reference
 

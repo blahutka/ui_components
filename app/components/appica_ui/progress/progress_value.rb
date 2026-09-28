@@ -1,0 +1,13 @@
+# Prints the formatted value ("60%"). A block receives the formatted string and the raw value:
+#
+#   ProgressValue { |formatted, _value| "#{formatted} done" }
+class AppicaUI::ProgressValue < AppicaUI::Base
+  def view_template(&block)
+    progress = consume(:progress, component: "AppicaUI::Progress")
+
+    span(**mix({ aria_hidden: "true", data: { slot: "progress-value", progress.state => "", "appica-ui--progress-target": "value" } }, @attributes.except(:class)),
+      class: cn("text-foreground text-sm", override: @attributes[:class])) do
+      block ? block.call(progress.formatted_value, progress.value) : progress.formatted_value
+    end
+  end
+end

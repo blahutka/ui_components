@@ -3,7 +3,7 @@ module UiComponents
   # preview's `default` ("Usage") scenario lists them all, so each prop can be tried from the
   # Params panel.
   #
-  #   bin/rails "ui_components:preview_params[UI::Select]"    # prints tags, signature, call
+  #   bin/rails "ui_components:preview_params[AppicaUI::Select]"    # prints tags, signature, call
   #
   # Props that don't fit a form field (Hash / Array / Proc values, generated ids) are left out;
   # a preview names them in UNLISTED_PROPS. test/components/preview_params_test.rb checks that
@@ -13,7 +13,7 @@ module UiComponents
     TEXT_PROPS = %w[ name placeholder label title description text alt src href caption value default_value
       placeholder_text close_label clear_label copied_label cover_alt image_alt note ].freeze
 
-    # `given` params are optional text passed through UI::BasePreview#given, so a blank field keeps
+    # `given` params are optional text passed through AppicaUI::BasePreview#given, so a blank field keeps
     # the component's default (translated labels, computed values) instead of passing nil
     Param = Data.define(:name, :tag, :default, :given) do
       def signature = "#{name}: #{default}"
@@ -30,7 +30,7 @@ module UiComponents
         component.to_schema["properties"].keys - params(component).map(&:name)
       end
 
-      # The component a preview is about: its `@component` tag, else UI::FooPreview → UI::Foo
+      # The component a preview is about: its `@component` tag, else AppicaUI::FooPreview → AppicaUI::Foo
       def component_for(preview_class)
         file = Object.const_source_location(preview_class.name)&.first
         tagged = file && File.read(file)[/^#\s*@component\s+(\S+)/, 1]

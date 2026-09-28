@@ -8,7 +8,7 @@ title: Number Field
 A numeric input between − and + steppers that formats its value.
 [Appica docs](https://appica.dev/ui/components/react/number-field)
 
-<%= embed UI::NumberFieldPreview, :default %>
+<%= embed AppicaUI::NumberFieldPreview, :default %>
 
 ## Usage
 
@@ -26,31 +26,31 @@ at its `id:`, a Field, or `aria_label:`.
 
 ### Variants
 
-<%= embed UI::NumberFieldPreview, :variants %>
+<%= embed AppicaUI::NumberFieldPreview, :variants %>
 
 ### Sizes
 
-<%= embed UI::NumberFieldPreview, :sizes %>
+<%= embed AppicaUI::NumberFieldPreview, :sizes %>
 
 ### Min, max & step
 
-<%= embed UI::NumberFieldPreview, :bounds %>
+<%= embed AppicaUI::NumberFieldPreview, :bounds %>
 
 ### Formatting
 
-<%= embed UI::NumberFieldPreview, :formatting %>
+<%= embed AppicaUI::NumberFieldPreview, :formatting %>
 
 ### Reacting to changes
 
-<%= embed UI::NumberFieldPreview, :controlled %>
+<%= embed AppicaUI::NumberFieldPreview, :controlled %>
 
 ### Disabled & error states
 
-<%= embed UI::NumberFieldPreview, :states %>
+<%= embed AppicaUI::NumberFieldPreview, :states %>
 
 ### RTL
 
-<%= embed UI::NumberFieldPreview, :rtl %>
+<%= embed AppicaUI::NumberFieldPreview, :rtl %>
 
 ## API reference
 
@@ -68,7 +68,7 @@ at its `id:`, a Field, or `aria_label:`.
 | `read_only:`, `required:`, `disabled:`, `invalid:` | `Boolean` | - | The usual states. |
 | `input:` | `Hash` | `{}` | Attributes for the visible input. |
 
-Event: `ui--number-field:change` with `{ value }` (`null` when empty).
+Event: `appica-ui--number-field:change` with `{ value }` (`null` when empty).
 
 ## Accessibility
 
