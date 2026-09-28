@@ -1,5 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 
+// The popup is fixed-positioned from script, over classes that also set inset and width. A host that
+// builds these components with Tailwind's important flag makes those classes !important, which
+// would beat a plain inline style and pin the popup to the corner; an important inline declaration
+// wins either way, and behaves identically when nothing is important.
+function place(element, property, value) {
+  element.style.setProperty(property, value, "important")
+}
+
 // AppicaUI::Select: opens the listbox in the top layer (popover) over or below the trigger, moves a
 // highlight with the keyboard (aria-activedescendant - focus stays on the trigger), typeahead,
 // selects (toggling when multiple), clears, and mirrors the value into the trigger and the form
@@ -233,25 +241,25 @@ export default class extends Controller {
     const selected = this.selectedItems[0]
     const align = this.alignValue && selected && !this.multipleValue
 
-    content.style.width = `${trigger.width + (align ? 16 : 0)}px`
+    place(content, "width", `${trigger.width + (align ? 16 : 0)}px`)
     content.style.setProperty("--anchor-width", `${trigger.width}px`)
     const left = align ? trigger.left - 8 : trigger.left
-    content.style.left = `${rtl ? trigger.right - content.offsetWidth + (align ? 8 : 0) : left}px`
+    place(content, "left", `${rtl ? trigger.right - content.offsetWidth + (align ? 8 : 0) : left}px`)
 
     if (align) {
       this.listTarget.style.setProperty("--available-height", `${window.innerHeight - margin * 2}px`)
       const itemTop = selected.offsetTop - this.listTarget.scrollTop
       let top = trigger.top + trigger.height / 2 - (itemTop + selected.offsetHeight / 2)
       top = Math.max(margin, Math.min(top, window.innerHeight - content.offsetHeight - margin))
-      content.style.top = `${top}px`
-      content.style.transformOrigin = "center"
+      place(content, "top", `${top}px`)
+      place(content, "transform-origin", "center")
     } else {
       const below = window.innerHeight - trigger.bottom - offset - margin
       const above = trigger.top - offset - margin
       const side = content.dataset.side === "top" ? (above > 160 || above > below ? "top" : "bottom") : (below > 160 || below >= above ? "bottom" : "top")
       this.listTarget.style.setProperty("--available-height", `${Math.max(120, side === "bottom" ? below : above)}px`)
-      content.style.top = side === "bottom" ? `${trigger.bottom + offset}px` : `${trigger.top - offset - content.offsetHeight}px`
-      content.style.transformOrigin = side === "bottom" ? "top" : "bottom"
+      place(content, "top", side === "bottom" ? `${trigger.bottom + offset}px` : `${trigger.top - offset - content.offsetHeight}px`)
+      place(content, "transform-origin", side === "bottom" ? "top" : "bottom")
       content.dataset.currentSide = side
     }
   }

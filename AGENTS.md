@@ -105,6 +105,10 @@ test/components/ui/select_test.rb         # Minitest
 - Enum params read their choices from the component: `select {{ choices_for AppicaUI::Select, :size }}` -
   never repeat a component's choices. Optional text props pass through `**given(title:)` so a
   blank field keeps the component's (often translated) default.
+- A controller that positions an element from script (a popup's `top`/`left`/`width`) sets those
+  properties with `style.setProperty(name, value, "important")`, never `style.left = …`. Hosts may
+  build the components with Tailwind's important flag, where `inset-auto` or `w-36` on the same
+  element would otherwise override the inline position. See `select_controller.js`'s `place()`.
 - Style: rubocop-rails-omakase, 37signals-flavoured Ruby - expanded conditionals over guard
   clauses (except a one-line early return), no blank line after `private` with its methods
   indented under it, private methods in call order. Minitest, no RSpec.
